@@ -1,0 +1,18 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PO_DEVICE_NOTIFY
+{
+  struct _LIST_ENTRY Link;
+  struct _DEVICE_OBJECT* TargetDevice;
+  U8 OrderLevel;
+  struct _DEVICE_OBJECT* DeviceObject;
+  U16* DeviceName;
+  U16* DriverName;
+  U32 ChildCount;
+  U32 ActiveChild;
+} PO_DEVICE_NOTIFY, *PPO_DEVICE_NOTIFY; 
+

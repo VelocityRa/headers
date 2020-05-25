@@ -1,0 +1,147 @@
+typedef struct _KSYSTEM_TIME
+{
+  U32 LowPart;
+  S32 High1Time;
+  S32 High2Time;
+} KSYSTEM_TIME, *PKSYSTEM_TIME; 
+
+typedef enum _NT_PRODUCT_TYPE
+{
+  NtProductWinNt = 1,
+  NtProductLanManNt = 2,
+  NtProductServer = 3,
+} NT_PRODUCT_TYPE, *PNT_PRODUCT_TYPE;
+
+typedef enum _ALTERNATIVE_ARCHITECTURE_TYPE
+{
+  StandardDesign = 0,
+  NEC98x86 = 1,
+  EndAlternatives = 2,
+} ALTERNATIVE_ARCHITECTURE_TYPE, *PALTERNATIVE_ARCHITECTURE_TYPE;
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _XSTATE_FEATURE
+{
+  U32 Offset;
+  U32 Size;
+} XSTATE_FEATURE, *PXSTATE_FEATURE; 
+
+typedef struct _XSTATE_CONFIGURATION
+{
+  U64 EnabledFeatures;
+  U32 Size;
+  U32 OptimizedSave : 1; 
+  struct _XSTATE_FEATURE Features[64];
+} XSTATE_CONFIGURATION, *PXSTATE_CONFIGURATION; 
+
+typedef struct _KUSER_SHARED_DATA
+{
+  U32 TickCountLowDeprecated;
+  U32 TickCountMultiplier;
+  volatile struct _KSYSTEM_TIME InterruptTime;
+  volatile struct _KSYSTEM_TIME SystemTime;
+  volatile struct _KSYSTEM_TIME TimeZoneBias;
+  U16 ImageNumberLow;
+  U16 ImageNumberHigh;
+  wchar_t NtSystemRoot[260];
+  U32 MaxStackTraceDepth;
+  U32 CryptoExponent;
+  U32 TimeZoneId;
+  U32 LargePageMinimum;
+  U32 Reserved2[7];
+  enum _NT_PRODUCT_TYPE NtProductType;
+  U8 ProductTypeIsValid;
+  U32 NtMajorVersion;
+  U32 NtMinorVersion;
+  U8 ProcessorFeatures[64];
+  U32 Reserved1;
+  U32 Reserved3;
+  volatile U32 TimeSlip;
+  enum _ALTERNATIVE_ARCHITECTURE_TYPE AlternativeArchitecture;
+  U32 AltArchitecturePad[1];
+  union _LARGE_INTEGER SystemExpirationDate;
+  U32 SuiteMask;
+  U8 KdDebuggerEnabled;
+  U8 NXSupportPolicy;
+  volatile U32 ActiveConsoleId;
+  volatile U32 DismountCount;
+  U32 ComPlusPackage;
+  U32 LastSystemRITEventTickCount;
+  U32 NumberOfPhysicalPages;
+  U8 SafeBootMode;
+  union
+  {
+    U8 TscQpcData;
+    struct 
+    {
+      U8 TscQpcEnabled : 1; 
+      U8 TscQpcSpareFlag : 1; 
+      U8 TscQpcShift : 6; 
+    }; 
+  }; 
+  U8 TscQpcPad[2];
+  union
+  {
+    U32 SharedDataFlags;
+    struct 
+    {
+      U32 DbgErrorPortPresent : 1; 
+      U32 DbgElevationEnabled : 1; 
+      U32 DbgVirtEnabled : 1; 
+      U32 DbgInstallerDetectEnabled : 1; 
+      U32 DbgSystemDllRelocated : 1; 
+      U32 DbgDynProcessorEnabled : 1; 
+      U32 DbgSEHValidationEnabled : 1; 
+      U32 SpareBits : 25; 
+    }; 
+  }; 
+  U32 DataFlagsPad[1];
+  U64 TestRetInstruction;
+  U32 SystemCall;
+  U32 SystemCallReturn;
+  U64 SystemCallPad[3];
+  union
+  {
+    volatile struct _KSYSTEM_TIME TickCount;
+    volatile U64 TickCountQuad;
+    U32 ReservedTickCountOverlay[3];
+  }; 
+  U32 TickCountPad[1];
+  U32 Cookie;
+  U32 CookiePad[1];
+  S64 ConsoleSessionForegroundProcessId;
+  U32 Wow64SharedInformation[16];
+  U16 UserModeGlobalLogger[16];
+  U32 ImageFileExecutionOptions;
+  U32 LangGenerationCount;
+  U64 Reserved5;
+  volatile U64 InterruptTimeBias;
+  volatile U64 TscQpcBias;
+  volatile U32 ActiveProcessorCount;
+  volatile U16 ActiveGroupCount;
+  U16 Reserved4;
+  volatile U32 AitSamplingValue;
+  volatile U32 AppCompatFlag;
+  U64 SystemDllNativeRelocation;
+  U32 SystemDllWowRelocation;
+  U32 XStatePad[1];
+  struct _XSTATE_CONFIGURATION XState;
+} KUSER_SHARED_DATA, *PKUSER_SHARED_DATA; 
+

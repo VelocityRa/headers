@@ -1,0 +1,11 @@
+typedef struct _ARBITER_INTERFACE
+{
+  U16 Size;
+  U16 Version;
+  void* Context;
+  void* InterfaceReference;
+  void* InterfaceDereference;
+  void* ArbiterHandler;
+  U32 Flags;
+} ARBITER_INTERFACE, *PARBITER_INTERFACE; 
+

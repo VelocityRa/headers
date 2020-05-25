@@ -1,0 +1,8 @@
+typedef struct _EXT_DELETE_PARAMETERS
+{
+  U32 Version;
+  U32 Reserved;
+  void* DeleteCallback;
+  void* DeleteContext;
+} EXT_DELETE_PARAMETERS, *PEXT_DELETE_PARAMETERS; 
+

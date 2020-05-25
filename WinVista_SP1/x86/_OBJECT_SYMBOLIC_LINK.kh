@@ -1,0 +1,34 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _OBJECT_SYMBOLIC_LINK
+{
+  union _LARGE_INTEGER CreationTime;
+  struct _UNICODE_STRING LinkTarget;
+  struct _UNICODE_STRING LinkTargetRemaining;
+  void* LinkTargetObject;
+  U32 DosDeviceDriveIndex;
+} OBJECT_SYMBOLIC_LINK, *POBJECT_SYMBOLIC_LINK; 
+

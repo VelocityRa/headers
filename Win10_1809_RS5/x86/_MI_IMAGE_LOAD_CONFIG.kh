@@ -1,0 +1,8 @@
+typedef struct _MI_IMAGE_LOAD_CONFIG
+{
+  U32 Flags;
+  U32 CfgAlignmentBias;
+  struct _RTL_RVA_LIST* RvaList;
+  struct _MI_RETPOLINE_RELOCATION_INFORMATION* RetpolineRelocations;
+} MI_IMAGE_LOAD_CONFIG, *PMI_IMAGE_LOAD_CONFIG; 
+

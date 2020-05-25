@@ -1,0 +1,5 @@
+typedef struct _IO_CACHE_INFO
+{
+  U8 CacheAttribute;
+} IO_CACHE_INFO, *PIO_CACHE_INFO; 
+

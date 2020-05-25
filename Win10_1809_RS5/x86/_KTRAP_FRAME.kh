@@ -1,0 +1,48 @@
+typedef struct _KTRAP_FRAME
+{
+  U32 DbgEbp;
+  U32 DbgEip;
+  U32 DbgArgMark;
+  U16 TempSegCs;
+  U8 Logging;
+  U8 FrameType;
+  U32 TempEsp;
+  U32 Dr0;
+  U32 Dr1;
+  U32 Dr2;
+  U32 Dr3;
+  U32 Dr6;
+  U32 Dr7;
+  U32 SegGs;
+  U32 SegEs;
+  U32 SegDs;
+  U32 Edx;
+  U32 Ecx;
+  U32 Eax;
+  U8 PreviousPreviousMode;
+  U8 EntropyQueueDpc;
+  union
+  {
+    U8 NmiMsrIbrs;
+    U8 Reserved1;
+  }; 
+  U8 PreviousIrql;
+  U32 MxCsr;
+  struct _EXCEPTION_REGISTRATION_RECORD* ExceptionList;
+  U32 SegFs;
+  U32 Edi;
+  U32 Esi;
+  U32 Ebx;
+  U32 Ebp;
+  U32 ErrCode;
+  U32 Eip;
+  U32 SegCs;
+  U32 EFlags;
+  U32 HardwareEsp;
+  U32 HardwareSegSs;
+  U32 V86Es;
+  U32 V86Ds;
+  U32 V86Fs;
+  U32 V86Gs;
+} KTRAP_FRAME, *PKTRAP_FRAME; 
+

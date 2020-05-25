@@ -1,0 +1,8 @@
+typedef struct _CACHE_MANAGER_CALLBACKS
+{
+  void* AcquireForLazyWrite;
+  void* ReleaseFromLazyWrite;
+  void* AcquireForReadAhead;
+  void* ReleaseFromReadAhead;
+} CACHE_MANAGER_CALLBACKS, *PCACHE_MANAGER_CALLBACKS; 
+

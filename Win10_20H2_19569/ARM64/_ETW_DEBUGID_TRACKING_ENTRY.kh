@@ -1,0 +1,53 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _NB10
+{
+  U32 Signature;
+  U32 Offset;
+  U32 TimeStamp;
+  U32 Age;
+  char PdbName[1];
+  char __PADDING__[3];
+} NB10, *PNB10; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _RSDS
+{
+  U32 Signature;
+  struct _GUID Guid;
+  U32 Age;
+  char PdbName[1];
+  char __PADDING__[3];
+} RSDS, *PRSDS; 
+
+typedef union _CVDD
+{
+  union
+  {
+    U32 Signature;
+    struct _NB10 NB10;
+    struct _RSDS RsDs;
+  }; 
+} CVDD, *PCVDD; 
+
+typedef struct _ETW_DEBUGID_TRACKING_ENTRY
+{
+  struct _LIST_ENTRY ListEntry;
+  U8 ConsumersNotified;
+  U8 Spare[3];
+  U32 DebugIdSize;
+  union _CVDD DebugId;
+  S32 __PADDING__[1];
+} ETW_DEBUGID_TRACKING_ENTRY, *PETW_DEBUGID_TRACKING_ENTRY; 
+

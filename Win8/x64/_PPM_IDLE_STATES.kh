@@ -1,0 +1,80 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[20];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _PROCESSOR_IDLE_CONSTRAINTS
+{
+  U64 TotalTime;
+  U64 IdleTime;
+  U64 ExpectedIdleDuration;
+  U32 MaxIdleDuration;
+  U32 OverrideState;
+  U32 TimeCheck;
+  U8 PromotePercent;
+  U8 DemotePercent;
+  U8 Parked;
+  U8 Interruptible;
+  U8 PlatformIdle;
+  char __PADDING__[7];
+} PROCESSOR_IDLE_CONSTRAINTS, *PPROCESSOR_IDLE_CONSTRAINTS; 
+
+typedef struct _PROCESSOR_IDLE_PREPARE_INFO
+{
+  void* Context;
+  struct _PROCESSOR_IDLE_CONSTRAINTS Constraints;
+  U32 DependencyCount;
+  U32 DependencyUsed;
+  struct _PROCESSOR_IDLE_DEPENDENCY* DependencyArray;
+  U32 PlatformIdleStateIndex;
+  U32 ProcessorIdleStateIndex;
+  U32 IdleSelectFailureMask;
+  S32 __PADDING__[1];
+} PROCESSOR_IDLE_PREPARE_INFO, *PPROCESSOR_IDLE_PREPARE_INFO; 
+
+typedef struct _PPM_IDLE_STATE
+{
+  struct _KAFFINITY_EX DomainMembers;
+  U32 Latency;
+  U32 Power;
+  U32 StateFlags;
+  U8 StateType;
+  U8 InterruptsEnabled;
+  U8 Interruptible;
+  U8 ContextRetained;
+  U8 CacheCoherent;
+  char __PADDING__[7];
+} PPM_IDLE_STATE, *PPPM_IDLE_STATE; 
+
+typedef struct _PPM_IDLE_STATES
+{
+  U8 ForceIdle;
+  U8 EstimateIdleDuration;
+  U8 ExitLatencyTraceEnabled;
+  U32 ExitLatencyCountdown;
+  U32 TargetState;
+  U32 ActualState;
+  U32 ActualPlatformState;
+  U32 OldState;
+  U32 OverrideIndex;
+  U32 PlatformIdleCount;
+  U32 ProcessorIdleCount;
+  U32 Type;
+  U32 ReasonFlags;
+  volatile S64 InitiateWakeStamp;
+  S32 PreviousStatus;
+  struct _KAFFINITY_EX PrimaryProcessorMask;
+  struct _KAFFINITY_EX SecondaryProcessorMask;
+  void* IdlePrepare;
+  void* IdleExecute;
+  void* IdleComplete;
+  void* IdleCancel;
+  void* IdleIsHalted;
+  void* IdleInitiateWake;
+  struct _PROCESSOR_IDLE_PREPARE_INFO PrepareInfo;
+  struct _PPM_IDLE_STATE State[1];
+} PPM_IDLE_STATES, *PPPM_IDLE_STATES; 
+

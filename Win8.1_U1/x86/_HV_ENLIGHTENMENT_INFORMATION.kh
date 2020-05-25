@@ -1,0 +1,21 @@
+typedef struct _HV_ENLIGHTENMENT_INFORMATION
+{
+  struct 
+  {
+    U32 UseHypercallForAddressSpaceSwitch : 1; 
+    U32 UseHypercallForLocalFlush : 1; 
+    U32 UseHypercallForRemoteFlush : 1; 
+    U32 UseApicMsrs : 1; 
+    U32 UseMsrForReset : 1; 
+    U32 UseRelaxedTiming : 1; 
+    U32 UseDmaRemapping : 1; 
+    U32 UseInterruptRemapping : 1; 
+    U32 UseX2ApicMsrs : 1; 
+    U32 DeprecateAutoEoi : 1; 
+    U32 Reserved : 22; 
+  }; 
+  U32 LongSpinWaitCount;
+  U32 ReservedEcx;
+  U32 ReservedEdx;
+} HV_ENLIGHTENMENT_INFORMATION, *PHV_ENLIGHTENMENT_INFORMATION; 
+

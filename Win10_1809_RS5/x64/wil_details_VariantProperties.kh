@@ -1,0 +1,14 @@
+struct wil_details_VariantProperties
+{
+  struct 
+  {
+    U32 enabledState : 2; 
+    U32 isVariant : 1; 
+    U32 queuedForReporting : 1; 
+    U32 hasNotificationState : 2; 
+    U32 recordedDeviceUsage : 1; 
+    U32 variant : 6; 
+    U32 unused : 19; 
+  }; 
+}; 
+

@@ -1,0 +1,22 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _WNF_LOCK
+{
+  struct _EX_PUSH_LOCK PushLock;
+} WNF_LOCK, *PWNF_LOCK; 
+

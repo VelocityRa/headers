@@ -1,0 +1,7 @@
+typedef struct _WHEAP_INFO_BLOCK
+{
+  U32 ErrorSourceCount;
+  struct _WHEAP_ERROR_SOURCE_TABLE* ErrorSourceTable;
+  struct _WHEAP_WORK_QUEUE* WorkQueue;
+} WHEAP_INFO_BLOCK, *PWHEAP_INFO_BLOCK; 
+

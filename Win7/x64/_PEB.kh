@@ -1,0 +1,166 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PEB
+{
+  U8 InheritedAddressSpace;
+  U8 ReadImageFileExecOptions;
+  U8 BeingDebugged;
+  union
+  {
+    U8 BitField;
+    struct 
+    {
+      U8 ImageUsesLargePages : 1; 
+      U8 IsProtectedProcess : 1; 
+      U8 IsLegacyProcess : 1; 
+      U8 IsImageDynamicallyRelocated : 1; 
+      U8 SkipPatchingUser32Forwarders : 1; 
+      U8 SpareBits : 3; 
+    }; 
+  }; 
+  void* Mutant;
+  void* ImageBaseAddress;
+  struct _PEB_LDR_DATA* Ldr;
+  struct _RTL_USER_PROCESS_PARAMETERS* ProcessParameters;
+  void* SubSystemData;
+  void* ProcessHeap;
+  struct _RTL_CRITICAL_SECTION* FastPebLock;
+  void* AtlThunkSListPtr;
+  void* IFEOKey;
+  union
+  {
+    U32 CrossProcessFlags;
+    struct 
+    {
+      U32 ProcessInJob : 1; 
+      U32 ProcessInitializing : 1; 
+      U32 ProcessUsingVEH : 1; 
+      U32 ProcessUsingVCH : 1; 
+      U32 ProcessUsingFTH : 1; 
+      U32 ReservedBits0 : 27; 
+    }; 
+  }; 
+  union
+  {
+    void* KernelCallbackTable;
+    void* UserSharedInfoPtr;
+  }; 
+  U32 SystemReserved[1];
+  U32 AtlThunkSListPtr32;
+  void* ApiSetMap;
+  U32 TlsExpansionCounter;
+  void* TlsBitmap;
+  U32 TlsBitmapBits[2];
+  void* ReadOnlySharedMemoryBase;
+  void* HotpatchInformation;
+  void** ReadOnlyStaticServerData;
+  void* AnsiCodePageData;
+  void* OemCodePageData;
+  void* UnicodeCaseTableData;
+  U32 NumberOfProcessors;
+  U32 NtGlobalFlag;
+  union _LARGE_INTEGER CriticalSectionTimeout;
+  U64 HeapSegmentReserve;
+  U64 HeapSegmentCommit;
+  U64 HeapDeCommitTotalFreeThreshold;
+  U64 HeapDeCommitFreeBlockThreshold;
+  U32 NumberOfHeaps;
+  U32 MaximumNumberOfHeaps;
+  void** ProcessHeaps;
+  void* GdiSharedHandleTable;
+  void* ProcessStarterHelper;
+  U32 GdiDCAttributeList;
+  struct _RTL_CRITICAL_SECTION* LoaderLock;
+  U32 OSMajorVersion;
+  U32 OSMinorVersion;
+  U16 OSBuildNumber;
+  U16 OSCSDVersion;
+  U32 OSPlatformId;
+  U32 ImageSubsystem;
+  U32 ImageSubsystemMajorVersion;
+  U32 ImageSubsystemMinorVersion;
+  U64 ActiveProcessAffinityMask;
+  U32 GdiHandleBuffer[60];
+  void* PostProcessInitRoutine;
+  void* TlsExpansionBitmap;
+  U32 TlsExpansionBitmapBits[32];
+  U32 SessionId;
+  union _ULARGE_INTEGER AppCompatFlags;
+  union _ULARGE_INTEGER AppCompatFlagsUser;
+  void* pShimData;
+  void* AppCompatInfo;
+  struct _UNICODE_STRING CSDVersion;
+  const struct _ACTIVATION_CONTEXT_DATA* ActivationContextData;
+  struct _ASSEMBLY_STORAGE_MAP* ProcessAssemblyStorageMap;
+  const struct _ACTIVATION_CONTEXT_DATA* SystemDefaultActivationContextData;
+  struct _ASSEMBLY_STORAGE_MAP* SystemAssemblyStorageMap;
+  U64 MinimumStackCommit;
+  struct _FLS_CALLBACK_INFO* FlsCallback;
+  struct _LIST_ENTRY FlsListHead;
+  void* FlsBitmap;
+  U32 FlsBitmapBits[4];
+  U32 FlsHighIndex;
+  void* WerRegistrationData;
+  void* WerShipAssertPtr;
+  void* pContextData;
+  void* pImageHeaderHash;
+  union
+  {
+    U32 TracingFlags;
+    struct 
+    {
+      U32 HeapTracingEnabled : 1; 
+      U32 CritSecTracingEnabled : 1; 
+      U32 SpareTracingBits : 30; 
+    }; 
+  }; 
+  S32 __PADDING__[1];
+} PEB, *PPEB; 
+

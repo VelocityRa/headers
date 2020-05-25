@@ -1,0 +1,45 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _SEP_LOWBOX_NUMBER_MAPPING
+{
+  struct _EX_PUSH_LOCK Lock;
+  struct _RTL_BITMAP Bitmap;
+  struct _RTL_DYNAMIC_HASH_TABLE* HashTable;
+  U8 Active;
+  char __PADDING__[7];
+} SEP_LOWBOX_NUMBER_MAPPING, *PSEP_LOWBOX_NUMBER_MAPPING; 
+
+typedef struct _SESSION_LOWBOX_MAP
+{
+  struct _LIST_ENTRY ListEntry;
+  U32 SessionId;
+  struct _SEP_LOWBOX_NUMBER_MAPPING LowboxMap;
+} SESSION_LOWBOX_MAP, *PSESSION_LOWBOX_MAP; 
+

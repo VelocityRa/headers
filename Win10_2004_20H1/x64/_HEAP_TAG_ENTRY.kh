@@ -1,0 +1,11 @@
+typedef struct _HEAP_TAG_ENTRY
+{
+  U32 Allocs;
+  U32 Frees;
+  U64 Size;
+  U16 TagIndex;
+  U16 CreatorBackTraceIndex;
+  wchar_t TagName[24];
+  S32 __PADDING__[1];
+} HEAP_TAG_ENTRY, *PHEAP_TAG_ENTRY; 
+

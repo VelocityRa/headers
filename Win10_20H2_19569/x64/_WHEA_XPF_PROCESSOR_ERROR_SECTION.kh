@@ -1,0 +1,24 @@
+typedef union _WHEA_XPF_PROCESSOR_ERROR_SECTION_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 LocalAPICId : 1; 
+      U64 CpuId : 1; 
+      U64 ProcInfoCount : 6; 
+      U64 ContextInfoCount : 6; 
+      U64 Reserved : 50; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_XPF_PROCESSOR_ERROR_SECTION_VALIDBITS, *PWHEA_XPF_PROCESSOR_ERROR_SECTION_VALIDBITS; 
+
+typedef struct _WHEA_XPF_PROCESSOR_ERROR_SECTION
+{
+  union _WHEA_XPF_PROCESSOR_ERROR_SECTION_VALIDBITS ValidBits;
+  U64 LocalAPICId;
+  U8 CpuId[48];
+  U8 VariableInfo[1];
+} WHEA_XPF_PROCESSOR_ERROR_SECTION, *PWHEA_XPF_PROCESSOR_ERROR_SECTION; 
+

@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DEFERRED_WRITE
+{
+  S16 NodeTypeCode;
+  S16 NodeByteSize;
+  struct _FILE_OBJECT* FileObject;
+  U32 BytesToWrite;
+  struct _LIST_ENTRY DeferredWriteLinks;
+  struct _KEVENT* Event;
+  void* PostRoutine;
+  void* Context1;
+  void* Context2;
+} DEFERRED_WRITE, *PDEFERRED_WRITE; 
+

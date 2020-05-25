@@ -1,0 +1,22 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _VI_DEADLOCK_THREAD
+{
+  struct _KTHREAD* Thread;
+  struct _VI_DEADLOCK_NODE* CurrentSpinNode;
+  struct _VI_DEADLOCK_NODE* CurrentOtherNode;
+  union
+  {
+    struct _LIST_ENTRY ListEntry;
+    struct _LIST_ENTRY FreeListEntry;
+  }; 
+  U32 NodeCount;
+  volatile U32 PagingCount;
+  U8 ThreadUsesEresources;
+  char __PADDING__[3];
+} VI_DEADLOCK_THREAD, *PVI_DEADLOCK_THREAD; 
+

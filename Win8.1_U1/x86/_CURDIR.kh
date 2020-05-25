@@ -1,0 +1,13 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _CURDIR
+{
+  struct _UNICODE_STRING DosPath;
+  void* Handle;
+} CURDIR, *PCURDIR; 
+

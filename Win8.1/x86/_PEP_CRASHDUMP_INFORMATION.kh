@@ -1,0 +1,6 @@
+typedef struct _PEP_CRASHDUMP_INFORMATION
+{
+  struct PEPHANDLE__* DeviceHandle;
+  void* DeviceContext;
+} PEP_CRASHDUMP_INFORMATION, *PPEP_CRASHDUMP_INFORMATION; 
+

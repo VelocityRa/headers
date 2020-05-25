@@ -1,0 +1,7 @@
+typedef struct _DBGKD_CONTEXT_EX
+{
+  U32 Offset;
+  U32 ByteCount;
+  U32 BytesCopied;
+} DBGKD_CONTEXT_EX, *PDBGKD_CONTEXT_EX; 
+

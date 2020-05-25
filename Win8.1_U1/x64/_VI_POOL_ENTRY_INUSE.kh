@@ -1,0 +1,8 @@
+typedef struct _VI_POOL_ENTRY_INUSE
+{
+  void* VirtualAddress;
+  void* CallingAddress;
+  U64 NumberOfBytes;
+  U64 Tag;
+} VI_POOL_ENTRY_INUSE, *PVI_POOL_ENTRY_INUSE; 
+

@@ -1,0 +1,13 @@
+typedef struct _CM_KEY_VALUE
+{
+  U16 Signature;
+  U16 NameLength;
+  U32 DataLength;
+  U32 Data;
+  U32 Type;
+  U16 Flags;
+  U16 Spare;
+  wchar_t Name[1];
+  char __PADDING__[2];
+} CM_KEY_VALUE, *PCM_KEY_VALUE; 
+

@@ -1,0 +1,24 @@
+typedef struct _WHEA_PCIEXPRESS_DEVICE_ID
+{
+  U16 VendorID;
+  U16 DeviceID;
+  struct 
+  {
+    U32 ClassCode : 24; 
+    U32 FunctionNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 DeviceNumber : 8; 
+    U32 Segment : 16; 
+    U32 PrimaryBusNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 SecondaryBusNumber : 8; 
+    U32 Reserved1 : 2; 
+    U32 SlotNumber : 14; 
+    U32 Reserved2 : 8; 
+  }; 
+} WHEA_PCIEXPRESS_DEVICE_ID, *PWHEA_PCIEXPRESS_DEVICE_ID; 
+

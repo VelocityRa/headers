@@ -1,0 +1,21 @@
+typedef struct _MI_SYSTEM_REGION_ANCHOR
+{
+  struct 
+  {
+    U32 ReferenceCount : 31; 
+    U32 BeingDeleted : 1; 
+  }; 
+} MI_SYSTEM_REGION_ANCHOR, *PMI_SYSTEM_REGION_ANCHOR; 
+
+typedef struct _MI_SYSTEM_REGION_REFERENCE
+{
+  struct
+  {
+    union
+    {
+      struct _MI_SYSTEM_REGION_ANCHOR Anchor;
+      U32 EntireReference;
+    }; 
+  } u1;
+} MI_SYSTEM_REGION_REFERENCE, *PMI_SYSTEM_REGION_REFERENCE; 
+

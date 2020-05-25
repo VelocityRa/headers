@@ -1,0 +1,19 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[20];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _KSOFTWARE_INTERRUPT_BATCH
+{
+  U8 Level;
+  U8 TargetType;
+  U8 ReservedBatchInProgress;
+  U8 Spare;
+  U32 SingleTargetIndex;
+  struct _KAFFINITY_EX MultipleTargetAffinity;
+  U64 Padding[12];
+} KSOFTWARE_INTERRUPT_BATCH, *PKSOFTWARE_INTERRUPT_BATCH; 
+

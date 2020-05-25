@@ -1,0 +1,16 @@
+typedef struct _LOADER_PERFORMANCE_DATA
+{
+  U64 StartTime;
+  U64 EndTime;
+  U64 PreloadEndTime;
+  U64 TcbLoaderStartTime;
+  U64 LoadHypervisorTime;
+  U64 LaunchHypervisorTime;
+  U64 LoadVsmTime;
+  U64 LaunchVsmTime;
+  U64 ExecuteTransitionStartTime;
+  U64 ExecuteTransitionEndTime;
+  U64 LoadDriversTime;
+  U64 CleanupVsmTime;
+} LOADER_PERFORMANCE_DATA, *PLOADER_PERFORMANCE_DATA; 
+

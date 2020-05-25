@@ -1,0 +1,9 @@
+typedef struct _HV_GET_BIN_CONTEXT
+{
+  struct 
+  {
+    U16 OutstandingReference : 1; 
+    U16 AcquiredRundown : 1; 
+  }; 
+} HV_GET_BIN_CONTEXT, *PHV_GET_BIN_CONTEXT; 
+

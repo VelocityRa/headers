@@ -1,0 +1,10 @@
+typedef struct _MMWSLE_FREE_ENTRY
+{
+  struct 
+  {
+    U32 MustBeZero : 1; 
+    U32 PreviousFree : 11; 
+    U32 NextFree : 20; 
+  }; 
+} MMWSLE_FREE_ENTRY, *PMMWSLE_FREE_ENTRY; 
+

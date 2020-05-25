@@ -1,0 +1,21 @@
+typedef enum _MI_WRITE_TYPES
+{
+  WriteTypeCached = 0,
+  WriteTypeNonTemporal = 1,
+  WriteTypeMaximum = 2,
+} MI_WRITE_TYPES, *PMI_WRITE_TYPES;
+
+typedef struct _MI_WRITE_CALIBRATION
+{
+  U32 MaximumNumberProcessors;
+  enum _MI_WRITE_TYPES OptimalWriteType;
+  U32 PerProcessorNumberOfBytes;
+  U32 OptimalWriteProcessors[2];
+  struct _MI_WRITE_MODES* RawTimeStamps;
+} MI_WRITE_CALIBRATION, *PMI_WRITE_CALIBRATION; 
+
+typedef struct _MI_SYSTEM_ZEROING
+{
+  struct _MI_WRITE_CALIBRATION WriteCalibration;
+} MI_SYSTEM_ZEROING, *PMI_SYSTEM_ZEROING; 
+

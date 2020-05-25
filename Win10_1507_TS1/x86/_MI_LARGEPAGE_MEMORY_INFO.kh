@@ -1,0 +1,13 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MI_LARGEPAGE_MEMORY_INFO
+{
+  struct _LIST_ENTRY ListHead;
+  struct _COLORED_PAGE_INFO* ColoredPageInfoBase;
+  U32 PagesNeedZeroing;
+} MI_LARGEPAGE_MEMORY_INFO, *PMI_LARGEPAGE_MEMORY_INFO; 
+

@@ -1,0 +1,10 @@
+typedef struct _PPM_CONCURRENCY_ACCOUNTING
+{
+  U32 Lock;
+  U32 Processors;
+  U32 ActiveProcessors;
+  U64 LastUpdateTime;
+  U64 TotalTime;
+  U64 AccumulatedTime[1];
+} PPM_CONCURRENCY_ACCOUNTING, *PPPM_CONCURRENCY_ACCOUNTING; 
+

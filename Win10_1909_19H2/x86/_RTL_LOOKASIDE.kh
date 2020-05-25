@@ -1,0 +1,34 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 CpuId;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _RTL_LOOKASIDE
+{
+  union _SLIST_HEADER ListHead;
+  U16 Depth;
+  U16 MaximumDepth;
+  U32 TotalAllocates;
+  U32 AllocateMisses;
+  U32 TotalFrees;
+  U32 FreeMisses;
+  U32 LastTotalAllocates;
+  U32 LastAllocateMisses;
+  U32 LastTotalFrees;
+  S32 __PADDING__[6];
+} RTL_LOOKASIDE, *PRTL_LOOKASIDE; 
+

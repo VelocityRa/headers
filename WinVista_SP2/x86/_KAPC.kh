@@ -1,0 +1,27 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KAPC
+{
+  U8 Type;
+  U8 SpareByte0;
+  U8 Size;
+  U8 SpareByte1;
+  U32 SpareLong0;
+  struct _KTHREAD* Thread;
+  struct _LIST_ENTRY ApcListEntry;
+  void* KernelRoutine;
+  void* RundownRoutine;
+  void* NormalRoutine;
+  void* NormalContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  char ApcStateIndex;
+  char ApcMode;
+  U8 Inserted;
+  char __PADDING__[1];
+} KAPC, *PKAPC; 
+

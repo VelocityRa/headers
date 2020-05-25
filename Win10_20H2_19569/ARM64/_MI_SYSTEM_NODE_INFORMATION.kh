@@ -1,0 +1,70 @@
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderArm64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _CACHED_KSTACK_LIST
+{
+  union _SLIST_HEADER SListHead;
+  S32 MinimumFree;
+  U32 Misses;
+  U32 MissesLast;
+  U32 AllStacksInUse;
+} CACHED_KSTACK_LIST, *PCACHED_KSTACK_LIST; 
+
+typedef struct _GROUP_AFFINITY
+{
+  U64 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+
+typedef enum _MI_WRITE_TYPES
+{
+  WriteTypeCached = 0,
+  WriteTypeNonTemporal = 1,
+  WriteTypeMaximum = 2,
+} MI_WRITE_TYPES, *PMI_WRITE_TYPES;
+
+typedef struct _MI_WRITE_CALIBRATION
+{
+  U32 MaximumNumberProcessors;
+  enum _MI_WRITE_TYPES OptimalWriteType;
+  U64 PerProcessorNumberOfBytes;
+  U32 OptimalWriteProcessors[2];
+  struct _MI_WRITE_MODES* RawTimeStamps;
+} MI_WRITE_CALIBRATION, *PMI_WRITE_CALIBRATION; 
+
+typedef struct _MI_SYSTEM_NODE_INFORMATION
+{
+  struct _CACHED_KSTACK_LIST CachedKernelStacks[2];
+  struct _GROUP_AFFINITY GroupAffinity;
+  U16 ProcessorCount;
+  void* BootZeroPageTimesPerProcessor;
+  U64 CyclesToZeroOneLargePage;
+  U64* ScaledCyclesToZeroOneLargePage;
+  struct _MI_WRITE_CALIBRATION WriteCalibration;
+  volatile S32 IoPfnLock;
+  S32 __PADDING__[31];
+} MI_SYSTEM_NODE_INFORMATION, *PMI_SYSTEM_NODE_INFORMATION; 
+

@@ -1,0 +1,9 @@
+typedef struct _DBGKD_GET_SET_BUS_DATA
+{
+  U32 BusDataType;
+  U32 BusNumber;
+  U32 SlotNumber;
+  U32 Offset;
+  U32 Length;
+} DBGKD_GET_SET_BUS_DATA, *PDBGKD_GET_SET_BUS_DATA; 
+

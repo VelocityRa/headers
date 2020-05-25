@@ -1,0 +1,8 @@
+typedef struct _CM_UOW_SET_VALUE_KEY_DATA
+{
+  U32 PreparedCell;
+  U32 OldValueCell;
+  U16 NameLength;
+  U32 DataSize;
+} CM_UOW_SET_VALUE_KEY_DATA, *PCM_UOW_SET_VALUE_KEY_DATA; 
+

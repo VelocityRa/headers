@@ -1,0 +1,6 @@
+typedef struct _HEAP_OPPORTUNISTIC_LARGE_PAGE_STATS
+{
+  volatile U32 SmallPagesInUseWithinLarge;
+  volatile U32 OpportunisticLargePageCount;
+} HEAP_OPPORTUNISTIC_LARGE_PAGE_STATS, *PHEAP_OPPORTUNISTIC_LARGE_PAGE_STATS; 
+

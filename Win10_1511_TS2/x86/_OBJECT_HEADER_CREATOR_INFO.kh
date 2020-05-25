@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _OBJECT_HEADER_CREATOR_INFO
+{
+  struct _LIST_ENTRY TypeList;
+  void* CreatorUniqueProcess;
+  U16 CreatorBackTraceIndex;
+  U16 Reserved;
+} OBJECT_HEADER_CREATOR_INFO, *POBJECT_HEADER_CREATOR_INFO; 
+

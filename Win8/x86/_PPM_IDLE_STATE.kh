@@ -1,0 +1,22 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _PPM_IDLE_STATE
+{
+  struct _KAFFINITY_EX DomainMembers;
+  U32 Latency;
+  U32 Power;
+  U32 StateFlags;
+  U8 StateType;
+  U8 InterruptsEnabled;
+  U8 Interruptible;
+  U8 ContextRetained;
+  U8 CacheCoherent;
+  char __PADDING__[3];
+} PPM_IDLE_STATE, *PPPM_IDLE_STATE; 
+

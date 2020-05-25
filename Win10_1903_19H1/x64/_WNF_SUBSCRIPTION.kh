@@ -1,0 +1,62 @@
+typedef struct _WNF_NODE_HEADER
+{
+  U16 NodeTypeCode;
+  U16 NodeByteSize;
+} WNF_NODE_HEADER, *PWNF_NODE_HEADER; 
+
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    U64 Count;
+    void* Ptr;
+  }; 
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WNF_STATE_NAME_STRUCT
+{
+  struct 
+  {
+    U64 Version : 4; 
+    U64 NameLifetime : 2; 
+    U64 DataScope : 4; 
+    U64 PermanentData : 1; 
+    U64 Sequence : 53; 
+  }; 
+} WNF_STATE_NAME_STRUCT, *PWNF_STATE_NAME_STRUCT; 
+
+typedef enum _WNF_SUBSCRIPTION_STATE
+{
+  WNF_SUB_STATE_QUIESCENT = 0,
+  WNF_SUB_STATE_READY_TO_DELIVER = 1,
+  WNF_SUB_STATE_IN_DELIVERY = 2,
+  WNF_SUB_STATE_RETRY = 3,
+} WNF_SUBSCRIPTION_STATE, *PWNF_SUBSCRIPTION_STATE;
+
+typedef struct _WNF_SUBSCRIPTION
+{
+  struct _WNF_NODE_HEADER Header;
+  struct _EX_RUNDOWN_REF RunRef;
+  U64 SubscriptionId;
+  struct _LIST_ENTRY ProcessSubscriptionListEntry;
+  struct _EPROCESS* Process;
+  struct _WNF_NAME_INSTANCE* NameInstance;
+  struct _WNF_STATE_NAME_STRUCT StateName;
+  struct _LIST_ENTRY StateSubscriptionListEntry;
+  U64 CallbackRoutine;
+  void* CallbackContext;
+  U32 CurrentChangeStamp;
+  U32 SubscribedEventSet;
+  struct _LIST_ENTRY PendingSubscriptionListEntry;
+  enum _WNF_SUBSCRIPTION_STATE SubscriptionState;
+  U32 SignaledEventSet;
+  U32 InDeliveryEventSet;
+  S32 __PADDING__[1];
+} WNF_SUBSCRIPTION, *PWNF_SUBSCRIPTION; 
+

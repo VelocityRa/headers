@@ -1,0 +1,79 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _MI_POOL_FAILURE_REASONS
+{
+  U32 NonPagedNoPtes;
+  U32 PriorityTooLow;
+  U32 NonPagedNoPagesAvailable;
+  U32 PagedNoPtes;
+  U32 SessionPagedNoPtes;
+  U32 PagedNoPagesAvailable;
+  U32 SessionPagedNoPagesAvailable;
+  U32 PagedNoCommit;
+  U32 SessionPagedNoCommit;
+  U32 NonPagedNoResidentAvailable;
+  U32 NonPagedNoCommit;
+} MI_POOL_FAILURE_REASONS, *PMI_POOL_FAILURE_REASONS; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U32 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _MI_ACCESS_VIOLATION_RANGE
+{
+  struct _RTL_BALANCED_NODE Node;
+  void* Va;
+  void* EndVaInclusive;
+} MI_ACCESS_VIOLATION_RANGE, *PMI_ACCESS_VIOLATION_RANGE; 
+
+typedef struct _MI_POOL_STATE
+{
+  U32 MaximumNonPagedPoolThreshold;
+  U32 NonPagedPoolSListMaximum[3];
+  volatile U32 AllocatedNonPagedPool;
+  struct _SINGLE_LIST_ENTRY BadPoolHead;
+  U32 HighEventSets;
+  U8 HighEventSetsValid;
+  U32 PoolFailures[3][3];
+  struct _MI_POOL_FAILURE_REASONS PoolFailureReasons;
+  U32 LowPagedPoolThreshold;
+  U32 HighPagedPoolThreshold;
+  S32 SpecialPoolPdesMax;
+  U8 NonPagedPoolNodes[1024];
+  U32 PagedPoolSListMaximum;
+  U32 PreemptiveTrims[4];
+  U32 SpecialPagesInUsePeak;
+  U32 SpecialPoolRejected[6];
+  volatile U32 SpecialPagesNonPaged;
+  volatile S32 SpecialPoolPdes;
+  U32 SessionSpecialPoolPdesMax;
+  volatile S32 PermittedFaultsLock;
+  struct _RTL_AVL_TREE PermittedFaultsTree;
+  struct _MI_ACCESS_VIOLATION_RANGE PermittedFaultsInitialNode[2];
+  U32 TotalPagedPoolQuota;
+  U32 TotalNonPagedPoolQuota;
+} MI_POOL_STATE, *PMI_POOL_STATE; 
+

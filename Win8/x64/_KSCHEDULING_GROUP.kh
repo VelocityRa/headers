@@ -1,0 +1,63 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _KSCB
+{
+  U64 GenerationCycles;
+  U64 UnderQuotaCycleTarget;
+  U64 RankCycleTarget;
+  U64 LongTermCycles;
+  U64 LastReportedCycles;
+  volatile U64 OverQuotaHistory;
+  struct _LIST_ENTRY PerProcessorList;
+  struct _RTL_BALANCED_NODE QueueNode;
+  struct 
+  {
+    U8 Inserted : 1; 
+    U8 OverQuota : 1; 
+    U8 HardCap : 1; 
+    U8 RankBias : 1; 
+    U8 Spare1 : 4; 
+  }; 
+  U8 Spare2;
+  U16 ReadySummary;
+  U32 Rank;
+  struct _LIST_ENTRY ReadyListHead[16];
+} KSCB, *PKSCB; 
+
+typedef struct _KSCHEDULING_GROUP
+{
+  U16 Value;
+  U8 Type;
+  U8 HardCap;
+  U32 RelativeWeight;
+  U64 QueryHistoryTimeStamp;
+  S64 NotificationCycles;
+  struct _LIST_ENTRY SchedulingGroupList;
+  struct _KDPC* NotificationDpc;
+  struct _KSCB PerProcessor[1];
+  S32 __PADDING__[8];
+} KSCHEDULING_GROUP, *PKSCHEDULING_GROUP; 
+

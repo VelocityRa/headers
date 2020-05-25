@@ -1,0 +1,12 @@
+typedef struct _DBGKD_SEARCH_MEMORY
+{
+  union
+  {
+    U64 SearchAddress;
+    U64 FoundAddress;
+  }; 
+  U64 SearchLength;
+  U32 PatternLength;
+  S32 __PADDING__[1];
+} DBGKD_SEARCH_MEMORY, *PDBGKD_SEARCH_MEMORY; 
+

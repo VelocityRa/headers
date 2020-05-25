@@ -1,0 +1,27 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PTE_TRACKER
+{
+  struct _LIST_ENTRY ListEntry;
+  struct _MDL* Mdl;
+  U64 Count;
+  void* SystemVa;
+  void* StartVa;
+  U32 Offset;
+  U32 Length;
+  U64 Page;
+  struct 
+  {
+    U32 IoMapping : 1; 
+    U32 Matched : 1; 
+    U32 CacheAttribute : 2; 
+    U32 GuardPte : 1; 
+    U32 Spare : 27; 
+  }; 
+  void* StackTrace[7];
+} PTE_TRACKER, *PPTE_TRACKER; 
+

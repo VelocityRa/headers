@@ -1,0 +1,5 @@
+struct FEATURE_STATE_CHANGE_SUBSCRIPTION__
+{
+  S32 unused;
+}; 
+

@@ -1,0 +1,24 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _NONOPAQUE_OPLOCK
+{
+  struct _IRP* IrpExclusiveOplock;
+  struct _FILE_OBJECT* FileObject;
+  struct _EPROCESS* ExclusiveOplockOwner;
+  struct _ETHREAD* ExclusiveOplockOwnerThread;
+  U8 WaiterPriority;
+  struct _LIST_ENTRY IrpOplocksR;
+  struct _LIST_ENTRY IrpOplocksRH;
+  struct _LIST_ENTRY RHBreakQueue;
+  struct _LIST_ENTRY WaitingIrps;
+  struct _LIST_ENTRY DelayAckFileObjectQueue;
+  struct _LIST_ENTRY AtomicQueue;
+  struct _GUID* DeleterParentKey;
+  U32 OplockState;
+  struct _FAST_MUTEX* FastMutex;
+} NONOPAQUE_OPLOCK, *PNONOPAQUE_OPLOCK; 
+

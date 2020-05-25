@@ -1,0 +1,10 @@
+typedef struct _OBJECT_ATTRIBUTES
+{
+  U32 Length;
+  void* RootDirectory;
+  struct _UNICODE_STRING* ObjectName;
+  U32 Attributes;
+  void* SecurityDescriptor;
+  void* SecurityQualityOfService;
+} OBJECT_ATTRIBUTES, *POBJECT_ATTRIBUTES; 
+

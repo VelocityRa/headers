@@ -1,0 +1,363 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 6; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      union
+      {
+        U8 ThreadSpecControl;
+        struct
+        {
+          struct 
+          {
+            U8 SpecControlIbrs : 1; 
+            U8 SpecControlStibp : 1; 
+            U8 SpecControlReserved : 6; 
+          }; 
+          union
+          {
+            U8 ThreadControlFlags;
+            struct
+            {
+              struct 
+              {
+                U8 CycleProfiling : 1; 
+                U8 CounterProfiling : 1; 
+                U8 GroupScheduling : 1; 
+                U8 AffinitySet : 1; 
+                U8 Tagged : 1; 
+                U8 EnergyProfiling : 1; 
+                U8 SchedulerAssist : 1; 
+                U8 ThreadReservedControlFlags : 1; 
+              }; 
+              union
+              {
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Minimal : 1; 
+                  U8 Reserved4 : 3; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KMUTANT
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY MutantListEntry;
+  struct _KTHREAD* OwnerThread;
+  U8 Abandoned;
+  U8 ApcDisable;
+  char __PADDING__[6];
+} KMUTANT, *PKMUTANT; 
+
+enum KTM_STATE
+{
+  KKtmUninitialized = 0,
+  KKtmInitialized = 1,
+  KKtmRecovering = 2,
+  KKtmOnline = 3,
+  KKtmRecoveryFailed = 4,
+  KKtmOffline = 5,
+};
+
+typedef struct _RTL_BALANCED_LINKS
+{
+  struct _RTL_BALANCED_LINKS* Parent;
+  struct _RTL_BALANCED_LINKS* LeftChild;
+  struct _RTL_BALANCED_LINKS* RightChild;
+  char Balance;
+  U8 Reserved[3];
+  S32 __PADDING__[1];
+} RTL_BALANCED_LINKS, *PRTL_BALANCED_LINKS; 
+
+typedef struct _KTMOBJECT_NAMESPACE_LINK
+{
+  struct _RTL_BALANCED_LINKS Links;
+  U8 Expired;
+  char __PADDING__[7];
+} KTMOBJECT_NAMESPACE_LINK, *PKTMOBJECT_NAMESPACE_LINK; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _RTL_AVL_TABLE
+{
+  struct _RTL_BALANCED_LINKS BalancedRoot;
+  void* OrderedPointer;
+  U32 WhichOrderedElement;
+  U32 NumberGenericTableElements;
+  U32 DepthOfTree;
+  struct _RTL_BALANCED_LINKS* RestartKey;
+  U32 DeleteCount;
+  void* CompareRoutine;
+  void* AllocateRoutine;
+  void* FreeRoutine;
+  void* TableContext;
+} RTL_AVL_TABLE, *PRTL_AVL_TABLE; 
+
+typedef struct _KTMOBJECT_NAMESPACE
+{
+  struct _RTL_AVL_TABLE Table;
+  struct _KMUTANT Mutex;
+  U16 LinksOffset;
+  U16 GuidOffset;
+  U8 Expired;
+  char __PADDING__[3];
+} KTMOBJECT_NAMESPACE, *PKTMOBJECT_NAMESPACE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _FAST_MUTEX
+{
+  S32 Count;
+  void* Owner;
+  U32 Contention;
+  struct _KEVENT Event;
+  U32 OldIrql;
+  S32 __PADDING__[1];
+} FAST_MUTEX, *PFAST_MUTEX; 
+
+typedef union _CLS_LSN
+{
+  union
+  {
+    struct
+    {
+      U32 idxRecord;
+      U32 cidContainer;
+    } offset;
+    U64 ullOffset;
+  }; 
+} CLS_LSN, *PCLS_LSN; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _OWNER_ENTRY
+{
+  U64 OwnerThread;
+  union
+  {
+    struct 
+    {
+      U32 IoPriorityBoosted : 1; 
+      U32 OwnerReferenced : 1; 
+      U32 IoQoSPriorityBoosted : 1; 
+      U32 OwnerCount : 29; 
+    }; 
+    U32 TableSize;
+  }; 
+  S32 __PADDING__[1];
+} OWNER_ENTRY, *POWNER_ENTRY; 
+
+typedef struct _ERESOURCE
+{
+  struct _LIST_ENTRY SystemResourcesList;
+  struct _OWNER_ENTRY* OwnerTable;
+  S16 ActiveCount;
+  union
+  {
+    U16 Flag;
+    struct
+    {
+      U8 ReservedLowFlags;
+      U8 WaiterPriority;
+    }; 
+  }; 
+  void* SharedWaiters;
+  void* ExclusiveWaiters;
+  struct _OWNER_ENTRY OwnerEntry;
+  U32 ActiveEntries;
+  U32 ContentionCount;
+  U32 NumberOfSharedWaiters;
+  U32 NumberOfExclusiveWaiters;
+  void* Reserved2;
+  union
+  {
+    void* Address;
+    U64 CreatorBackTraceIndex;
+  }; 
+  U64 SpinLock;
+} ERESOURCE, *PERESOURCE; 
+
+typedef struct _KTM
+{
+  U32 cookie;
+  struct _KMUTANT Mutex;
+  enum KTM_STATE State;
+  struct _KTMOBJECT_NAMESPACE_LINK NamespaceLink;
+  struct _GUID TmIdentity;
+  U32 Flags;
+  U32 VolatileFlags;
+  struct _UNICODE_STRING LogFileName;
+  struct _FILE_OBJECT* LogFileObject;
+  void* MarshallingContext;
+  void* LogManagementContext;
+  struct _KTMOBJECT_NAMESPACE Transactions;
+  struct _KTMOBJECT_NAMESPACE ResourceManagers;
+  struct _KMUTANT LsnOrderedMutex;
+  struct _LIST_ENTRY LsnOrderedList;
+  union _LARGE_INTEGER CommitVirtualClock;
+  struct _FAST_MUTEX CommitVirtualClockMutex;
+  union _CLS_LSN BaseLsn;
+  union _CLS_LSN CurrentReadLsn;
+  union _CLS_LSN LastRecoveredLsn;
+  void* TmRmHandle;
+  struct _KRESOURCEMANAGER* TmRm;
+  struct _KEVENT LogFullNotifyEvent;
+  struct _WORK_QUEUE_ITEM CheckpointWorkItem;
+  union _CLS_LSN CheckpointTargetLsn;
+  struct _WORK_QUEUE_ITEM LogFullCompletedWorkItem;
+  struct _ERESOURCE LogWriteResource;
+  U32 LogFlags;
+  S32 LogFullStatus;
+  S32 RecoveryStatus;
+  union _CLS_LSN LastCheckBaseLsn;
+  struct _LIST_ENTRY RestartOrderedList;
+  struct _WORK_QUEUE_ITEM OfflineWorkItem;
+} KTM, *PKTM; 
+

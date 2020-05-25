@@ -1,0 +1,51 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _PPM_IDLE_STATE
+{
+  struct _KAFFINITY_EX DomainMembers;
+  void* IdleCheck;
+  void* IdleHandler;
+  U64 HvConfig;
+  void* Context;
+  U32 Latency;
+  U32 Power;
+  U32 TimeCheck;
+  U32 StateFlags;
+  U8 PromotePercent;
+  U8 DemotePercent;
+  U8 PromotePercentBase;
+  U8 DemotePercentBase;
+  U8 StateType;
+  char __PADDING__[7];
+} PPM_IDLE_STATE, *PPPM_IDLE_STATE; 
+
+typedef struct _PPM_IDLE_STATES
+{
+  U32 Count;
+  union
+  {
+    union
+    {
+      U32 AsULONG;
+      struct 
+      {
+        U32 AllowScaling : 1; 
+        U32 Disabled : 1; 
+        U32 HvMaxCState : 4; 
+        U32 Reserved : 26; 
+      }; 
+    }; 
+  } Flags;
+  U32 TargetState;
+  U32 ActualState;
+  U32 OldState;
+  struct _KAFFINITY_EX TargetProcessors;
+  struct _PPM_IDLE_STATE State[1];
+} PPM_IDLE_STATES, *PPPM_IDLE_STATES; 
+

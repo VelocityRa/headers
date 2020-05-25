@@ -1,0 +1,219 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _WHEAP_ERROR_RECORD_WRAPPER_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 Preallocated : 1; 
+      U32 FromPersistentStore : 1; 
+      U32 PlatformPfaControl : 1; 
+      U32 PlatformDirectedOffline : 1; 
+      U32 Reserved : 28; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEAP_ERROR_RECORD_WRAPPER_FLAGS, *PWHEAP_ERROR_RECORD_WRAPPER_FLAGS; 
+
+typedef union _WHEA_REVISION
+{
+  union
+  {
+    struct
+    {
+      U8 MinorRevision;
+      U8 MajorRevision;
+    }; 
+    U16 AsUSHORT;
+  }; 
+} WHEA_REVISION, *PWHEA_REVISION; 
+
+typedef enum _WHEA_ERROR_SEVERITY
+{
+  WheaErrSevRecoverable = 0,
+  WheaErrSevFatal = 1,
+  WheaErrSevCorrected = 2,
+  WheaErrSevInformational = 3,
+} WHEA_ERROR_SEVERITY, *PWHEA_ERROR_SEVERITY;
+
+typedef union _WHEA_ERROR_RECORD_HEADER_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U32 PlatformId : 1; 
+      U32 Timestamp : 1; 
+      U32 PartitionId : 1; 
+      U32 Reserved : 29; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_ERROR_RECORD_HEADER_VALIDBITS, *PWHEA_ERROR_RECORD_HEADER_VALIDBITS; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef union _WHEA_TIMESTAMP
+{
+  union
+  {
+    struct 
+    {
+      U64 Seconds : 8; 
+      U64 Minutes : 8; 
+      U64 Hours : 8; 
+      U64 Precise : 1; 
+      U64 Reserved : 7; 
+      U64 Day : 8; 
+      U64 Month : 8; 
+      U64 Year : 8; 
+      U64 Century : 8; 
+    }; 
+    union _LARGE_INTEGER AsLARGE_INTEGER;
+  }; 
+} WHEA_TIMESTAMP, *PWHEA_TIMESTAMP; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 Recovered : 1; 
+      U32 PreviousError : 1; 
+      U32 Simulated : 1; 
+      U32 Reserved : 29; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_ERROR_RECORD_HEADER_FLAGS, *PWHEA_ERROR_RECORD_HEADER_FLAGS; 
+
+typedef union _WHEA_PERSISTENCE_INFO
+{
+  union
+  {
+    struct 
+    {
+      U64 Signature : 16; 
+      U64 Length : 24; 
+      U64 Identifier : 16; 
+      U64 Attributes : 2; 
+      U64 DoNotLog : 1; 
+      U64 Reserved : 5; 
+    }; 
+    U64 AsULONGLONG;
+  }; 
+} WHEA_PERSISTENCE_INFO, *PWHEA_PERSISTENCE_INFO; 
+
+typedef struct _WHEA_ERROR_RECORD_HEADER
+{
+  U32 Signature;
+  union _WHEA_REVISION Revision;
+  U32 SignatureEnd;
+  U16 SectionCount;
+  enum _WHEA_ERROR_SEVERITY Severity;
+  union _WHEA_ERROR_RECORD_HEADER_VALIDBITS ValidBits;
+  U32 Length;
+  union _WHEA_TIMESTAMP Timestamp;
+  struct _GUID PlatformId;
+  struct _GUID PartitionId;
+  struct _GUID CreatorId;
+  struct _GUID NotifyType;
+  U64 RecordId;
+  union _WHEA_ERROR_RECORD_HEADER_FLAGS Flags;
+  union _WHEA_PERSISTENCE_INFO PersistenceInfo;
+  U8 Reserved[12];
+} WHEA_ERROR_RECORD_HEADER, *PWHEA_ERROR_RECORD_HEADER; 
+
+typedef union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U8 FRUId : 1; 
+      U8 FRUText : 1; 
+      U8 Reserved : 6; 
+    }; 
+    U8 AsUCHAR;
+  }; 
+} WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS, *PWHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS; 
+
+typedef union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 Primary : 1; 
+      U32 ContainmentWarning : 1; 
+      U32 Reset : 1; 
+      U32 ThresholdExceeded : 1; 
+      U32 ResourceNotAvailable : 1; 
+      U32 LatentError : 1; 
+      U32 Reserved : 26; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS, *PWHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS; 
+
+typedef struct _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR
+{
+  U32 SectionOffset;
+  U32 SectionLength;
+  union _WHEA_REVISION Revision;
+  union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS ValidBits;
+  U8 Reserved;
+  union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS Flags;
+  struct _GUID SectionType;
+  struct _GUID FRUId;
+  enum _WHEA_ERROR_SEVERITY SectionSeverity;
+  char FRUText[20];
+} WHEA_ERROR_RECORD_SECTION_DESCRIPTOR, *PWHEA_ERROR_RECORD_SECTION_DESCRIPTOR; 
+
+typedef struct _WHEA_ERROR_RECORD
+{
+  struct _WHEA_ERROR_RECORD_HEADER Header;
+  struct _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR SectionDescriptor[1];
+} WHEA_ERROR_RECORD, *PWHEA_ERROR_RECORD; 
+
+typedef struct _WHEAP_ERROR_RECORD_WRAPPER
+{
+  struct _LIST_ENTRY WorkEntry;
+  U32 Length;
+  U32 ProcessorNumber;
+  union _WHEAP_ERROR_RECORD_WRAPPER_FLAGS Flags;
+  volatile S32 InUse;
+  struct _WHEAP_ERROR_SOURCE* ErrorSource;
+  struct _WHEA_ERROR_RECORD ErrorRecord;
+} WHEAP_ERROR_RECORD_WRAPPER, *PWHEAP_ERROR_RECORD_WRAPPER; 
+

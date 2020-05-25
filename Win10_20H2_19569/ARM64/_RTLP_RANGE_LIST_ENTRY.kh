@@ -1,0 +1,28 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTLP_RANGE_LIST_ENTRY
+{
+  U64 Start;
+  U64 End;
+  union
+  {
+    struct
+    {
+      void* UserData;
+      void* Owner;
+    } Allocated;
+    struct
+    {
+      struct _LIST_ENTRY ListHead;
+    } Merged;
+  }; 
+  U8 Attributes;
+  U8 PublicFlags;
+  U16 PrivateFlags;
+  struct _LIST_ENTRY ListEntry;
+} RTLP_RANGE_LIST_ENTRY, *PRTLP_RANGE_LIST_ENTRY; 
+

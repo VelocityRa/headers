@@ -1,0 +1,609 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _ETW_BUFFER_QUEUE
+{
+  struct _SINGLE_LIST_ENTRY* QueueTail;
+  struct _SINGLE_LIST_ENTRY QueueEntry;
+} ETW_BUFFER_QUEUE, *PETW_BUFFER_QUEUE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_FAST_REF
+{
+  union
+  {
+    void* Object;
+    U32 RefCnt : 3; 
+    U32 Value;
+  }; 
+} EX_FAST_REF, *PEX_FAST_REF; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  NonPagedPoolExecute = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolBase = 0,
+  NonPagedPoolBaseMustSucceed = 2,
+  NonPagedPoolBaseCacheAligned = 4,
+  NonPagedPoolBaseCacheAlignedMustS = 6,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+  NonPagedPoolNx = 512,
+  NonPagedPoolNxCacheAligned = 516,
+  NonPagedPoolSessionNx = 544,
+} POOL_TYPE, *PPOOL_TYPE;
+
+typedef struct _ETW_REF_CLOCK
+{
+  union _LARGE_INTEGER StartTime;
+  union _LARGE_INTEGER StartPerfClock;
+} ETW_REF_CLOCK, *PETW_REF_CLOCK; 
+
+typedef enum _ETW_RT_EVENT_LOSS
+{
+  EtwRtEventNoLoss = 0,
+  EtwRtEventLost = 1,
+  EtwRtBufferLost = 2,
+  EtwRtBackupLost = 3,
+  EtwRtEventLossMax = 4,
+} ETW_RT_EVENT_LOSS, *PETW_RT_EVENT_LOSS;
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 1; 
+              U8 Processor : 5; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 Instrumented : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          U8 DebugActive;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _KDPC
+{
+  union
+  {
+    U32 TargetInfoAsUlong;
+    struct
+    {
+      U8 Type;
+      U8 Importance;
+      volatile U16 Number;
+    }; 
+  }; 
+  struct _SINGLE_LIST_ENTRY DpcListEntry;
+  U32 ProcessorHistory;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _KMUTANT
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY MutantListEntry;
+  struct _KTHREAD* OwnerThread;
+  U8 Abandoned;
+  U8 ApcDisable;
+  char __PADDING__[2];
+} KMUTANT, *PKMUTANT; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SECURITY_QUALITY_OF_SERVICE
+{
+  U32 Length;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  U8 ContextTrackingMode;
+  U8 EffectiveOnly;
+  char __PADDING__[2];
+} SECURITY_QUALITY_OF_SERVICE, *PSECURITY_QUALITY_OF_SERVICE; 
+
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _TOKEN_SOURCE
+{
+  char SourceName[8];
+  struct _LUID SourceIdentifier;
+} TOKEN_SOURCE, *PTOKEN_SOURCE; 
+
+typedef struct _TOKEN_CONTROL
+{
+  struct _LUID TokenId;
+  struct _LUID AuthenticationId;
+  struct _LUID ModifiedId;
+  struct _TOKEN_SOURCE TokenSource;
+} TOKEN_CONTROL, *PTOKEN_CONTROL; 
+
+typedef struct _SECURITY_CLIENT_CONTEXT
+{
+  struct _SECURITY_QUALITY_OF_SERVICE SecurityQos;
+  void* ClientToken;
+  U8 DirectlyAccessClientToken;
+  U8 DirectAccessEffectiveOnly;
+  U8 ServerIsRemote;
+  struct _TOKEN_CONTROL ClientTokenControl;
+} SECURITY_CLIENT_CONTEXT, *PSECURITY_CLIENT_CONTEXT; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 CpuId;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _KAPC
+{
+  U8 Type;
+  U8 SpareByte0;
+  U8 Size;
+  U8 SpareByte1;
+  U32 SpareLong0;
+  struct _KTHREAD* Thread;
+  struct _LIST_ENTRY ApcListEntry;
+  union
+  {
+    struct
+    {
+      void* KernelRoutine;
+      void* RundownRoutine;
+      void* NormalRoutine;
+    }; 
+    void* Reserved[3];
+  }; 
+  void* NormalContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  char ApcStateIndex;
+  char ApcMode;
+  U8 Inserted;
+  char __PADDING__[1];
+} KAPC, *PKAPC; 
+
+typedef struct _ETW_APC_ENTRY
+{
+  union
+  {
+    struct _SINGLE_LIST_ENTRY SListEntry;
+    struct _KAPC Apc;
+  }; 
+} ETW_APC_ENTRY, *PETW_APC_ENTRY; 
+
+typedef struct _ETW_STACK_TRACE_BLOCK
+{
+  S32 Flags;
+  union _LARGE_INTEGER RelatedTimestamp;
+  struct _ETHREAD* Thread;
+  struct _KDPC StackWalkDpc;
+  union _SLIST_HEADER ApcListHead;
+  struct _ETW_APC_ENTRY ApcEntry[12];
+  S32 ApcCount;
+  S32 MaxApcCount;
+} ETW_STACK_TRACE_BLOCK, *PETW_STACK_TRACE_BLOCK; 
+
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _DISALLOWED_GUIDS
+{
+  U16 Count;
+  struct _GUID* Guids;
+} DISALLOWED_GUIDS, *PDISALLOWED_GUIDS; 
+
+typedef struct _PERIODIC_CAPTURE_STATE_GUIDS
+{
+  U16 ProviderCount;
+  struct _GUID* Providers;
+} PERIODIC_CAPTURE_STATE_GUIDS, *PPERIODIC_CAPTURE_STATE_GUIDS; 
+
+typedef enum _ETW_PERIODIC_TIMER_STATE
+{
+  EtwpPeriodicTimerUnset = 0,
+  EtwpPeriodicTimerSet = 1,
+} ETW_PERIODIC_TIMER_STATE, *PETW_PERIODIC_TIMER_STATE;
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+enum ETW_COMPRESSION_RESUMPTION_MODE
+{
+  EtwCompressionModeRestart = 0,
+  EtwCompressionModeNoDisable = 1,
+  EtwCompressionModeNoRestart = 2,
+};
+
+typedef struct _WMI_LOGGER_CONTEXT
+{
+  U32 LoggerId;
+  U32 BufferSize;
+  U32 MaximumEventSize;
+  U32 LoggerMode;
+  S32 AcceptNewEvents;
+  U32 EventMarker[1];
+  U32 ErrorMarker;
+  U32 SizeMask;
+  void* GetCpuClock;
+  struct _ETHREAD* LoggerThread;
+  S32 LoggerStatus;
+  U32 FailureReason;
+  struct _ETW_BUFFER_QUEUE BufferQueue;
+  struct _ETW_BUFFER_QUEUE OverflowQueue;
+  struct _LIST_ENTRY GlobalList;
+  struct _LIST_ENTRY DebugIdTrackingList;
+  struct _ETW_DECODE_CONTROL_ENTRY* DecodeControlList;
+  U32 DecodeControlCount;
+  union
+  {
+    struct _WMI_BUFFER_HEADER* BatchedBufferList;
+    struct _EX_FAST_REF CurrentBuffer;
+  }; 
+  struct _UNICODE_STRING LoggerName;
+  struct _UNICODE_STRING LogFileName;
+  struct _UNICODE_STRING LogFilePattern;
+  struct _UNICODE_STRING NewLogFileName;
+  U32 ClockType;
+  U32 LastFlushedBuffer;
+  U32 FlushTimer;
+  U32 FlushThreshold;
+  union _LARGE_INTEGER ByteOffset;
+  U32 MinimumBuffers;
+  volatile S32 BuffersAvailable;
+  volatile S32 NumberOfBuffers;
+  U32 MaximumBuffers;
+  volatile U32 EventsLost;
+  volatile S32 PeakBuffersCount;
+  U32 BuffersWritten;
+  U32 LogBuffersLost;
+  U32 RealTimeBuffersDelivered;
+  U32 RealTimeBuffersLost;
+  S32* SequencePtr;
+  U32 LocalSequence;
+  struct _GUID InstanceGuid;
+  U32 MaximumFileSize;
+  S32 FileCounter;
+  enum _POOL_TYPE PoolType;
+  struct _ETW_REF_CLOCK ReferenceTime;
+  S32 CollectionOn;
+  U32 ProviderInfoSize;
+  struct _LIST_ENTRY Consumers;
+  U32 NumConsumers;
+  struct _ETW_REALTIME_CONSUMER* TransitionConsumer;
+  void* RealtimeLogfileHandle;
+  struct _UNICODE_STRING RealtimeLogfileName;
+  union _LARGE_INTEGER RealtimeWriteOffset;
+  union _LARGE_INTEGER RealtimeReadOffset;
+  union _LARGE_INTEGER RealtimeLogfileSize;
+  U64 RealtimeLogfileUsage;
+  U64 RealtimeMaximumFileSize;
+  U32 RealtimeBuffersSaved;
+  struct _ETW_REF_CLOCK RealtimeReferenceTime;
+  enum _ETW_RT_EVENT_LOSS NewRTEventsLost;
+  struct _KEVENT LoggerEvent;
+  struct _KEVENT FlushEvent;
+  struct _KTIMER FlushTimeOutTimer;
+  struct _KDPC LoggerDpc;
+  struct _KMUTANT LoggerMutex;
+  struct _EX_PUSH_LOCK LoggerLock;
+  union
+  {
+    U32 BufferListSpinLock;
+    struct _EX_PUSH_LOCK BufferListPushLock;
+  }; 
+  struct _SECURITY_CLIENT_CONTEXT ClientSecurityContext;
+  struct _TOKEN_ACCESS_INFORMATION* TokenAccessInformation;
+  struct _EX_FAST_REF SecurityDescriptor;
+  union _LARGE_INTEGER StartTime;
+  void* LogFileHandle;
+  S64 BufferSequenceNumber;
+  union
+  {
+    U32 Flags;
+    struct 
+    {
+      U32 Persistent : 1; 
+      U32 AutoLogger : 1; 
+      U32 FsReady : 1; 
+      U32 RealTime : 1; 
+      U32 Wow : 1; 
+      U32 KernelTrace : 1; 
+      U32 NoMoreEnable : 1; 
+      U32 StackTracing : 1; 
+      U32 ErrorLogged : 1; 
+      U32 RealtimeLoggerContextFreed : 1; 
+      U32 PebsTracing : 1; 
+      U32 PmcCounters : 1; 
+      U32 PageAlignBuffers : 1; 
+      U32 StackLookasideListAllocated : 1; 
+      U32 SecurityTrace : 1; 
+      U32 LastBranchTracing : 1; 
+      U32 SystemLoggerIndex : 8; 
+      U32 StackCaching : 1; 
+      U32 SpareFlags2 : 7; 
+    }; 
+  }; 
+  union
+  {
+    volatile U32 RequestFlag;
+    struct 
+    {
+      U32 DbgRequestNewFile : 1; 
+      U32 DbgRequestUpdateFile : 1; 
+      U32 DbgRequestFlush : 1; 
+      U32 DbgRequestDisableRealtime : 1; 
+      U32 DbgRequestDisconnectConsumer : 1; 
+      U32 DbgRequestConnectConsumer : 1; 
+      U32 DbgRequestNotifyConsumer : 1; 
+      U32 DbgRequestUpdateHeader : 1; 
+      U32 DbgRequestDeferredFlush : 1; 
+      U32 DbgRequestDeferredFlushTimer : 1; 
+      U32 DbgRequestFlushTimer : 1; 
+      U32 DbgRequestUpdateDebugger : 1; 
+      U32 DbgSpareRequestFlags : 20; 
+    }; 
+  }; 
+  struct _ETW_STACK_TRACE_BLOCK StackTraceBlock;
+  struct _RTL_BITMAP HookIdMap;
+  struct _ETW_STACK_CACHE* StackCache;
+  struct _ETW_PMC_SUPPORT* PmcData;
+  struct _ETW_LBR_SUPPORT* LbrData;
+  struct _LIST_ENTRY BinaryTrackingList;
+  struct _WMI_BUFFER_HEADER** ScratchArray;
+  struct _DISALLOWED_GUIDS DisallowedGuids;
+  S64 RelativeTimerDueTime;
+  struct _PERIODIC_CAPTURE_STATE_GUIDS PeriodicCaptureStateGuids;
+  struct _EX_TIMER* PeriodicCaptureStateTimer;
+  enum _ETW_PERIODIC_TIMER_STATE PeriodicCaptureStateTimerState;
+  struct _ETW_SOFT_RESTART_CONTEXT* SoftRestartContext;
+  struct _ETW_SILODRIVERSTATE* SiloState;
+  struct _WORK_QUEUE_ITEM CompressionWorkItem;
+  S32 CompressionWorkItemState;
+  struct _EX_PUSH_LOCK CompressionLock;
+  struct _WMI_BUFFER_HEADER* CompressionTarget;
+  void* CompressionWorkspace;
+  S32 CompressionOn;
+  U32 CompressionRatioGuess;
+  U32 PartialBufferCompressionLevel;
+  enum ETW_COMPRESSION_RESUMPTION_MODE CompressionResumptionMode;
+  struct _SINGLE_LIST_ENTRY PlaceholderList;
+  struct _KDPC CompressionDpc;
+  union _LARGE_INTEGER LastBufferSwitchTime;
+  union _LARGE_INTEGER BufferWriteDuration;
+  union _LARGE_INTEGER BufferCompressDuration;
+} WMI_LOGGER_CONTEXT, *PWMI_LOGGER_CONTEXT; 
+

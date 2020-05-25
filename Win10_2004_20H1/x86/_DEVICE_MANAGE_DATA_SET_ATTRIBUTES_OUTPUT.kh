@@ -1,0 +1,13 @@
+typedef struct _DEVICE_MANAGE_DATA_SET_ATTRIBUTES_OUTPUT
+{
+  U32 Size;
+  U32 Action;
+  U32 Flags;
+  U32 OperationStatus;
+  U32 ExtendedError;
+  U32 TargetDetailedError;
+  U32 ReservedStatus;
+  U32 OutputBlockOffset;
+  U32 OutputBlockLength;
+} DEVICE_MANAGE_DATA_SET_ATTRIBUTES_OUTPUT, *PDEVICE_MANAGE_DATA_SET_ATTRIBUTES_OUTPUT; 
+

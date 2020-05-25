@@ -1,0 +1,7 @@
+typedef struct _CM_KEY_INDEX
+{
+  U16 Signature;
+  U16 Count;
+  U32 List[1];
+} CM_KEY_INDEX, *PCM_KEY_INDEX; 
+

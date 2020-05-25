@@ -1,0 +1,75 @@
+typedef struct _RTL_CRITICAL_SECTION
+{
+  struct _RTL_CRITICAL_SECTION_DEBUG* DebugInfo;
+  S32 LockCount;
+  S32 RecursionCount;
+  void* OwningThread;
+  void* LockSemaphore;
+  U64 SpinCount;
+} RTL_CRITICAL_SECTION, *PRTL_CRITICAL_SECTION; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _OWNER_ENTRY
+{
+  U64 OwnerThread;
+  union
+  {
+    struct 
+    {
+      U32 IoPriorityBoosted : 1; 
+      U32 OwnerReferenced : 1; 
+      U32 IoQoSPriorityBoosted : 1; 
+      U32 OwnerCount : 29; 
+    }; 
+    U32 TableSize;
+  }; 
+  S32 __PADDING__[1];
+} OWNER_ENTRY, *POWNER_ENTRY; 
+
+typedef struct _ERESOURCE
+{
+  struct _LIST_ENTRY SystemResourcesList;
+  struct _OWNER_ENTRY* OwnerTable;
+  S16 ActiveCount;
+  union
+  {
+    U16 Flag;
+    struct
+    {
+      U8 ReservedLowFlags;
+      U8 WaiterPriority;
+    }; 
+  }; 
+  void* SharedWaiters;
+  void* ExclusiveWaiters;
+  struct _OWNER_ENTRY OwnerEntry;
+  U32 ActiveEntries;
+  U32 ContentionCount;
+  U32 NumberOfSharedWaiters;
+  U32 NumberOfExclusiveWaiters;
+  void* Reserved2;
+  union
+  {
+    void* Address;
+    U64 CreatorBackTraceIndex;
+  }; 
+  U64 SpinLock;
+} ERESOURCE, *PERESOURCE; 
+
+typedef struct _HEAP_LOCK
+{
+  union
+  {
+    union
+    {
+      struct _RTL_CRITICAL_SECTION CriticalSection;
+      struct _ERESOURCE Resource;
+    }; 
+  } Lock;
+} HEAP_LOCK, *PHEAP_LOCK; 
+

@@ -1,0 +1,16 @@
+typedef struct _RTL_CSPARSE_BITMAP
+{
+  U64* CommitBitmap;
+  U64* UserBitmap;
+  S64 BitCount;
+  U64 BitmapLock;
+  U64 DecommitPageIndex;
+  U64 RtlpCSparseBitmapWakeLock;
+  U8 LockType;
+  U8 AddressSpace;
+  U8 MemType;
+  U8 AllocAlignment;
+  U32 CommitDirectoryMaxSize;
+  U64 CommitDirectory[1];
+} RTL_CSPARSE_BITMAP, *PRTL_CSPARSE_BITMAP; 
+

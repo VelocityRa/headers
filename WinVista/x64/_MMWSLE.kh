@@ -1,0 +1,39 @@
+typedef struct _MMWSLENTRY
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 LockedInWs : 1; 
+    U64 LockedInMemory : 1; 
+    U64 Protection : 5; 
+    U64 Hashed : 1; 
+    U64 Direct : 1; 
+    U64 Age : 2; 
+    U64 VirtualPageNumber : 52; 
+  }; 
+} MMWSLENTRY, *PMMWSLENTRY; 
+
+typedef struct _MMWSLE_FREE_ENTRY
+{
+  struct 
+  {
+    U64 MustBeZero : 1; 
+    U64 PreviousFree : 31; 
+    U64 NextFree : 32; 
+  }; 
+} MMWSLE_FREE_ENTRY, *PMMWSLE_FREE_ENTRY; 
+
+typedef struct _MMWSLE
+{
+  union
+  {
+    union
+    {
+      void* VirtualAddress;
+      U64 Long;
+      struct _MMWSLENTRY e1;
+      struct _MMWSLE_FREE_ENTRY e2;
+    }; 
+  } u1;
+} MMWSLE, *PMMWSLE; 
+

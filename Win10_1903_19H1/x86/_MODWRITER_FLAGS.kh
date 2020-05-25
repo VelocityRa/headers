@@ -1,0 +1,11 @@
+typedef struct _MODWRITER_FLAGS
+{
+  struct 
+  {
+    U32 KeepForever : 1; 
+    U32 Networked : 1; 
+    U32 IoPriority : 3; 
+    U32 ModifiedStoreWrite : 1; 
+  }; 
+} MODWRITER_FLAGS, *PMODWRITER_FLAGS; 
+

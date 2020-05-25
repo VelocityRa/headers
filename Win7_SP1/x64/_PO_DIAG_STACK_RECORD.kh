@@ -1,0 +1,6 @@
+typedef struct _PO_DIAG_STACK_RECORD
+{
+  U32 StackDepth;
+  void* Stack[1];
+} PO_DIAG_STACK_RECORD, *PPO_DIAG_STACK_RECORD; 
+

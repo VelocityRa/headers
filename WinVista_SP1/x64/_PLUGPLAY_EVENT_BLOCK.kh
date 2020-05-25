@@ -1,0 +1,108 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef enum _PLUGPLAY_EVENT_CATEGORY
+{
+  HardwareProfileChangeEvent = 0,
+  TargetDeviceChangeEvent = 1,
+  DeviceClassChangeEvent = 2,
+  CustomDeviceEvent = 3,
+  DeviceInstallEvent = 4,
+  DeviceArrivalEvent = 5,
+  PowerEvent = 6,
+  VetoEvent = 7,
+  BlockedDriverEvent = 8,
+  InvalidIDEvent = 9,
+  PowerSettingChange = 10,
+  MaxPlugEventCategory = 11,
+} PLUGPLAY_EVENT_CATEGORY, *PPLUGPLAY_EVENT_CATEGORY;
+
+typedef enum _PNP_VETO_TYPE
+{
+  PNP_VetoTypeUnknown = 0,
+  PNP_VetoLegacyDevice = 1,
+  PNP_VetoPendingClose = 2,
+  PNP_VetoWindowsApp = 3,
+  PNP_VetoWindowsService = 4,
+  PNP_VetoOutstandingOpen = 5,
+  PNP_VetoDevice = 6,
+  PNP_VetoDriver = 7,
+  PNP_VetoIllegalDeviceRequest = 8,
+  PNP_VetoInsufficientPower = 9,
+  PNP_VetoNonDisableable = 10,
+  PNP_VetoLegacyDriver = 11,
+  PNP_VetoInsufficientRights = 12,
+} PNP_VETO_TYPE, *PPNP_VETO_TYPE;
+
+typedef struct _PLUGPLAY_EVENT_BLOCK
+{
+  struct _GUID EventGuid;
+  enum _PLUGPLAY_EVENT_CATEGORY EventCategory;
+  U32* Result;
+  U32 Flags;
+  U32 TotalSize;
+  void* DeviceObject;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct _GUID ClassGuid;
+        wchar_t SymbolicLinkName[1];
+        char __PADDING__[2];
+      } DeviceClass;
+      struct
+      {
+        wchar_t DeviceIds[1];
+      } TargetDevice;
+      struct
+      {
+        wchar_t DeviceId[1];
+      } InstallDevice;
+      struct
+      {
+        void* NotificationStructure;
+        wchar_t DeviceIds[1];
+        char __PADDING__[6];
+      } CustomNotification;
+      struct
+      {
+        void* Notification;
+      } ProfileNotification;
+      struct
+      {
+        U32 NotificationCode;
+        U32 NotificationData;
+      } PowerNotification;
+      struct
+      {
+        enum _PNP_VETO_TYPE VetoType;
+        wchar_t DeviceIdVetoNameBuffer[1];
+        char __PADDING__[2];
+      } VetoNotification;
+      struct
+      {
+        struct _GUID BlockedDriverGuid;
+      } BlockedDriverNotification;
+      struct
+      {
+        wchar_t ParentId[1];
+      } InvalidIDNotification;
+      struct
+      {
+        struct _GUID PowerSettingGuid;
+        U8 PowerSettingChanged;
+        U32 DataLength;
+        U8 Data[1];
+        char __PADDING__[3];
+      } PowerSettingNotification;
+    }; 
+  } u;
+} PLUGPLAY_EVENT_BLOCK, *PPLUGPLAY_EVENT_BLOCK; 
+

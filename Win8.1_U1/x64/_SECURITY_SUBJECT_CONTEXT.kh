@@ -1,0 +1,16 @@
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SECURITY_SUBJECT_CONTEXT
+{
+  void* ClientToken;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  void* PrimaryToken;
+  void* ProcessAuditId;
+} SECURITY_SUBJECT_CONTEXT, *PSECURITY_SUBJECT_CONTEXT; 
+

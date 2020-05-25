@@ -1,0 +1,37 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SECURITY_SUBJECT_CONTEXT
+{
+  void* ClientToken;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  void* PrimaryToken;
+  void* ProcessAuditId;
+} SECURITY_SUBJECT_CONTEXT, *PSECURITY_SUBJECT_CONTEXT; 
+
+typedef struct _CM_NOTIFY_BLOCK
+{
+  struct _LIST_ENTRY HiveList;
+  struct _LIST_ENTRY PostList;
+  struct _CM_KEY_CONTROL_BLOCK* KeyControlBlock;
+  struct _CM_KEY_BODY* KeyBody;
+  struct 
+  {
+    U32 Filter : 30; 
+    U32 WatchTree : 1; 
+    U32 NotifyPending : 1; 
+  }; 
+  struct _SECURITY_SUBJECT_CONTEXT SubjectContext;
+} CM_NOTIFY_BLOCK, *PCM_NOTIFY_BLOCK; 
+

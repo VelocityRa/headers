@@ -1,0 +1,18 @@
+typedef struct _DBGKD_GET_VERSION64
+{
+  U16 MajorVersion;
+  U16 MinorVersion;
+  U8 ProtocolVersion;
+  U8 KdSecondaryVersion;
+  U16 Flags;
+  U16 MachineType;
+  U8 MaxPacketType;
+  U8 MaxStateChange;
+  U8 MaxManipulate;
+  U8 Simulation;
+  U16 Unused[1];
+  U64 KernBase;
+  U64 PsLoadedModuleList;
+  U64 DebuggerDataList;
+} DBGKD_GET_VERSION64, *PDBGKD_GET_VERSION64; 
+

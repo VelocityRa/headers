@@ -1,0 +1,22 @@
+typedef struct _RTL_BITMAP_EX
+{
+  U64 SizeOfBitMap;
+  U64* Buffer;
+} RTL_BITMAP_EX, *PRTL_BITMAP_EX; 
+
+typedef struct _MI_DLL_OVERFLOW_AREA
+{
+  void* RangeStart;
+  void* NextVa;
+  void* RangeStartAbove2gb;
+  void* NextVaAbove2gb;
+} MI_DLL_OVERFLOW_AREA, *PMI_DLL_OVERFLOW_AREA; 
+
+typedef struct _MI_SECTION_WOW_STATE
+{
+  struct _RTL_BITMAP_EX ImageBitMap;
+  struct _MI_DLL_OVERFLOW_AREA OverflowArea;
+  struct _SECTION* CfgBitMapSection;
+  struct _CONTROL_AREA* CfgBitMapControlArea;
+} MI_SECTION_WOW_STATE, *PMI_SECTION_WOW_STATE; 
+

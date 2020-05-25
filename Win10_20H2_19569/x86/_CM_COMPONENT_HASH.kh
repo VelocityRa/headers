@@ -1,0 +1,5 @@
+typedef struct _CM_COMPONENT_HASH
+{
+  U32 Hash;
+} CM_COMPONENT_HASH, *PCM_COMPONENT_HASH; 
+

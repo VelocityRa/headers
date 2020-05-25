@@ -1,0 +1,61 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _PPM_PERF_STATE
+{
+  U32 Frequency;
+  U32 Power;
+  U8 PercentFrequency;
+  U8 IncreaseLevel;
+  U8 DecreaseLevel;
+  U8 Type;
+  U64 Control;
+  U64 Status;
+  U32 TotalHitCount;
+  U32 DesiredCount;
+} PPM_PERF_STATE, *PPPM_PERF_STATE; 
+
+typedef struct _PPM_PERF_STATES
+{
+  U32 Count;
+  U32 MaxFrequency;
+  U32 PStateCap;
+  U32 TStateCap;
+  U32 MaxPerfState;
+  U32 MinPerfState;
+  U32 LowestPState;
+  U32 IncreaseTime;
+  U32 DecreaseTime;
+  U8 BusyAdjThreshold;
+  U8 Reserved;
+  U8 ThrottleStatesOnly;
+  U8 PolicyType;
+  U32 TimerInterval;
+  union
+  {
+    union
+    {
+      U32 AsULONG;
+      struct 
+      {
+        U32 IncreasePolicy : 2; 
+        U32 DecreasePolicy : 2; 
+        U32 Reserved : 28; 
+      }; 
+    }; 
+  } Flags;
+  struct _KAFFINITY_EX TargetProcessors;
+  void* PStateHandler;
+  U32 PStateContext;
+  void* TStateHandler;
+  U32 TStateContext;
+  void* FeedbackHandler;
+  void* GetFFHThrottleState;
+  struct _PPM_PERF_STATE State[1];
+} PPM_PERF_STATES, *PPPM_PERF_STATES; 
+

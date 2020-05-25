@@ -1,0 +1,9 @@
+typedef struct _CM_FAST_LEAF_HINT
+{
+  union
+  {
+    U8 Characters[4];
+    U32 FullHint;
+  }; 
+} CM_FAST_LEAF_HINT, *PCM_FAST_LEAF_HINT; 
+

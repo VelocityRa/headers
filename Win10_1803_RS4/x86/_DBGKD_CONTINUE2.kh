@@ -1,0 +1,81 @@
+typedef struct _X86_DBGKD_CONTROL_SET
+{
+  U32 TraceFlag;
+  U32 Dr7;
+  U32 CurrentSymbolStart;
+  U32 CurrentSymbolEnd;
+} X86_DBGKD_CONTROL_SET, *PX86_DBGKD_CONTROL_SET; 
+
+typedef struct _IA64_DBGKD_CONTROL_SET
+{
+  U32 Continue;
+  U64 CurrentSymbolStart;
+  U64 CurrentSymbolEnd;
+} IA64_DBGKD_CONTROL_SET, *PIA64_DBGKD_CONTROL_SET; 
+
+typedef struct _AMD64_DBGKD_CONTROL_SET
+{
+  U32 TraceFlag;
+  U64 Dr7;
+  U64 CurrentSymbolStart;
+  U64 CurrentSymbolEnd;
+} AMD64_DBGKD_CONTROL_SET, *PAMD64_DBGKD_CONTROL_SET; 
+
+typedef struct _ARM_DBGKD_CONTROL_SET
+{
+  U32 Continue;
+  U32 CurrentSymbolStart;
+  U32 CurrentSymbolEnd;
+} ARM_DBGKD_CONTROL_SET, *PARM_DBGKD_CONTROL_SET; 
+
+typedef struct _ARM64_DBGKD_CONTROL_SET
+{
+  U32 Continue;
+  U32 TraceFlag;
+  U64 CurrentSymbolStart;
+  U64 CurrentSymbolEnd;
+} ARM64_DBGKD_CONTROL_SET, *PARM64_DBGKD_CONTROL_SET; 
+
+typedef struct _ARMCE_DBGKD_CONTROL_SET
+{
+  U32 Continue;
+  U32 CurrentSymbolStart;
+  U32 CurrentSymbolEnd;
+} ARMCE_DBGKD_CONTROL_SET, *PARMCE_DBGKD_CONTROL_SET; 
+
+typedef struct _PPC_DBGKD_CONTROL_SET
+{
+  U32 Continue;
+  U32 CurrentSymbolStart;
+  U32 CurrentSymbolEnd;
+} PPC_DBGKD_CONTROL_SET, *PPPC_DBGKD_CONTROL_SET; 
+
+typedef struct _DBGKD_ANY_CONTROL_SET
+{
+  union
+  {
+    struct _X86_DBGKD_CONTROL_SET X86ControlSet;
+    U32 AlphaControlSet;
+    struct _IA64_DBGKD_CONTROL_SET IA64ControlSet;
+    struct _AMD64_DBGKD_CONTROL_SET Amd64ControlSet;
+    struct _ARM_DBGKD_CONTROL_SET ArmControlSet;
+    struct _ARM64_DBGKD_CONTROL_SET Arm64ControlSet;
+    struct _ARMCE_DBGKD_CONTROL_SET ArmCeControlSet;
+    struct
+    {
+      struct _PPC_DBGKD_CONTROL_SET PpcControlSet;
+      S32 __PADDING__[4];
+    }; 
+  }; 
+} DBGKD_ANY_CONTROL_SET, *PDBGKD_ANY_CONTROL_SET; 
+
+typedef struct _DBGKD_CONTINUE2
+{
+  S32 ContinueStatus;
+  union
+  {
+    struct _X86_DBGKD_CONTROL_SET ControlSet;
+    struct _DBGKD_ANY_CONTROL_SET AnyControlSet;
+  }; 
+} DBGKD_CONTINUE2, *PDBGKD_CONTINUE2; 
+

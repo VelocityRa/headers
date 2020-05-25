@@ -1,0 +1,21 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_DYNAMIC_HASH_TABLE_ENTRY
+{
+  struct _LIST_ENTRY Linkage;
+  U64 Signature;
+} RTL_DYNAMIC_HASH_TABLE_ENTRY, *PRTL_DYNAMIC_HASH_TABLE_ENTRY; 
+
+typedef struct _SEP_LOWBOX_NUMBER_ENTRY
+{
+  struct _RTL_DYNAMIC_HASH_TABLE_ENTRY HashEntry;
+  S64 ReferenceCount;
+  void* PackageSid;
+  U32 LowboxNumber;
+  void* AtomTable;
+} SEP_LOWBOX_NUMBER_ENTRY, *PSEP_LOWBOX_NUMBER_ENTRY; 
+

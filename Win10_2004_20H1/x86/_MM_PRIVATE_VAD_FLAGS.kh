@@ -1,0 +1,23 @@
+typedef struct _MM_PRIVATE_VAD_FLAGS
+{
+  struct 
+  {
+    U32 Lock : 1; 
+    U32 LockContended : 1; 
+    U32 DeleteInProgress : 1; 
+    U32 NoChange : 1; 
+    U32 VadType : 3; 
+    U32 Protection : 5; 
+    U32 PreferredNode : 6; 
+    U32 PageSize : 2; 
+    U32 PrivateMemoryAlwaysSet : 1; 
+    U32 WriteWatch : 1; 
+    U32 FixedLargePageSize : 1; 
+    U32 ZeroFillPagesOptional : 1; 
+    U32 Graphics : 1; 
+    U32 Enclave : 1; 
+    U32 ShadowStack : 1; 
+    U32 PhysicalMemoryPfnsReferenced : 1; 
+  }; 
+} MM_PRIVATE_VAD_FLAGS, *PMM_PRIVATE_VAD_FLAGS; 
+

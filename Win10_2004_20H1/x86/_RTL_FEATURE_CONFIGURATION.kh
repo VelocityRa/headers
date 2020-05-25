@@ -1,0 +1,15 @@
+typedef struct _RTL_FEATURE_CONFIGURATION
+{
+  U32 FeatureId;
+  struct 
+  {
+    U32 Priority : 4; 
+    U32 EnabledState : 2; 
+    U32 IsWexpConfiguration : 1; 
+    U32 HasSubscriptions : 1; 
+    U32 Variant : 6; 
+    U32 VariantPayloadKind : 2; 
+  }; 
+  U32 VariantPayload;
+} RTL_FEATURE_CONFIGURATION, *PRTL_FEATURE_CONFIGURATION; 
+

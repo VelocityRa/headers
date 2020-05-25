@@ -1,0 +1,73 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _POP_HIBER_CONTEXT
+{
+  U8 WriteToFile;
+  U8 ReserveLoaderMemory;
+  U8 ReserveFreeMemory;
+  U8 Reset;
+  U8 HiberFlags;
+  U8 WroteHiberFile;
+  U8 MapFrozen;
+  struct _RTL_BITMAP MemoryMap;
+  struct _RTL_BITMAP DiscardedMemoryPages;
+  struct _LIST_ENTRY ClonedRanges;
+  U32 ClonedRangeCount;
+  struct _LIST_ENTRY* NextCloneRange;
+  U32 NextPreserve;
+  struct _MDL* LoaderMdl;
+  struct _MDL* AllocatedMdl;
+  U64 PagesOut;
+  void* IoPages;
+  U32 IoPagesCount;
+  void* CurrentMcb;
+  struct _DUMP_STACK_CONTEXT* DumpStack;
+  struct _KPROCESSOR_STATE* WakeState;
+  U32 PreferredIoWriteSize;
+  U32 IoProgress;
+  U32 HiberVa;
+  union _LARGE_INTEGER HiberPte;
+  S32 Status;
+  struct PO_MEMORY_IMAGE* MemoryImage;
+  void* CompressionWorkspace;
+  U8* CompressedWriteBuffer;
+  U32 CompressedWriteBufferSize;
+  U32 MaxCompressedOutputSize;
+  U32* PerformanceStats;
+  void* CompressionBlock;
+  void* DmaIO;
+  void* TemporaryHeap;
+  struct _MDL* BootLoaderLogMdl;
+  struct _MDL* FirmwareRuntimeInformationMdl;
+  void* ResumeContext;
+  U32 ResumeContextPages;
+} POP_HIBER_CONTEXT, *PPOP_HIBER_CONTEXT; 
+

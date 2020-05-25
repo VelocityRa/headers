@@ -1,0 +1,9 @@
+typedef struct _MMSECTION_FLAGS2
+{
+  struct 
+  {
+    U32 PartitionId : 10; 
+    U32 NumberOfChildViews : 22; 
+  }; 
+} MMSECTION_FLAGS2, *PMMSECTION_FLAGS2; 
+

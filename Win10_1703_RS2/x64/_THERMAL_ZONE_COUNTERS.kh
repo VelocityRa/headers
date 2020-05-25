@@ -1,0 +1,8 @@
+typedef struct _THERMAL_ZONE_COUNTERS
+{
+  U32 Temperature;
+  U32 ThrottleLimit;
+  U32 ThrottleReasons;
+  U32 TemperatureHighPrecision;
+} THERMAL_ZONE_COUNTERS, *PTHERMAL_ZONE_COUNTERS; 
+

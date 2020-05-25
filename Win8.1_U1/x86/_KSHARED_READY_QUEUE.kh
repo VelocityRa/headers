@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KSHARED_READY_QUEUE
+{
+  U32 Lock;
+  U32 ReadySummary;
+  struct _LIST_ENTRY ReadyListHead[32];
+  char RunningSummary[32];
+  U32 Span;
+  U32 LowProcIndex;
+  U32 QueueIndex;
+  U32 ProcCount;
+  U32 Affinity;
+} KSHARED_READY_QUEUE, *PKSHARED_READY_QUEUE; 
+

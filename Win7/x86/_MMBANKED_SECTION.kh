@@ -1,0 +1,150 @@
+typedef struct _HARDWARE_PTE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 Write : 1; 
+    U32 Owner : 1; 
+    U32 WriteThrough : 1; 
+    U32 CacheDisable : 1; 
+    U32 Accessed : 1; 
+    U32 Dirty : 1; 
+    U32 LargePage : 1; 
+    U32 Global : 1; 
+    U32 CopyOnWrite : 1; 
+    U32 Prototype : 1; 
+    U32 reserved : 1; 
+    U32 PageFrameNumber : 20; 
+  }; 
+} HARDWARE_PTE, *PHARDWARE_PTE; 
+
+typedef struct _MMPTE_HARDWARE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 Dirty1 : 1; 
+    U32 Owner : 1; 
+    U32 WriteThrough : 1; 
+    U32 CacheDisable : 1; 
+    U32 Accessed : 1; 
+    U32 Dirty : 1; 
+    U32 LargePage : 1; 
+    U32 Global : 1; 
+    U32 CopyOnWrite : 1; 
+    U32 Unused : 1; 
+    U32 Write : 1; 
+    U32 PageFrameNumber : 20; 
+  }; 
+} MMPTE_HARDWARE, *PMMPTE_HARDWARE; 
+
+typedef struct _MMPTE_PROTOTYPE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 ProtoAddressLow : 8; 
+    U32 ReadOnly : 1; 
+    U32 Prototype : 1; 
+    U32 ProtoAddressHigh : 21; 
+  }; 
+} MMPTE_PROTOTYPE, *PMMPTE_PROTOTYPE; 
+
+typedef struct _MMPTE_SOFTWARE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 PageFileLow : 4; 
+    U32 Protection : 5; 
+    U32 Prototype : 1; 
+    U32 Transition : 1; 
+    U32 PageFileHigh : 20; 
+  }; 
+} MMPTE_SOFTWARE, *PMMPTE_SOFTWARE; 
+
+typedef struct _MMPTE_TIMESTAMP
+{
+  struct 
+  {
+    U32 MustBeZero : 1; 
+    U32 PageFileLow : 4; 
+    U32 Protection : 5; 
+    U32 Prototype : 1; 
+    U32 Transition : 1; 
+    U32 GlobalTimeStamp : 20; 
+  }; 
+} MMPTE_TIMESTAMP, *PMMPTE_TIMESTAMP; 
+
+typedef struct _MMPTE_TRANSITION
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 Write : 1; 
+    U32 Owner : 1; 
+    U32 WriteThrough : 1; 
+    U32 CacheDisable : 1; 
+    U32 Protection : 5; 
+    U32 Prototype : 1; 
+    U32 Transition : 1; 
+    U32 PageFrameNumber : 20; 
+  }; 
+} MMPTE_TRANSITION, *PMMPTE_TRANSITION; 
+
+typedef struct _MMPTE_SUBSECTION
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 SubsectionAddressLow : 9; 
+    U32 Prototype : 1; 
+    U32 SubsectionAddressHigh : 21; 
+  }; 
+} MMPTE_SUBSECTION, *PMMPTE_SUBSECTION; 
+
+typedef struct _MMPTE_LIST
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 OneEntry : 1; 
+    U32 filler0 : 8; 
+    U32 Prototype : 1; 
+    U32 filler1 : 1; 
+    U32 NextEntry : 20; 
+  }; 
+} MMPTE_LIST, *PMMPTE_LIST; 
+
+typedef struct _MMPTE
+{
+  union
+  {
+    union
+    {
+      U32 Long;
+      volatile U32 VolatileLong;
+      struct _HARDWARE_PTE Flush;
+      struct _MMPTE_HARDWARE Hard;
+      struct _MMPTE_PROTOTYPE Proto;
+      struct _MMPTE_SOFTWARE Soft;
+      struct _MMPTE_TIMESTAMP TimeStamp;
+      struct _MMPTE_TRANSITION Trans;
+      struct _MMPTE_SUBSECTION Subsect;
+      struct _MMPTE_LIST List;
+    }; 
+  } u;
+} MMPTE, *PMMPTE; 
+
+typedef struct _MMBANKED_SECTION
+{
+  U32 BasePhysicalPage;
+  struct _MMPTE* BasedPte;
+  U32 BankSize;
+  U32 BankShift;
+  void* BankedRoutine;
+  void* Context;
+  struct _MMPTE* CurrentMappedPte;
+  struct _MMPTE BankTemplate[1];
+} MMBANKED_SECTION, *PMMBANKED_SECTION; 
+

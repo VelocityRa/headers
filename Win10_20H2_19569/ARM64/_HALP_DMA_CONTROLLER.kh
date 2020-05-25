@@ -1,0 +1,73 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DMA_FUNCTION_TABLE
+{
+  void* InitializeController;
+  void* ValidateRequestLineBinding;
+  void* QueryMaxFragments;
+  void* ProgramChannel;
+  void* ConfigureChannel;
+  void* FlushChannel;
+  void* HandleInterrupt;
+  void* ReadDmaCounter;
+  void* ReportCommonBuffer;
+  void* CancelTransfer;
+} DMA_FUNCTION_TABLE, *PDMA_FUNCTION_TABLE; 
+
+typedef enum _KINTERRUPT_POLARITY
+{
+  InterruptPolarityUnknown = 0,
+  InterruptActiveHigh = 1,
+  InterruptRisingEdge = 1,
+  InterruptActiveLow = 2,
+  InterruptFallingEdge = 2,
+  InterruptActiveBoth = 3,
+  InterruptActiveBothTriggerLow = 3,
+  InterruptActiveBothTriggerHigh = 4,
+} KINTERRUPT_POLARITY, *PKINTERRUPT_POLARITY;
+
+typedef enum _KINTERRUPT_MODE
+{
+  LevelSensitive = 0,
+  Latched = 1,
+} KINTERRUPT_MODE, *PKINTERRUPT_MODE;
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _HALP_DMA_CONTROLLER
+{
+  struct _LIST_ENTRY Controllers;
+  struct _LIST_ENTRY AdapterList;
+  U32 ControllerId;
+  U32 MinimumRequestLine;
+  U32 MaximumRequestLine;
+  U32 ChannelCount;
+  U32 ScatterGatherLimit;
+  struct _HALP_DMA_CHANNEL* Channels;
+  void* ExtensionData;
+  U8 CacheCoherent;
+  U32 DmaAddressWidth;
+  struct _DMA_FUNCTION_TABLE Operations;
+  U32 SupportedPortWidths;
+  U32 MinimumTransferUnit;
+  U64 Lock;
+  U8 Irql;
+  U8 GeneratesInterrupt;
+  S32 Gsi;
+  enum _KINTERRUPT_POLARITY InterruptPolarity;
+  enum _KINTERRUPT_MODE InterruptMode;
+  struct _UNICODE_STRING ResourceId;
+  struct POHANDLE__* PowerHandle;
+  U8 PowerActive;
+  char __PADDING__[7];
+} HALP_DMA_CONTROLLER, *PHALP_DMA_CONTROLLER; 
+

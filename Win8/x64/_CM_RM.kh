@@ -1,0 +1,27 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _CM_RM
+{
+  struct _LIST_ENTRY RmListEntry;
+  struct _LIST_ENTRY TransactionListHead;
+  void* TmHandle;
+  void* Tm;
+  void* RmHandle;
+  void* KtmRm;
+  U32 RefCount;
+  U32 ContainerNum;
+  U64 ContainerSize;
+  struct _CMHIVE* CmHive;
+  void* LogFileObject;
+  void* MarshallingContext;
+  U32 RmFlags;
+  S32 LogStartStatus1;
+  S32 LogStartStatus2;
+  U64 BaseLsn;
+  struct _ERESOURCE* RmLock;
+} CM_RM, *PCM_RM; 
+

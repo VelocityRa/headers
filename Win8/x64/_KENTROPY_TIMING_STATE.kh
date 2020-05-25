@@ -1,0 +1,28 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KDPC
+{
+  U8 Type;
+  U8 Importance;
+  volatile U16 Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _KENTROPY_TIMING_STATE
+{
+  U32 EntropyCount;
+  U32 Buffer[64];
+  struct _KDPC Dpc;
+  U32 LastDeliveredBuffer;
+  S32 __PADDING__[1];
+} KENTROPY_TIMING_STATE, *PKENTROPY_TIMING_STATE; 
+

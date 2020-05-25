@@ -1,0 +1,19 @@
+typedef struct _ETW_SYSTEM_LOGGER
+{
+  U8 LoggerId;
+  U8 ClockType;
+} ETW_SYSTEM_LOGGER, *PETW_SYSTEM_LOGGER; 
+
+typedef struct _PERFINFO_GROUPMASK
+{
+  U32 Masks[8];
+} PERFINFO_GROUPMASK, *PPERFINFO_GROUPMASK; 
+
+typedef struct _ETW_SYSTEM_LOGGER_SETTINGS
+{
+  struct _ETW_SYSTEM_LOGGER EtwpSystemLogger[8];
+  volatile U32 EtwpActiveSystemLoggers;
+  struct _PERFINFO_GROUPMASK SiloGlobalGroupMask;
+  struct _PERFINFO_GROUPMASK EtwpGroupMasks[10];
+} ETW_SYSTEM_LOGGER_SETTINGS, *PETW_SYSTEM_LOGGER_SETTINGS; 
+

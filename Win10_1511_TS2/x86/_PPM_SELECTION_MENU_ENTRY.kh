@@ -1,0 +1,10 @@
+typedef struct _PPM_SELECTION_MENU_ENTRY
+{
+  U8 StrictDependency;
+  U8 InitiatingState;
+  U8 DependentState;
+  U32 StateIndex;
+  U32 Dependencies;
+  struct _PPM_SELECTION_DEPENDENCY* DependencyList;
+} PPM_SELECTION_MENU_ENTRY, *PPPM_SELECTION_MENU_ENTRY; 
+

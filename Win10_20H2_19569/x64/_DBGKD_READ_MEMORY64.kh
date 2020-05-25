@@ -1,0 +1,7 @@
+typedef struct _DBGKD_READ_MEMORY64
+{
+  U64 TargetBaseAddress;
+  U32 TransferCount;
+  U32 ActualBytesRead;
+} DBGKD_READ_MEMORY64, *PDBGKD_READ_MEMORY64; 
+

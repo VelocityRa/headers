@@ -1,0 +1,31 @@
+typedef enum _WHEA_RECOVERY_CONTEXT_ERROR_TYPE
+{
+  WheaRecoveryContextErrorTypeMemory = 1,
+  WheaRecoveryContextErrorTypePmem = 2,
+  WheaRecoveryContextErrorTypeMax = 3,
+} WHEA_RECOVERY_CONTEXT_ERROR_TYPE, *PWHEA_RECOVERY_CONTEXT_ERROR_TYPE;
+
+typedef struct _WHEA_RECOVERY_CONTEXT
+{
+  union
+  {
+    struct
+    {
+      U32 Address;
+      U8 Consumed;
+      U16 ErrorCode;
+      U8 ErrorIpValid;
+      U8 RestartIpValid;
+      U8 ClearPoison;
+      char __PADDING__[1];
+    } MemoryError;
+    struct
+    {
+      U32 PmemErrInfo;
+    } PmemError;
+  }; 
+  U64 PartitionId;
+  U32 VpIndex;
+  enum _WHEA_RECOVERY_CONTEXT_ERROR_TYPE ErrorType;
+} WHEA_RECOVERY_CONTEXT, *PWHEA_RECOVERY_CONTEXT; 
+

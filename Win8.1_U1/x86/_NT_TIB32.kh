@@ -1,0 +1,15 @@
+typedef struct _NT_TIB32
+{
+  U32 ExceptionList;
+  U32 StackBase;
+  U32 StackLimit;
+  U32 SubSystemTib;
+  union
+  {
+    U32 FiberData;
+    U32 Version;
+  }; 
+  U32 ArbitraryUserPointer;
+  U32 Self;
+} NT_TIB32, *PNT_TIB32; 
+

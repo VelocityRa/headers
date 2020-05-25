@@ -1,0 +1,7 @@
+typedef struct _EVENT_PAYLOAD_PREDICATE
+{
+  U16 FieldIndex;
+  U16 CompareOp;
+  U64 Value[2];
+} EVENT_PAYLOAD_PREDICATE, *PEVENT_PAYLOAD_PREDICATE; 
+

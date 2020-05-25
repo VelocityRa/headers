@@ -1,0 +1,8 @@
+typedef struct _POP_FX_IDLE_STATE
+{
+  U64 TransitionLatency;
+  U64 ResidencyRequirement;
+  U32 NominalPower;
+  S32 __PADDING__[1];
+} POP_FX_IDLE_STATE, *PPOP_FX_IDLE_STATE; 
+

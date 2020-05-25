@@ -1,0 +1,17 @@
+typedef union _WHEA_PERSISTENCE_INFO
+{
+  union
+  {
+    struct 
+    {
+      U64 Signature : 16; 
+      U64 Length : 24; 
+      U64 Identifier : 16; 
+      U64 Attributes : 2; 
+      U64 DoNotLog : 1; 
+      U64 Reserved : 5; 
+    }; 
+    U64 AsULONGLONG;
+  }; 
+} WHEA_PERSISTENCE_INFO, *PWHEA_PERSISTENCE_INFO; 
+

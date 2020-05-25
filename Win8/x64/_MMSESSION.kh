@@ -1,0 +1,99 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 Abandoned;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved : 4; 
+            }; 
+            U8 Hand;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 6; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Reserved2 : 4; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _FAST_MUTEX
+{
+  S32 Count;
+  void* Owner;
+  U32 Contention;
+  struct _KEVENT Event;
+  U32 OldIrql;
+  S32 __PADDING__[1];
+} FAST_MUTEX, *PFAST_MUTEX; 
+
+typedef struct _MMSESSION
+{
+  struct _FAST_MUTEX SystemSpaceViewLock;
+  struct _FAST_MUTEX* SystemSpaceViewLockPointer;
+  struct _MMVIEW* SystemSpaceViewTable;
+  U32 SystemSpaceHashSize;
+  U32 SystemSpaceHashEntries;
+  U32 SystemSpaceHashKey;
+  U32 BitmapFailures;
+} MMSESSION, *PMMSESSION; 
+

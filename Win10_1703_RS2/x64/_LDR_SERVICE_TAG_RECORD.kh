@@ -1,0 +1,7 @@
+typedef struct _LDR_SERVICE_TAG_RECORD
+{
+  struct _LDR_SERVICE_TAG_RECORD* Next;
+  U32 ServiceTag;
+  S32 __PADDING__[1];
+} LDR_SERVICE_TAG_RECORD, *PLDR_SERVICE_TAG_RECORD; 
+

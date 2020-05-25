@@ -1,0 +1,131 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef enum _PLUGPLAY_EVENT_CATEGORY
+{
+  HardwareProfileChangeEvent = 0,
+  TargetDeviceChangeEvent = 1,
+  DeviceClassChangeEvent = 2,
+  CustomDeviceEvent = 3,
+  DeviceInstallEvent = 4,
+  DeviceArrivalEvent = 5,
+  VetoEvent = 6,
+  BlockedDriverEvent = 7,
+  InvalidIDEvent = 8,
+  DevicePropertyChangeEvent = 9,
+  DeviceInstanceRemovalEvent = 10,
+  MaxPlugEventCategory = 11,
+} PLUGPLAY_EVENT_CATEGORY, *PPLUGPLAY_EVENT_CATEGORY;
+
+typedef enum _PNP_VETO_TYPE
+{
+  PNP_VetoTypeUnknown = 0,
+  PNP_VetoLegacyDevice = 1,
+  PNP_VetoPendingClose = 2,
+  PNP_VetoWindowsApp = 3,
+  PNP_VetoWindowsService = 4,
+  PNP_VetoOutstandingOpen = 5,
+  PNP_VetoDevice = 6,
+  PNP_VetoDriver = 7,
+  PNP_VetoIllegalDeviceRequest = 8,
+  PNP_VetoInsufficientPower = 9,
+  PNP_VetoNonDisableable = 10,
+  PNP_VetoLegacyDriver = 11,
+  PNP_VetoInsufficientRights = 12,
+} PNP_VETO_TYPE, *PPNP_VETO_TYPE;
+
+typedef struct _PLUGPLAY_EVENT_BLOCK
+{
+  struct _GUID EventGuid;
+  enum _PLUGPLAY_EVENT_CATEGORY EventCategory;
+  U32* Result;
+  U32 Flags;
+  U32 TotalSize;
+  void* DeviceObject;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct _GUID ClassGuid;
+        wchar_t SymbolicLinkName[1];
+        char __PADDING__[2];
+      } DeviceClass;
+      struct
+      {
+        wchar_t DeviceIds[1];
+      } TargetDevice;
+      struct
+      {
+        wchar_t DeviceId[1];
+      } InstallDevice;
+      struct
+      {
+        void* NotificationStructure;
+        wchar_t DeviceIds[1];
+        char __PADDING__[2];
+      } CustomNotification;
+      struct
+      {
+        void* Notification;
+      } ProfileNotification;
+      struct
+      {
+        U32 NotificationCode;
+        U32 NotificationData;
+      } PowerNotification;
+      struct
+      {
+        enum _PNP_VETO_TYPE VetoType;
+        wchar_t DeviceIdVetoNameBuffer[1];
+        char __PADDING__[2];
+      } VetoNotification;
+      struct
+      {
+        struct _GUID BlockedDriverGuid;
+      } BlockedDriverNotification;
+      struct
+      {
+        wchar_t ParentId[1];
+      } InvalidIDNotification;
+      struct
+      {
+        struct _GUID PowerSettingGuid;
+        U32 Flags;
+        U32 SessionId;
+        U32 DataLength;
+        U8 Data[1];
+        char __PADDING__[3];
+      } PowerSettingNotification;
+      struct
+      {
+        wchar_t DeviceId[1];
+      } PropertyChangeNotification;
+    }; 
+  } u;
+} PLUGPLAY_EVENT_BLOCK, *PPLUGPLAY_EVENT_BLOCK; 
+
+typedef struct _PNP_DEVICE_EVENT_ENTRY
+{
+  struct _LIST_ENTRY ListEntry;
+  U32 Argument;
+  struct _KEVENT* CallerEvent;
+  void* Callback;
+  void* Context;
+  enum _PNP_VETO_TYPE* VetoType;
+  struct _UNICODE_STRING* VetoName;
+  struct _PLUGPLAY_EVENT_BLOCK Data;
+} PNP_DEVICE_EVENT_ENTRY, *PPNP_DEVICE_EVENT_ENTRY; 
+

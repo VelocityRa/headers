@@ -1,0 +1,17 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _RELATIVE_SYMLINK_INFO
+{
+  U16 ExposedNamespaceLength;
+  U16 Flags;
+  U16 DeviceNameLength;
+  U16 Reserved;
+  struct _RELATIVE_SYMLINK_INFO* InteriorMountPoint;
+  struct _UNICODE_STRING OpenedName;
+} RELATIVE_SYMLINK_INFO, *PRELATIVE_SYMLINK_INFO; 
+

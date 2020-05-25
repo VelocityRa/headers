@@ -1,0 +1,9 @@
+typedef struct _PROCLOCALAPIC
+{
+  U8 Type;
+  U8 Length;
+  U8 ACPIProcessorID;
+  U8 APICID;
+  U32 Flags;
+} PROCLOCALAPIC, *PPROCLOCALAPIC; 
+

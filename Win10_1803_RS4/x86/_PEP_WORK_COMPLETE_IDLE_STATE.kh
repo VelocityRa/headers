@@ -1,0 +1,6 @@
+typedef struct _PEP_WORK_COMPLETE_IDLE_STATE
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 Component;
+} PEP_WORK_COMPLETE_IDLE_STATE, *PPEP_WORK_COMPLETE_IDLE_STATE; 
+

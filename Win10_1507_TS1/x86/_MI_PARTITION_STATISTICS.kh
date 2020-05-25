@@ -1,0 +1,24 @@
+typedef struct _MI_PARTITION_STATISTICS
+{
+  U32 DeleteYield;
+  U32 DeleteBad;
+  U32 DeleteTrulyBad;
+  U32 DeleteLargePage;
+  U32 DeleteLargePageRetry;
+  U32 DeleteZeroFree;
+  U32 DeleteTransition;
+  U32 DeleteStandbyReferenced;
+  U32 DeleteStandbyRelinkFailed;
+  U32 DeleteStandbySharedPagefile;
+  U32 DeleteStandbySharedFile;
+  U32 DeleteModifiedReferenced;
+  U32 DeleteModified;
+  U32 DeleteModifiedNoWrite;
+  U32 DeleteModifiedSharedPagefile;
+  U32 DeleteModifiedSharedFile;
+  U32 DeleteActiveSharedPagefile1;
+  U32 DeleteActiveSharedPagefile2;
+  U32 DeleteActiveSharedFile;
+  U32 DeleteWriteDelay;
+} MI_PARTITION_STATISTICS, *PMI_PARTITION_STATISTICS; 
+

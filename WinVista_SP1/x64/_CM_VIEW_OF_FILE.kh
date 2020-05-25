@@ -1,0 +1,20 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _CM_VIEW_OF_FILE
+{
+  struct _LIST_ENTRY MappedViewLinks;
+  struct _LIST_ENTRY PinnedViewLinks;
+  struct _LIST_ENTRY FlushedViewLinks;
+  struct _CMHIVE* CmHive;
+  void* Bcb;
+  void* ViewAddress;
+  U32 FileOffset;
+  U32 Size;
+  U32 UseCount;
+  S32 __PADDING__[1];
+} CM_VIEW_OF_FILE, *PCM_VIEW_OF_FILE; 
+

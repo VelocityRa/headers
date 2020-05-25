@@ -1,0 +1,13 @@
+typedef struct _LOADER_PARAMETER_HYPERVISOR_EXTENSION
+{
+  U32 InitialHypervisorCrashdumpAreaPageCount;
+  U32 HypervisorCrashdumpAreaPageCount;
+  U64 InitialHypervisorCrashdumpAreaSpa;
+  U64 HypervisorCrashdumpAreaSpa;
+  U64 HypervisorLaunchStatus;
+  U64 HypervisorLaunchStatusArg1;
+  U64 HypervisorLaunchStatusArg2;
+  U64 HypervisorLaunchStatusArg3;
+  U64 HypervisorLaunchStatusArg4;
+} LOADER_PARAMETER_HYPERVISOR_EXTENSION, *PLOADER_PARAMETER_HYPERVISOR_EXTENSION; 
+

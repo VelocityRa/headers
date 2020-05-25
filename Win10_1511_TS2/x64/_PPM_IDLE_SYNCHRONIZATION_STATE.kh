@@ -1,0 +1,13 @@
+typedef union _PPM_IDLE_SYNCHRONIZATION_STATE
+{
+  union
+  {
+    S32 AsLong;
+    struct 
+    {
+      S32 RefCount : 24; 
+      U32 State : 8; 
+    }; 
+  }; 
+} PPM_IDLE_SYNCHRONIZATION_STATE, *PPPM_IDLE_SYNCHRONIZATION_STATE; 
+

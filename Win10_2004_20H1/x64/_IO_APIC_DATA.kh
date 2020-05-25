@@ -1,0 +1,16 @@
+typedef struct _IO_APIC_DATA
+{
+  U64 PhysicalAddress;
+  U32 Identifier;
+  struct _IO_APIC_REGISTERS* BaseAddress;
+  U8 Version;
+  U8 PinCount;
+  U8 Initialized;
+  U8 InitializedFirstLocalUnit;
+  U32 GsiBase;
+  U32 CmciRegister;
+  U32 DeferredErrorRegister;
+  U8 IoUnitMissing;
+  char __PADDING__[7];
+} IO_APIC_DATA, *PIO_APIC_DATA; 
+

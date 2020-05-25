@@ -1,0 +1,6 @@
+typedef struct _DBGKD_WRITE_BREAKPOINT32
+{
+  U32 BreakPointAddress;
+  U32 BreakPointHandle;
+} DBGKD_WRITE_BREAKPOINT32, *PDBGKD_WRITE_BREAKPOINT32; 
+

@@ -1,0 +1,14 @@
+typedef struct _WNF_NODE_HEADER
+{
+  U16 NodeTypeCode;
+  U16 NodeByteSize;
+} WNF_NODE_HEADER, *PWNF_NODE_HEADER; 
+
+typedef struct _WNF_STATE_DATA
+{
+  struct _WNF_NODE_HEADER Header;
+  U32 AllocatedSize;
+  U32 DataSize;
+  U32 ChangeStamp;
+} WNF_STATE_DATA, *PWNF_STATE_DATA; 
+

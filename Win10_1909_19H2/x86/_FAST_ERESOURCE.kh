@@ -1,0 +1,9 @@
+typedef struct _FAST_ERESOURCE
+{
+  void* Reserved1[3];
+  U32 Reserved2;
+  void* Reserved3[4];
+  U32 Reserved4[4];
+  void* Reserved6[2];
+} FAST_ERESOURCE, *PFAST_ERESOURCE; 
+

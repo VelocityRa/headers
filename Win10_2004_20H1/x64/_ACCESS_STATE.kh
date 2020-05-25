@@ -1,0 +1,76 @@
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SECURITY_SUBJECT_CONTEXT
+{
+  void* ClientToken;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  void* PrimaryToken;
+  void* ProcessAuditId;
+} SECURITY_SUBJECT_CONTEXT, *PSECURITY_SUBJECT_CONTEXT; 
+
+typedef struct _LUID_AND_ATTRIBUTES
+{
+  struct _LUID Luid;
+  U32 Attributes;
+} LUID_AND_ATTRIBUTES, *PLUID_AND_ATTRIBUTES; 
+
+typedef struct _INITIAL_PRIVILEGE_SET
+{
+  U32 PrivilegeCount;
+  U32 Control;
+  struct _LUID_AND_ATTRIBUTES Privilege[3];
+} INITIAL_PRIVILEGE_SET, *PINITIAL_PRIVILEGE_SET; 
+
+typedef struct _PRIVILEGE_SET
+{
+  U32 PrivilegeCount;
+  U32 Control;
+  struct _LUID_AND_ATTRIBUTES Privilege[1];
+} PRIVILEGE_SET, *PPRIVILEGE_SET; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _ACCESS_STATE
+{
+  struct _LUID OperationID;
+  U8 SecurityEvaluated;
+  U8 GenerateAudit;
+  U8 GenerateOnClose;
+  U8 PrivilegesAllocated;
+  U32 Flags;
+  U32 RemainingDesiredAccess;
+  U32 PreviouslyGrantedAccess;
+  U32 OriginalDesiredAccess;
+  struct _SECURITY_SUBJECT_CONTEXT SubjectSecurityContext;
+  void* SecurityDescriptor;
+  void* AuxData;
+  union
+  {
+    union
+    {
+      struct _INITIAL_PRIVILEGE_SET InitialPrivilegeSet;
+      struct _PRIVILEGE_SET PrivilegeSet;
+    }; 
+  } Privileges;
+  U8 AuditPrivileges;
+  struct _UNICODE_STRING ObjectName;
+  struct _UNICODE_STRING ObjectTypeName;
+} ACCESS_STATE, *PACCESS_STATE; 
+

@@ -1,0 +1,11 @@
+typedef struct _PCW_MASK_INFORMATION
+{
+  U64 CounterMask;
+  const struct _UNICODE_STRING* InstanceMask;
+  U32 InstanceId;
+  U8 CollectMultiple;
+  struct _PCW_BUFFER* Buffer;
+  struct _KEVENT* CancelEvent;
+  S32 __PADDING__[1];
+} PCW_MASK_INFORMATION, *PPCW_MASK_INFORMATION; 
+

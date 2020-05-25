@@ -1,0 +1,7 @@
+typedef struct _DBGKD_READ_MEMORY32
+{
+  U32 TargetBaseAddress;
+  U32 TransferCount;
+  U32 ActualBytesRead;
+} DBGKD_READ_MEMORY32, *PDBGKD_READ_MEMORY32; 
+

@@ -1,0 +1,86 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+enum UoWActionType
+{
+  UoWAddThisKey = 0,
+  UoWAddChildKey = 1,
+  UoWDeleteThisKey = 2,
+  UoWDeleteChildKey = 3,
+  UoWSetValueNew = 4,
+  UoWSetValueExisting = 5,
+  UoWDeleteValue = 6,
+  UoWSetKeyUserFlags = 7,
+  UoWSetLastWriteTime = 8,
+  UoWSetSecurityDescriptor = 9,
+  UoWRenameSubKey = 10,
+  UoWRenameOldSubKey = 11,
+  UoWRenameNewSubKey = 12,
+  UoWIsolation = 13,
+  UoWInvalid = 14,
+};
+
+enum HSTORAGE_TYPE
+{
+  Stable = 0,
+  Volatile = 1,
+  InvalidStorage = 2,
+};
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _CM_KCB_UOW
+{
+  struct _LIST_ENTRY TransactionListEntry;
+  struct _CM_INTENT_LOCK* KCBLock;
+  struct _CM_INTENT_LOCK* KeyLock;
+  struct _LIST_ENTRY KCBListEntry;
+  struct _CM_KEY_CONTROL_BLOCK* KeyControlBlock;
+  struct _CM_TRANS* Transaction;
+  U32 UoWState;
+  enum UoWActionType ActionType;
+  enum HSTORAGE_TYPE StorageType;
+  union
+  {
+    struct _CM_KEY_CONTROL_BLOCK* ChildKCB;
+    U32 VolatileKeyCell;
+    struct
+    {
+      U32 OldValueCell;
+      U32 NewValueCell;
+    }; 
+    U32 UserFlags;
+    union _LARGE_INTEGER LastWriteTime;
+    U32 TxSecurityCell;
+    struct
+    {
+      struct _CM_KEY_CONTROL_BLOCK* OldChildKCB;
+      struct _CM_KEY_CONTROL_BLOCK* NewChildKCB;
+    }; 
+    struct
+    {
+      struct _CM_KEY_CONTROL_BLOCK* OtherChildKCB;
+      U32 ThisVolatileKeyCell;
+    }; 
+  }; 
+} CM_KCB_UOW, *PCM_KCB_UOW; 
+

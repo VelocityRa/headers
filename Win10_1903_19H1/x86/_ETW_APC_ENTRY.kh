@@ -1,0 +1,48 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KAPC
+{
+  U8 Type;
+  U8 SpareByte0;
+  U8 Size;
+  U8 SpareByte1;
+  U32 SpareLong0;
+  struct _KTHREAD* Thread;
+  struct _LIST_ENTRY ApcListEntry;
+  union
+  {
+    struct
+    {
+      void* KernelRoutine;
+      void* RundownRoutine;
+      void* NormalRoutine;
+    }; 
+    void* Reserved[3];
+  }; 
+  void* NormalContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  char ApcStateIndex;
+  char ApcMode;
+  U8 Inserted;
+  char __PADDING__[1];
+} KAPC, *PKAPC; 
+
+typedef struct _ETW_APC_ENTRY
+{
+  union
+  {
+    struct _SINGLE_LIST_ENTRY SListEntry;
+    struct _KAPC Apc;
+  }; 
+} ETW_APC_ENTRY, *PETW_APC_ENTRY; 
+

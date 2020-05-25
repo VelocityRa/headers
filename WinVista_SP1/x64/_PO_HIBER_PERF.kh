@@ -1,0 +1,20 @@
+typedef struct _PO_HIBER_PERF
+{
+  U64 IoTicks;
+  U64 InitTicks;
+  U64 CopyTicks;
+  U64 StartCount;
+  U32 ElapsedTime;
+  U32 IoTime;
+  U32 CopyTime;
+  U32 InitTime;
+  U32 PagesWritten;
+  U32 PagesProcessed;
+  U32 BytesCopied;
+  U32 DumpCount;
+  U32 FileRuns;
+  U64 ResumeAppStartTime;
+  U64 ResumeAppEndTime;
+  U64 HiberFileResumeTime;
+} PO_HIBER_PERF, *PPO_HIBER_PERF; 
+

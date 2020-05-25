@@ -1,0 +1,34 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _LOCK_TRACKER
+{
+  struct _RTL_BALANCED_NODE LockTrackerNode;
+  struct _MDL* Mdl;
+  void* StartVa;
+  U64 Count;
+  U32 Offset;
+  U32 Length;
+  U32 Who;
+  U32 Hash;
+  U64 Page;
+  void* StackTrace[8];
+  struct _EPROCESS* Process;
+} LOCK_TRACKER, *PLOCK_TRACKER; 
+

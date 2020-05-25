@@ -1,0 +1,7 @@
+typedef struct _KALPC_HANDLE_DATA
+{
+  U32 Flags;
+  U32 ObjectType;
+  struct _OB_DUPLICATE_OBJECT_STATE* DuplicateContext;
+} KALPC_HANDLE_DATA, *PKALPC_HANDLE_DATA; 
+

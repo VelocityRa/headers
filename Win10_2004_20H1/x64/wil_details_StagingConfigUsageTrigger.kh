@@ -1,0 +1,17 @@
+struct wil_details_StagingConfigWnfStateName
+{
+  U32 Data[2];
+}; 
+
+struct wil_details_StagingConfigUsageTrigger
+{
+  U32 featureId;
+  struct wil_details_StagingConfigWnfStateName trigger;
+  struct 
+  {
+    U32 serviceReportingKind : 16; 
+    U32 isVariantConfig : 1; 
+    U32 unused : 15; 
+  }; 
+}; 
+

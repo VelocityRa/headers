@@ -1,0 +1,8 @@
+typedef struct _VACB_ARRAY_HEADER
+{
+  U32 VacbArrayIndex;
+  U32 MappingCount;
+  U32 HighestMappedIndex;
+  U32 Reserved;
+} VACB_ARRAY_HEADER, *PVACB_ARRAY_HEADER; 
+

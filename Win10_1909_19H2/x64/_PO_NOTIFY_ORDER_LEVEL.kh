@@ -1,0 +1,16 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PO_NOTIFY_ORDER_LEVEL
+{
+  U32 DeviceCount;
+  U32 ActiveCount;
+  struct _LIST_ENTRY WaitSleep;
+  struct _LIST_ENTRY ReadySleep;
+  struct _LIST_ENTRY ReadyS0;
+  struct _LIST_ENTRY WaitS0;
+} PO_NOTIFY_ORDER_LEVEL, *PPO_NOTIFY_ORDER_LEVEL; 
+

@@ -1,0 +1,6 @@
+typedef union _KQOS_GROUPING_SETS
+{
+  U64 SingleCoreSet;
+  U64 SmtSet;
+} KQOS_GROUPING_SETS, *PKQOS_GROUPING_SETS; 
+

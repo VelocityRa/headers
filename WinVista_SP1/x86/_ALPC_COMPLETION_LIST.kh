@@ -1,0 +1,30 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _ALPC_COMPLETION_LIST
+{
+  struct _LIST_ENTRY Entry;
+  struct _EPROCESS* OwnerProcess;
+  struct _MDL* Mdl;
+  void* UserVa;
+  void* UserLimit;
+  void* DataUserVa;
+  void* SystemVa;
+  U32 TotalSize;
+  struct _ALPC_COMPLETION_LIST_HEADER* Header;
+  void* List;
+  U32 ListSize;
+  void* Bitmap;
+  U32 BitmapSize;
+  void* Data;
+  U32 DataSize;
+  U32 BitmapLimit;
+  U32 BitmapNextHint;
+  U32 ConcurrencyCount;
+  U32 AttributeFlags;
+  U32 AttributeSize;
+} ALPC_COMPLETION_LIST, *PALPC_COMPLETION_LIST; 
+

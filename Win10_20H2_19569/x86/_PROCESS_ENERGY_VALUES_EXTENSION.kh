@@ -1,0 +1,69 @@
+typedef union _TIMELINE_BITMAP
+{
+  union
+  {
+    U64 Value;
+    struct
+    {
+      U32 EndTime;
+      U32 Bitmap;
+    }; 
+  }; 
+} TIMELINE_BITMAP, *PTIMELINE_BITMAP; 
+
+typedef union _ENERGY_STATE_DURATION
+{
+  union
+  {
+    U64 Value;
+    struct
+    {
+      U32 LastChangeTime;
+      struct 
+      {
+        U32 Duration : 31; 
+        U32 IsInState : 1; 
+      }; 
+    }; 
+  }; 
+} ENERGY_STATE_DURATION, *PENERGY_STATE_DURATION; 
+
+typedef struct _PROCESS_ENERGY_VALUES_EXTENSION
+{
+  union
+  {
+    union _TIMELINE_BITMAP Timelines[14];
+    struct
+    {
+      union _TIMELINE_BITMAP CpuTimeline;
+      union _TIMELINE_BITMAP DiskTimeline;
+      union _TIMELINE_BITMAP NetworkTimeline;
+      union _TIMELINE_BITMAP MBBTimeline;
+      union _TIMELINE_BITMAP ForegroundTimeline;
+      union _TIMELINE_BITMAP DesktopVisibleTimeline;
+      union _TIMELINE_BITMAP CompositionRenderedTimeline;
+      union _TIMELINE_BITMAP CompositionDirtyGeneratedTimeline;
+      union _TIMELINE_BITMAP CompositionDirtyPropagatedTimeline;
+      union _TIMELINE_BITMAP InputTimeline;
+      union _TIMELINE_BITMAP AudioInTimeline;
+      union _TIMELINE_BITMAP AudioOutTimeline;
+      union _TIMELINE_BITMAP DisplayRequiredTimeline;
+      union _TIMELINE_BITMAP KeyboardInputTimeline;
+    }; 
+  }; 
+  union
+  {
+    union _ENERGY_STATE_DURATION Durations[5];
+    struct
+    {
+      union _ENERGY_STATE_DURATION InputDuration;
+      union _ENERGY_STATE_DURATION AudioInDuration;
+      union _ENERGY_STATE_DURATION AudioOutDuration;
+      union _ENERGY_STATE_DURATION DisplayRequiredDuration;
+      union _ENERGY_STATE_DURATION PSMBackgroundDuration;
+    }; 
+  }; 
+  U32 KeyboardInput;
+  U32 MouseInput;
+} PROCESS_ENERGY_VALUES_EXTENSION, *PPROCESS_ENERGY_VALUES_EXTENSION; 
+

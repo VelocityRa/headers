@@ -1,0 +1,9 @@
+typedef struct _EVENT_FILTER_LEVEL_KW
+{
+  U64 MatchAnyKeyword;
+  U64 MatchAllKeyword;
+  U8 Level;
+  U8 FilterIn;
+  char __PADDING__[6];
+} EVENT_FILTER_LEVEL_KW, *PEVENT_FILTER_LEVEL_KW; 
+

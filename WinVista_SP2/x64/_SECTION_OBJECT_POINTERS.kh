@@ -1,0 +1,7 @@
+typedef struct _SECTION_OBJECT_POINTERS
+{
+  void* DataSectionObject;
+  void* SharedCacheMap;
+  void* ImageSectionObject;
+} SECTION_OBJECT_POINTERS, *PSECTION_OBJECT_POINTERS; 
+

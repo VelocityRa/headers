@@ -1,0 +1,19 @@
+typedef union _WHEA_NMI_ERROR_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 HypervisorError : 1; 
+      U32 Reserved : 31; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_NMI_ERROR_FLAGS, *PWHEA_NMI_ERROR_FLAGS; 
+
+typedef struct _WHEA_NMI_ERROR
+{
+  U8 Data[8];
+  union _WHEA_NMI_ERROR_FLAGS Flags;
+} WHEA_NMI_ERROR, *PWHEA_NMI_ERROR; 
+

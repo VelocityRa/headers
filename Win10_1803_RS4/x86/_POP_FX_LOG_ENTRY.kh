@@ -1,0 +1,11 @@
+typedef struct _POP_FX_LOG_ENTRY
+{
+  U64 Timestamp;
+  U8 Operation;
+  U8 Component;
+  U16 Processor;
+  U16 Process;
+  U16 Thread;
+  U64 Information;
+} POP_FX_LOG_ENTRY, *PPOP_FX_LOG_ENTRY; 
+

@@ -1,0 +1,6 @@
+typedef struct _VI_FAULT_TRACE
+{
+  struct _ETHREAD* Thread;
+  void* StackTrace[8];
+} VI_FAULT_TRACE, *PVI_FAULT_TRACE; 
+

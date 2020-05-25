@@ -1,0 +1,28 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _FILE_BASIC_INFORMATION
+{
+  union _LARGE_INTEGER CreationTime;
+  union _LARGE_INTEGER LastAccessTime;
+  union _LARGE_INTEGER LastWriteTime;
+  union _LARGE_INTEGER ChangeTime;
+  U32 FileAttributes;
+  S32 __PADDING__[1];
+} FILE_BASIC_INFORMATION, *PFILE_BASIC_INFORMATION; 
+

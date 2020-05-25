@@ -1,0 +1,10 @@
+typedef struct _OBJECT_HANDLE_COUNT_ENTRY
+{
+  struct _EPROCESS* Process;
+  struct 
+  {
+    U32 HandleCount : 24; 
+    U32 LockCount : 8; 
+  }; 
+} OBJECT_HANDLE_COUNT_ENTRY, *POBJECT_HANDLE_COUNT_ENTRY; 
+

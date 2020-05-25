@@ -1,0 +1,11 @@
+typedef struct _DEVICE_MANAGE_DATA_SET_ATTRIBUTES
+{
+  U32 Size;
+  U32 Action;
+  U32 Flags;
+  U32 ParameterBlockOffset;
+  U32 ParameterBlockLength;
+  U32 DataSetRangesOffset;
+  U32 DataSetRangesLength;
+} DEVICE_MANAGE_DATA_SET_ATTRIBUTES, *PDEVICE_MANAGE_DATA_SET_ATTRIBUTES; 
+

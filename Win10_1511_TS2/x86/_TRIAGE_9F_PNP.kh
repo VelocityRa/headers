@@ -1,0 +1,8 @@
+typedef struct _TRIAGE_9F_PNP
+{
+  U16 Signature;
+  U16 Revision;
+  struct _TRIAGE_PNP_DEVICE_COMPLETION_QUEUE* CompletionQueue;
+  struct _TRIAGE_EX_WORK_QUEUE* DelayedWorkQueue;
+} TRIAGE_9F_PNP, *PTRIAGE_9F_PNP; 
+

@@ -1,0 +1,14 @@
+typedef struct _EXHANDLE
+{
+  union
+  {
+    struct 
+    {
+      U32 TagBits : 2; 
+      U32 Index : 30; 
+    }; 
+    void* GenericHandleOverlay;
+    U64 Value;
+  }; 
+} EXHANDLE, *PEXHANDLE; 
+

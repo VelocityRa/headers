@@ -1,0 +1,29 @@
+typedef struct _XSTATE_CONTEXT
+{
+  U64 Mask;
+  U32 Length;
+  U32 Reserved1;
+  struct _XSAVE_AREA* Area;
+  U32 Reserved2;
+  void* Buffer;
+  U32 Reserved3;
+} XSTATE_CONTEXT, *PXSTATE_CONTEXT; 
+
+typedef struct _XSTATE_SAVE
+{
+  union
+  {
+    struct
+    {
+      S64 Reserved1;
+      U32 Reserved2;
+      struct _XSTATE_SAVE* Prev;
+      struct _XSAVE_AREA* Reserved3;
+      struct _KTHREAD* Thread;
+      void* Reserved4;
+      U8 Level;
+    }; 
+    struct _XSTATE_CONTEXT XStateContext;
+  }; 
+} XSTATE_SAVE, *PXSTATE_SAVE; 
+

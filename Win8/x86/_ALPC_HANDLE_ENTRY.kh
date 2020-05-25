@@ -1,0 +1,5 @@
+typedef struct _ALPC_HANDLE_ENTRY
+{
+  void* Object;
+} ALPC_HANDLE_ENTRY, *PALPC_HANDLE_ENTRY; 
+

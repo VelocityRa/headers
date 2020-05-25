@@ -1,0 +1,40 @@
+enum POWER_ACTION
+{
+  PowerActionNone = 0,
+  PowerActionReserved = 1,
+  PowerActionSleep = 2,
+  PowerActionHibernate = 3,
+  PowerActionShutdown = 4,
+  PowerActionShutdownReset = 5,
+  PowerActionShutdownOff = 6,
+  PowerActionWarmEject = 7,
+};
+
+struct POWER_ACTION_POLICY
+{
+  enum POWER_ACTION Action;
+  U32 Flags;
+  U32 EventCode;
+}; 
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+struct SYSTEM_POWER_LEVEL
+{
+  U8 Enable;
+  U8 Spare[3];
+  U32 BatteryLevel;
+  struct POWER_ACTION_POLICY PowerPolicy;
+  enum _SYSTEM_POWER_STATE MinSystemState;
+}; 
+

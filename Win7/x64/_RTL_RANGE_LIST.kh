@@ -1,0 +1,15 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_RANGE_LIST
+{
+  struct _LIST_ENTRY ListHead;
+  U32 Flags;
+  U32 Count;
+  U32 Stamp;
+  S32 __PADDING__[1];
+} RTL_RANGE_LIST, *PRTL_RANGE_LIST; 
+

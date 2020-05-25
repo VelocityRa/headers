@@ -1,0 +1,23 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_ACCESS_LOG_STATE
+{
+  struct _MM_PAGE_ACCESS_INFO_HEADER* volatile CcAccessLog;
+  struct _WORK_QUEUE_ITEM DisableAccessLogging;
+  U32 Enabled;
+  U32 MinLoggingPriority;
+  U64 AccessLoggingLock;
+  S32 __PADDING__[14];
+} MI_ACCESS_LOG_STATE, *PMI_ACCESS_LOG_STATE; 
+

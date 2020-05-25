@@ -1,0 +1,10 @@
+typedef struct _LOCAL_X2APIC_NMISOURCE
+{
+  U8 Type;
+  U8 Length;
+  U16 Flags;
+  U32 ProcessorID;
+  U8 LINTIN;
+  U8 Reserved[3];
+} LOCAL_X2APIC_NMISOURCE, *PLOCAL_X2APIC_NMISOURCE; 
+

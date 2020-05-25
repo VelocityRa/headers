@@ -1,0 +1,17 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _ETW_DECODE_CONTROL_ENTRY
+{
+  struct _ETW_DECODE_CONTROL_ENTRY* Next;
+  struct _GUID Decode;
+  struct _GUID Control;
+  U8 ConsumersNotified;
+  char __PADDING__[7];
+} ETW_DECODE_CONTROL_ENTRY, *PETW_DECODE_CONTROL_ENTRY; 
+

@@ -1,0 +1,37 @@
+typedef union _KALPC_DIRECT_EVENT
+{
+  union
+  {
+    U64 Event;
+    struct 
+    {
+      U64 Referenced : 1; 
+      U64 Reserved : 63; 
+    }; 
+  }; 
+} KALPC_DIRECT_EVENT, *PKALPC_DIRECT_EVENT; 
+
+typedef struct _ALPC_WORK_ON_BEHALF_TICKET
+{
+  U32 ThreadId;
+  U32 ThreadCreationTimeLow;
+} ALPC_WORK_ON_BEHALF_TICKET, *PALPC_WORK_ON_BEHALF_TICKET; 
+
+typedef struct _KALPC_WORK_ON_BEHALF_DATA
+{
+  struct _ALPC_WORK_ON_BEHALF_TICKET Ticket;
+} KALPC_WORK_ON_BEHALF_DATA, *PKALPC_WORK_ON_BEHALF_DATA; 
+
+typedef struct _KALPC_MESSAGE_ATTRIBUTES
+{
+  void* ClientContext;
+  void* ServerContext;
+  void* PortContext;
+  void* CancelPortContext;
+  struct _KALPC_SECURITY_DATA* SecurityData;
+  struct _KALPC_VIEW* View;
+  struct _KALPC_HANDLE_DATA* HandleData;
+  union _KALPC_DIRECT_EVENT DirectEvent;
+  struct _KALPC_WORK_ON_BEHALF_DATA WorkOnBehalfData;
+} KALPC_MESSAGE_ATTRIBUTES, *PKALPC_MESSAGE_ATTRIBUTES; 
+

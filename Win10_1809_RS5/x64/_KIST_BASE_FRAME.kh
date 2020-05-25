@@ -1,0 +1,8 @@
+typedef struct _KIST_BASE_FRAME
+{
+  struct _KPCR* KernelGsBase;
+  struct _KIST_LINK_FRAME* IstStack;
+  U64 PreviousGsBase;
+  U64 PreviousCr3;
+} KIST_BASE_FRAME, *PKIST_BASE_FRAME; 
+

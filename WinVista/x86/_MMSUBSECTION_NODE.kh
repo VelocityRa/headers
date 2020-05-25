@@ -1,0 +1,42 @@
+typedef struct _MMSUBSECTION_FLAGS
+{
+  struct 
+  {
+    U16 SubsectionAccessed : 1; 
+    U16 Protection : 5; 
+    U16 StartingSector4132 : 10; 
+  }; 
+  struct 
+  {
+    U16 SubsectionStatic : 1; 
+    U16 GlobalMemory : 1; 
+    U16 DirtyPages : 1; 
+    U16 Spare : 1; 
+    U16 SectorEndOffset : 12; 
+  }; 
+} MMSUBSECTION_FLAGS, *PMMSUBSECTION_FLAGS; 
+
+typedef struct _MMSUBSECTION_NODE
+{
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSUBSECTION_FLAGS SubsectionFlags;
+    }; 
+  } u;
+  U32 StartingSector;
+  U32 NumberOfFullSectors;
+  union
+  {
+    union
+    {
+      S32 Balance : 2; 
+      struct _MMSUBSECTION_NODE* Parent;
+    }; 
+  } u1;
+  struct _MMSUBSECTION_NODE* LeftChild;
+  struct _MMSUBSECTION_NODE* RightChild;
+} MMSUBSECTION_NODE, *PMMSUBSECTION_NODE; 
+

@@ -1,0 +1,6 @@
+typedef struct _PROC_PERF_LOAD
+{
+  U8 BusyPercentage;
+  U8 FrequencyPercentage;
+} PROC_PERF_LOAD, *PPROC_PERF_LOAD; 
+

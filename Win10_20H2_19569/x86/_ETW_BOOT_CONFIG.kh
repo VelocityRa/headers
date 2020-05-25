@@ -1,0 +1,12 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _ETW_BOOT_CONFIG
+{
+  U32 MaxLoggers;
+  struct _LIST_ENTRY BootLoggersList;
+} ETW_BOOT_CONFIG, *PETW_BOOT_CONFIG; 
+

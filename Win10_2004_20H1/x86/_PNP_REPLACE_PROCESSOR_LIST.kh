@@ -1,0 +1,9 @@
+typedef struct _PNP_REPLACE_PROCESSOR_LIST
+{
+  U32* Affinity;
+  U32 GroupCount;
+  U32 AllocatedCount;
+  U32 Count;
+  U32 ApicIds[1];
+} PNP_REPLACE_PROCESSOR_LIST, *PPNP_REPLACE_PROCESSOR_LIST; 
+

@@ -1,0 +1,15 @@
+typedef union _CPU_INFO
+{
+  union
+  {
+    U32 AsUINT32[4];
+    struct
+    {
+      U32 Eax;
+      U32 Ebx;
+      U32 Ecx;
+      U32 Edx;
+    }; 
+  }; 
+} CPU_INFO, *PCPU_INFO; 
+

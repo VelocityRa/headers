@@ -1,0 +1,7 @@
+typedef struct _PROC_PERF_UTILITY
+{
+  U32 Affinitized;
+  U32 Performance;
+  U32 Total;
+} PROC_PERF_UTILITY, *PPROC_PERF_UTILITY; 
+

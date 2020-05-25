@@ -1,0 +1,16 @@
+typedef struct _MCGEN_TRACE_CONTEXT
+{
+  U64 RegistrationHandle;
+  U64 Logger;
+  U64 MatchAnyKeyword;
+  U64 MatchAllKeyword;
+  U32 Flags;
+  U32 IsEnabled;
+  U8 Level;
+  U8 Reserve;
+  U16 EnableBitsCount;
+  U32* EnableBitMask;
+  const U64* EnableKeyWords;
+  const U8* EnableLevel;
+} MCGEN_TRACE_CONTEXT, *PMCGEN_TRACE_CONTEXT; 
+

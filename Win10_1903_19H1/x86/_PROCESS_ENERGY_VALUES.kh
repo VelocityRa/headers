@@ -1,0 +1,43 @@
+typedef union _ENERGY_STATE_DURATION
+{
+  union
+  {
+    U64 Value;
+    struct
+    {
+      U32 LastChangeTime;
+      struct 
+      {
+        U32 Duration : 31; 
+        U32 IsInState : 1; 
+      }; 
+    }; 
+  }; 
+} ENERGY_STATE_DURATION, *PENERGY_STATE_DURATION; 
+
+typedef struct _PROCESS_ENERGY_VALUES
+{
+  U64 Cycles[2][4];
+  U64 DiskEnergy;
+  U64 NetworkTailEnergy;
+  U64 MBBTailEnergy;
+  U64 NetworkTxRxBytes;
+  U64 MBBTxRxBytes;
+  union
+  {
+    union _ENERGY_STATE_DURATION Durations[3];
+    struct
+    {
+      union _ENERGY_STATE_DURATION ForegroundDuration;
+      union _ENERGY_STATE_DURATION DesktopVisibleDuration;
+      union _ENERGY_STATE_DURATION PSMForegroundDuration;
+    }; 
+  }; 
+  U32 CompositionRendered;
+  U32 CompositionDirtyGenerated;
+  U32 CompositionDirtyPropagated;
+  U32 Reserved1;
+  U64 AttributedCycles[2][4];
+  U64 WorkOnBehalfCycles[2][4];
+} PROCESS_ENERGY_VALUES, *PPROCESS_ENERGY_VALUES; 
+

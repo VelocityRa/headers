@@ -1,0 +1,11 @@
+typedef struct _RTL_HASH_TABLE
+{
+  U32 EntryCount;
+  struct 
+  {
+    U32 MaskBitCount : 5; 
+    U32 BucketCount : 27; 
+  }; 
+  struct _SINGLE_LIST_ENTRY* Buckets;
+} RTL_HASH_TABLE, *PRTL_HASH_TABLE; 
+

@@ -1,0 +1,8 @@
+typedef struct _MI_LARGE_PAGE_CANDIDATES
+{
+  U16 Hand;
+  U16 ActiveEntryCount;
+  U8 Overflowed;
+  U64 PageFrames[64];
+} MI_LARGE_PAGE_CANDIDATES, *PMI_LARGE_PAGE_CANDIDATES; 
+

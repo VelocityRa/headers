@@ -1,0 +1,7 @@
+typedef struct _ARMCE_DBGKD_CONTROL_SET
+{
+  U32 Continue;
+  U32 CurrentSymbolStart;
+  U32 CurrentSymbolEnd;
+} ARMCE_DBGKD_CONTROL_SET, *PARMCE_DBGKD_CONTROL_SET; 
+

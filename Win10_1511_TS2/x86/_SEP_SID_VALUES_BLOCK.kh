@@ -1,0 +1,8 @@
+typedef struct _SEP_SID_VALUES_BLOCK
+{
+  U32 BlockLength;
+  S32 ReferenceCount;
+  U32 SidCount;
+  U32 SidValuesStart;
+} SEP_SID_VALUES_BLOCK, *PSEP_SID_VALUES_BLOCK; 
+

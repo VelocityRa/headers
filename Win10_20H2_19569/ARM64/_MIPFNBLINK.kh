@@ -1,0 +1,29 @@
+typedef struct _MIPFNBLINK
+{
+  union
+  {
+    struct 
+    {
+      U64 Blink : 40; 
+      U64 NodeBlinkLow : 19; 
+      U64 TbFlushStamp : 3; 
+      U64 PageBlinkDeleteBit : 1; 
+      U64 PageBlinkLockBit : 1; 
+    }; 
+    struct 
+    {
+      U64 ShareCount : 62; 
+      U64 PageShareCountDeleteBit : 1; 
+      U64 PageShareCountLockBit : 1; 
+    }; 
+    U64 EntireField;
+    volatile S64 Lock;
+    struct 
+    {
+      U64 LockNotUsed : 62; 
+      U64 DeleteBit : 1; 
+      U64 LockBit : 1; 
+    }; 
+  }; 
+} MIPFNBLINK, *PMIPFNBLINK; 
+

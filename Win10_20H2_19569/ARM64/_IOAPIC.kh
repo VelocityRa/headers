@@ -1,0 +1,10 @@
+typedef struct _IOAPIC
+{
+  U8 Type;
+  U8 Length;
+  U8 IOAPICID;
+  U8 Reserved;
+  U32 IOAPICAddress;
+  U32 SystemVectorBase;
+} IOAPIC, *PIOAPIC; 
+

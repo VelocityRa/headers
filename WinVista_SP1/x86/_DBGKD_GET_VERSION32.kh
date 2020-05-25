@@ -1,0 +1,18 @@
+typedef struct _DBGKD_GET_VERSION32
+{
+  U16 MajorVersion;
+  U16 MinorVersion;
+  U16 ProtocolVersion;
+  U16 Flags;
+  U32 KernBase;
+  U32 PsLoadedModuleList;
+  U16 MachineType;
+  U16 ThCallbackStack;
+  U16 NextCallback;
+  U16 FramePointer;
+  U32 KiCallUserMode;
+  U32 KeUserCallbackDispatcher;
+  U32 BreakpointWithStatus;
+  U32 DebuggerDataList;
+} DBGKD_GET_VERSION32, *PDBGKD_GET_VERSION32; 
+

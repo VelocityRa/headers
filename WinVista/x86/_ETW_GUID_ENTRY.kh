@@ -1,0 +1,47 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _TRACE_ENABLE_CONTEXT
+{
+  U16 LoggerId;
+  U8 Level;
+  U8 InternalFlag;
+  U32 EnableFlags;
+} TRACE_ENABLE_CONTEXT, *PTRACE_ENABLE_CONTEXT; 
+
+typedef struct _TRACE_ENABLE_INFO
+{
+  U32 IsEnabled;
+  U8 Level;
+  U8 Reserved1;
+  U16 LoggerId;
+  U32 EnableProperty;
+  U32 Reserved2;
+  U64 MatchAnyKeyword;
+  U64 MatchAllKeyword;
+} TRACE_ENABLE_INFO, *PTRACE_ENABLE_INFO; 
+
+typedef struct _ETW_GUID_ENTRY
+{
+  struct _LIST_ENTRY GuidList;
+  volatile S32 RefCount;
+  struct _GUID Guid;
+  struct _LIST_ENTRY RegListHead;
+  void* SecurityDescriptor;
+  struct _TRACE_ENABLE_CONTEXT LegacyEnableContext;
+  U32 LegacyProviderEnabled;
+  struct _TRACE_ENABLE_INFO ProviderEnableInfo;
+  struct _TRACE_ENABLE_INFO EnableInfo[8];
+} ETW_GUID_ENTRY, *PETW_GUID_ENTRY; 
+

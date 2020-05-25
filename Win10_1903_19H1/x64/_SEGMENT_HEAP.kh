@@ -1,0 +1,256 @@
+struct RTL_HP_ENV_HANDLE
+{
+  void* h[2];
+}; 
+
+typedef struct _RTL_HEAP_MEMORY_LIMIT_DATA
+{
+  U64 CommitLimitBytes;
+  U64 CommitLimitFailureCode;
+  U64 MaxAllocationSizeBytes;
+  U64 AllocationLimitFailureCode;
+} RTL_HEAP_MEMORY_LIMIT_DATA, *PRTL_HEAP_MEMORY_LIMIT_DATA; 
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef union _RTL_RUN_ONCE
+{
+  union
+  {
+    void* Ptr;
+    U64 Value;
+    U64 State : 2; 
+  }; 
+} RTL_RUN_ONCE, *PRTL_RUN_ONCE; 
+
+typedef struct _HEAP_OPPORTUNISTIC_LARGE_PAGE_STATS
+{
+  volatile U64 SmallPagesInUseWithinLarge;
+  volatile U64 OpportunisticLargePageCount;
+} HEAP_OPPORTUNISTIC_LARGE_PAGE_STATS, *PHEAP_OPPORTUNISTIC_LARGE_PAGE_STATS; 
+
+typedef struct _RTL_HP_SEG_ALLOC_POLICY
+{
+  U64 MinLargePages;
+  U64 MaxLargePages;
+  U8 MinUtilization;
+  char __PADDING__[7];
+} RTL_HP_SEG_ALLOC_POLICY, *PRTL_HP_SEG_ALLOC_POLICY; 
+
+typedef struct _HEAP_RUNTIME_MEMORY_STATS
+{
+  volatile U64 TotalReservedPages;
+  volatile U64 TotalCommittedPages;
+  U64 FreeCommittedPages;
+  U64 LfhFreeCommittedPages;
+  struct _HEAP_OPPORTUNISTIC_LARGE_PAGE_STATS LargePageStats[2];
+  struct _RTL_HP_SEG_ALLOC_POLICY LargePageUtilizationPolicy;
+} HEAP_RUNTIME_MEMORY_STATS, *PHEAP_RUNTIME_MEMORY_STATS; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _HEAP_SEG_CONTEXT
+{
+  U64 SegmentMask;
+  U8 UnitShift;
+  U8 PagesPerUnitShift;
+  U8 FirstDescriptorIndex;
+  U8 CachedCommitSoftShift;
+  U8 CachedCommitHighShift;
+  union
+  {
+    union
+    {
+      struct 
+      {
+        U8 LargePagePolicy : 3; 
+        U8 FullDecommit : 1; 
+        U8 ReleaseEmptySegments : 1; 
+      }; 
+      U8 AllFlags;
+    }; 
+  } Flags;
+  U32 MaxAllocationSize;
+  S16 OlpStatsOffset;
+  S16 MemStatsOffset;
+  void* LfhContext;
+  void* VsContext;
+  struct RTL_HP_ENV_HANDLE EnvHandle;
+  void* Heap;
+  U64 SegmentLock;
+  struct _LIST_ENTRY SegmentListHead;
+  U64 SegmentCount;
+  struct _RTL_RB_TREE FreePageRanges;
+  U64 FreeSegmentListLock;
+  struct _SINGLE_LIST_ENTRY FreeSegmentList[2];
+  S32 __PADDING__[14];
+} HEAP_SEG_CONTEXT, *PHEAP_SEG_CONTEXT; 
+
+typedef enum _RTLP_HP_LOCK_TYPE
+{
+  HeapLockPaged = 0,
+  HeapLockNonPaged = 1,
+  HeapLockTypeMax = 2,
+} RTLP_HP_LOCK_TYPE, *PRTLP_HP_LOCK_TYPE;
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _HEAP_VS_DELAY_FREE_CONTEXT
+{
+  union _SLIST_HEADER ListHead;
+} HEAP_VS_DELAY_FREE_CONTEXT, *PHEAP_VS_DELAY_FREE_CONTEXT; 
+
+typedef struct _HEAP_SUBALLOCATOR_CALLBACKS
+{
+  U64 Allocate;
+  U64 Free;
+  U64 Commit;
+  U64 Decommit;
+  U64 ExtendContext;
+} HEAP_SUBALLOCATOR_CALLBACKS, *PHEAP_SUBALLOCATOR_CALLBACKS; 
+
+typedef struct _RTL_HP_VS_CONFIG
+{
+  struct
+  {
+    struct 
+    {
+      U32 PageAlignLargeAllocs : 1; 
+      U32 FullDecommit : 1; 
+      U32 EnableDelayFree : 1; 
+    }; 
+  } Flags;
+} RTL_HP_VS_CONFIG, *PRTL_HP_VS_CONFIG; 
+
+typedef struct _HEAP_VS_CONTEXT
+{
+  U64 Lock;
+  enum _RTLP_HP_LOCK_TYPE LockType;
+  struct _RTL_RB_TREE FreeChunkTree;
+  struct _LIST_ENTRY SubsegmentList;
+  U64 TotalCommittedUnits;
+  U64 FreeCommittedUnits;
+  struct _HEAP_VS_DELAY_FREE_CONTEXT DelayFreeContext;
+  void* BackendCtx;
+  struct _HEAP_SUBALLOCATOR_CALLBACKS Callbacks;
+  struct _RTL_HP_VS_CONFIG Config;
+  U32 Flags;
+  S32 __PADDING__[2];
+} HEAP_VS_CONTEXT, *PHEAP_VS_CONTEXT; 
+
+typedef struct _RTL_HP_LFH_CONFIG
+{
+  U16 MaxBlockSize;
+  struct 
+  {
+    U16 WitholdPageCrossingBlocks : 1; 
+    U16 DisableRandomization : 1; 
+  }; 
+} RTL_HP_LFH_CONFIG, *PRTL_HP_LFH_CONFIG; 
+
+typedef struct _HEAP_LFH_SUBSEGMENT_STAT
+{
+  U8 Index;
+  U8 Count;
+} HEAP_LFH_SUBSEGMENT_STAT, *PHEAP_LFH_SUBSEGMENT_STAT; 
+
+typedef union _HEAP_LFH_SUBSEGMENT_STATS
+{
+  union
+  {
+    struct _HEAP_LFH_SUBSEGMENT_STAT Buckets[4];
+    void* AllStats;
+  }; 
+} HEAP_LFH_SUBSEGMENT_STATS, *PHEAP_LFH_SUBSEGMENT_STATS; 
+
+typedef struct _HEAP_LFH_CONTEXT
+{
+  void* BackendCtx;
+  struct _HEAP_SUBALLOCATOR_CALLBACKS Callbacks;
+  const U8* AffinityModArray;
+  U8 MaxAffinity;
+  U8 LockType;
+  S16 MemStatsOffset;
+  struct _RTL_HP_LFH_CONFIG Config;
+  union _HEAP_LFH_SUBSEGMENT_STATS BucketStats;
+  U64 SubsegmentCreationLock;
+  struct _HEAP_LFH_BUCKET* Buckets[129];
+  S32 __PADDING__[14];
+} HEAP_LFH_CONTEXT, *PHEAP_LFH_CONTEXT; 
+
+typedef struct _SEGMENT_HEAP
+{
+  struct RTL_HP_ENV_HANDLE EnvHandle;
+  U32 Signature;
+  U32 GlobalFlags;
+  U32 Interceptor;
+  U16 ProcessHeapListIndex;
+  U16 AllocatedFromMetadata : 1; 
+  union
+  {
+    struct _RTL_HEAP_MEMORY_LIMIT_DATA CommitLimitData;
+    struct
+    {
+      U64 ReservedMustBeZero1;
+      void* UserContext;
+      U64 ReservedMustBeZero2;
+      void* Spare;
+    }; 
+  }; 
+  U64 LargeMetadataLock;
+  struct _RTL_RB_TREE LargeAllocMetadata;
+  volatile U64 LargeReservedPages;
+  volatile U64 LargeCommittedPages;
+  union _RTL_RUN_ONCE StackTraceInitVar;
+  struct _HEAP_RUNTIME_MEMORY_STATS MemStats;
+  U16 GlobalLockCount;
+  U32 GlobalLockOwner;
+  U64 ContextExtendLock;
+  U8* AllocatedBase;
+  U8* UncommittedBase;
+  U8* ReservedLimit;
+  struct _HEAP_SEG_CONTEXT SegContexts[2];
+  struct _HEAP_VS_CONTEXT VsContext;
+  struct _HEAP_LFH_CONTEXT LfhContext;
+} SEGMENT_HEAP, *PSEGMENT_HEAP; 
+

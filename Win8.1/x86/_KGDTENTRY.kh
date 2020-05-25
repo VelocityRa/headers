@@ -1,0 +1,35 @@
+typedef struct _KGDTENTRY
+{
+  U16 LimitLow;
+  U16 BaseLow;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U8 BaseMid;
+        U8 Flags1;
+        U8 Flags2;
+        U8 BaseHi;
+      } Bytes;
+      struct
+      {
+        struct 
+        {
+          U32 BaseMid : 8; 
+          U32 Type : 5; 
+          U32 Dpl : 2; 
+          U32 Pres : 1; 
+          U32 LimitHi : 4; 
+          U32 Sys : 1; 
+          U32 Reserved_0 : 1; 
+          U32 Default_Big : 1; 
+          U32 Granularity : 1; 
+          U32 BaseHi : 8; 
+        }; 
+      } Bits;
+    }; 
+  } HighWord;
+} KGDTENTRY, *PKGDTENTRY; 
+

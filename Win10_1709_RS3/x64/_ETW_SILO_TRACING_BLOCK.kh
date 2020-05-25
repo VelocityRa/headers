@@ -1,0 +1,7 @@
+typedef struct _ETW_SILO_TRACING_BLOCK
+{
+  struct _EX_FAST_REF* ProcessorBuffers;
+  U64* EventsLoggedCount;
+  S32 __PADDING__[12];
+} ETW_SILO_TRACING_BLOCK, *PETW_SILO_TRACING_BLOCK; 
+

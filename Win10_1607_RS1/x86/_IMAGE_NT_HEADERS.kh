@@ -1,0 +1,59 @@
+typedef struct _IMAGE_FILE_HEADER
+{
+  U16 Machine;
+  U16 NumberOfSections;
+  U32 TimeDateStamp;
+  U32 PointerToSymbolTable;
+  U32 NumberOfSymbols;
+  U16 SizeOfOptionalHeader;
+  U16 Characteristics;
+} IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER; 
+
+typedef struct _IMAGE_DATA_DIRECTORY
+{
+  U32 VirtualAddress;
+  U32 Size;
+} IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY; 
+
+typedef struct _IMAGE_OPTIONAL_HEADER
+{
+  U16 Magic;
+  U8 MajorLinkerVersion;
+  U8 MinorLinkerVersion;
+  U32 SizeOfCode;
+  U32 SizeOfInitializedData;
+  U32 SizeOfUninitializedData;
+  U32 AddressOfEntryPoint;
+  U32 BaseOfCode;
+  U32 BaseOfData;
+  U32 ImageBase;
+  U32 SectionAlignment;
+  U32 FileAlignment;
+  U16 MajorOperatingSystemVersion;
+  U16 MinorOperatingSystemVersion;
+  U16 MajorImageVersion;
+  U16 MinorImageVersion;
+  U16 MajorSubsystemVersion;
+  U16 MinorSubsystemVersion;
+  U32 Win32VersionValue;
+  U32 SizeOfImage;
+  U32 SizeOfHeaders;
+  U32 CheckSum;
+  U16 Subsystem;
+  U16 DllCharacteristics;
+  U32 SizeOfStackReserve;
+  U32 SizeOfStackCommit;
+  U32 SizeOfHeapReserve;
+  U32 SizeOfHeapCommit;
+  U32 LoaderFlags;
+  U32 NumberOfRvaAndSizes;
+  struct _IMAGE_DATA_DIRECTORY DataDirectory[16];
+} IMAGE_OPTIONAL_HEADER, *PIMAGE_OPTIONAL_HEADER; 
+
+typedef struct _IMAGE_NT_HEADERS
+{
+  U32 Signature;
+  struct _IMAGE_FILE_HEADER FileHeader;
+  struct _IMAGE_OPTIONAL_HEADER OptionalHeader;
+} IMAGE_NT_HEADERS, *PIMAGE_NT_HEADERS; 
+

@@ -1,0 +1,6 @@
+typedef struct _MMPTE_HIGHLOW
+{
+  U32 LowPart;
+  U32 HighPart;
+} MMPTE_HIGHLOW, *PMMPTE_HIGHLOW; 
+

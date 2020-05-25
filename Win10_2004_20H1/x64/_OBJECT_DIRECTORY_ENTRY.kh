@@ -1,0 +1,8 @@
+typedef struct _OBJECT_DIRECTORY_ENTRY
+{
+  struct _OBJECT_DIRECTORY_ENTRY* ChainLink;
+  void* Object;
+  U32 HashValue;
+  S32 __PADDING__[1];
+} OBJECT_DIRECTORY_ENTRY, *POBJECT_DIRECTORY_ENTRY; 
+

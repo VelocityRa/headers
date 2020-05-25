@@ -1,0 +1,7 @@
+typedef struct _REMOTE_PORT_VIEW
+{
+  U32 Length;
+  U32 ViewSize;
+  void* ViewBase;
+} REMOTE_PORT_VIEW, *PREMOTE_PORT_VIEW; 
+

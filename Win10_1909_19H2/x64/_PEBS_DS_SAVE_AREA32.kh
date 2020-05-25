@@ -1,0 +1,14 @@
+typedef struct _PEBS_DS_SAVE_AREA32
+{
+  U32 BtsBufferBase;
+  U32 BtsIndex;
+  U32 BtsAbsoluteMaximum;
+  U32 BtsInterruptThreshold;
+  U32 PebsBufferBase;
+  U32 PebsIndex;
+  U32 PebsAbsoluteMaximum;
+  U32 PebsInterruptThreshold;
+  U64 PebsGpCounterReset[8];
+  U64 PebsFixedCounterReset[4];
+} PEBS_DS_SAVE_AREA32, *PPEBS_DS_SAVE_AREA32; 
+

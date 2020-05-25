@@ -1,0 +1,9 @@
+typedef struct _CM_NAME_HASH
+{
+  U32 ConvKey;
+  struct _CM_NAME_HASH* NextHash;
+  U16 NameLength;
+  wchar_t Name[1];
+  S32 __PADDING__[1];
+} CM_NAME_HASH, *PCM_NAME_HASH; 
+

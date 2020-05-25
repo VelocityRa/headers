@@ -1,0 +1,27 @@
+typedef union _XPF_MC_BANK_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U8 ClearOnInitializationRW : 1; 
+      U8 ControlDataRW : 1; 
+      U8 Reserved : 6; 
+    }; 
+    U8 AsUCHAR;
+  }; 
+} XPF_MC_BANK_FLAGS, *PXPF_MC_BANK_FLAGS; 
+
+typedef struct _WHEA_XPF_MC_BANK_DESCRIPTOR
+{
+  U8 BankNumber;
+  U8 ClearOnInitialization;
+  U8 StatusDataFormat;
+  union _XPF_MC_BANK_FLAGS Flags;
+  U32 ControlMsr;
+  U32 StatusMsr;
+  U32 AddressMsr;
+  U32 MiscMsr;
+  U64 ControlData;
+} WHEA_XPF_MC_BANK_DESCRIPTOR, *PWHEA_XPF_MC_BANK_DESCRIPTOR; 
+

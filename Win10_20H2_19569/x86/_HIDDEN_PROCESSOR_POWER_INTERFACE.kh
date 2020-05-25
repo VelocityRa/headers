@@ -1,0 +1,9 @@
+typedef struct _HIDDEN_PROCESSOR_POWER_INTERFACE
+{
+  U32 Version;
+  void* ReadPerfMsr;
+  void* WritePerfMsr;
+  void* ReadPerfIoPort;
+  void* WritePerfIoPort;
+} HIDDEN_PROCESSOR_POWER_INTERFACE, *PHIDDEN_PROCESSOR_POWER_INTERFACE; 
+

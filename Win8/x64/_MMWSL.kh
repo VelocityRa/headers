@@ -1,0 +1,53 @@
+typedef struct _MI_ACTIVE_WSLE
+{
+  U32 Flink;
+  U32 Blink;
+} MI_ACTIVE_WSLE, *PMI_ACTIVE_WSLE; 
+
+typedef struct _MI_USER_VA_INFO
+{
+  U32 NumberOfCommittedPageTables;
+  U32 PhysicalMappingCount;
+  U32 VadBitMapHint;
+  U32 LastAllocationSizeHint;
+  U32 LastAllocationSize;
+  U32 LowestBottomUpVadBit;
+  U32 VadBitMapSize;
+  U32 MaximumLastVadBit;
+  S32 VadsBeingDeleted;
+  struct _KEVENT* LastVadDeletionEvent;
+  U32* VadBitBuffer;
+  void* LowestBottomUpAllocationAddress;
+  void* HighestTopDownAllocationAddress;
+  void* FreeTebHint;
+  U64 PrivateFixupVadCount;
+  void* FreeUmsTebHint;
+  U32* CommittedPageTables;
+  U32 PageTableBitmapPages;
+  U64 CommittedPageDirectories[128];
+  U64 CommittedPageDirectoryParents[1];
+} MI_USER_VA_INFO, *PMI_USER_VA_INFO; 
+
+typedef struct _MMWSL
+{
+  U32 FirstFree;
+  U32 FirstDynamic;
+  U32 LastEntry;
+  U32 NextSlot;
+  U32 LastInitializedWsle;
+  U32 NextAgingSlot;
+  U32 NextAccessClearingSlot;
+  U32 LastAccessClearingRemainder;
+  U32 LastAgingRemainder;
+  U32 WsleSize;
+  U32 NonDirectCount;
+  void* LowestPagableAddress;
+  struct _MMWSLE_NONDIRECT_HASH* NonDirectHash;
+  struct _MMWSLE_HASH* HashTableStart;
+  struct _MMWSLE_HASH* HighestPermittedHashAddress;
+  U32 ActiveWsleCounts[8];
+  struct _MI_ACTIVE_WSLE ActiveWsles[8];
+  struct _MMWSLE* Wsle;
+  struct _MI_USER_VA_INFO UserVaInfo;
+} MMWSL, *PMMWSL; 
+

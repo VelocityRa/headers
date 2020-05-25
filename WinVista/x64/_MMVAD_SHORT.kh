@@ -1,0 +1,78 @@
+typedef struct _MMVAD_FLAGS
+{
+  struct 
+  {
+    U64 CommitCharge : 51; 
+    U64 NoChange : 1; 
+    U64 VadType : 3; 
+    U64 MemCommit : 1; 
+    U64 Protection : 5; 
+    U64 Spare : 2; 
+    U64 PrivateMemory : 1; 
+  }; 
+} MMVAD_FLAGS, *PMMVAD_FLAGS; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MMVAD_FLAGS3
+{
+  struct 
+  {
+    U64 PreferredNode : 6; 
+    U64 Spare : 2; 
+    U64 SequentialAccess : 1; 
+    U64 LastSequentialTrim : 15; 
+    U64 Spare2 : 8; 
+    U64 LargePageCreating : 1; 
+    U64 Spare3 : 31; 
+  }; 
+} MMVAD_FLAGS3, *PMMVAD_FLAGS3; 
+
+typedef struct _MMVAD_SHORT
+{
+  union
+  {
+    union
+    {
+      S64 Balance : 2; 
+      struct _MMVAD* Parent;
+    }; 
+  } u1;
+  struct _MMVAD* LeftChild;
+  struct _MMVAD* RightChild;
+  U64 StartingVpn;
+  U64 EndingVpn;
+  union
+  {
+    union
+    {
+      U64 LongFlags;
+      struct _MMVAD_FLAGS VadFlags;
+    }; 
+  } u;
+  struct _EX_PUSH_LOCK PushLock;
+  union
+  {
+    union
+    {
+      U64 LongFlags3;
+      struct _MMVAD_FLAGS3 VadFlags3;
+    }; 
+  } u5;
+} MMVAD_SHORT, *PMMVAD_SHORT; 
+

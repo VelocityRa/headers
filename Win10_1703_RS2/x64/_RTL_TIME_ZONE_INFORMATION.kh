@@ -1,0 +1,23 @@
+typedef struct _TIME_FIELDS
+{
+  S16 Year;
+  S16 Month;
+  S16 Day;
+  S16 Hour;
+  S16 Minute;
+  S16 Second;
+  S16 Milliseconds;
+  S16 Weekday;
+} TIME_FIELDS, *PTIME_FIELDS; 
+
+typedef struct _RTL_TIME_ZONE_INFORMATION
+{
+  S32 Bias;
+  wchar_t StandardName[32];
+  struct _TIME_FIELDS StandardStart;
+  S32 StandardBias;
+  wchar_t DaylightName[32];
+  struct _TIME_FIELDS DaylightStart;
+  S32 DaylightBias;
+} RTL_TIME_ZONE_INFORMATION, *PRTL_TIME_ZONE_INFORMATION; 
+

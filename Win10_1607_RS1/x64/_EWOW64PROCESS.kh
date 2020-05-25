@@ -1,0 +1,7 @@
+typedef struct _EWOW64PROCESS
+{
+  void* Peb;
+  U16 Machine;
+  char __PADDING__[6];
+} EWOW64PROCESS, *PEWOW64PROCESS; 
+

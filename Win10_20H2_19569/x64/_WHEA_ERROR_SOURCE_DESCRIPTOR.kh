@@ -1,0 +1,459 @@
+typedef enum _WHEA_ERROR_SOURCE_TYPE
+{
+  WheaErrSrcTypeMCE = 0,
+  WheaErrSrcTypeCMC = 1,
+  WheaErrSrcTypeCPE = 2,
+  WheaErrSrcTypeNMI = 3,
+  WheaErrSrcTypePCIe = 4,
+  WheaErrSrcTypeGeneric = 5,
+  WheaErrSrcTypeINIT = 6,
+  WheaErrSrcTypeBOOT = 7,
+  WheaErrSrcTypeSCIGeneric = 8,
+  WheaErrSrcTypeIPFMCA = 9,
+  WheaErrSrcTypeIPFCMC = 10,
+  WheaErrSrcTypeIPFCPE = 11,
+  WheaErrSrcTypeGenericV2 = 12,
+  WheaErrSrcTypeSCIGenericV2 = 13,
+  WheaErrSrcTypeBMC = 14,
+  WheaErrSrcTypePMEM = 15,
+  WheaErrSrcTypeDeviceDriver = 16,
+  WheaErrSrcTypeMax = 17,
+} WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
+
+typedef enum _WHEA_ERROR_SOURCE_STATE
+{
+  WheaErrSrcStateStopped = 1,
+  WheaErrSrcStateStarted = 2,
+  WheaErrSrcStateRemoved = 3,
+  WheaErrSrcStateRemovePending = 4,
+} WHEA_ERROR_SOURCE_STATE, *PWHEA_ERROR_SOURCE_STATE;
+
+typedef union _XPF_MCE_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 MCG_CapabilityRW : 1; 
+      U32 MCG_GlobalControlRW : 1; 
+      U32 Reserved : 30; 
+    }; 
+    U32 AsULONG;
+  }; 
+} XPF_MCE_FLAGS, *PXPF_MCE_FLAGS; 
+
+typedef union _XPF_MC_BANK_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U8 ClearOnInitializationRW : 1; 
+      U8 ControlDataRW : 1; 
+      U8 Reserved : 6; 
+    }; 
+    U8 AsUCHAR;
+  }; 
+} XPF_MC_BANK_FLAGS, *PXPF_MC_BANK_FLAGS; 
+
+typedef struct _WHEA_XPF_MC_BANK_DESCRIPTOR
+{
+  U8 BankNumber;
+  U8 ClearOnInitialization;
+  U8 StatusDataFormat;
+  union _XPF_MC_BANK_FLAGS Flags;
+  U32 ControlMsr;
+  U32 StatusMsr;
+  U32 AddressMsr;
+  U32 MiscMsr;
+  U64 ControlData;
+} WHEA_XPF_MC_BANK_DESCRIPTOR, *PWHEA_XPF_MC_BANK_DESCRIPTOR; 
+
+typedef struct _WHEA_XPF_MCE_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 NumberOfBanks;
+  union _XPF_MCE_FLAGS Flags;
+  U64 MCG_Capability;
+  U64 MCG_GlobalControl;
+  struct _WHEA_XPF_MC_BANK_DESCRIPTOR Banks[32];
+} WHEA_XPF_MCE_DESCRIPTOR, *PWHEA_XPF_MCE_DESCRIPTOR; 
+
+typedef union _WHEA_NOTIFICATION_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 PollIntervalRW : 1; 
+      U16 SwitchToPollingThresholdRW : 1; 
+      U16 SwitchToPollingWindowRW : 1; 
+      U16 ErrorThresholdRW : 1; 
+      U16 ErrorThresholdWindowRW : 1; 
+      U16 Reserved : 11; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} WHEA_NOTIFICATION_FLAGS, *PWHEA_NOTIFICATION_FLAGS; 
+
+typedef struct _WHEA_NOTIFICATION_DESCRIPTOR
+{
+  U8 Type;
+  U8 Length;
+  union _WHEA_NOTIFICATION_FLAGS Flags;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U32 PollInterval;
+      } Polled;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } Interrupt;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } LocalInterrupt;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } Sci;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } Nmi;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } Sea;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } Sei;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } Gsiv;
+    }; 
+  } u;
+} WHEA_NOTIFICATION_DESCRIPTOR, *PWHEA_NOTIFICATION_DESCRIPTOR; 
+
+typedef struct _WHEA_XPF_CMC_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 NumberOfBanks;
+  U32 Reserved;
+  struct _WHEA_NOTIFICATION_DESCRIPTOR Notify;
+  struct _WHEA_XPF_MC_BANK_DESCRIPTOR Banks[32];
+} WHEA_XPF_CMC_DESCRIPTOR, *PWHEA_XPF_CMC_DESCRIPTOR; 
+
+typedef struct _WHEA_XPF_NMI_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+} WHEA_XPF_NMI_DESCRIPTOR, *PWHEA_XPF_NMI_DESCRIPTOR; 
+
+typedef struct _WHEA_IPF_MCA_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 Reserved;
+} WHEA_IPF_MCA_DESCRIPTOR, *PWHEA_IPF_MCA_DESCRIPTOR; 
+
+typedef struct _WHEA_IPF_CMC_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 Reserved;
+} WHEA_IPF_CMC_DESCRIPTOR, *PWHEA_IPF_CMC_DESCRIPTOR; 
+
+typedef struct _WHEA_IPF_CPE_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 Reserved;
+} WHEA_IPF_CPE_DESCRIPTOR, *PWHEA_IPF_CPE_DESCRIPTOR; 
+
+typedef struct _WHEA_PCI_SLOT_NUMBER
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 DeviceNumber : 5; 
+          U32 FunctionNumber : 3; 
+          U32 Reserved : 24; 
+        }; 
+      } bits;
+      U32 AsULONG;
+    }; 
+  } u;
+} WHEA_PCI_SLOT_NUMBER, *PWHEA_PCI_SLOT_NUMBER; 
+
+typedef union _AER_ROOTPORT_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 UncorrectableErrorMaskRW : 1; 
+      U16 UncorrectableErrorSeverityRW : 1; 
+      U16 CorrectableErrorMaskRW : 1; 
+      U16 AdvancedCapsAndControlRW : 1; 
+      U16 RootErrorCommandRW : 1; 
+      U16 Reserved : 11; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} AER_ROOTPORT_DESCRIPTOR_FLAGS, *PAER_ROOTPORT_DESCRIPTOR_FLAGS; 
+
+typedef struct _WHEA_AER_ROOTPORT_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 Reserved;
+  U32 BusNumber;
+  struct _WHEA_PCI_SLOT_NUMBER Slot;
+  U16 DeviceControl;
+  union _AER_ROOTPORT_DESCRIPTOR_FLAGS Flags;
+  U32 UncorrectableErrorMask;
+  U32 UncorrectableErrorSeverity;
+  U32 CorrectableErrorMask;
+  U32 AdvancedCapsAndControl;
+  U32 RootErrorCommand;
+} WHEA_AER_ROOTPORT_DESCRIPTOR, *PWHEA_AER_ROOTPORT_DESCRIPTOR; 
+
+typedef union _AER_ENDPOINT_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 UncorrectableErrorMaskRW : 1; 
+      U16 UncorrectableErrorSeverityRW : 1; 
+      U16 CorrectableErrorMaskRW : 1; 
+      U16 AdvancedCapsAndControlRW : 1; 
+      U16 Reserved : 12; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} AER_ENDPOINT_DESCRIPTOR_FLAGS, *PAER_ENDPOINT_DESCRIPTOR_FLAGS; 
+
+typedef struct _WHEA_AER_ENDPOINT_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 Reserved;
+  U32 BusNumber;
+  struct _WHEA_PCI_SLOT_NUMBER Slot;
+  U16 DeviceControl;
+  union _AER_ENDPOINT_DESCRIPTOR_FLAGS Flags;
+  U32 UncorrectableErrorMask;
+  U32 UncorrectableErrorSeverity;
+  U32 CorrectableErrorMask;
+  U32 AdvancedCapsAndControl;
+} WHEA_AER_ENDPOINT_DESCRIPTOR, *PWHEA_AER_ENDPOINT_DESCRIPTOR; 
+
+typedef union _AER_BRIDGE_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 UncorrectableErrorMaskRW : 1; 
+      U16 UncorrectableErrorSeverityRW : 1; 
+      U16 CorrectableErrorMaskRW : 1; 
+      U16 AdvancedCapsAndControlRW : 1; 
+      U16 SecondaryUncorrectableErrorMaskRW : 1; 
+      U16 SecondaryUncorrectableErrorSevRW : 1; 
+      U16 SecondaryCapsAndControlRW : 1; 
+      U16 Reserved : 9; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} AER_BRIDGE_DESCRIPTOR_FLAGS, *PAER_BRIDGE_DESCRIPTOR_FLAGS; 
+
+typedef struct _WHEA_AER_BRIDGE_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 Reserved;
+  U32 BusNumber;
+  struct _WHEA_PCI_SLOT_NUMBER Slot;
+  U16 DeviceControl;
+  union _AER_BRIDGE_DESCRIPTOR_FLAGS Flags;
+  U32 UncorrectableErrorMask;
+  U32 UncorrectableErrorSeverity;
+  U32 CorrectableErrorMask;
+  U32 AdvancedCapsAndControl;
+  U32 SecondaryUncorrectableErrorMask;
+  U32 SecondaryUncorrectableErrorSev;
+  U32 SecondaryCapsAndControl;
+} WHEA_AER_BRIDGE_DESCRIPTOR, *PWHEA_AER_BRIDGE_DESCRIPTOR; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _WHEA_GENERIC_ERROR_DESCRIPTOR
+{
+  U16 Type;
+  U8 Reserved;
+  U8 Enabled;
+  U32 ErrStatusBlockLength;
+  U32 RelatedErrorSourceId;
+  U8 ErrStatusAddressSpaceID;
+  U8 ErrStatusAddressBitWidth;
+  U8 ErrStatusAddressBitOffset;
+  U8 ErrStatusAddressAccessSize;
+  union _LARGE_INTEGER ErrStatusAddress;
+  struct _WHEA_NOTIFICATION_DESCRIPTOR Notify;
+} WHEA_GENERIC_ERROR_DESCRIPTOR, *PWHEA_GENERIC_ERROR_DESCRIPTOR; 
+
+typedef struct _WHEA_GENERIC_ERROR_DESCRIPTOR_V2
+{
+  U16 Type;
+  U8 Reserved;
+  U8 Enabled;
+  U32 ErrStatusBlockLength;
+  U32 RelatedErrorSourceId;
+  U8 ErrStatusAddressSpaceID;
+  U8 ErrStatusAddressBitWidth;
+  U8 ErrStatusAddressBitOffset;
+  U8 ErrStatusAddressAccessSize;
+  union _LARGE_INTEGER ErrStatusAddress;
+  struct _WHEA_NOTIFICATION_DESCRIPTOR Notify;
+  U8 ReadAckAddressSpaceID;
+  U8 ReadAckAddressBitWidth;
+  U8 ReadAckAddressBitOffset;
+  U8 ReadAckAddressAccessSize;
+  union _LARGE_INTEGER ReadAckAddress;
+  U64 ReadAckPreserveMask;
+  U64 ReadAckWriteMask;
+} WHEA_GENERIC_ERROR_DESCRIPTOR_V2, *PWHEA_GENERIC_ERROR_DESCRIPTOR_V2; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _WHEA_ERROR_SOURCE_CONFIGURATION_DD
+{
+  void* Initialize;
+  void* Uninitialize;
+  void* Correct;
+} WHEA_ERROR_SOURCE_CONFIGURATION_DD, *PWHEA_ERROR_SOURCE_CONFIGURATION_DD; 
+
+typedef struct _WHEA_DEVICE_DRIVER_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 Reserved;
+  struct _GUID SourceGuid;
+  U16 LogTag;
+  U16 Reserved2;
+  U32 PacketLength;
+  U32 PacketCount;
+  U8* PacketBuffer;
+  struct _WHEA_ERROR_SOURCE_CONFIGURATION_DD Config;
+  struct _GUID CreatorId;
+  struct _GUID PartitionId;
+  U32 MaxSectionDataLength;
+  U32 MaxSectionsPerRecord;
+  U8* PacketStateBuffer;
+  S32 OpenHandles;
+} WHEA_DEVICE_DRIVER_DESCRIPTOR, *PWHEA_DEVICE_DRIVER_DESCRIPTOR; 
+
+typedef struct _WHEA_ERROR_SOURCE_DESCRIPTOR
+{
+  U32 Length;
+  U32 Version;
+  enum _WHEA_ERROR_SOURCE_TYPE Type;
+  enum _WHEA_ERROR_SOURCE_STATE State;
+  U32 MaxRawDataLength;
+  U32 NumRecordsToPreallocate;
+  U32 MaxSectionsPerRecord;
+  U32 ErrorSourceId;
+  U32 PlatformErrorSourceId;
+  U32 Flags;
+  union
+  {
+    union
+    {
+      struct _WHEA_XPF_MCE_DESCRIPTOR XpfMceDescriptor;
+      struct _WHEA_XPF_CMC_DESCRIPTOR XpfCmcDescriptor;
+      struct _WHEA_XPF_NMI_DESCRIPTOR XpfNmiDescriptor;
+      struct _WHEA_IPF_MCA_DESCRIPTOR IpfMcaDescriptor;
+      struct _WHEA_IPF_CMC_DESCRIPTOR IpfCmcDescriptor;
+      struct _WHEA_IPF_CPE_DESCRIPTOR IpfCpeDescriptor;
+      struct _WHEA_AER_ROOTPORT_DESCRIPTOR AerRootportDescriptor;
+      struct _WHEA_AER_ENDPOINT_DESCRIPTOR AerEndpointDescriptor;
+      struct _WHEA_AER_BRIDGE_DESCRIPTOR AerBridgeDescriptor;
+      struct _WHEA_GENERIC_ERROR_DESCRIPTOR GenErrDescriptor;
+      struct _WHEA_GENERIC_ERROR_DESCRIPTOR_V2 GenErrDescriptorV2;
+      struct _WHEA_DEVICE_DRIVER_DESCRIPTOR DeviceDriverDescriptor;
+    }; 
+  } Info;
+} WHEA_ERROR_SOURCE_DESCRIPTOR, *PWHEA_ERROR_SOURCE_DESCRIPTOR; 
+

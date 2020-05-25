@@ -1,0 +1,7 @@
+typedef struct _VI_VERIFIER_ISSUE
+{
+  U64 IssueType;
+  void* Address;
+  U64 Parameters[2];
+} VI_VERIFIER_ISSUE, *PVI_VERIFIER_ISSUE; 
+

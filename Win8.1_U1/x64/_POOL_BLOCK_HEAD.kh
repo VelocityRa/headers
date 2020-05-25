@@ -1,0 +1,44 @@
+typedef struct _POOL_HEADER
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U16 PreviousSize : 8; 
+        U16 PoolIndex : 8; 
+      }; 
+      struct 
+      {
+        U16 BlockSize : 8; 
+        U16 PoolType : 8; 
+      }; 
+    }; 
+    U32 Ulong1;
+  }; 
+  U32 PoolTag;
+  union
+  {
+    struct _EPROCESS* ProcessBilled;
+    struct
+    {
+      U16 AllocatorBackTraceIndex;
+      U16 PoolTagHash;
+      S32 __PADDING__[1];
+    }; 
+  }; 
+} POOL_HEADER, *PPOOL_HEADER; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _POOL_BLOCK_HEAD
+{
+  struct _POOL_HEADER Header;
+  struct _LIST_ENTRY List;
+} POOL_BLOCK_HEAD, *PPOOL_BLOCK_HEAD; 
+

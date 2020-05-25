@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+struct VACB_LEVEL_ALLOCATION_LIST
+{
+  struct _LIST_ENTRY VacbLevelList;
+  void* VacbLevelWithBcbListHeads;
+  U32 VacbLevelsAllocated;
+  S32 __PADDING__[1];
+}; 
+

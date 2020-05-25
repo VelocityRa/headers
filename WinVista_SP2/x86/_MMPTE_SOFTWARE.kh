@@ -1,0 +1,13 @@
+typedef struct _MMPTE_SOFTWARE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 PageFileLow : 4; 
+    U32 Protection : 5; 
+    U32 Prototype : 1; 
+    U32 Transition : 1; 
+    U32 PageFileHigh : 20; 
+  }; 
+} MMPTE_SOFTWARE, *PMMPTE_SOFTWARE; 
+

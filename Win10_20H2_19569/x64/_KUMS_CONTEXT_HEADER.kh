@@ -1,0 +1,26 @@
+typedef struct _KUMS_CONTEXT_HEADER
+{
+  U64 P1Home;
+  U64 P2Home;
+  U64 P3Home;
+  U64 P4Home;
+  void* StackTop;
+  U64 StackSize;
+  U64 RspOffset;
+  U64 Rip;
+  struct _XSAVE_FORMAT* FltSave;
+  union
+  {
+    struct 
+    {
+      U64 Volatile : 1; 
+      U64 Reserved : 63; 
+    }; 
+    U64 Flags;
+  }; 
+  struct _KTRAP_FRAME* TrapFrame;
+  struct _KEXCEPTION_FRAME* ExceptionFrame;
+  struct _KTHREAD* SourceThread;
+  U64 Return;
+} KUMS_CONTEXT_HEADER, *PKUMS_CONTEXT_HEADER; 
+

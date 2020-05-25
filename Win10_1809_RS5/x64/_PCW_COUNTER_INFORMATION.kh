@@ -1,0 +1,6 @@
+typedef struct _PCW_COUNTER_INFORMATION
+{
+  U64 CounterMask;
+  const struct _UNICODE_STRING* InstanceMask;
+} PCW_COUNTER_INFORMATION, *PPCW_COUNTER_INFORMATION; 
+

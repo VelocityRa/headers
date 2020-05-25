@@ -1,0 +1,19 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _POP_POWER_PLANE
+{
+  struct _UNICODE_STRING PowerPlaneId;
+  U32 Lock;
+  U8 OldIrql;
+  volatile S32 DevicePowerMw;
+  void* PmaxHandle;
+  void* NotifyDevicePowerDraw;
+  U32 DeviceCount;
+  struct _POP_DEVICE_POWER_PROFILE** Devices;
+} POP_POWER_PLANE, *PPOP_POWER_PLANE; 
+

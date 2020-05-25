@@ -1,0 +1,5 @@
+typedef struct _EXT_IOMMU_DEVICE_ID_ACPI
+{
+  const char* ObjectName;
+} EXT_IOMMU_DEVICE_ID_ACPI, *PEXT_IOMMU_DEVICE_ID_ACPI; 
+

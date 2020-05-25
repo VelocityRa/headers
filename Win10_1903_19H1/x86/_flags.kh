@@ -1,0 +1,13 @@
+typedef struct _flags
+{
+  struct 
+  {
+    U8 Removable : 1; 
+    U8 GroupAssigned : 1; 
+    U8 GroupCommitted : 1; 
+    U8 GroupAssignmentFixed : 1; 
+    U8 ProcessorOnly : 1; 
+    U8 Fill : 3; 
+  }; 
+} flags, *Pflags; 
+

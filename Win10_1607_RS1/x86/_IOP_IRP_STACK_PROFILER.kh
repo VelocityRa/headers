@@ -1,0 +1,6 @@
+typedef struct _IOP_IRP_STACK_PROFILER
+{
+  U32 Profile[20];
+  U32 TotalIrps;
+} IOP_IRP_STACK_PROFILER, *PIOP_IRP_STACK_PROFILER; 
+

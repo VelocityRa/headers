@@ -1,0 +1,8 @@
+typedef struct _ETW_LBR_SUPPORT
+{
+  U32 LbrHandle;
+  U32 LbrOptions;
+  volatile U32 HookIdCount;
+  U16 HookId[4];
+} ETW_LBR_SUPPORT, *PETW_LBR_SUPPORT; 
+

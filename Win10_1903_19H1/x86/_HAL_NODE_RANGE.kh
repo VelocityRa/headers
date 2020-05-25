@@ -1,0 +1,6 @@
+typedef struct _HAL_NODE_RANGE
+{
+  U32 PageFrameIndex;
+  U32 Node;
+} HAL_NODE_RANGE, *PHAL_NODE_RANGE; 
+

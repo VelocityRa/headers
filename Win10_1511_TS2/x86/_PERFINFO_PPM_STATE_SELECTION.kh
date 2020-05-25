@@ -1,0 +1,7 @@
+typedef struct _PERFINFO_PPM_STATE_SELECTION
+{
+  U32 SelectedState;
+  U32 VetoedStates;
+  U32 VetoReason[1];
+} PERFINFO_PPM_STATE_SELECTION, *PPERFINFO_PPM_STATE_SELECTION; 
+

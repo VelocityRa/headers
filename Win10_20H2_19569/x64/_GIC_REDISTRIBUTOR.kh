@@ -1,0 +1,9 @@
+typedef struct _GIC_REDISTRIBUTOR
+{
+  U8 Type;
+  U8 Length;
+  U16 Reserved;
+  U64 DiscoveryRangeBaseAddress;
+  U32 DiscoveryRangeLength;
+} GIC_REDISTRIBUTOR, *PGIC_REDISTRIBUTOR; 
+

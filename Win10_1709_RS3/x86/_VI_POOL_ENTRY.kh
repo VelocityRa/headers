@@ -1,0 +1,29 @@
+typedef struct _VI_POOL_PAGE_HEADER
+{
+  struct _SINGLE_LIST_ENTRY* NextPage;
+  void* VerifierEntry;
+  U32 Signature;
+} VI_POOL_PAGE_HEADER, *PVI_POOL_PAGE_HEADER; 
+
+typedef struct _VI_POOL_ENTRY_INUSE
+{
+  void* VirtualAddress;
+  void* CallingAddress;
+  U32 NumberOfBytes;
+  U32 Tag;
+} VI_POOL_ENTRY_INUSE, *PVI_POOL_ENTRY_INUSE; 
+
+typedef struct _VI_POOL_ENTRY
+{
+  union
+  {
+    struct _VI_POOL_PAGE_HEADER PageHeader;
+    struct _VI_POOL_ENTRY_INUSE InUse;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY* NextFree;
+      S32 __PADDING__[3];
+    }; 
+  }; 
+} VI_POOL_ENTRY, *PVI_POOL_ENTRY; 
+

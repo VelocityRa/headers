@@ -1,0 +1,8 @@
+struct FEATURE_LOGGED_TRAITS
+{
+  U16 version;
+  U16 baseVersion;
+  U8 stage;
+  char __PADDING__[1];
+}; 
+

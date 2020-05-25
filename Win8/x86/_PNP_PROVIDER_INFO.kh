@@ -1,0 +1,22 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PNP_PROVIDER_INFO
+{
+  struct _LIST_ENTRY ListEntry;
+  U8 ProviderType;
+  U8 Satisfied;
+  U16 Flags;
+  union
+  {
+    union
+    {
+      struct _DEVICE_OBJECT* ProviderPdo;
+      struct _PNP_RESERVED_PROVIDER_INFO* ProviderReservation;
+    }; 
+  } u;
+} PNP_PROVIDER_INFO, *PPNP_PROVIDER_INFO; 
+

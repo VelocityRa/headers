@@ -1,0 +1,15 @@
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MI_PAGELIST_STATE
+{
+  volatile S32 ActiveSpinLock;
+  struct _RTL_AVL_TREE ActiveThreadTree;
+  volatile S32 ActiveZeroSpinLock;
+  struct _RTL_AVL_TREE ActiveZeroThreadTree;
+  U32 NumberOfLargePageListHeads;
+  S32 __PADDING__[1];
+} MI_PAGELIST_STATE, *PMI_PAGELIST_STATE; 
+

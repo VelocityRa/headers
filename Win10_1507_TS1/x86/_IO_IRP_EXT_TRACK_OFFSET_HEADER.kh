@@ -1,0 +1,7 @@
+typedef struct _IO_IRP_EXT_TRACK_OFFSET_HEADER
+{
+  U16 Validation;
+  U16 Flags;
+  void* TrackedOffsetCallback;
+} IO_IRP_EXT_TRACK_OFFSET_HEADER, *PIO_IRP_EXT_TRACK_OFFSET_HEADER; 
+

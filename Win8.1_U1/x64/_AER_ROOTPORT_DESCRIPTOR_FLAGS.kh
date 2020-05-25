@@ -1,0 +1,17 @@
+typedef union _AER_ROOTPORT_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 UncorrectableErrorMaskRW : 1; 
+      U16 UncorrectableErrorSeverityRW : 1; 
+      U16 CorrectableErrorMaskRW : 1; 
+      U16 AdvancedCapsAndControlRW : 1; 
+      U16 RootErrorCommandRW : 1; 
+      U16 Reserved : 11; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} AER_ROOTPORT_DESCRIPTOR_FLAGS, *PAER_ROOTPORT_DESCRIPTOR_FLAGS; 
+

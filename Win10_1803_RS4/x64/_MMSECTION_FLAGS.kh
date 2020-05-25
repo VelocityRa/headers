@@ -1,0 +1,34 @@
+typedef struct _MMSECTION_FLAGS
+{
+  struct 
+  {
+    U32 BeingDeleted : 1; 
+    U32 BeingCreated : 1; 
+    U32 BeingPurged : 1; 
+    U32 NoModifiedWriting : 1; 
+    U32 FailAllIo : 1; 
+    U32 Image : 1; 
+    U32 Based : 1; 
+    U32 File : 1; 
+    U32 AttemptingDelete : 1; 
+    U32 PrefetchCreated : 1; 
+    U32 PhysicalMemory : 1; 
+    U32 ImageControlAreaOnRemovableMedia : 1; 
+    U32 Reserve : 1; 
+    U32 Commit : 1; 
+    U32 NoChange : 1; 
+    U32 WasPurged : 1; 
+    U32 UserReference : 1; 
+    U32 GlobalMemory : 1; 
+    U32 DeleteOnClose : 1; 
+    U32 FilePointerNull : 1; 
+    U32 PreferredNode : 6; 
+    U32 GlobalOnlyPerSession : 1; 
+    U32 UserWritable : 1; 
+    U32 SystemVaAllocated : 1; 
+    U32 PreferredFsCompressionBoundary : 1; 
+    U32 UsingFileExtents : 1; 
+    U32 PageSize64K : 1; 
+  }; 
+} MMSECTION_FLAGS, *PMMSECTION_FLAGS; 
+

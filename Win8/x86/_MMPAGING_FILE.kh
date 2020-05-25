@@ -1,0 +1,47 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _MMPAGING_FILE
+{
+  U32 Size;
+  U32 MaximumSize;
+  U32 MinimumSize;
+  U32 FreeSpace;
+  U32 PeakUsage;
+  U32 HighestPage;
+  U32 FreeReservationSpace;
+  U32 LargestReserveCluster;
+  struct _FILE_OBJECT* File;
+  struct _MMMOD_WRITER_MDL_ENTRY* Entry[2];
+  struct _UNICODE_STRING PageFileName;
+  struct _MI_PAGING_FILE_SPACE_BITMAPS* Bitmaps;
+  U32 AllocationBitmapHint;
+  U32 ReservationBitmapHint;
+  U32 LargestNonReservedClusterSize;
+  U32 RefreshClusterSize;
+  U32 LastRefreshClusterSize;
+  U32 ReservedClusterSizeAggregate;
+  U32 ToBeEvictedCount;
+  struct 
+  {
+    U16 PageFileNumber : 4; 
+    U16 BootPartition : 1; 
+    U16 WsSwapPagefile : 1; 
+    U16 NoReservations : 1; 
+    U16 Spare0 : 9; 
+  }; 
+  struct 
+  {
+    U8 AdriftMdls : 1; 
+    U8 Spare1 : 7; 
+  }; 
+  U8 Spare2 : 8; 
+  void* FileHandle;
+  U32 Lock;
+  struct _ETHREAD* LockOwner;
+} MMPAGING_FILE, *PMMPAGING_FILE; 
+

@@ -1,0 +1,7 @@
+typedef struct _ARBITER_ORDERING_LIST
+{
+  U16 Count;
+  U16 Maximum;
+  struct _ARBITER_ORDERING* Orderings;
+} ARBITER_ORDERING_LIST, *PARBITER_ORDERING_LIST; 
+

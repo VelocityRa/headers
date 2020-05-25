@@ -1,0 +1,7 @@
+typedef struct _CM_UOW_KEY_STATE_MODIFICATION
+{
+  U32 RefCount;
+  U32 SubKeyListCount[2];
+  U32 NewSubKeyList[2];
+} CM_UOW_KEY_STATE_MODIFICATION, *PCM_UOW_KEY_STATE_MODIFICATION; 
+

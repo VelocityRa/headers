@@ -1,0 +1,10 @@
+typedef struct _PROC_IDLE_POLICY
+{
+  U8 PromotePercent;
+  U8 DemotePercent;
+  U8 PromotePercentBase;
+  U8 DemotePercentBase;
+  U8 AllowScaling;
+  U8 ForceLightIdle;
+} PROC_IDLE_POLICY, *PPROC_IDLE_POLICY; 
+

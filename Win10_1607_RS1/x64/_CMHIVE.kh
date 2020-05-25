@@ -1,0 +1,318 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _HVIEW_MAP_PIN_LOG_ENTRY
+{
+  U32 ViewOffset;
+  U8 Pinned;
+  U64 PinMask;
+  struct _KTHREAD* Thread;
+  void* Stack[6];
+} HVIEW_MAP_PIN_LOG_ENTRY, *PHVIEW_MAP_PIN_LOG_ENTRY; 
+
+typedef struct _HVIEW_MAP_PIN_LOG
+{
+  U32 Next;
+  U32 Size;
+  struct _HVIEW_MAP_PIN_LOG_ENTRY Entries[16];
+} HVIEW_MAP_PIN_LOG, *PHVIEW_MAP_PIN_LOG; 
+
+typedef struct _HVIEW_MAP
+{
+  U32 MappedLength;
+  struct _EX_PUSH_LOCK Lock;
+  struct _FILE_OBJECT* FileObject;
+  struct _HVIEW_MAP_DIRECTORY* Directory;
+  U32 PagesCharged;
+  struct _HVIEW_MAP_PIN_LOG PinLog;
+} HVIEW_MAP, *PHVIEW_MAP; 
+
+typedef struct _FREE_DISPLAY
+{
+  U32 RealVectorSize;
+  U32 Hint;
+  struct _RTL_BITMAP Display;
+} FREE_DISPLAY, *PFREE_DISPLAY; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DUAL
+{
+  U32 Length;
+  struct _HMAP_DIRECTORY* Map;
+  struct _HMAP_TABLE* SmallDir;
+  U32 Guard;
+  struct _FREE_DISPLAY FreeDisplay[24];
+  struct _LIST_ENTRY FreeBins;
+  U32 FreeSummary;
+  S32 __PADDING__[1];
+} DUAL, *PDUAL; 
+
+typedef struct _HHIVE
+{
+  U32 Signature;
+  void* GetCellRoutine;
+  void* ReleaseCellRoutine;
+  void* Allocate;
+  void* Free;
+  void* FileWrite;
+  void* FileRead;
+  void* HiveLoadFailure;
+  struct _HBASE_BLOCK* BaseBlock;
+  struct _RTL_BITMAP DirtyVector;
+  U32 DirtyCount;
+  U32 DirtyAlloc;
+  struct _RTL_BITMAP UnreconciledVector;
+  U32 UnreconciledCount;
+  U32 BaseBlockAlloc;
+  U32 Cluster;
+  struct 
+  {
+    U8 Flat : 1; 
+    U8 ReadOnly : 1; 
+    U8 SystemCacheBacked : 1; 
+    U8 Reserved : 5; 
+  }; 
+  U8 DirtyFlag;
+  U32 HvBinHeadersUse;
+  U32 HvFreeCellsUse;
+  U32 HvUsedCellsUse;
+  U32 CmUsedCellsUse;
+  U32 HiveFlags;
+  U32 CurrentLog;
+  U32 CurrentLogSequence;
+  U32 CurrentLogMinimumSequence;
+  U32 CurrentLogOffset;
+  U32 MinimumLogSequence;
+  U32 LogFileSizeCap;
+  U8 LogDataPresent[2];
+  U8 PrimaryFileValid;
+  U8 BaseBlockDirty;
+  union _LARGE_INTEGER LastLogSwapTime;
+  union
+  {
+    struct 
+    {
+      U16 FirstLogFile : 3; 
+      U16 SecondLogFile : 3; 
+      U16 HeaderRecovered : 1; 
+      U16 LegacyRecoveryIndicated : 1; 
+      U16 RecoveryInformationReserved : 8; 
+    }; 
+    U16 RecoveryInformation;
+  }; 
+  U8 LogEntriesRecovered[2];
+  U32 RefreshCount;
+  U32 StorageTypeCount;
+  U32 Version;
+  struct _HVIEW_MAP ViewMap;
+  struct _DUAL Storage[2];
+} HHIVE, *PHHIVE; 
+
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    U64 Count;
+    void* Ptr;
+  }; 
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _CM_WORKITEM
+{
+  struct _LIST_ENTRY ListEntry;
+  U32 Private;
+  void* WorkerRoutine;
+  void* Parameter;
+} CM_WORKITEM, *PCM_WORKITEM; 
+
+typedef enum _CM_DIRTY_VECTOR_OPERATION
+{
+  DirtyVectorModified = 0,
+  DirtyDataCaptureStart = 1,
+  DirtyDataCaptureEnd = 2,
+} CM_DIRTY_VECTOR_OPERATION, *PCM_DIRTY_VECTOR_OPERATION;
+
+typedef struct _CM_DIRTY_VECTOR_LOG_ENTRY
+{
+  struct _ETHREAD* Thread;
+  enum _CM_DIRTY_VECTOR_OPERATION Operation;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U32 Start;
+        U32 Length;
+      } DirtyVectorModifiedContext;
+      struct
+      {
+        U32 RangeCount;
+        U32 SetBitCount;
+      } DirtyDataCaptureContext;
+      struct
+      {
+        U32 Context1;
+        U32 Context2;
+      } Raw;
+    }; 
+  } Data;
+  void* Stack[6];
+} CM_DIRTY_VECTOR_LOG_ENTRY, *PCM_DIRTY_VECTOR_LOG_ENTRY; 
+
+typedef struct _CM_DIRTY_VECTOR_LOG
+{
+  volatile U32 Next;
+  U32 Size;
+  struct _CM_DIRTY_VECTOR_LOG_ENTRY Log[16];
+} CM_DIRTY_VECTOR_LOG, *PCM_DIRTY_VECTOR_LOG; 
+
+typedef struct _HIVE_WRITE_WAIT_QUEUE
+{
+  struct _ETHREAD* ActiveThread;
+  struct _HIVE_WAIT_PACKET* WaitList;
+  volatile U32 OwnerBoosted;
+  S32 __PADDING__[1];
+} HIVE_WRITE_WAIT_QUEUE, *PHIVE_WRITE_WAIT_QUEUE; 
+
+typedef struct _CMHIVE
+{
+  struct _HHIVE Hive;
+  void* FileHandles[6];
+  struct _LIST_ENTRY NotifyList;
+  struct _LIST_ENTRY HiveList;
+  struct _LIST_ENTRY PreloadedHiveList;
+  struct _LIST_ENTRY FailedUnloadList;
+  struct _EX_RUNDOWN_REF HiveRundown;
+  struct _LIST_ENTRY ParseCacheEntries;
+  struct _CM_KEY_HASH_TABLE_ENTRY* KcbCacheTable;
+  U32 KcbCacheTableSize;
+  struct _CM_KEY_HASH_TABLE_ENTRY* DeletedKcbTable;
+  U32 DeletedKcbTableSize;
+  U32 Identity;
+  struct _FAST_MUTEX* HiveLock;
+  struct _FAST_MUTEX* WriterLock;
+  struct _ERESOURCE* FlusherLock;
+  struct _RTL_BITMAP FlushDirtyVector;
+  U32 FlushDirtyVectorSize;
+  U8* FlushLogEntry;
+  U32 FlushLogEntrySize;
+  U32 FlushHiveTruncated;
+  U8 FlushBaseBlockDirty;
+  struct _RTL_BITMAP CapturedUnreconciledVector;
+  U32 CapturedUnreconciledVectorSize;
+  struct CMP_OFFSET_ARRAY* UnreconciledOffsetArray;
+  U32 UnreconciledOffsetArrayCount;
+  struct _HBASE_BLOCK* UnreconciledBaseBlock;
+  struct _EX_PUSH_LOCK SecurityLock;
+  U32 UseCount;
+  U32 LastShrinkHiveSize;
+  union _LARGE_INTEGER ActualFileSize;
+  union _LARGE_INTEGER LogFileSizes[2];
+  struct _UNICODE_STRING FileFullPath;
+  struct _UNICODE_STRING FileUserName;
+  struct _UNICODE_STRING HiveRootPath;
+  U32 SecurityCount;
+  U32 SecurityCacheSize;
+  S32 SecurityHitHint;
+  struct _CM_KEY_SECURITY_CACHE_ENTRY* SecurityCache;
+  struct _LIST_ENTRY SecurityHash[64];
+  U32 UnloadEventCount;
+  struct _KEVENT** UnloadEventArray;
+  struct _CM_KEY_CONTROL_BLOCK* RootKcb;
+  U8 Frozen;
+  struct _CM_WORKITEM* UnloadWorkItem;
+  struct _CM_WORKITEM UnloadWorkItemHolder;
+  U8 GrowOnlyMode;
+  U32 GrowOffset;
+  struct _LIST_ENTRY KcbConvertListHead;
+  struct _CM_CELL_REMAP_BLOCK* CellRemapArray;
+  struct _CM_DIRTY_VECTOR_LOG DirtyVectorLog;
+  U32 Flags;
+  struct _LIST_ENTRY TrustClassEntry;
+  U64 DirtyTime;
+  U64 UnreconciledTime;
+  struct _CM_RM* CmRm;
+  U32 CmRmInitFailPoint;
+  S32 CmRmInitFailStatus;
+  struct _KTHREAD* CreatorOwner;
+  struct _KTHREAD* RundownThread;
+  union _LARGE_INTEGER LastWriteTime;
+  struct _HIVE_WRITE_WAIT_QUEUE FlushQueue;
+  struct _HIVE_WRITE_WAIT_QUEUE ReconcileQueue;
+  union
+  {
+    U32 FlushFlags;
+    struct 
+    {
+      U32 FlushActive : 1; 
+      U32 ReconcileActive : 1; 
+      U32 PrimaryFilePurged : 1; 
+      U32 DiskFileBad : 1; 
+    }; 
+  }; 
+  U32 PrimaryFileSizeBeforeLastFlush;
+  volatile S32 ReferenceCount;
+  S32 UnloadHistoryIndex;
+  U32 UnloadHistory[128];
+  U32 BootStart;
+  U32 UnaccessedStart;
+  U32 UnaccessedEnd;
+  U32 LoadedKeyCount;
+  volatile U32 HandleClosePending;
+  struct _EX_PUSH_LOCK HandleClosePendingEvent;
+  U8 FinalFlushSucceeded;
+  U8 FailedUnload;
+  char __PADDING__[6];
+} CMHIVE, *PCMHIVE; 
+

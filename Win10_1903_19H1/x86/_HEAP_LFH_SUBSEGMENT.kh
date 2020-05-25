@@ -1,0 +1,61 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _HEAP_LFH_SUBSEGMENT_DELAY_FREE
+{
+  union
+  {
+    struct 
+    {
+      U32 DelayFree : 1; 
+      U32 Count : 31; 
+    }; 
+    void* AllBits;
+  }; 
+} HEAP_LFH_SUBSEGMENT_DELAY_FREE, *PHEAP_LFH_SUBSEGMENT_DELAY_FREE; 
+
+typedef struct _HEAP_LFH_SUBSEGMENT_ENCODED_OFFSETS
+{
+  union
+  {
+    struct
+    {
+      U16 BlockSize;
+      U16 FirstBlockOffset;
+    }; 
+    U32 EncodedData;
+  }; 
+} HEAP_LFH_SUBSEGMENT_ENCODED_OFFSETS, *PHEAP_LFH_SUBSEGMENT_ENCODED_OFFSETS; 
+
+typedef struct _HEAP_LFH_SUBSEGMENT
+{
+  struct _LIST_ENTRY ListEntry;
+  union
+  {
+    struct _HEAP_LFH_SUBSEGMENT_OWNER* Owner;
+    union _HEAP_LFH_SUBSEGMENT_DELAY_FREE DelayFree;
+  }; 
+  U32 CommitLock;
+  union
+  {
+    struct
+    {
+      U16 FreeCount;
+      U16 BlockCount;
+    }; 
+    volatile S16 InterlockedShort;
+    volatile S32 InterlockedLong;
+  }; 
+  U16 FreeHint;
+  U8 Location;
+  U8 WitheldBlockCount;
+  struct _HEAP_LFH_SUBSEGMENT_ENCODED_OFFSETS BlockOffsets;
+  U8 CommitUnitShift;
+  U8 CommitUnitCount;
+  U16 CommitStateOffset;
+  U32 BlockBitmap[1];
+} HEAP_LFH_SUBSEGMENT, *PHEAP_LFH_SUBSEGMENT; 
+

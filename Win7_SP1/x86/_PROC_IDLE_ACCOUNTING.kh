@@ -1,0 +1,30 @@
+typedef struct _PROC_IDLE_STATE_BUCKET
+{
+  U64 TotalTime;
+  U64 MinTime;
+  U64 MaxTime;
+  U32 Count;
+  S32 __PADDING__[1];
+} PROC_IDLE_STATE_BUCKET, *PPROC_IDLE_STATE_BUCKET; 
+
+typedef struct _PROC_IDLE_STATE_ACCOUNTING
+{
+  U64 TotalTime;
+  U32 IdleTransitions;
+  U32 FailedTransitions;
+  U32 InvalidBucketIndex;
+  U64 MinTime;
+  U64 MaxTime;
+  struct _PROC_IDLE_STATE_BUCKET IdleTimeBuckets[16];
+} PROC_IDLE_STATE_ACCOUNTING, *PPROC_IDLE_STATE_ACCOUNTING; 
+
+typedef struct _PROC_IDLE_ACCOUNTING
+{
+  U32 StateCount;
+  U32 TotalTransitions;
+  U32 ResetCount;
+  U64 StartTime;
+  U64 BucketLimits[16];
+  struct _PROC_IDLE_STATE_ACCOUNTING State[1];
+} PROC_IDLE_ACCOUNTING, *PPROC_IDLE_ACCOUNTING; 
+

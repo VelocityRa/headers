@@ -1,0 +1,19 @@
+typedef struct _PPM_SELECTION_STATISTICS
+{
+  U64 SelectedCount;
+  U64 VetoCount;
+  U64 PreVetoCount;
+  U64 WrongProcessorCount;
+  U64 LatencyCount;
+  U64 IdleDurationCount;
+  U64 DeviceDependencyCount;
+  U64 ProcessorDependencyCount;
+  U64 PlatformOnlyCount;
+  U64 InterruptibleCount;
+  U64 LegacyOverrideCount;
+  U64 CstateCheckCount;
+  U64 NoCStateCount;
+  U64 CoordinatedDependencyCount;
+  struct _PPM_VETO_ACCOUNTING* PreVetoAccounting;
+} PPM_SELECTION_STATISTICS, *PPPM_SELECTION_STATISTICS; 
+

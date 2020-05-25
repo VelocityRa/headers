@@ -1,0 +1,11 @@
+typedef struct _MI_PAGE_COMBINE_STATISTICS
+{
+  U64 PagesScannedActive;
+  U64 PagesScannedStandby;
+  U64 PagesCombined;
+  U32 CombineScanCount;
+  S32 CombinedBlocksInUse;
+  S32 SumCombinedBlocksReferenceCount;
+  S32 __PADDING__[1];
+} MI_PAGE_COMBINE_STATISTICS, *PMI_PAGE_COMBINE_STATISTICS; 
+

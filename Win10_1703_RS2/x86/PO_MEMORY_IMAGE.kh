@@ -1,0 +1,137 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _PO_HIBER_PERF
+{
+  U64 HiberIoTicks;
+  U64 HiberIoCpuTicks;
+  U64 HiberInitTicks;
+  U64 HiberHiberFileTicks;
+  U64 HiberCompressTicks;
+  U64 HiberSharedBufferTicks;
+  U64 HiberChecksumTicks;
+  U64 HiberChecksumIoTicks;
+  union _LARGE_INTEGER TotalHibernateTime;
+  union _LARGE_INTEGER HibernateCompleteTimestamp;
+  U32 POSTTime;
+  U32 ResumeBootMgrTime;
+  U32 BootmgrUserInputTime;
+  U64 ResumeAppTicks;
+  U64 ResumeAppStartTimestamp;
+  U64 ResumeLibraryInitTicks;
+  U64 ResumeInitTicks;
+  U64 ResumeRestoreImageStartTimestamp;
+  U64 ResumeHiberFileTicks;
+  U64 ResumeIoTicks;
+  U64 ResumeDecompressTicks;
+  U64 ResumeAllocateTicks;
+  U64 ResumeUserInOutTicks;
+  U64 ResumeMapTicks;
+  U64 ResumeUnmapTicks;
+  U64 ResumeChecksumTicks;
+  U64 ResumeChecksumIoTicks;
+  U64 ResumeKernelSwitchTimestamp;
+  U64 CyclesPerMs;
+  U64 WriteLogDataTimestamp;
+  U64 KernelReturnFromHandler;
+  U64 TimeStampCounterAtSwitchTime;
+  U64 HalTscOffset;
+  U64 HvlTscOffset;
+  U64 SleeperThreadEnd;
+  U64 PostCmosUpdateTimestamp;
+  U64 KernelReturnSystemPowerStateTimestamp;
+  U64 IoBoundedness;
+  U64 KernelDecompressTicks;
+  U64 KernelIoTicks;
+  U64 KernelCopyTicks;
+  U64 ReadCheckCount;
+  U64 KernelInitTicks;
+  U64 KernelResumeHiberFileTicks;
+  U64 KernelIoCpuTicks;
+  U64 KernelSharedBufferTicks;
+  U64 KernelAnimationTicks;
+  U64 KernelChecksumTicks;
+  U64 KernelChecksumIoTicks;
+  union _LARGE_INTEGER AnimationStart;
+  union _LARGE_INTEGER AnimationStop;
+  U32 DeviceResumeTime;
+  U64 SecurePagesProcessed;
+  U64 BootPagesProcessed;
+  U64 KernelPagesProcessed;
+  U64 BootBytesWritten;
+  U64 KernelBytesWritten;
+  U64 BootPagesWritten;
+  U64 KernelPagesWritten;
+  U64 BytesWritten;
+  U32 PagesWritten;
+  U32 FileRuns;
+  U32 NoMultiStageResumeReason;
+  U32 MaxHuffRatio;
+  U64 AdjustedTotalResumeTime;
+  U64 ResumeCompleteTimestamp;
+} PO_HIBER_PERF, *PPO_HIBER_PERF; 
+
+struct PO_MEMORY_IMAGE
+{
+  U32 Signature;
+  U32 ImageType;
+  U32 CheckSum;
+  U32 LengthSelf;
+  U32 PageSelf;
+  U32 PageSize;
+  union _LARGE_INTEGER SystemTime;
+  U64 InterruptTime;
+  U64 FeatureFlags;
+  U8 HiberFlags;
+  U8 spare[3];
+  U32 NoHiberPtes;
+  U32 HiberVa;
+  U32 NoFreePages;
+  U32 FreeMapCheck;
+  U32 WakeCheck;
+  U64 NumPagesForLoader;
+  U32 FirstBootRestorePage;
+  U32 FirstKernelRestorePage;
+  U32 FirstChecksumRestorePage;
+  U64 NoChecksumEntries;
+  struct _PO_HIBER_PERF PerfInfo;
+  U32 FirmwareRuntimeInformationPages;
+  U32 FirmwareRuntimeInformation[1];
+  U32 SiLogOffset;
+  U32 NoBootLoaderLogPages;
+  U32 BootLoaderLogPages[24];
+  U32 NotUsed;
+  U32 ResumeContextCheck;
+  U32 ResumeContextPages;
+  U8 Hiberboot;
+  U64 HvCr3;
+  U64 HvEntryPoint;
+  U64 HvReservedTransitionAddress;
+  U64 HvReservedTransitionAddressSize;
+  U64 BootFlags;
+  U64 HalEntryPointPhysical;
+  U32 HighestPhysicalPage;
+  U32 BitlockerKeyPfns[4];
+  U32 HardwareSignature;
+  union _LARGE_INTEGER SMBiosTablePhysicalAddress;
+  U32 SMBiosTableLength;
+  U8 SMBiosMajorVersion;
+  U8 SMBiosMinorVersion;
+  char __PADDING__[2];
+}; 
+

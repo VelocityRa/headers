@@ -1,0 +1,12 @@
+typedef struct _ISRDPCSTATS
+{
+  U64 IsrTime;
+  U64 IsrTimeStart;
+  U64 IsrCount;
+  U64 DpcTime;
+  U64 DpcTimeStart;
+  U64 DpcCount;
+  U8 IsrActive;
+  U8 Reserved[15];
+} ISRDPCSTATS, *PISRDPCSTATS; 
+

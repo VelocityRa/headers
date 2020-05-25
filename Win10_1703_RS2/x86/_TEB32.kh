@@ -1,0 +1,202 @@
+typedef struct _NT_TIB32
+{
+  U32 ExceptionList;
+  U32 StackBase;
+  U32 StackLimit;
+  U32 SubSystemTib;
+  union
+  {
+    U32 FiberData;
+    U32 Version;
+  }; 
+  U32 ArbitraryUserPointer;
+  U32 Self;
+} NT_TIB32, *PNT_TIB32; 
+
+typedef struct _CLIENT_ID32
+{
+  U32 UniqueProcess;
+  U32 UniqueThread;
+} CLIENT_ID32, *PCLIENT_ID32; 
+
+struct LIST_ENTRY32
+{
+  U32 Flink;
+  U32 Blink;
+}; 
+
+typedef struct _ACTIVATION_CONTEXT_STACK32
+{
+  U32 ActiveFrame;
+  struct LIST_ENTRY32 FrameListCache;
+  U32 Flags;
+  U32 NextCookieSequenceNumber;
+  U32 StackId;
+} ACTIVATION_CONTEXT_STACK32, *PACTIVATION_CONTEXT_STACK32; 
+
+typedef struct _GDI_TEB_BATCH32
+{
+  struct 
+  {
+    U32 Offset : 31; 
+    U32 HasRenderingCommand : 1; 
+  }; 
+  U32 HDC;
+  U32 Buffer[310];
+} GDI_TEB_BATCH32, *PGDI_TEB_BATCH32; 
+
+typedef struct _STRING32
+{
+  U16 Length;
+  U16 MaximumLength;
+  U32 Buffer;
+} STRING32, *PSTRING32; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _PROCESSOR_NUMBER
+{
+  U16 Group;
+  U8 Number;
+  U8 Reserved;
+} PROCESSOR_NUMBER, *PPROCESSOR_NUMBER; 
+
+typedef struct _TEB32
+{
+  struct _NT_TIB32 NtTib;
+  U32 EnvironmentPointer;
+  struct _CLIENT_ID32 ClientId;
+  U32 ActiveRpcHandle;
+  U32 ThreadLocalStoragePointer;
+  U32 ProcessEnvironmentBlock;
+  U32 LastErrorValue;
+  U32 CountOfOwnedCriticalSections;
+  U32 CsrClientThread;
+  U32 Win32ThreadInfo;
+  U32 User32Reserved[26];
+  U32 UserReserved[5];
+  U32 WOW32Reserved;
+  U32 CurrentLocale;
+  U32 FpSoftwareStatusRegister;
+  U32 ReservedForDebuggerInstrumentation[16];
+  U32 SystemReserved1[30];
+  struct _ACTIVATION_CONTEXT_STACK32 _ActivationStack;
+  U8 WorkingOnBehalfTicket[8];
+  S32 ExceptionCode;
+  U32 ActivationContextStackPointer;
+  U32 InstrumentationCallbackSp;
+  U32 InstrumentationCallbackPreviousPc;
+  U32 InstrumentationCallbackPreviousSp;
+  U8 InstrumentationCallbackDisabled;
+  U8 SpareBytes[23];
+  U32 TxFsContext;
+  struct _GDI_TEB_BATCH32 GdiTebBatch;
+  struct _CLIENT_ID32 RealClientId;
+  U32 GdiCachedProcessHandle;
+  U32 GdiClientPID;
+  U32 GdiClientTID;
+  U32 GdiThreadLocalInfo;
+  U32 Win32ClientInfo[62];
+  U32 glDispatchTable[233];
+  U32 glReserved1[29];
+  U32 glReserved2;
+  U32 glSectionInfo;
+  U32 glSection;
+  U32 glTable;
+  U32 glCurrentRC;
+  U32 glContext;
+  U32 LastStatusValue;
+  struct _STRING32 StaticUnicodeString;
+  wchar_t StaticUnicodeBuffer[261];
+  U32 DeallocationStack;
+  U32 TlsSlots[64];
+  struct LIST_ENTRY32 TlsLinks;
+  U32 Vdm;
+  U32 ReservedForNtRpc;
+  U32 DbgSsReserved[2];
+  U32 HardErrorMode;
+  U32 Instrumentation[9];
+  struct _GUID ActivityId;
+  U32 SubProcessTag;
+  U32 PerflibData;
+  U32 EtwTraceData;
+  U32 WinSockData;
+  U32 GdiBatchCount;
+  union
+  {
+    struct _PROCESSOR_NUMBER CurrentIdealProcessor;
+    U32 IdealProcessorValue;
+    struct
+    {
+      U8 ReservedPad0;
+      U8 ReservedPad1;
+      U8 ReservedPad2;
+      U8 IdealProcessor;
+    }; 
+  }; 
+  U32 GuaranteedStackBytes;
+  U32 ReservedForPerf;
+  U32 ReservedForOle;
+  U32 WaitingOnLoaderLock;
+  U32 SavedPriorityState;
+  U32 ReservedForCodeCoverage;
+  U32 ThreadPoolData;
+  U32 TlsExpansionSlots;
+  U32 MuiGeneration;
+  U32 IsImpersonating;
+  U32 NlsCache;
+  U32 pShimData;
+  U16 HeapVirtualAffinity;
+  U16 LowFragHeapDataSlot;
+  U32 CurrentTransactionHandle;
+  U32 ActiveFrame;
+  U32 FlsData;
+  U32 PreferredLanguages;
+  U32 UserPrefLanguages;
+  U32 MergedPrefLanguages;
+  U32 MuiImpersonation;
+  union
+  {
+    volatile U16 CrossTebFlags;
+    U16 SpareCrossTebBits : 16; 
+  }; 
+  union
+  {
+    U16 SameTebFlags;
+    struct 
+    {
+      U16 SafeThunkCall : 1; 
+      U16 InDebugPrS32 : 1; 
+      U16 HasFiberData : 1; 
+      U16 SkipThreadAttach : 1; 
+      U16 WerInShipAssertCode : 1; 
+      U16 RanProcessInit : 1; 
+      U16 ClonedThread : 1; 
+      U16 SuppressDebugMsg : 1; 
+      U16 DisableUserStackWalk : 1; 
+      U16 RtlExceptionAttached : 1; 
+      U16 InitialThread : 1; 
+      U16 SessionAware : 1; 
+      U16 LoadOwner : 1; 
+      U16 LoaderWorker : 1; 
+      U16 SkipLoaderInit : 1; 
+      U16 SpareSameTebBits : 1; 
+    }; 
+  }; 
+  U32 TxnScopeEnterCallback;
+  U32 TxnScopeExitCallback;
+  U32 TxnScopeContext;
+  U32 LockCount;
+  S32 WowTebOffset;
+  U32 ResourceRetValue;
+  U32 ReservedForWdf;
+  U64 ReservedForCrt;
+  struct _GUID EffectiveContainerId;
+} TEB32, *PTEB32; 
+

@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_DYNAMIC_HASH_TABLE_ENTRY
+{
+  struct _LIST_ENTRY Linkage;
+  U32 Signature;
+} RTL_DYNAMIC_HASH_TABLE_ENTRY, *PRTL_DYNAMIC_HASH_TABLE_ENTRY; 
+
+typedef struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR
+{
+  struct _RTL_DYNAMIC_HASH_TABLE_ENTRY HashEntry;
+  struct _LIST_ENTRY* ChainHead;
+  U32 BucketIndex;
+} RTL_DYNAMIC_HASH_TABLE_ENUMERATOR, *PRTL_DYNAMIC_HASH_TABLE_ENUMERATOR; 
+

@@ -1,0 +1,8 @@
+typedef struct _TRACE_ENABLE_CONTEXT
+{
+  U16 LoggerId;
+  U8 Level;
+  U8 InternalFlag;
+  U32 EnableFlags;
+} TRACE_ENABLE_CONTEXT, *PTRACE_ENABLE_CONTEXT; 
+

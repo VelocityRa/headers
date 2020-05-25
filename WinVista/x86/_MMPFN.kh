@@ -1,0 +1,223 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _MMPFNENTRY
+{
+  struct 
+  {
+    U8 PageLocation : 3; 
+    U8 WriteInProgress : 1; 
+    U8 Modified : 1; 
+    U8 ReadInProgress : 1; 
+    U8 CacheAttribute : 2; 
+  }; 
+  struct 
+  {
+    U8 Priority : 3; 
+    U8 Rom : 1; 
+    U8 InPageError : 1; 
+    U8 KernelStack : 1; 
+    U8 RemovalRequested : 1; 
+    U8 ParityError : 1; 
+  }; 
+} MMPFNENTRY, *PMMPFNENTRY; 
+
+typedef struct _HARDWARE_PTE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 Write : 1; 
+    U32 Owner : 1; 
+    U32 WriteThrough : 1; 
+    U32 CacheDisable : 1; 
+    U32 Accessed : 1; 
+    U32 Dirty : 1; 
+    U32 LargePage : 1; 
+    U32 Global : 1; 
+    U32 CopyOnWrite : 1; 
+    U32 Prototype : 1; 
+    U32 reserved : 1; 
+    U32 PageFrameNumber : 20; 
+  }; 
+} HARDWARE_PTE, *PHARDWARE_PTE; 
+
+typedef struct _MMPTE_HARDWARE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 Dirty1 : 1; 
+    U32 Owner : 1; 
+    U32 WriteThrough : 1; 
+    U32 CacheDisable : 1; 
+    U32 Accessed : 1; 
+    U32 Dirty : 1; 
+    U32 LargePage : 1; 
+    U32 Global : 1; 
+    U32 CopyOnWrite : 1; 
+    U32 Prototype : 1; 
+    U32 Write : 1; 
+    U32 PageFrameNumber : 20; 
+  }; 
+} MMPTE_HARDWARE, *PMMPTE_HARDWARE; 
+
+typedef struct _MMPTE_PROTOTYPE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 ProtoAddressLow : 8; 
+    U32 ReadOnly : 1; 
+    U32 Prototype : 1; 
+    U32 ProtoAddressHigh : 21; 
+  }; 
+} MMPTE_PROTOTYPE, *PMMPTE_PROTOTYPE; 
+
+typedef struct _MMPTE_SOFTWARE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 PageFileLow : 4; 
+    U32 Protection : 5; 
+    U32 Prototype : 1; 
+    U32 Transition : 1; 
+    U32 PageFileHigh : 20; 
+  }; 
+} MMPTE_SOFTWARE, *PMMPTE_SOFTWARE; 
+
+typedef struct _MMPTE_TRANSITION
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 Write : 1; 
+    U32 Owner : 1; 
+    U32 WriteThrough : 1; 
+    U32 CacheDisable : 1; 
+    U32 Protection : 5; 
+    U32 Prototype : 1; 
+    U32 Transition : 1; 
+    U32 PageFrameNumber : 20; 
+  }; 
+} MMPTE_TRANSITION, *PMMPTE_TRANSITION; 
+
+typedef struct _MMPTE_SUBSECTION
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 SubsectionAddressLow : 9; 
+    U32 Prototype : 1; 
+    U32 SubsectionAddressHigh : 21; 
+  }; 
+} MMPTE_SUBSECTION, *PMMPTE_SUBSECTION; 
+
+typedef struct _MMPTE_LIST
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 OneEntry : 1; 
+    U32 filler0 : 8; 
+    U32 Prototype : 1; 
+    U32 filler1 : 1; 
+    U32 NextEntry : 20; 
+  }; 
+} MMPTE_LIST, *PMMPTE_LIST; 
+
+typedef struct _MMPTE
+{
+  union
+  {
+    union
+    {
+      U32 Long;
+      volatile U32 VolatileLong;
+      struct _HARDWARE_PTE Flush;
+      struct _MMPTE_HARDWARE Hard;
+      struct _MMPTE_PROTOTYPE Proto;
+      struct _MMPTE_SOFTWARE Soft;
+      struct _MMPTE_TRANSITION Trans;
+      struct _MMPTE_SUBSECTION Subsect;
+      struct _MMPTE_LIST List;
+    }; 
+  } u;
+} MMPTE, *PMMPTE; 
+
+typedef struct _MMPFN
+{
+  union
+  {
+    union
+    {
+      U32 Flink;
+      U32 WsIndex;
+      struct _KEVENT* Event;
+      void* Next;
+      void* volatile VolatileNext;
+      struct _KTHREAD* KernelStackOwner;
+      struct _SINGLE_LIST_ENTRY NextStackPfn;
+    }; 
+  } u1;
+  union
+  {
+    union
+    {
+      U32 Blink;
+      struct _MMPTE* ImageProtoPte;
+      U32 ShareCount;
+    }; 
+  } u2;
+  union
+  {
+    struct _MMPTE* PteAddress;
+    void* volatile VolatilePteAddress;
+  }; 
+  union
+  {
+    union
+    {
+      struct
+      {
+        U16 ReferenceCount;
+        struct _MMPFNENTRY e1;
+      }; 
+      struct
+      {
+        union
+        {
+          U16 ReferenceCount;
+          volatile S16 VolatileReferenceCount;
+        }; 
+        U16 ShortFlags;
+      } e2;
+      struct
+      {
+        U16 ReferenceCount;
+        U8 ByteFlags;
+        U8 InterlockedByteFlags;
+      } e3;
+    }; 
+  } u3;
+  union
+  {
+    struct _MMPTE OriginalPte;
+    volatile S32 AweReferenceCount;
+  }; 
+  union
+  {
+    struct 
+    {
+      U32 PteFrame : 25; 
+      U32 PfnImageVerified : 1; 
+      U32 AweAllocation : 1; 
+      U32 PrototypePte : 1; 
+      U32 PageColor : 4; 
+    }; 
+  } u4;
+} MMPFN, *PMMPFN; 
+

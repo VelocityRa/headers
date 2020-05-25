@@ -1,0 +1,106 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MMSECTION_FLAGS
+{
+  struct 
+  {
+    U32 BeingDeleted : 1; 
+    U32 BeingCreated : 1; 
+    U32 BeingPurged : 1; 
+    U32 NoModifiedWriting : 1; 
+    U32 FailAllIo : 1; 
+    U32 Image : 1; 
+    U32 Based : 1; 
+    U32 File : 1; 
+    U32 Networked : 1; 
+    U32 Rom : 1; 
+    U32 PhysicalMemory : 1; 
+    U32 CopyOnWrite : 1; 
+    U32 Reserve : 1; 
+    U32 Commit : 1; 
+    U32 Accessed : 1; 
+    U32 WasPurged : 1; 
+    U32 UserReference : 1; 
+    U32 GlobalMemory : 1; 
+    U32 DeleteOnClose : 1; 
+    U32 FilePointerNull : 1; 
+    U32 GlobalOnlyPerSession : 1; 
+    U32 SetMappedFileIoComplete : 1; 
+    U32 CollidedFlush : 1; 
+    U32 NoChange : 1; 
+    U32 Spare : 1; 
+    U32 UserWritable : 1; 
+    U32 PreferredNode : 6; 
+  }; 
+} MMSECTION_FLAGS, *PMMSECTION_FLAGS; 
+
+typedef struct _EX_FAST_REF
+{
+  union
+  {
+    void* Object;
+    U32 RefCnt : 3; 
+    U32 Value;
+  }; 
+} EX_FAST_REF, *PEX_FAST_REF; 
+
+typedef struct _CONTROL_AREA
+{
+  struct _SEGMENT* Segment;
+  struct _LIST_ENTRY DereferenceList;
+  U32 NumberOfSectionReferences;
+  U32 NumberOfPfnReferences;
+  U32 NumberOfMappedViews;
+  U32 NumberOfUserReferences;
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSECTION_FLAGS Flags;
+    }; 
+  } u;
+  U32 FlushInProgressCount;
+  struct _EX_FAST_REF FilePointer;
+  volatile S32 ControlAreaLock;
+  union
+  {
+    U32 ModifiedWriteCount;
+    U32 StartingFrame;
+  }; 
+  struct _MI_SECTION_CREATION_GATE* WaitingForDeletion;
+  union
+  {
+    struct
+    {
+      union
+      {
+        U32 NumberOfSystemCacheViews;
+        U32 ImageRelocationStartBit;
+      }; 
+      union
+      {
+        volatile S32 WritableUserReferences;
+        struct 
+        {
+          U32 ImageRelocationSizeIn64k : 16; 
+          U32 Unused : 14; 
+          U32 BitMap64 : 1; 
+          U32 ImageActive : 1; 
+        }; 
+      }; 
+      union
+      {
+        struct _MM_SUBSECTION_AVL_TABLE* SubsectionRoot;
+        struct _MI_IMAGE_SECURITY_REFERENCE* SeImageStub;
+      }; 
+    } e2;
+  } u2;
+  volatile S64 LockedPages;
+  struct _LIST_ENTRY ViewList;
+} CONTROL_AREA, *PCONTROL_AREA; 
+

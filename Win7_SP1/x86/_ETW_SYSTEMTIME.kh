@@ -1,0 +1,12 @@
+typedef struct _ETW_SYSTEMTIME
+{
+  U16 Year;
+  U16 Month;
+  U16 DayOfWeek;
+  U16 Day;
+  U16 Hour;
+  U16 Minute;
+  U16 Second;
+  U16 Milliseconds;
+} ETW_SYSTEMTIME, *PETW_SYSTEMTIME; 
+

@@ -1,0 +1,12 @@
+typedef struct _RTL_ATOM_TABLE_ENTRY
+{
+  struct _RTL_ATOM_TABLE_ENTRY* HashLink;
+  U16 HandleIndex;
+  U16 Atom;
+  U16 ReferenceCount;
+  U8 Flags;
+  U8 NameLength;
+  wchar_t Name[1];
+  char __PADDING__[2];
+} RTL_ATOM_TABLE_ENTRY, *PRTL_ATOM_TABLE_ENTRY; 
+

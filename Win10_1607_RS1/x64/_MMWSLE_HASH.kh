@@ -1,0 +1,5 @@
+typedef struct _MMWSLE_HASH
+{
+  U64 Index;
+} MMWSLE_HASH, *PMMWSLE_HASH; 
+

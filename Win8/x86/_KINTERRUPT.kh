@@ -1,0 +1,54 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef enum _KINTERRUPT_MODE
+{
+  LevelSensitive = 0,
+  Latched = 1,
+} KINTERRUPT_MODE, *PKINTERRUPT_MODE;
+
+typedef enum _KINTERRUPT_POLARITY
+{
+  InterruptPolarityUnknown = 0,
+  InterruptActiveHigh = 1,
+  InterruptRisingEdge = 1,
+  InterruptActiveLow = 2,
+  InterruptFallingEdge = 2,
+  InterruptActiveBoth = 3,
+} KINTERRUPT_POLARITY, *PKINTERRUPT_POLARITY;
+
+typedef struct _KINTERRUPT
+{
+  S16 Type;
+  S16 Size;
+  struct _LIST_ENTRY InterruptListEntry;
+  void* ServiceRoutine;
+  void* MessageServiceRoutine;
+  U32 MessageIndex;
+  void* ServiceContext;
+  U32 SpinLock;
+  U32 TickCount;
+  U32* ActualLock;
+  void* DispatchAddress;
+  U32 Vector;
+  U8 Irql;
+  U8 SynchronizeIrql;
+  U8 FloatingSave;
+  U8 Connected;
+  U32 Number;
+  U8 ShareVector;
+  U16 ActiveCount;
+  S32 InternalState;
+  enum _KINTERRUPT_MODE Mode;
+  enum _KINTERRUPT_POLARITY Polarity;
+  U32 ServiceCount;
+  U32 DispatchCount;
+  struct _KEVENT* PassiveEvent;
+  U32 DispatchCode[145];
+  void* DisconnectData;
+  struct _KTHREAD* volatile ServiceThread;
+} KINTERRUPT, *PKINTERRUPT; 
+

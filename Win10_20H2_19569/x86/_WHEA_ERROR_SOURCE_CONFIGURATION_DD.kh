@@ -1,0 +1,7 @@
+typedef struct _WHEA_ERROR_SOURCE_CONFIGURATION_DD
+{
+  void* Initialize;
+  void* Uninitialize;
+  void* Correct;
+} WHEA_ERROR_SOURCE_CONFIGURATION_DD, *PWHEA_ERROR_SOURCE_CONFIGURATION_DD; 
+

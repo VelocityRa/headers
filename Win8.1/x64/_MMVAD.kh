@@ -1,0 +1,150 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MMVAD_FLAGS
+{
+  struct 
+  {
+    U32 VadType : 3; 
+    U32 Protection : 5; 
+    U32 PreferredNode : 6; 
+    U32 NoChange : 1; 
+    U32 PrivateMemory : 1; 
+    U32 Teb : 1; 
+    U32 PrivateFixup : 1; 
+    U32 Spare : 13; 
+    U32 DeleteInProgress : 1; 
+  }; 
+} MMVAD_FLAGS, *PMMVAD_FLAGS; 
+
+typedef struct _MMVAD_FLAGS1
+{
+  struct 
+  {
+    U32 CommitCharge : 31; 
+    U32 MemCommit : 1; 
+  }; 
+} MMVAD_FLAGS1, *PMMVAD_FLAGS1; 
+
+typedef struct _MMVAD_SHORT
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE VadNode;
+    struct _MMVAD_SHORT* NextVad;
+  }; 
+  U32 StartingVpn;
+  U32 EndingVpn;
+  U8 StartingVpnHigh;
+  U8 EndingVpnHigh;
+  U8 CommitChargeHigh;
+  U8 LargeImageBias;
+  S32 ReferenceCount;
+  struct _EX_PUSH_LOCK PushLock;
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMVAD_FLAGS VadFlags;
+    }; 
+  } u;
+  union
+  {
+    union
+    {
+      U32 LongFlags1;
+      struct _MMVAD_FLAGS1 VadFlags1;
+    }; 
+  } u1;
+  struct _MI_VAD_EVENT_BLOCK* EventList;
+} MMVAD_SHORT, *PMMVAD_SHORT; 
+
+typedef struct _MMVAD_FLAGS2
+{
+  struct 
+  {
+    U32 FileOffset : 24; 
+    U32 Large : 1; 
+    U32 TrimBehind : 1; 
+    U32 Inherit : 1; 
+    U32 CopyOnWrite : 1; 
+    U32 NoValidationNeeded : 1; 
+    U32 Spare : 3; 
+  }; 
+} MMVAD_FLAGS2, *PMMVAD_FLAGS2; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MI_VAD_SEQUENTIAL_INFO
+{
+  struct 
+  {
+    U64 Length : 12; 
+    U64 Vpn : 52; 
+  }; 
+} MI_VAD_SEQUENTIAL_INFO, *PMI_VAD_SEQUENTIAL_INFO; 
+
+typedef struct _MMVAD
+{
+  struct _MMVAD_SHORT Core;
+  union
+  {
+    union
+    {
+      U32 LongFlags2;
+      struct _MMVAD_FLAGS2 VadFlags2;
+    }; 
+  } u2;
+  struct _SUBSECTION* Subsection;
+  struct _MMPTE* FirstPrototypePte;
+  struct _MMPTE* LastContiguousPte;
+  struct _LIST_ENTRY ViewLinks;
+  struct _EPROCESS* VadsProcess;
+  union
+  {
+    union
+    {
+      struct _MI_VAD_SEQUENTIAL_INFO SequentialVa;
+      struct _MMEXTEND_INFO* ExtendedInfo;
+    }; 
+  } u4;
+} MMVAD, *PMMVAD; 
+

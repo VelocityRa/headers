@@ -1,0 +1,27 @@
+typedef struct _INTERRUPT_FUNCTION_TABLE
+{
+  void* InitializeLocalUnit;
+  void* InitializeIoUnit;
+  void* SetPriority;
+  void* GetLocalUnitError;
+  void* ClearLocalUnitError;
+  void* GetLogicalId;
+  void* SetLogicalId;
+  void* AcceptAndGetSource;
+  void* EndOfInterrupt;
+  void* FastEndOfInterrupt;
+  void* SetLineState;
+  void* RequestInterrupt;
+  void* StartProcessor;
+  void* GenerateMessage;
+  void* ConvertId;
+  void* SaveLocalInterrupts;
+  void* ReplayLocalInterrupts;
+  void* DeinitializeLocalUnit;
+  void* DeinitializeIoUnit;
+  void* QueryAndGetSource;
+  void* DeactivateInterrupt;
+  void* DirectedEndOfInterrupt;
+  void* QueryLocalUnitInfo;
+} INTERRUPT_FUNCTION_TABLE, *PINTERRUPT_FUNCTION_TABLE; 
+

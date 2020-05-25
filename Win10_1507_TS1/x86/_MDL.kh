@@ -1,0 +1,12 @@
+typedef struct _MDL
+{
+  struct _MDL* Next;
+  S16 Size;
+  S16 MdlFlags;
+  struct _EPROCESS* Process;
+  void* MappedSystemVa;
+  void* StartVa;
+  U32 ByteCount;
+  U32 ByteOffset;
+} MDL, *PMDL; 
+

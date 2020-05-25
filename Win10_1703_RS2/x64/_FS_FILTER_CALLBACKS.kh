@@ -1,0 +1,20 @@
+typedef struct _FS_FILTER_CALLBACKS
+{
+  U32 SizeOfFsFilterCallbacks;
+  U32 Reserved;
+  void* PreAcquireForSectionSynchronization;
+  void* PostAcquireForSectionSynchronization;
+  void* PreReleaseForSectionSynchronization;
+  void* PostReleaseForSectionSynchronization;
+  void* PreAcquireForCcFlush;
+  void* PostAcquireForCcFlush;
+  void* PreReleaseForCcFlush;
+  void* PostReleaseForCcFlush;
+  void* PreAcquireForModifiedPageWriter;
+  void* PostAcquireForModifiedPageWriter;
+  void* PreReleaseForModifiedPageWriter;
+  void* PostReleaseForModifiedPageWriter;
+  void* PreQueryOpen;
+  void* PostQueryOpen;
+} FS_FILTER_CALLBACKS, *PFS_FILTER_CALLBACKS; 
+

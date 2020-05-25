@@ -1,0 +1,70 @@
+typedef union _WHEA_NOTIFICATION_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 PollIntervalRW : 1; 
+      U16 SwitchToPollingThresholdRW : 1; 
+      U16 SwitchToPollingWindowRW : 1; 
+      U16 ErrorThresholdRW : 1; 
+      U16 ErrorThresholdWindowRW : 1; 
+      U16 Reserved : 11; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} WHEA_NOTIFICATION_FLAGS, *PWHEA_NOTIFICATION_FLAGS; 
+
+typedef struct _WHEA_NOTIFICATION_DESCRIPTOR
+{
+  U8 Type;
+  U8 Length;
+  union _WHEA_NOTIFICATION_FLAGS Flags;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U32 PollInterval;
+      } Polled;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } Interrupt;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } LocalInterrupt;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } Sci;
+      struct
+      {
+        U32 PollInterval;
+        U32 Vector;
+        U32 SwitchToPollingThreshold;
+        U32 SwitchToPollingWindow;
+        U32 ErrorThreshold;
+        U32 ErrorThresholdWindow;
+      } Nmi;
+    }; 
+  } u;
+} WHEA_NOTIFICATION_DESCRIPTOR, *PWHEA_NOTIFICATION_DESCRIPTOR; 
+

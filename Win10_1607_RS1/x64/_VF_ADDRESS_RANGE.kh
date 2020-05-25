@@ -1,0 +1,6 @@
+typedef struct _VF_ADDRESS_RANGE
+{
+  U8* Start;
+  U8* End;
+} VF_ADDRESS_RANGE, *PVF_ADDRESS_RANGE; 
+

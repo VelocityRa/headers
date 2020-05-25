@@ -1,0 +1,12 @@
+typedef struct _PO_IRP_QUEUE
+{
+  struct _IRP* CurrentIrp;
+  struct _IRP* PendingIrpList;
+} PO_IRP_QUEUE, *PPO_IRP_QUEUE; 
+
+typedef struct _PO_IRP_MANAGER
+{
+  struct _PO_IRP_QUEUE DeviceIrpQueue;
+  struct _PO_IRP_QUEUE SystemIrpQueue;
+} PO_IRP_MANAGER, *PPO_IRP_MANAGER; 
+

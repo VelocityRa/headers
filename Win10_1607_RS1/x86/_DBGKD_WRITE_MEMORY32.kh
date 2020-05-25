@@ -1,0 +1,7 @@
+typedef struct _DBGKD_WRITE_MEMORY32
+{
+  U32 TargetBaseAddress;
+  U32 TransferCount;
+  U32 ActualBytesWritten;
+} DBGKD_WRITE_MEMORY32, *PDBGKD_WRITE_MEMORY32; 
+

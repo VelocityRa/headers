@@ -1,0 +1,15 @@
+typedef struct _NT_TIB
+{
+  struct _EXCEPTION_REGISTRATION_RECORD* ExceptionList;
+  void* StackBase;
+  void* StackLimit;
+  void* SubSystemTib;
+  union
+  {
+    void* FiberData;
+    U32 Version;
+  }; 
+  void* ArbitraryUserPointer;
+  struct _NT_TIB* Self;
+} NT_TIB, *PNT_TIB; 
+

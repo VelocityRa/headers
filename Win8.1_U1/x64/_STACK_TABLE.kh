@@ -1,0 +1,9 @@
+typedef struct _STACK_TABLE
+{
+  U16 NumStackTraces;
+  U16 TraceCapacity;
+  struct _OBJECT_REF_TRACE* StackTrace[16];
+  U16 StackTableHash[16381];
+  char __PADDING__[6];
+} STACK_TABLE, *PSTACK_TABLE; 
+

@@ -1,0 +1,7 @@
+typedef struct _POP_FX_PROVIDER
+{
+  U32 Index;
+  U8 Activating;
+  char __PADDING__[3];
+} POP_FX_PROVIDER, *PPOP_FX_PROVIDER; 
+

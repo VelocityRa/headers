@@ -1,0 +1,23 @@
+typedef struct _PCW_PROCESSOR_INFO
+{
+  U64 IdleTime;
+  U64 AvailableTime;
+  U64 UserTime;
+  U64 KernelTime;
+  U32 Interrupts;
+  U64 DpcTime;
+  U64 InterruptTime;
+  U32 DpcCount;
+  U32 DpcRate;
+  U64 C1Time;
+  U64 C2Time;
+  U64 C3Time;
+  U64 C1Transitions;
+  U64 C2Transitions;
+  U64 C3Transitions;
+  U32 ParkingStatus;
+  U32 CurrentFrequency;
+  U32 PercentMaxFrequency;
+  U32 StateFlags;
+} PCW_PROCESSOR_INFO, *PPCW_PROCESSOR_INFO; 
+

@@ -1,0 +1,30 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _HEADLESS_LOADER_BLOCK
+{
+  U8 UsedBiosSettings;
+  U8 DataBits;
+  U8 StopBits;
+  U8 Parity;
+  U32 BaudRate;
+  U32 PortNumber;
+  U8* PortAddress;
+  U16 PciDeviceId;
+  U16 PciVendorId;
+  U8 PciBusNumber;
+  U16 PciBusSegment;
+  U8 PciSlotNumber;
+  U8 PciFunctionNumber;
+  U32 PciFlags;
+  struct _GUID SystemGUID;
+  U8 IsMMIODevice;
+  U8 TerminalType;
+  char __PADDING__[6];
+} HEADLESS_LOADER_BLOCK, *PHEADLESS_LOADER_BLOCK; 
+

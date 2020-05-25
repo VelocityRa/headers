@@ -1,0 +1,140 @@
+typedef struct _RTL_BALANCED_LINKS
+{
+  struct _RTL_BALANCED_LINKS* Parent;
+  struct _RTL_BALANCED_LINKS* LeftChild;
+  struct _RTL_BALANCED_LINKS* RightChild;
+  char Balance;
+  U8 Reserved[3];
+  S32 __PADDING__[1];
+} RTL_BALANCED_LINKS, *PRTL_BALANCED_LINKS; 
+
+typedef struct _KTMOBJECT_NAMESPACE_LINK
+{
+  struct _RTL_BALANCED_LINKS Links;
+  U8 Expired;
+  char __PADDING__[7];
+} KTMOBJECT_NAMESPACE_LINK, *PKTMOBJECT_NAMESPACE_LINK; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 Abandoned;
+        U8 Absolute;
+        U8 NpxIrql;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 Size;
+            struct
+            {
+              U8 Hand;
+              union
+              {
+                U8 Inserted;
+                U8 DebugActive;
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KMUTANT
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY MutantListEntry;
+  struct _KTHREAD* OwnerThread;
+  U8 Abandoned;
+  U8 ApcDisable;
+  char __PADDING__[6];
+} KMUTANT, *PKMUTANT; 
+
+typedef enum _KENLISTMENT_STATE
+{
+  KEnlistmentUninitialized = 0,
+  KEnlistmentActive = 256,
+  KEnlistmentPreparing = 257,
+  KEnlistmentPrepared = 258,
+  KEnlistmentInDoubt = 259,
+  KEnlistmentCommitted = 260,
+  KEnlistmentCommittedNotify = 261,
+  KEnlistmentCommitRequested = 262,
+  KEnlistmentAborted = 263,
+  KEnlistmentDelegated = 264,
+  KEnlistmentDelegatedDisconnected = 265,
+  KEnlistmentPrePreparing = 266,
+  KEnlistmentForgotten = 267,
+  KEnlistmentRecovering = 268,
+  KEnlistmentAborting = 269,
+  KEnlistmentReadOnly = 270,
+  KEnlistmentOutcomeUnavailable = 271,
+  KEnlistmentOffline = 272,
+  KEnlistmentPrePrepared = 273,
+  KEnlistmentInitialized = 274,
+} KENLISTMENT_STATE, *PKENLISTMENT_STATE;
+
+typedef struct _KENLISTMENT_HISTORY
+{
+  U32 Notification;
+  enum _KENLISTMENT_STATE NewState;
+} KENLISTMENT_HISTORY, *PKENLISTMENT_HISTORY; 
+
+typedef struct _KENLISTMENT
+{
+  U32 cookie;
+  struct _KTMOBJECT_NAMESPACE_LINK NamespaceLink;
+  struct _GUID EnlistmentId;
+  struct _KMUTANT Mutex;
+  struct _LIST_ENTRY NextSameTx;
+  struct _LIST_ENTRY NextSameRm;
+  struct _KRESOURCEMANAGER* ResourceManager;
+  struct _KTRANSACTION* Transaction;
+  enum _KENLISTMENT_STATE State;
+  U32 Flags;
+  U32 NotificationMask;
+  void* Key;
+  U32 KeyRefCount;
+  void* RecoveryInformation;
+  U32 RecoveryInformationLength;
+  void* DynamicNameInformation;
+  U32 DynamicNameInformationLength;
+  struct _KTMNOTIFICATION_PACKET* FinalNotification;
+  struct _KENLISTMENT* SupSubEnlistment;
+  void* SupSubEnlHandle;
+  void* SubordinateTxHandle;
+  struct _GUID CrmEnlistmentEnId;
+  struct _GUID CrmEnlistmentTmId;
+  struct _GUID CrmEnlistmentRmId;
+  U32 NextHistory;
+  struct _KENLISTMENT_HISTORY History[20];
+  S32 __PADDING__[1];
+} KENLISTMENT, *PKENLISTMENT; 
+

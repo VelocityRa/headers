@@ -1,0 +1,10 @@
+typedef struct _OBJECT_HEADER_QUOTA_INFO
+{
+  U32 PagedPoolCharge;
+  U32 NonPagedPoolCharge;
+  U32 SecurityDescriptorCharge;
+  U32 Reserved1;
+  void* SecurityDescriptorQuotaBlock;
+  U64 Reserved2;
+} OBJECT_HEADER_QUOTA_INFO, *POBJECT_HEADER_QUOTA_INFO; 
+

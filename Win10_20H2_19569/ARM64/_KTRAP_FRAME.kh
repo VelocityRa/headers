@@ -1,0 +1,55 @@
+typedef struct _KTRAP_FRAME
+{
+  U8 ExceptionActive;
+  U8 ContextFromKFramesUnwound;
+  U8 DebugRegistersValid;
+  union
+  {
+    char PreviousMode;
+    U8 PreviousIrql;
+  }; 
+  U32 Reserved;
+  union
+  {
+    U64 FaultAddress;
+    U64 TrapFrame;
+  }; 
+  struct _KARM64_VFP_STATE* VfpState;
+  U32 Bcr[8];
+  U64 Bvr[8];
+  U32 Wcr[2];
+  U64 Wvr[2];
+  U32 Spsr;
+  U32 Esr;
+  U64 Sp;
+  union
+  {
+    U64 X[19];
+    struct
+    {
+      U64 X0;
+      U64 X1;
+      U64 X2;
+      U64 X3;
+      U64 X4;
+      U64 X5;
+      U64 X6;
+      U64 X7;
+      U64 X8;
+      U64 X9;
+      U64 X10;
+      U64 X11;
+      U64 X12;
+      U64 X13;
+      U64 X14;
+      U64 X15;
+      U64 X16;
+      U64 X17;
+      U64 X18;
+    }; 
+  }; 
+  U64 Lr;
+  U64 Fp;
+  U64 Pc;
+} KTRAP_FRAME, *PKTRAP_FRAME; 
+

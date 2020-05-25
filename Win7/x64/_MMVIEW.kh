@@ -1,0 +1,20 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MMVIEW
+{
+  U64 Entry;
+  union
+  {
+    U64 Writable : 1; 
+    struct _CONTROL_AREA* ControlArea;
+  }; 
+  struct _LIST_ENTRY ViewLinks;
+  void* SessionViewVa;
+  U32 SessionId;
+  S32 __PADDING__[1];
+} MMVIEW, *PMMVIEW; 
+

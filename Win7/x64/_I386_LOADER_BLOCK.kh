@@ -1,0 +1,7 @@
+typedef struct _I386_LOADER_BLOCK
+{
+  void* CommonDataArea;
+  U32 MachineType;
+  U32 VirtualBias;
+} I386_LOADER_BLOCK, *PI386_LOADER_BLOCK; 
+

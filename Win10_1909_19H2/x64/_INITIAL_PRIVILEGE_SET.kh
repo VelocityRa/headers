@@ -1,0 +1,19 @@
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _LUID_AND_ATTRIBUTES
+{
+  struct _LUID Luid;
+  U32 Attributes;
+} LUID_AND_ATTRIBUTES, *PLUID_AND_ATTRIBUTES; 
+
+typedef struct _INITIAL_PRIVILEGE_SET
+{
+  U32 PrivilegeCount;
+  U32 Control;
+  struct _LUID_AND_ATTRIBUTES Privilege[3];
+} INITIAL_PRIVILEGE_SET, *PINITIAL_PRIVILEGE_SET; 
+

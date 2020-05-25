@@ -1,0 +1,95 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _ETW_BUFFER_CONTEXT
+{
+  union
+  {
+    struct
+    {
+      U8 ProcessorNumber;
+      U8 Alignment;
+    }; 
+    U16 ProcessorIndex;
+  }; 
+  U16 LoggerId;
+} ETW_BUFFER_CONTEXT, *PETW_BUFFER_CONTEXT; 
+
+typedef enum _ETW_BUFFER_STATE
+{
+  EtwBufferStateFree = 0,
+  EtwBufferStateGeneralLogging = 1,
+  EtwBufferStateCSwitch = 2,
+  EtwBufferStateFlush = 3,
+  EtwBufferStateMaximum = 4,
+} ETW_BUFFER_STATE, *PETW_BUFFER_STATE;
+
+typedef struct _ETW_REF_CLOCK
+{
+  union _LARGE_INTEGER StartTime;
+  union _LARGE_INTEGER StartPerfClock;
+} ETW_REF_CLOCK, *PETW_REF_CLOCK; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WMI_BUFFER_HEADER
+{
+  U32 BufferSize;
+  U32 SavedOffset;
+  volatile U32 CurrentOffset;
+  volatile S32 ReferenceCount;
+  union _LARGE_INTEGER TimeStamp;
+  S64 SequenceNumber;
+  union
+  {
+    struct 
+    {
+      U64 ClockType : 3; 
+      U64 Frequency : 61; 
+    }; 
+    struct _SINGLE_LIST_ENTRY SlistEntry;
+    struct _WMI_BUFFER_HEADER* NextBuffer;
+  }; 
+  struct _ETW_BUFFER_CONTEXT ClientContext;
+  enum _ETW_BUFFER_STATE State;
+  U32 Offset;
+  U16 BufferFlag;
+  U16 BufferType;
+  union
+  {
+    U32 Padding1[4];
+    struct _ETW_REF_CLOCK ReferenceTime;
+    struct _LIST_ENTRY GlobalEntry;
+    struct
+    {
+      void* Pointer0;
+      void* Pointer1;
+      S32 __PADDING__[2];
+    }; 
+  }; 
+} WMI_BUFFER_HEADER, *PWMI_BUFFER_HEADER; 
+

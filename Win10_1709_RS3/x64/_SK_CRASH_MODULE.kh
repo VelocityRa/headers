@@ -1,0 +1,7 @@
+typedef struct _SK_CRASH_MODULE
+{
+  wchar_t ImageName[32];
+  U32 SizeOfImage;
+  U32 TimeDateStamp;
+} SK_CRASH_MODULE, *PSK_CRASH_MODULE; 
+

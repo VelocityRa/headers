@@ -1,0 +1,30 @@
+typedef struct _RTL_CRITICAL_SECTION
+{
+  struct _RTL_CRITICAL_SECTION_DEBUG* DebugInfo;
+  S32 LockCount;
+  S32 RecursionCount;
+  void* OwningThread;
+  void* LockSemaphore;
+  U32 SpinCount;
+} RTL_CRITICAL_SECTION, *PRTL_CRITICAL_SECTION; 
+
+typedef struct _RTL_HANDLE_TABLE
+{
+  U32 MaximumNumberOfHandles;
+  U32 SizeOfHandleTableEntry;
+  U32 Reserved[2];
+  struct _RTL_HANDLE_TABLE_ENTRY* FreeHandles;
+  struct _RTL_HANDLE_TABLE_ENTRY* CommittedHandles;
+  struct _RTL_HANDLE_TABLE_ENTRY* UnCommittedHandles;
+  struct _RTL_HANDLE_TABLE_ENTRY* MaxReservedHandles;
+} RTL_HANDLE_TABLE, *PRTL_HANDLE_TABLE; 
+
+typedef struct _RTL_ATOM_TABLE
+{
+  U32 Signature;
+  struct _RTL_CRITICAL_SECTION CriticalSection;
+  struct _RTL_HANDLE_TABLE RtlHandleTable;
+  U32 NumberOfBuckets;
+  struct _RTL_ATOM_TABLE_ENTRY* Buckets[1];
+} RTL_ATOM_TABLE, *PRTL_ATOM_TABLE; 
+

@@ -1,0 +1,12 @@
+typedef struct _FNSAVE_FORMAT
+{
+  U32 ControlWord;
+  U32 StatusWord;
+  U32 TagWord;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U8 RegisterArea[80];
+} FNSAVE_FORMAT, *PFNSAVE_FORMAT; 
+

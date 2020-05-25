@@ -1,0 +1,7 @@
+typedef struct _SEP_TOKEN_PRIVILEGES
+{
+  U64 Present;
+  U64 Enabled;
+  U64 EnabledByDefault;
+} SEP_TOKEN_PRIVILEGES, *PSEP_TOKEN_PRIVILEGES; 
+

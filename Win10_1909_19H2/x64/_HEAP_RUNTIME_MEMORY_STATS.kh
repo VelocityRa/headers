@@ -1,0 +1,24 @@
+typedef struct _HEAP_OPPORTUNISTIC_LARGE_PAGE_STATS
+{
+  volatile U64 SmallPagesInUseWithinLarge;
+  volatile U64 OpportunisticLargePageCount;
+} HEAP_OPPORTUNISTIC_LARGE_PAGE_STATS, *PHEAP_OPPORTUNISTIC_LARGE_PAGE_STATS; 
+
+typedef struct _RTL_HP_SEG_ALLOC_POLICY
+{
+  U64 MinLargePages;
+  U64 MaxLargePages;
+  U8 MinUtilization;
+  char __PADDING__[7];
+} RTL_HP_SEG_ALLOC_POLICY, *PRTL_HP_SEG_ALLOC_POLICY; 
+
+typedef struct _HEAP_RUNTIME_MEMORY_STATS
+{
+  volatile U64 TotalReservedPages;
+  volatile U64 TotalCommittedPages;
+  U64 FreeCommittedPages;
+  U64 LfhFreeCommittedPages;
+  struct _HEAP_OPPORTUNISTIC_LARGE_PAGE_STATS LargePageStats[2];
+  struct _RTL_HP_SEG_ALLOC_POLICY LargePageUtilizationPolicy;
+} HEAP_RUNTIME_MEMORY_STATS, *PHEAP_RUNTIME_MEMORY_STATS; 
+

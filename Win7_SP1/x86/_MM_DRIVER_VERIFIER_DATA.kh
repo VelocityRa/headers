@@ -1,0 +1,43 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _MM_DRIVER_VERIFIER_DATA
+{
+  volatile U32 Level;
+  volatile U32 RaiseIrqls;
+  volatile U32 AcquireSpinLocks;
+  volatile U32 SynchronizeExecutions;
+  volatile U32 AllocationsAttempted;
+  volatile U32 AllocationsSucceeded;
+  volatile U32 AllocationsSucceededSpecialPool;
+  volatile U32 AllocationsWithNoTag;
+  volatile U32 TrimRequests;
+  volatile U32 Trims;
+  volatile U32 AllocationsFailed;
+  volatile U32 AllocationsFailedDeliberately;
+  volatile U32 Loads;
+  volatile U32 Unloads;
+  volatile U32 UnTrackedPool;
+  volatile U32 UserTrims;
+  volatile U32 CurrentPagedPoolAllocations;
+  volatile U32 CurrentNonPagedPoolAllocations;
+  volatile U32 PeakPagedPoolAllocations;
+  volatile U32 PeakNonPagedPoolAllocations;
+  volatile U32 PagedBytes;
+  volatile U32 NonPagedBytes;
+  volatile U32 PeakPagedBytes;
+  volatile U32 PeakNonPagedBytes;
+  volatile U32 BurstAllocationsFailedDeliberately;
+  volatile U32 SessionTrims;
+  volatile U32 OptionChanges;
+  volatile U32 VerifyMode;
+  struct _UNICODE_STRING PreviousBucketName;
+  volatile U32 ActivityCounter;
+  volatile U32 PreviousActivityCounter;
+  volatile U32 WorkerTrimRequests;
+} MM_DRIVER_VERIFIER_DATA, *PMM_DRIVER_VERIFIER_DATA; 
+

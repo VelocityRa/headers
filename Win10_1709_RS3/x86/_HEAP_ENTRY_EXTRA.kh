@@ -1,0 +1,14 @@
+typedef struct _HEAP_ENTRY_EXTRA
+{
+  union
+  {
+    struct
+    {
+      U16 AllocatorBackTraceIndex;
+      U16 TagIndex;
+      U32 Settable;
+    }; 
+    U64 ZeroInit;
+  }; 
+} HEAP_ENTRY_EXTRA, *PHEAP_ENTRY_EXTRA; 
+

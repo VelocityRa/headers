@@ -1,0 +1,432 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 6; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 ThreadReservedControlFlags : 2; 
+          }; 
+          union
+          {
+            U8 DebugActive;
+            struct 
+            {
+              U8 ActiveDR7 : 1; 
+              U8 Instrumented : 1; 
+              U8 Minimal : 1; 
+              U8 Reserved4 : 3; 
+              U8 UmsScheduled : 1; 
+              U8 UmsPrimary : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _KSEMAPHORE
+{
+  struct _DISPATCHER_HEADER Header;
+  S32 Limit;
+  S32 __PADDING__[1];
+} KSEMAPHORE, *PKSEMAPHORE; 
+
+typedef struct _MMDEREFERENCE_SEGMENT_HEADER
+{
+  struct _KSEMAPHORE Semaphore;
+  struct _LIST_ENTRY ListHead;
+} MMDEREFERENCE_SEGMENT_HEADER, *PMMDEREFERENCE_SEGMENT_HEADER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Processor;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _MMPTE_HARDWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Dirty1 : 1; 
+    U64 Owner : 1; 
+    U64 WriteThrough : 1; 
+    U64 CacheDisable : 1; 
+    U64 Accessed : 1; 
+    U64 Dirty : 1; 
+    U64 LargePage : 1; 
+    U64 Global : 1; 
+    U64 CopyOnWrite : 1; 
+    U64 Unused : 1; 
+    U64 Write : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 ReservedForHardware : 4; 
+    U64 ReservedForSoftware : 4; 
+    U64 WsleAge : 4; 
+    U64 WsleProtection : 3; 
+    U64 NoExecute : 1; 
+  }; 
+} MMPTE_HARDWARE, *PMMPTE_HARDWARE; 
+
+typedef struct _HARDWARE_PTE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Write : 1; 
+    U64 Owner : 1; 
+    U64 WriteThrough : 1; 
+    U64 CacheDisable : 1; 
+    U64 Accessed : 1; 
+    U64 Dirty : 1; 
+    U64 LargePage : 1; 
+    U64 Global : 1; 
+    U64 CopyOnWrite : 1; 
+    U64 Prototype : 1; 
+    U64 reserved0 : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 reserved1 : 4; 
+    U64 SoftwareWsIndex : 11; 
+    U64 NoExecute : 1; 
+  }; 
+} HARDWARE_PTE, *PHARDWARE_PTE; 
+
+typedef struct _MMPTE_PROTOTYPE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 DemandFillProto : 1; 
+    U64 HiberVerifyConverted : 1; 
+    U64 Unused1 : 5; 
+    U64 ReadOnly : 1; 
+    U64 Combined : 1; 
+    U64 Prototype : 1; 
+    U64 Protection : 5; 
+    S64 ProtoAddress : 48; 
+  }; 
+} MMPTE_PROTOTYPE, *PMMPTE_PROTOTYPE; 
+
+typedef struct _MMPTE_SOFTWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 PageFileLow : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFileReserved : 1; 
+    U64 PageFileAllocated : 1; 
+    U64 UsedPageTableEntries : 10; 
+    U64 Unused : 8; 
+    U64 PageFileHigh : 32; 
+  }; 
+} MMPTE_SOFTWARE, *PMMPTE_SOFTWARE; 
+
+typedef struct _MMPTE_TIMESTAMP
+{
+  struct 
+  {
+    U64 MustBeZero : 1; 
+    U64 PageFileLow : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 Reserved : 20; 
+    U64 GlobalTimeStamp : 32; 
+  }; 
+} MMPTE_TIMESTAMP, *PMMPTE_TIMESTAMP; 
+
+typedef struct _MMPTE_TRANSITION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Write : 1; 
+    U64 Spare : 2; 
+    U64 IoTracker : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 Unused : 16; 
+  }; 
+} MMPTE_TRANSITION, *PMMPTE_TRANSITION; 
+
+typedef struct _MMPTE_SUBSECTION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Unused0 : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Unused1 : 4; 
+    U64 ExecutePrivilege : 1; 
+    S64 SubsectionAddress : 48; 
+  }; 
+} MMPTE_SUBSECTION, *PMMPTE_SUBSECTION; 
+
+typedef struct _MMPTE_LIST
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 OneEntry : 1; 
+    U64 filler0 : 3; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 filler1 : 16; 
+    U64 NextEntry : 36; 
+  }; 
+} MMPTE_LIST, *PMMPTE_LIST; 
+
+typedef struct _MMPTE
+{
+  union
+  {
+    union
+    {
+      U64 Long;
+      volatile U64 VolatileLong;
+      struct _MMPTE_HARDWARE Hard;
+      struct _HARDWARE_PTE Flush;
+      struct _MMPTE_PROTOTYPE Proto;
+      struct _MMPTE_SOFTWARE Soft;
+      struct _MMPTE_TIMESTAMP TimeStamp;
+      struct _MMPTE_TRANSITION Trans;
+      struct _MMPTE_SUBSECTION Subsect;
+      struct _MMPTE_LIST List;
+    }; 
+  } u;
+} MMPTE, *PMMPTE; 
+
+typedef struct _MI_PTE_CHAIN_HEAD
+{
+  struct _MMPTE Flink;
+  struct _MMPTE Blink;
+  struct _MMPTE* PteBase;
+} MI_PTE_CHAIN_HEAD, *PMI_PTE_CHAIN_HEAD; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MI_CROSS_PARTITION_CHARGES
+{
+  U64 CurrentCharges;
+  U64 ChargeFailures;
+  U64 ChargePeak;
+  U64 ChargeMinimum;
+} MI_CROSS_PARTITION_CHARGES, *PMI_CROSS_PARTITION_CHARGES; 
+
+typedef struct _MI_PARTITION_SEGMENTS
+{
+  volatile S32 SegmentListLock;
+  U32 DeleteOnCloseCount;
+  volatile S64 FsControlAreaCount;
+  volatile S64 PfControlAreaCount;
+  struct _KEVENT DeleteSubsectionCleanup;
+  struct _KEVENT UnusedSegmentCleanup;
+  U64 SubsectionDeletePtes;
+  struct _MMDEREFERENCE_SEGMENT_HEADER DereferenceSegmentHeader;
+  struct _LIST_ENTRY DeleteOnCloseList;
+  struct _KTIMER DeleteOnCloseTimer;
+  U8 DeleteOnCloseTimerActive;
+  struct _LIST_ENTRY UnusedSegmentList;
+  struct _LIST_ENTRY UnusedSubsectionList;
+  struct _LIST_ENTRY DeleteSubsectionList;
+  struct _KEVENT ControlAreaDeleteEvent;
+  struct _SINGLE_LIST_ENTRY ControlAreaDeleteList;
+  struct _MI_PTE_CHAIN_HEAD FreeSystemCache;
+  struct _KEVENT CloneDereferenceEvent;
+  union _SLIST_HEADER CloneProtosSListHead;
+  struct _EX_PUSH_LOCK SystemCacheInitLock;
+  struct _MI_CROSS_PARTITION_CHARGES SharedCharges[4];
+  struct _KEVENT* SharedChargesDrainEvent;
+  struct _KEVENT* PagefileControlAreasDrainEvent;
+  S32 __PADDING__[14];
+} MI_PARTITION_SEGMENTS, *PMI_PARTITION_SEGMENTS; 
+

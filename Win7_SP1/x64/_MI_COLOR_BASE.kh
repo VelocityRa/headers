@@ -1,0 +1,8 @@
+typedef struct _MI_COLOR_BASE
+{
+  U16* ColorPointer;
+  U16 ColorMask;
+  U16 ColorNode;
+  S32 __PADDING__[1];
+} MI_COLOR_BASE, *PMI_COLOR_BASE; 
+

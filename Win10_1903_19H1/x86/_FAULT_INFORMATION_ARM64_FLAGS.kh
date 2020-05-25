@@ -1,0 +1,12 @@
+typedef struct _FAULT_INFORMATION_ARM64_FLAGS
+{
+  struct 
+  {
+    U32 WriteNotRead : 1; 
+    U32 InstructionNotData : 1; 
+    U32 Privileged : 1; 
+    U32 FaultAddressValid : 1; 
+    U32 Reserved : 28; 
+  }; 
+} FAULT_INFORMATION_ARM64_FLAGS, *PFAULT_INFORMATION_ARM64_FLAGS; 
+

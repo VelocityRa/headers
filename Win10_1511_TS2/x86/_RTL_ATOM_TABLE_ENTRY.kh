@@ -1,0 +1,24 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_ATOM_TABLE_REFERENCE
+{
+  struct _LIST_ENTRY LowBoxList;
+  U32 LowBoxID;
+  U16 ReferenceCount;
+  U16 Flags;
+} RTL_ATOM_TABLE_REFERENCE, *PRTL_ATOM_TABLE_REFERENCE; 
+
+typedef struct _RTL_ATOM_TABLE_ENTRY
+{
+  struct _RTL_ATOM_TABLE_ENTRY* HashLink;
+  U16 HandleIndex;
+  U16 Atom;
+  struct _RTL_ATOM_TABLE_REFERENCE Reference;
+  U8 NameLength;
+  wchar_t Name[1];
+} RTL_ATOM_TABLE_ENTRY, *PRTL_ATOM_TABLE_ENTRY; 
+

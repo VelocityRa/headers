@@ -1,0 +1,17 @@
+typedef struct _IOV_IRP_TRACE
+{
+  struct _IRP* Irp;
+  struct _KTHREAD* Thread;
+  union
+  {
+    struct
+    {
+      S16 KernelApcDisable;
+      S16 SpecialApcDisable;
+    }; 
+    U32 CombinedApcDisable;
+  }; 
+  U8 Irql;
+  void* StackTrace[13];
+} IOV_IRP_TRACE, *PIOV_IRP_TRACE; 
+

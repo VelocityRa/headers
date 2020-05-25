@@ -1,0 +1,14 @@
+typedef union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U8 FRUId : 1; 
+      U8 FRUText : 1; 
+      U8 Reserved : 6; 
+    }; 
+    U8 AsUCHAR;
+  }; 
+} WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS, *PWHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS; 
+

@@ -1,0 +1,6 @@
+typedef struct _MI_SYSTEM_VA_ASSIGNMENT
+{
+  void* BaseAddress;
+  U64 NumberOfBytes;
+} MI_SYSTEM_VA_ASSIGNMENT, *PMI_SYSTEM_VA_ASSIGNMENT; 
+

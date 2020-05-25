@@ -1,0 +1,6 @@
+typedef struct _DEVICE_FAULT_CONFIGURATION
+{
+  void* FaultHandler;
+  void* FaultContext;
+} DEVICE_FAULT_CONFIGURATION, *PDEVICE_FAULT_CONFIGURATION; 
+

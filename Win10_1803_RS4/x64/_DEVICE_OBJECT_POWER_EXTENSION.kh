@@ -1,0 +1,47 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef enum _POP_DEVICE_IDLE_TYPE
+{
+  DeviceIdleNormal = 0,
+  DeviceIdleDisk = 1,
+} POP_DEVICE_IDLE_TYPE, *PPOP_DEVICE_IDLE_TYPE;
+
+typedef enum _DEVICE_POWER_STATE
+{
+  PowerDeviceUnspecified = 0,
+  PowerDeviceD0 = 1,
+  PowerDeviceD1 = 2,
+  PowerDeviceD2 = 3,
+  PowerDeviceD3 = 4,
+  PowerDeviceMaximum = 5,
+} DEVICE_POWER_STATE, *PDEVICE_POWER_STATE;
+
+typedef struct _DEVICE_OBJECT_POWER_EXTENSION
+{
+  volatile U32 IdleCount;
+  volatile U32 BusyCount;
+  volatile U32 BusyReference;
+  U32 TotalBusyCount;
+  U32 ConservationIdleTime;
+  U32 PerformanceIdleTime;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _LIST_ENTRY IdleList;
+  enum _POP_DEVICE_IDLE_TYPE IdleType;
+  enum _DEVICE_POWER_STATE IdleState;
+  enum _DEVICE_POWER_STATE CurrentState;
+  struct _POP_COOLING_EXTENSION* CoolingExtension;
+  struct _LIST_ENTRY Volume;
+  union
+  {
+    struct
+    {
+      U32 IdleTime;
+      U32 NonIdleTime;
+    } Disk;
+  } Specific;
+} DEVICE_OBJECT_POWER_EXTENSION, *PDEVICE_OBJECT_POWER_EXTENSION; 
+

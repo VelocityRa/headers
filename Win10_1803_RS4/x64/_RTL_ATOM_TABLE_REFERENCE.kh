@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_ATOM_TABLE_REFERENCE
+{
+  struct _LIST_ENTRY LowBoxList;
+  U32 LowBoxID;
+  U16 ReferenceCount;
+  U16 Flags;
+} RTL_ATOM_TABLE_REFERENCE, *PRTL_ATOM_TABLE_REFERENCE; 
+

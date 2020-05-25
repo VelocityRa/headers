@@ -1,0 +1,5 @@
+typedef struct _MI_FILE_EXTENTS
+{
+  struct _MI_FILE_EXTENTS_WAIT_BLOCK* WaitList;
+} MI_FILE_EXTENTS, *PMI_FILE_EXTENTS; 
+

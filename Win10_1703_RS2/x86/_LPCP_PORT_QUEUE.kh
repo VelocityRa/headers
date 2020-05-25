@@ -1,0 +1,13 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _LPCP_PORT_QUEUE
+{
+  struct _LPCP_NONPAGED_PORT_QUEUE* NonPagedPortQueue;
+  struct _KSEMAPHORE* Semaphore;
+  struct _LIST_ENTRY ReceiveHead;
+} LPCP_PORT_QUEUE, *PLPCP_PORT_QUEUE; 
+

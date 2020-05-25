@@ -1,0 +1,35 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _WHEA_ERROR_SOURCE_CONFIGURATION_DD
+{
+  void* Initialize;
+  void* Uninitialize;
+  void* Correct;
+} WHEA_ERROR_SOURCE_CONFIGURATION_DD, *PWHEA_ERROR_SOURCE_CONFIGURATION_DD; 
+
+typedef struct _WHEA_DEVICE_DRIVER_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 Reserved;
+  struct _GUID SourceGuid;
+  U16 LogTag;
+  U16 Reserved2;
+  U32 PacketLength;
+  U32 PacketCount;
+  U8* PacketBuffer;
+  struct _WHEA_ERROR_SOURCE_CONFIGURATION_DD Config;
+  struct _GUID CreatorId;
+  struct _GUID PartitionId;
+  U32 MaxSectionDataLength;
+  U32 MaxSectionsPerRecord;
+  U8* PacketStateBuffer;
+  S32 OpenHandles;
+} WHEA_DEVICE_DRIVER_DESCRIPTOR, *PWHEA_DEVICE_DRIVER_DESCRIPTOR; 
+

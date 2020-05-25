@@ -1,0 +1,7 @@
+typedef struct _PEP_WORK_DEVICE_IDLE
+{
+  struct POHANDLE__* DeviceHandle;
+  U8 IgnoreIdleTimeout;
+  char __PADDING__[3];
+} PEP_WORK_DEVICE_IDLE, *PPEP_WORK_DEVICE_IDLE; 
+

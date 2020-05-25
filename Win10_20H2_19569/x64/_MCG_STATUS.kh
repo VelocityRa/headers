@@ -1,0 +1,20 @@
+typedef union _MCG_STATUS
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U32 RestartIpValid : 1; 
+        U32 ErrorIpValid : 1; 
+        U32 MachineCheckInProgress : 1; 
+        U32 LocalMceValid : 1; 
+        U32 Reserved1 : 28; 
+      }; 
+      U32 Reserved2;
+    }; 
+    U64 QuadPart;
+  }; 
+} MCG_STATUS, *PMCG_STATUS; 
+

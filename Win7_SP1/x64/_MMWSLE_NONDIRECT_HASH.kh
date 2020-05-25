@@ -1,0 +1,7 @@
+typedef struct _MMWSLE_NONDIRECT_HASH
+{
+  void* Key;
+  U32 Index;
+  S32 __PADDING__[1];
+} MMWSLE_NONDIRECT_HASH, *PMMWSLE_NONDIRECT_HASH; 
+

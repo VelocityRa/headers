@@ -1,0 +1,42 @@
+typedef struct _EXHANDLE
+{
+  union
+  {
+    struct 
+    {
+      U32 TagBits : 2; 
+      U32 Index : 30; 
+    }; 
+    void* GenericHandleOverlay;
+    U32 Value;
+  }; 
+} EXHANDLE, *PEXHANDLE; 
+
+typedef struct _HANDLE_TABLE_ENTRY
+{
+  union
+  {
+    volatile S32 VolatileLowValue;
+    S32 LowValue;
+    struct _HANDLE_TABLE_ENTRY_INFO* volatile InfoTable;
+    struct 
+    {
+      U32 Unlocked : 1; 
+      U32 Attributes : 2; 
+      U32 ObjectPointerBits : 29; 
+    }; 
+  }; 
+  union
+  {
+    S32 HighValue;
+    struct _HANDLE_TABLE_ENTRY* NextFreeHandleEntry;
+    struct _EXHANDLE LeafHandleValue;
+    struct 
+    {
+      U32 GrantedAccessBits : 25; 
+      U32 ProtectFromClose : 1; 
+      U32 RefCnt : 6; 
+    }; 
+  }; 
+} HANDLE_TABLE_ENTRY, *PHANDLE_TABLE_ENTRY; 
+

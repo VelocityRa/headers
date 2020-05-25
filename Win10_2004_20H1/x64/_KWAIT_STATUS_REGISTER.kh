@@ -1,0 +1,17 @@
+typedef union _KWAIT_STATUS_REGISTER
+{
+  union
+  {
+    U8 Flags;
+    struct 
+    {
+      U8 State : 3; 
+      U8 Affinity : 1; 
+      U8 Priority : 1; 
+      U8 Apc : 1; 
+      U8 UserApc : 1; 
+      U8 Alert : 1; 
+    }; 
+  }; 
+} KWAIT_STATUS_REGISTER, *PKWAIT_STATUS_REGISTER; 
+

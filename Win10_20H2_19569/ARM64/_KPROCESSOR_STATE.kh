@@ -1,0 +1,112 @@
+typedef struct _KSPECIAL_REGISTERS
+{
+  U64 Elr_El1;
+  U32 Spsr_El1;
+  U64 Tpidr_El0;
+  U64 Tpidrro_El0;
+  U64 Tpidr_El1;
+  U64 KernelBvr[8];
+  U32 KernelBcr[8];
+  U64 KernelWvr[2];
+  U32 KernelWcr[2];
+} KSPECIAL_REGISTERS, *PKSPECIAL_REGISTERS; 
+
+typedef struct _KARM64_ARCH_STATE
+{
+  U64 Midr_El1;
+  U64 Sctlr_El1;
+  U64 Actlr_El1;
+  U64 Cpacr_El1;
+  U64 Tcr_El1;
+  U64 Ttbr0_El1;
+  U64 Ttbr1_El1;
+  U64 Esr_El1;
+  U64 Far_El1;
+  U64 Pmcr_El0;
+  U64 Pmcntenset_El0;
+  U64 Pmccntr_El0;
+  U64 Pmxevcntr_El0[31];
+  U64 Pmxevtyper_El0[31];
+  U64 Pmovsclr_El0;
+  U64 Pmselr_El0;
+  U64 Pmuserenr_El0;
+  U64 Mair_El1;
+  U64 Vbar_El1;
+} KARM64_ARCH_STATE, *PKARM64_ARCH_STATE; 
+
+typedef union _ARM64_NT_NEON128
+{
+  union
+  {
+    struct
+    {
+      U64 Low;
+      S64 High;
+    }; 
+    double D[2];
+    float S[4];
+    U16 H[8];
+    U8 B[16];
+  }; 
+} ARM64_NT_NEON128, *PARM64_NT_NEON128; 
+
+typedef struct _CONTEXT
+{
+  U32 ContextFlags;
+  U32 Cpsr;
+  union
+  {
+    struct
+    {
+      U64 X0;
+      U64 X1;
+      U64 X2;
+      U64 X3;
+      U64 X4;
+      U64 X5;
+      U64 X6;
+      U64 X7;
+      U64 X8;
+      U64 X9;
+      U64 X10;
+      U64 X11;
+      U64 X12;
+      U64 X13;
+      U64 X14;
+      U64 X15;
+      U64 X16;
+      U64 X17;
+      U64 X18;
+      U64 X19;
+      U64 X20;
+      U64 X21;
+      U64 X22;
+      U64 X23;
+      U64 X24;
+      U64 X25;
+      U64 X26;
+      U64 X27;
+      U64 X28;
+      U64 Fp;
+      U64 Lr;
+    }; 
+    U64 X[31];
+  }; 
+  U64 Sp;
+  U64 Pc;
+  union _ARM64_NT_NEON128 V[32];
+  U32 Fpcr;
+  U32 Fpsr;
+  U32 Bcr[8];
+  U64 Bvr[8];
+  U32 Wcr[2];
+  U64 Wvr[2];
+} CONTEXT, *PCONTEXT; 
+
+typedef struct _KPROCESSOR_STATE
+{
+  struct _KSPECIAL_REGISTERS SpecialRegisters;
+  struct _KARM64_ARCH_STATE ArchState;
+  struct _CONTEXT ContextFrame;
+} KPROCESSOR_STATE, *PKPROCESSOR_STATE; 
+

@@ -1,0 +1,10 @@
+typedef struct _RTL_RETPOLINE_BINARY_INFO
+{
+  S32 RetpolineStubsStartRva;
+  U32 CfgDispatchFunctionPtrRva;
+  U32 IATRva;
+  S32* ImportRvas;
+  U32* IAT;
+  void* ImageBase;
+} RTL_RETPOLINE_BINARY_INFO, *PRTL_RETPOLINE_BINARY_INFO; 
+

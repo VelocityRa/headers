@@ -1,0 +1,37 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _ETW_WMITRACE_WORK
+{
+  U32 LoggerId;
+  union
+  {
+    struct
+    {
+      char LoggerName[65];
+      char FileName[129];
+      U32 MaximumFileSize;
+      U32 MinBuffers;
+      U32 MaxBuffers;
+      U32 BufferSize;
+      U32 Mode;
+      U32 FlushTimer;
+    }; 
+    struct
+    {
+      U64 MatchAny;
+      U64 MatchAll;
+      U32 EnableProperty;
+      struct _GUID Guid;
+      U8 Level;
+      S32 Status;
+      S32 __PADDING__[1];
+    }; 
+  }; 
+} ETW_WMITRACE_WORK, *PETW_WMITRACE_WORK; 
+

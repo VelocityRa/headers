@@ -1,0 +1,11 @@
+typedef struct _RTL_HANDLE_TABLE
+{
+  U32 MaximumNumberOfHandles;
+  U32 SizeOfHandleTableEntry;
+  U32 Reserved[2];
+  struct _RTL_HANDLE_TABLE_ENTRY* FreeHandles;
+  struct _RTL_HANDLE_TABLE_ENTRY* CommittedHandles;
+  struct _RTL_HANDLE_TABLE_ENTRY* UnCommittedHandles;
+  struct _RTL_HANDLE_TABLE_ENTRY* MaxReservedHandles;
+} RTL_HANDLE_TABLE, *PRTL_HANDLE_TABLE; 
+

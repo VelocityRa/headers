@@ -1,0 +1,34 @@
+typedef struct _VF_AVL_TREE_NODE
+{
+  void* p;
+  U32 RangeSize;
+} VF_AVL_TREE_NODE, *PVF_AVL_TREE_NODE; 
+
+typedef struct _VF_TARGET_ALL_SHARED_EXPORT_THUNKS
+{
+  struct _VERIFIER_SHARED_EXPORT_THUNK* SharedExportThunks;
+  struct _VERIFIER_SHARED_EXPORT_THUNK* PoolSharedExportThunks;
+  struct _VERIFIER_SHARED_EXPORT_THUNK* OrderDependentSharedExportThunks;
+} VF_TARGET_ALL_SHARED_EXPORT_THUNKS, *PVF_TARGET_ALL_SHARED_EXPORT_THUNKS; 
+
+typedef struct _VF_TARGET_DRIVER
+{
+  struct _VF_AVL_TREE_NODE TreeNode;
+  union
+  {
+    union
+    {
+      struct _VF_TARGET_ALL_SHARED_EXPORT_THUNKS AllSharedExportThunks;
+      struct
+      {
+        struct 
+        {
+          U32 SnapSharedExportsFailed : 1; 
+          U32 Spare : 31; 
+        }; 
+      } Flags;
+    }; 
+  } u1;
+  struct _VF_TARGET_VERIFIED_DRIVER_DATA* VerifiedData;
+} VF_TARGET_DRIVER, *PVF_TARGET_DRIVER; 
+

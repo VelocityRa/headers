@@ -1,0 +1,5 @@
+struct wil_details_StagingConfigWnfStateName
+{
+  U32 Data[2];
+}; 
+

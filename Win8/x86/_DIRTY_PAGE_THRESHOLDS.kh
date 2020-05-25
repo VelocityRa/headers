@@ -1,0 +1,8 @@
+typedef struct _DIRTY_PAGE_THRESHOLDS
+{
+  U32 DirtyPageThreshold;
+  U32 DirtyPageThresholdTop;
+  U32 DirtyPageThresholdBottom;
+  U32 DirtyPageTarget;
+} DIRTY_PAGE_THRESHOLDS, *PDIRTY_PAGE_THRESHOLDS; 
+

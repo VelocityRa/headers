@@ -1,0 +1,6 @@
+typedef struct _HEAP_FREE_ENTRY_EXTRA
+{
+  U16 TagIndex;
+  U16 FreeBackTraceIndex;
+} HEAP_FREE_ENTRY_EXTRA, *PHEAP_FREE_ENTRY_EXTRA; 
+

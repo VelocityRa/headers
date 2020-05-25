@@ -1,0 +1,8 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+

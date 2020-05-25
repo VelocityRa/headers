@@ -1,0 +1,6 @@
+typedef struct _CLIENT_ID32
+{
+  U32 UniqueProcess;
+  U32 UniqueThread;
+} CLIENT_ID32, *PCLIENT_ID32; 
+

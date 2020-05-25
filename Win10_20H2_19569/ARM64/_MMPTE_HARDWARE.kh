@@ -1,0 +1,30 @@
+typedef struct _MMPTE_HARDWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 NotLargePage : 1; 
+    U64 CacheType : 2; 
+    U64 OsAvailable2 : 1; 
+    U64 NonSecure : 1; 
+    U64 Owner : 1; 
+    U64 NotDirty : 1; 
+    U64 Sharability : 2; 
+    U64 Accessed : 1; 
+    U64 NonGlobal : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 reserved1 : 4; 
+    U64 ContiguousBit : 1; 
+    U64 PrivilegedNoExecute : 1; 
+    U64 UserNoExecute : 1; 
+    U64 Writable : 1; 
+    U64 CopyOnWrite : 1; 
+    U64 PdeLocked : 1; 
+    U64 PdeContended : 1; 
+    U64 PxnTable : 1; 
+    U64 UxnTable : 1; 
+    U64 ApTable : 2; 
+    U64 NsTable : 1; 
+  }; 
+} MMPTE_HARDWARE, *PMMPTE_HARDWARE; 
+

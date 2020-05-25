@@ -1,0 +1,9 @@
+typedef union _WHEA_EVENT_LOG_ENTRY_FLAGS
+{
+  union
+  {
+    U32 Reserved : 32; 
+    U32 AsULONG;
+  }; 
+} WHEA_EVENT_LOG_ENTRY_FLAGS, *PWHEA_EVENT_LOG_ENTRY_FLAGS; 
+

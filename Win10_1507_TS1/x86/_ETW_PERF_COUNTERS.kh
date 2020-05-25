@@ -1,0 +1,10 @@
+typedef struct _ETW_PERF_COUNTERS
+{
+  S32 TotalActiveSessions;
+  S32 TotalBufferMemoryNonPagedPool;
+  S32 TotalBufferMemoryPagedPool;
+  S32 TotalGuidsEnabled;
+  S32 TotalGuidsNotEnabled;
+  S32 TotalGuidsPreEnabled;
+} ETW_PERF_COUNTERS, *PETW_PERF_COUNTERS; 
+

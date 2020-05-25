@@ -1,0 +1,6 @@
+typedef struct _HANDLE_TABLE_ENTRY_INFO
+{
+  U32 AuditMask;
+  U32 MaxRelativeAccessMask;
+} HANDLE_TABLE_ENTRY_INFO, *PHANDLE_TABLE_ENTRY_INFO; 
+

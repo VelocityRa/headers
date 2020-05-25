@@ -1,0 +1,40 @@
+typedef struct _M128A
+{
+  U64 Low;
+  S64 High;
+} M128A, *PM128A; 
+
+typedef struct _KEXCEPTION_FRAME
+{
+  U64 P1Home;
+  U64 P2Home;
+  U64 P3Home;
+  U64 P4Home;
+  U64 P5;
+  U64 InitialStack;
+  struct _M128A Xmm6;
+  struct _M128A Xmm7;
+  struct _M128A Xmm8;
+  struct _M128A Xmm9;
+  struct _M128A Xmm10;
+  struct _M128A Xmm11;
+  struct _M128A Xmm12;
+  struct _M128A Xmm13;
+  struct _M128A Xmm14;
+  struct _M128A Xmm15;
+  U64 TrapFrame;
+  U64 CallbackStack;
+  U64 OutputBuffer;
+  U64 OutputLength;
+  U64 MxCsr;
+  U64 Rbp;
+  U64 Rbx;
+  U64 Rdi;
+  U64 Rsi;
+  U64 R12;
+  U64 R13;
+  U64 R14;
+  U64 R15;
+  U64 Return;
+} KEXCEPTION_FRAME, *PKEXCEPTION_FRAME; 
+

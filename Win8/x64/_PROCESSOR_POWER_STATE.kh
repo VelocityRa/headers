@@ -1,0 +1,148 @@
+typedef struct _PROC_IDLE_POLICY
+{
+  U8 PromotePercent;
+  U8 DemotePercent;
+  U8 PromotePercentBase;
+  U8 DemotePercentBase;
+  U8 AllowScaling;
+} PROC_IDLE_POLICY, *PPROC_IDLE_POLICY; 
+
+typedef union _PPM_IDLE_SYNCHRONIZATION_STATE
+{
+  union
+  {
+    S32 AsLong;
+    struct 
+    {
+      S32 RefCount : 24; 
+      U32 State : 8; 
+    }; 
+  }; 
+} PPM_IDLE_SYNCHRONIZATION_STATE, *PPPM_IDLE_SYNCHRONIZATION_STATE; 
+
+typedef struct _PROC_FEEDBACK
+{
+  U64 Lock;
+  U64 CyclesLast;
+  U64 CyclesActive;
+  struct _PROC_FEEDBACK_COUNTER* Counters[2];
+  U64 LastUpdateTime;
+  U64 UnscaledTime;
+  volatile S64 UnaccountedTime;
+  U64 ScaledTime[2];
+  U64 UnaccountedKernelTime;
+  U64 PerformanceScaledKernelTime;
+  U32 UserTimeLast;
+  U32 KernelTimeLast;
+  U8 KernelTimesIndex;
+  char __PADDING__[7];
+} PROC_FEEDBACK, *PPROC_FEEDBACK; 
+
+typedef enum _PROC_HYPERVISOR_STATE
+{
+  ProcHypervisorNone = 0,
+  ProcHypervisorPresent = 1,
+  ProcHypervisorPower = 2,
+} PROC_HYPERVISOR_STATE, *PPROC_HYPERVISOR_STATE;
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _PPM_FFH_THROTTLE_STATE_INFO
+{
+  U8 EnableLogging;
+  U32 MismatchCount;
+  U8 Initialized;
+  U64 LastValue;
+  union _LARGE_INTEGER LastLogTickCount;
+} PPM_FFH_THROTTLE_STATE_INFO, *PPPM_FFH_THROTTLE_STATE_INFO; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KDPC
+{
+  U8 Type;
+  U8 Importance;
+  volatile U16 Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _PROC_IDLE_SNAP
+{
+  U64 Time;
+  U64 Idle;
+} PROC_IDLE_SNAP, *PPROC_IDLE_SNAP; 
+
+typedef struct _PROC_PERF_SNAP
+{
+  U64 Time;
+  U64 LastTime;
+  U64 Active;
+  U64 LastActive;
+  U64 FrequencyScaledActive;
+  U64 PerformanceScaledActive;
+  U64 CyclesActive;
+  U64 CyclesAffinitized;
+} PROC_PERF_SNAP, *PPROC_PERF_SNAP; 
+
+typedef struct _PROCESSOR_POWER_STATE
+{
+  struct _PPM_IDLE_STATES* IdleStates;
+  struct _PROC_IDLE_ACCOUNTING* IdleAccounting;
+  struct _PLATFORM_IDLE_ACCOUNTING* PlatformIdleAccounting;
+  U64 IdleTimeLast;
+  U64 IdleTimeTotal;
+  U64 IdleTimeEntry;
+  U64 Reserved;
+  struct _PROC_IDLE_POLICY IdlePolicy;
+  volatile union _PPM_IDLE_SYNCHRONIZATION_STATE Synchronization;
+  struct _PROC_FEEDBACK PerfFeedback;
+  enum _PROC_HYPERVISOR_STATE Hypervisor;
+  U32 LastSysTime;
+  U64 WmiDispatchPtr;
+  S32 WmiInterfaceEnabled;
+  struct _PPM_FFH_THROTTLE_STATE_INFO FFHThrottleStateInfo;
+  struct _KDPC PerfActionDpc;
+  volatile S32 PerfActionMask;
+  struct _PROC_IDLE_SNAP HvIdleCheck;
+  struct _PROC_PERF_SNAP PerfCheck;
+  struct _PROC_PERF_DOMAIN* Domain;
+  struct _PROC_PERF_CONSTRAINT* PerfConstraint;
+  struct _PPM_CONCURRENCY_ACCOUNTING* Concurrency;
+  struct _PROC_PERF_LOAD* Load;
+  struct _PROC_PERF_HISTORY* PerfHistory;
+  U8 GuaranteedPerformancePercent;
+  U8 HvTargetState;
+  U8 Parked;
+  U8 OverUtilized;
+  U32 LatestPerformancePercent;
+  U32 AveragePerformancePercent;
+  U32 LatestAffinitizedPercent;
+  U32 Utility;
+  U32 AffinitizedUtility;
+} PROCESSOR_POWER_STATE, *PPROCESSOR_POWER_STATE; 
+

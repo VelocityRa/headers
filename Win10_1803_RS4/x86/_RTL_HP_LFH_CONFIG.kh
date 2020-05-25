@@ -1,0 +1,10 @@
+typedef struct _RTL_HP_LFH_CONFIG
+{
+  U32 MaxBlockSize;
+  U32 MaxSubsegmentSize;
+  struct
+  {
+    U32 ForceEnable : 1; 
+  } Flags;
+} RTL_HP_LFH_CONFIG, *PRTL_HP_LFH_CONFIG; 
+

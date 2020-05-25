@@ -1,0 +1,17 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RH_OP_CONTEXT
+{
+  struct _LIST_ENTRY Links;
+  struct _IRP* OplockRequestIrp;
+  struct _FILE_OBJECT* OplockRequestFileObject;
+  struct _EPROCESS* OplockRequestProcess;
+  struct _ETHREAD* OplockOwnerThread;
+  U32 Flags;
+  struct _LIST_ENTRY AtomicLinks;
+} RH_OP_CONTEXT, *PRH_OP_CONTEXT; 
+

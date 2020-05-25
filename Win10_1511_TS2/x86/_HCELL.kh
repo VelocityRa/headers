@@ -1,0 +1,19 @@
+typedef struct _HCELL
+{
+  S32 Size;
+  union
+  {
+    struct
+    {
+      union
+      {
+        union
+        {
+          U32 UserData;
+          U32 Next;
+        }; 
+      } u;
+    } NewCell;
+  } u;
+} HCELL, *PHCELL; 
+

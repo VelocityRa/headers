@@ -1,0 +1,11 @@
+typedef struct _DBGKD_GET_INTERNAL_BREAKPOINT32
+{
+  U32 BreakpointAddress;
+  U32 Flags;
+  U32 Calls;
+  U32 MaxCallsPerPeriod;
+  U32 MinInstructions;
+  U32 MaxInstructions;
+  U32 TotalInstructions;
+} DBGKD_GET_INTERNAL_BREAKPOINT32, *PDBGKD_GET_INTERNAL_BREAKPOINT32; 
+

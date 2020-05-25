@@ -1,0 +1,136 @@
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _MMPAGING_FILE
+{
+  U64 Size;
+  U64 MaximumSize;
+  U64 MinimumSize;
+  U64 FreeSpace;
+  U64 PeakUsage;
+  U64 HighestPage;
+  U64 FreeReservationSpace;
+  struct _FILE_OBJECT* File;
+  struct _MMMOD_WRITER_MDL_ENTRY** Entry;
+  U32 NumberOfModWriterEntries;
+  union _SLIST_HEADER PfnsToFree;
+  struct _UNICODE_STRING PageFileName;
+  struct _MI_PAGING_FILE_SPACE_BITMAPS* Bitmaps;
+  U32 AllocationBitmapHint;
+  U32 LargestAllocationCluster;
+  U32 RefreshAllocationCluster;
+  U32 LastRefreshAllocationCluster;
+  U32 ReservedClusterSizeAggregate;
+  U32 MaximumRunLengthInBitmaps;
+  struct _RTL_RB_TREE BitmapsCacheLengthTree;
+  struct _RTL_RB_TREE BitmapsCacheLocationTree;
+  struct _LIST_ENTRY BitmapsCacheFreeList;
+  struct _MI_PAGEFILE_BITMAPS_CACHE_ENTRY* BitmapsCacheEntries;
+  union
+  {
+    U32 ToBeEvictedCount;
+    U32 HybridPriority;
+  }; 
+  struct 
+  {
+    U16 PageFileNumber : 4; 
+    U16 WsSwapPagefile : 1; 
+    U16 NoReservations : 1; 
+    U16 VirtualStorePagefile : 1; 
+    U16 SwapSupported : 1; 
+    U16 NodeInserted : 1; 
+    U16 StackNotified : 1; 
+    U16 BackedBySCM : 1; 
+    U16 SpecialPurposeMemory : 1; 
+    U16 Spare0 : 3; 
+  }; 
+  struct 
+  {
+    U8 AdriftMdls : 1; 
+    U8 Spare1 : 7; 
+  }; 
+  struct 
+  {
+    U8 IgnoreReservations : 1; 
+    U8 Spare2 : 7; 
+  }; 
+  U32 PageHashPages;
+  U32 PageHashPagesPeak;
+  U32* PageHash;
+  void* FileHandle;
+  volatile S32 SpinLock;
+  struct _RTL_AVL_TREE FlowThroughReadRoot;
+  struct _MI_PARTITION* Partition;
+  struct _RTL_BALANCED_NODE FileObjectNode;
+  S32 __PADDING__[2];
+} MMPAGING_FILE, *PMMPAGING_FILE; 
+

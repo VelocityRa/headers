@@ -1,0 +1,67 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _HANDLE_TABLE_FREE_LIST
+{
+  struct _EX_PUSH_LOCK FreeListLock;
+  union _HANDLE_TABLE_ENTRY* FirstFreeHandleEntry;
+  union _HANDLE_TABLE_ENTRY* LastFreeHandleEntry;
+  S32 HandleCount;
+  U32 HighWaterMark;
+  U32 Reserved[8];
+} HANDLE_TABLE_FREE_LIST, *PHANDLE_TABLE_FREE_LIST; 
+
+typedef struct _HANDLE_TABLE
+{
+  U32 NextHandleNeedingPool;
+  S32 ExtraInfoPages;
+  volatile U32 TableCode;
+  struct _EPROCESS* QuotaProcess;
+  struct _LIST_ENTRY HandleTableList;
+  U32 UniqueProcessId;
+  union
+  {
+    U32 Flags;
+    struct 
+    {
+      U8 StrictFIFO : 1; 
+      U8 EnableHandleExceptions : 1; 
+      U8 Rundown : 1; 
+      U8 Duplicated : 1; 
+      U8 RaiseUMExceptionOnInvalidHandleClose : 1; 
+    }; 
+  }; 
+  struct _EX_PUSH_LOCK HandleContentionEvent;
+  struct _EX_PUSH_LOCK HandleTableLock;
+  union
+  {
+    struct _HANDLE_TABLE_FREE_LIST FreeLists[1];
+    struct
+    {
+      U8 ActualEntry[20];
+      struct _HANDLE_TRACE_DEBUG_INFO* DebugInfo;
+      S32 __PADDING__[7];
+    }; 
+  }; 
+} HANDLE_TABLE, *PHANDLE_TABLE; 
+

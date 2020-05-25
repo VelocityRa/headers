@@ -1,0 +1,156 @@
+typedef struct _CM_PATH_HASH
+{
+  U32 Hash;
+} CM_PATH_HASH, *PCM_PATH_HASH; 
+
+typedef struct _CM_KEY_HASH
+{
+  struct _CM_PATH_HASH ConvKey;
+  struct _CM_KEY_HASH* NextHash;
+  struct _HHIVE* KeyHive;
+  U32 KeyCell;
+} CM_KEY_HASH, *PCM_KEY_HASH; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _CHILD_LIST
+{
+  U32 Count;
+  U32 List;
+} CHILD_LIST, *PCHILD_LIST; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _CM_INTENT_LOCK
+{
+  U32 OwnerCount;
+  struct _CM_KCB_UOW** OwnerTable;
+} CM_INTENT_LOCK, *PCM_INTENT_LOCK; 
+
+typedef struct _CM_KEY_CONTROL_BLOCK
+{
+  U32 RefCount;
+  struct 
+  {
+    U32 ExtFlags : 16; 
+    U32 Freed : 1; 
+    U32 Discarded : 1; 
+    U32 HiveUnloaded : 1; 
+    U32 Decommissioned : 1; 
+    U32 SpareExtFlag : 1; 
+    U32 TotalLevels : 10; 
+  }; 
+  union
+  {
+    struct _CM_KEY_HASH KeyHash;
+    struct
+    {
+      struct _CM_PATH_HASH ConvKey;
+      struct _CM_KEY_HASH* NextHash;
+      struct _HHIVE* KeyHive;
+      U32 KeyCell;
+    }; 
+  }; 
+  struct _EX_PUSH_LOCK KcbPushlock;
+  union
+  {
+    struct _KTHREAD* Owner;
+    S32 SharedCount;
+  }; 
+  struct 
+  {
+    U8 DelayedDeref : 1; 
+    U8 DelayedClose : 1; 
+    U8 Parking : 1; 
+  }; 
+  U8 LayerSemantics;
+  S16 LayerHeight;
+  struct _CM_KEY_CONTROL_BLOCK* ParentKcb;
+  struct _CM_NAME_CONTROL_BLOCK* NameBlock;
+  struct _CM_KEY_SECURITY_CACHE* CachedSecurity;
+  struct _CHILD_LIST ValueList;
+  struct _CM_KEY_CONTROL_BLOCK* LinkTarget;
+  union
+  {
+    struct _CM_INDEX_HINT_BLOCK* IndexHint;
+    U32 HashKey;
+    U32 SubKeyCount;
+  }; 
+  union
+  {
+    struct _LIST_ENTRY KeyBodyListHead;
+    struct _LIST_ENTRY ClonedListEntry;
+  }; 
+  struct _CM_KEY_BODY* KeyBodyArray[4];
+  union _LARGE_INTEGER KcbLastWriteTime;
+  U16 KcbMaxNameLen;
+  U16 KcbMaxValueNameLen;
+  U32 KcbMaxValueDataLen;
+  struct 
+  {
+    U32 KcbUserFlags : 4; 
+    U32 KcbVirtControlFlags : 4; 
+    U32 KcbDebug : 8; 
+    U32 Flags : 16; 
+  }; 
+  struct _CM_KCB_LAYER_INFO* LayerInfo;
+  struct _LIST_ENTRY KCBUoWListHead;
+  union
+  {
+    struct _LIST_ENTRY DelayQueueEntry;
+    volatile U8* Stolen;
+  }; 
+  struct _CM_TRANS* TransKCBOwner;
+  struct _CM_INTENT_LOCK KCBLock;
+  struct _CM_INTENT_LOCK KeyLock;
+  struct _CHILD_LIST TransValueCache;
+  struct _CM_TRANS* TransValueListOwner;
+  union
+  {
+    struct _UNICODE_STRING* FullKCBName;
+    struct 
+    {
+      U32 FullKCBNameStale : 1; 
+      U32 Reserved : 31; 
+    }; 
+  }; 
+  U64 SequenceNumber;
+} CM_KEY_CONTROL_BLOCK, *PCM_KEY_CONTROL_BLOCK; 
+

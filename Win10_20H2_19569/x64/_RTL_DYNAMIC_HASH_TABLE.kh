@@ -1,0 +1,13 @@
+typedef struct _RTL_DYNAMIC_HASH_TABLE
+{
+  U32 Flags;
+  U32 Shift;
+  U32 TableSize;
+  U32 Pivot;
+  U32 DivisorMask;
+  U32 NumEntries;
+  U32 NonEmptyBuckets;
+  U32 NumEnumerators;
+  void* Directory;
+} RTL_DYNAMIC_HASH_TABLE, *PRTL_DYNAMIC_HASH_TABLE; 
+

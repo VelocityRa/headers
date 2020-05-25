@@ -1,0 +1,12 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _SHARED_CACHE_MAP_LIST_CURSOR
+{
+  struct _LIST_ENTRY SharedCacheMapLinks;
+  U32 Flags;
+} SHARED_CACHE_MAP_LIST_CURSOR, *PSHARED_CACHE_MAP_LIST_CURSOR; 
+

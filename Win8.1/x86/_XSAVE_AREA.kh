@@ -1,0 +1,38 @@
+typedef struct _M128A
+{
+  U64 Low;
+  S64 High;
+} M128A, *PM128A; 
+
+typedef struct _XSAVE_FORMAT
+{
+  U16 ControlWord;
+  U16 StatusWord;
+  U8 TagWord;
+  U8 Reserved1;
+  U16 ErrorOpcode;
+  U32 ErrorOffset;
+  U16 ErrorSelector;
+  U16 Reserved2;
+  U32 DataOffset;
+  U16 DataSelector;
+  U16 Reserved3;
+  U32 MxCsr;
+  U32 MxCsr_Mask;
+  struct _M128A FloatRegisters[8];
+  struct _M128A XmmRegisters[8];
+  U8 Reserved4[224];
+} XSAVE_FORMAT, *PXSAVE_FORMAT; 
+
+typedef struct _XSAVE_AREA_HEADER
+{
+  U64 Mask;
+  U64 Reserved[7];
+} XSAVE_AREA_HEADER, *PXSAVE_AREA_HEADER; 
+
+typedef struct _XSAVE_AREA
+{
+  struct _XSAVE_FORMAT LegacyState;
+  struct _XSAVE_AREA_HEADER Header;
+} XSAVE_AREA, *PXSAVE_AREA; 
+

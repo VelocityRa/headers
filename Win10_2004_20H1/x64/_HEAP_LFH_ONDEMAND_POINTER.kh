@@ -1,0 +1,18 @@
+typedef union _HEAP_LFH_ONDEMAND_POINTER
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U16 Invalid : 1; 
+        U16 AllocationInProgress : 1; 
+        U16 Spare0 : 14; 
+      }; 
+      U16 UsageData;
+    }; 
+    void* AllBits;
+  }; 
+} HEAP_LFH_ONDEMAND_POINTER, *PHEAP_LFH_ONDEMAND_POINTER; 
+

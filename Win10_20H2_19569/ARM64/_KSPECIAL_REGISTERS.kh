@@ -1,0 +1,13 @@
+typedef struct _KSPECIAL_REGISTERS
+{
+  U64 Elr_El1;
+  U32 Spsr_El1;
+  U64 Tpidr_El0;
+  U64 Tpidrro_El0;
+  U64 Tpidr_El1;
+  U64 KernelBvr[8];
+  U32 KernelBcr[8];
+  U64 KernelWvr[2];
+  U32 KernelWcr[2];
+} KSPECIAL_REGISTERS, *PKSPECIAL_REGISTERS; 
+

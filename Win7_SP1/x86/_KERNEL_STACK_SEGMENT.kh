@@ -1,0 +1,9 @@
+typedef struct _KERNEL_STACK_SEGMENT
+{
+  U32 StackBase;
+  U32 StackLimit;
+  U32 KernelStack;
+  U32 InitialStack;
+  U32 ActualLimit;
+} KERNEL_STACK_SEGMENT, *PKERNEL_STACK_SEGMENT; 
+

@@ -1,0 +1,13 @@
+typedef struct _VPB
+{
+  S16 Type;
+  S16 Size;
+  U16 Flags;
+  U16 VolumeLabelLength;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _DEVICE_OBJECT* RealDevice;
+  U32 SerialNumber;
+  U32 ReferenceCount;
+  wchar_t VolumeLabel[32];
+} VPB, *PVPB; 
+

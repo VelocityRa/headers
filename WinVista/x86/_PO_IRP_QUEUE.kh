@@ -1,0 +1,6 @@
+typedef struct _PO_IRP_QUEUE
+{
+  struct _IRP* CurrentIrp;
+  struct _IRP* PendingIrpList;
+} PO_IRP_QUEUE, *PPO_IRP_QUEUE; 
+

@@ -1,0 +1,114 @@
+enum POWER_ACTION
+{
+  PowerActionNone = 0,
+  PowerActionReserved = 1,
+  PowerActionSleep = 2,
+  PowerActionHibernate = 3,
+  PowerActionShutdown = 4,
+  PowerActionShutdownReset = 5,
+  PowerActionShutdownOff = 6,
+  PowerActionWarmEject = 7,
+  PowerActionDisplayOff = 8,
+};
+
+struct POWER_ACTION_POLICY
+{
+  enum POWER_ACTION Action;
+  U32 Flags;
+  U32 EventCode;
+}; 
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+struct SYSTEM_POWER_LEVEL
+{
+  U8 Enable;
+  U8 Spare[3];
+  U32 BatteryLevel;
+  struct POWER_ACTION_POLICY PowerPolicy;
+  enum _SYSTEM_POWER_STATE MinSystemState;
+}; 
+
+typedef struct _SYSTEM_POWER_POLICY
+{
+  U32 Revision;
+  struct POWER_ACTION_POLICY PowerButton;
+  struct POWER_ACTION_POLICY SleepButton;
+  struct POWER_ACTION_POLICY LidClose;
+  enum _SYSTEM_POWER_STATE LidOpenWake;
+  U32 Reserved;
+  struct POWER_ACTION_POLICY Idle;
+  U32 IdleTimeout;
+  U8 IdleSensitivity;
+  U8 DynamicThrottle;
+  U8 Spare2[2];
+  enum _SYSTEM_POWER_STATE MinSleep;
+  enum _SYSTEM_POWER_STATE MaxSleep;
+  enum _SYSTEM_POWER_STATE ReducedLatencySleep;
+  U32 WinLogonFlags;
+  U32 Spare3;
+  U32 DozeS4Timeout;
+  U32 BroadcastCapacityResolution;
+  struct SYSTEM_POWER_LEVEL DischargePolicy[4];
+  U32 VideoTimeout;
+  U8 VideoDimDisplay;
+  U32 VideoReserved[3];
+  U32 SpindownTimeout;
+  U8 OptimizeForPower;
+  U8 FanThrottleTolerance;
+  U8 ForcedThrottle;
+  U8 MinThrottle;
+  struct POWER_ACTION_POLICY OverThrottled;
+} SYSTEM_POWER_POLICY, *PSYSTEM_POWER_POLICY; 
+
+enum SYSTEM_POWER_CONDITION
+{
+  PoAc = 0,
+  PoDc = 1,
+  PoHot = 2,
+  PoConditionMaximum = 3,
+};
+
+typedef struct _POP_POWER_SETTING_VALUES
+{
+  U32 StructureSize;
+  struct _SYSTEM_POWER_POLICY PopPolicy;
+  enum SYSTEM_POWER_CONDITION CurrentAcDcPowerState;
+  U8 AwayModeEnabled;
+  U8 AwayModeEngaged;
+  U8 AwayModePolicyAllowed;
+  volatile S32 AwayModeIgnoreUserPresent;
+  volatile S32 AwayModeIgnoreAction;
+  U8 DisableFastS4;
+  U8 DisableStandbyStates;
+  U32 UnattendSleepTimeout;
+  volatile U32 DiskIgnoreTime;
+  volatile U32 DeviceIdlePolicy;
+  U32 VideoDimTimeout;
+  U32 VideoNormalBrightness;
+  U32 VideoDimBrightness;
+  U32 AlsOffset;
+  U32 AlsEnabled;
+  U32 EsBrightness;
+  U8 SwitchShutdownForced;
+  U32 SystemCoolingPolicy;
+  U8 MediaBufferingEngaged;
+  U8 AudioActivity;
+  U8 FullscreenVideoPlayback;
+  U32 EsBatteryThreshold;
+  U8 EsAggressive;
+  U8 EsUserAwaySetting;
+  U32 ConnectivityInStandby;
+  U32 DisconnectedStandbyMode;
+} POP_POWER_SETTING_VALUES, *PPOP_POWER_SETTING_VALUES; 
+

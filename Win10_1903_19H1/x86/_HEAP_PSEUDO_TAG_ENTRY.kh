@@ -1,0 +1,7 @@
+typedef struct _HEAP_PSEUDO_TAG_ENTRY
+{
+  U32 Allocs;
+  U32 Frees;
+  U32 Size;
+} HEAP_PSEUDO_TAG_ENTRY, *PHEAP_PSEUDO_TAG_ENTRY; 
+

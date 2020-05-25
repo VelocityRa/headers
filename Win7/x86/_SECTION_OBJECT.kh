@@ -1,0 +1,10 @@
+typedef struct _SECTION_OBJECT
+{
+  void* StartingVa;
+  void* EndingVa;
+  void* Parent;
+  void* LeftChild;
+  void* RightChild;
+  struct _SEGMENT_OBJECT* Segment;
+} SECTION_OBJECT, *PSECTION_OBJECT; 
+

@@ -1,0 +1,54 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 Sequence;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _flags
+{
+  struct 
+  {
+    U8 Removable : 1; 
+    U8 Fill : 7; 
+  }; 
+} flags, *Pflags; 
+
+typedef struct _CACHED_KSTACK_LIST
+{
+  union _SLIST_HEADER SListHead;
+  S32 MinimumFree;
+  U32 Misses;
+  U32 MissesLast;
+  S32 __PADDING__[1];
+} CACHED_KSTACK_LIST, *PCACHED_KSTACK_LIST; 
+
+typedef struct _KNODE
+{
+  union _SLIST_HEADER PagedPoolSListHead;
+  union _SLIST_HEADER NonPagedPoolSListHead[3];
+  union _SLIST_HEADER PfnDereferenceSListHead;
+  U32 ProcessorMask;
+  U8 Color;
+  U8 Seed;
+  U8 NodeNumber;
+  struct _flags Flags;
+  U32 MmShiftedColor;
+  U32 FreeCount[2];
+  struct _SINGLE_LIST_ENTRY* volatile PfnDeferredList;
+  struct _CACHED_KSTACK_LIST CachedKernelStacks;
+  S32 __PADDING__[10];
+} KNODE, *PKNODE; 
+

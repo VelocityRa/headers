@@ -1,0 +1,8 @@
+typedef struct _MI_CFG_BITMAP_INFO
+{
+  void* BaseAddress;
+  U32 RegionSize;
+  void* VadBaseAddress;
+  struct _MMVAD* BitmapVad;
+} MI_CFG_BITMAP_INFO, *PMI_CFG_BITMAP_INFO; 
+

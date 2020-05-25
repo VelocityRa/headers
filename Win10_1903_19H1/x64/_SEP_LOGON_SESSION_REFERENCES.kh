@@ -1,0 +1,79 @@
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _SEP_CACHED_HANDLES_TABLE
+{
+  struct _EX_PUSH_LOCK Lock;
+  struct _RTL_DYNAMIC_HASH_TABLE* HashTable;
+} SEP_CACHED_HANDLES_TABLE, *PSEP_CACHED_HANDLES_TABLE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    U64 Count;
+    void* Ptr;
+  }; 
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF; 
+
+typedef struct _OB_HANDLE_REVOCATION_BLOCK
+{
+  struct _LIST_ENTRY RevocationInfos;
+  struct _EX_PUSH_LOCK Lock;
+  struct _EX_RUNDOWN_REF Rundown;
+} OB_HANDLE_REVOCATION_BLOCK, *POB_HANDLE_REVOCATION_BLOCK; 
+
+typedef struct _SEP_LOGON_SESSION_REFERENCES
+{
+  struct _SEP_LOGON_SESSION_REFERENCES* Next;
+  struct _LUID LogonId;
+  struct _LUID BuddyLogonId;
+  S64 ReferenceCount;
+  U32 Flags;
+  struct _DEVICE_MAP* pDeviceMap;
+  void* Token;
+  struct _UNICODE_STRING AccountName;
+  struct _UNICODE_STRING AuthorityName;
+  struct _SEP_CACHED_HANDLES_TABLE CachedHandlesTable;
+  struct _EX_PUSH_LOCK SharedDataLock;
+  struct _AUTHZBASEP_CLAIM_ATTRIBUTES_COLLECTION* SharedClaimAttributes;
+  struct _SEP_SID_VALUES_BLOCK* SharedSidValues;
+  struct _OB_HANDLE_REVOCATION_BLOCK RevocationBlock;
+  struct _EJOB* ServerSilo;
+  struct _LUID SiblingAuthId;
+  struct _LIST_ENTRY TokenList;
+} SEP_LOGON_SESSION_REFERENCES, *PSEP_LOGON_SESSION_REFERENCES; 
+

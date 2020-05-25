@@ -1,0 +1,6 @@
+typedef struct _HEAP_TUNING_PARAMETERS
+{
+  U32 CommittThresholdShift;
+  U64 MaxPreCommittThreshold;
+} HEAP_TUNING_PARAMETERS, *PHEAP_TUNING_PARAMETERS; 
+

@@ -1,0 +1,14 @@
+typedef union _KBUGCHECK_ACTIVE_STATE
+{
+  union
+  {
+    struct 
+    {
+      U32 BugCheckState : 2; 
+      U32 RecursionCount : 2; 
+      U32 BugCheckOwner : 28; 
+    }; 
+    volatile S32 Value;
+  }; 
+} KBUGCHECK_ACTIVE_STATE, *PKBUGCHECK_ACTIVE_STATE; 
+

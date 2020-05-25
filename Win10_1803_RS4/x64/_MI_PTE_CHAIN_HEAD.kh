@@ -1,0 +1,169 @@
+typedef struct _MMPTE_HARDWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Dirty1 : 1; 
+    U64 Owner : 1; 
+    U64 WriteThrough : 1; 
+    U64 CacheDisable : 1; 
+    U64 Accessed : 1; 
+    U64 Dirty : 1; 
+    U64 LargePage : 1; 
+    U64 Global : 1; 
+    U64 CopyOnWrite : 1; 
+    U64 Unused : 1; 
+    U64 Write : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 ReservedForHardware : 4; 
+    U64 ReservedForSoftware : 4; 
+    U64 WsleAge : 4; 
+    U64 WsleProtection : 3; 
+    U64 NoExecute : 1; 
+  }; 
+} MMPTE_HARDWARE, *PMMPTE_HARDWARE; 
+
+typedef struct _HARDWARE_PTE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Write : 1; 
+    U64 Owner : 1; 
+    U64 WriteThrough : 1; 
+    U64 CacheDisable : 1; 
+    U64 Accessed : 1; 
+    U64 Dirty : 1; 
+    U64 LargePage : 1; 
+    U64 Global : 1; 
+    U64 CopyOnWrite : 1; 
+    U64 Prototype : 1; 
+    U64 reserved0 : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 reserved1 : 4; 
+    U64 SoftwareWsIndex : 11; 
+    U64 NoExecute : 1; 
+  }; 
+} HARDWARE_PTE, *PHARDWARE_PTE; 
+
+typedef struct _MMPTE_PROTOTYPE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 DemandFillProto : 1; 
+    U64 HiberVerifyConverted : 1; 
+    U64 Unused1 : 5; 
+    U64 ReadOnly : 1; 
+    U64 Combined : 1; 
+    U64 Prototype : 1; 
+    U64 Protection : 5; 
+    S64 ProtoAddress : 48; 
+  }; 
+} MMPTE_PROTOTYPE, *PMMPTE_PROTOTYPE; 
+
+typedef struct _MMPTE_SOFTWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 PageFileLow : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFileReserved : 1; 
+    U64 PageFileAllocated : 1; 
+    U64 UsedPageTableEntries : 10; 
+    U64 ColdPage : 1; 
+    U64 Unused : 7; 
+    U64 PageFileHigh : 32; 
+  }; 
+} MMPTE_SOFTWARE, *PMMPTE_SOFTWARE; 
+
+typedef struct _MMPTE_TIMESTAMP
+{
+  struct 
+  {
+    U64 MustBeZero : 1; 
+    U64 PageFileLow : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 Reserved : 20; 
+    U64 GlobalTimeStamp : 32; 
+  }; 
+} MMPTE_TIMESTAMP, *PMMPTE_TIMESTAMP; 
+
+typedef struct _MMPTE_TRANSITION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Write : 1; 
+    U64 Spare : 2; 
+    U64 IoTracker : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 Unused : 16; 
+  }; 
+} MMPTE_TRANSITION, *PMMPTE_TRANSITION; 
+
+typedef struct _MMPTE_SUBSECTION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Unused0 : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 ColdPage : 1; 
+    U64 Unused1 : 3; 
+    U64 ExecutePrivilege : 1; 
+    S64 SubsectionAddress : 48; 
+  }; 
+} MMPTE_SUBSECTION, *PMMPTE_SUBSECTION; 
+
+typedef struct _MMPTE_LIST
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 OneEntry : 1; 
+    U64 filler0 : 3; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 filler1 : 16; 
+    U64 NextEntry : 36; 
+  }; 
+} MMPTE_LIST, *PMMPTE_LIST; 
+
+typedef struct _MMPTE
+{
+  union
+  {
+    union
+    {
+      U64 Long;
+      volatile U64 VolatileLong;
+      struct _MMPTE_HARDWARE Hard;
+      struct _HARDWARE_PTE Flush;
+      struct _MMPTE_PROTOTYPE Proto;
+      struct _MMPTE_SOFTWARE Soft;
+      struct _MMPTE_TIMESTAMP TimeStamp;
+      struct _MMPTE_TRANSITION Trans;
+      struct _MMPTE_SUBSECTION Subsect;
+      struct _MMPTE_LIST List;
+    }; 
+  } u;
+} MMPTE, *PMMPTE; 
+
+typedef struct _MI_PTE_CHAIN_HEAD
+{
+  struct _MMPTE Flink;
+  struct _MMPTE Blink;
+  struct _MMPTE* PteBase;
+} MI_PTE_CHAIN_HEAD, *PMI_PTE_CHAIN_HEAD; 
+

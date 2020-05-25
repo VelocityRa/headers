@@ -1,0 +1,174 @@
+typedef enum _WHEA_CPU_VENDOR
+{
+  WheaCpuVendorOther = 0,
+  WheaCpuVendorIntel = 1,
+  WheaCpuVendorAmd = 2,
+} WHEA_CPU_VENDOR, *PWHEA_CPU_VENDOR;
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef union _MCG_STATUS
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U32 RestartIpValid : 1; 
+        U32 ErrorIpValid : 1; 
+        U32 MachineCheckInProgress : 1; 
+        U32 LocalMceValid : 1; 
+        U32 Reserved1 : 28; 
+      }; 
+      U32 Reserved2;
+    }; 
+    U64 QuadPart;
+  }; 
+} MCG_STATUS, *PMCG_STATUS; 
+
+typedef struct _MCI_STATUS_BITS_COMMON
+{
+  struct 
+  {
+    U64 McaErrorCode : 16; 
+    U64 ModelErrorCode : 16; 
+    U64 Reserved : 25; 
+    U64 ContextCorrupt : 1; 
+    U64 AddressValid : 1; 
+    U64 MiscValid : 1; 
+    U64 ErrorEnabled : 1; 
+    U64 UncorrectedError : 1; 
+    U64 StatusOverFlow : 1; 
+    U64 Valid : 1; 
+  }; 
+} MCI_STATUS_BITS_COMMON, *PMCI_STATUS_BITS_COMMON; 
+
+typedef struct _MCI_STATUS_AMD_BITS
+{
+  struct 
+  {
+    U64 McaErrorCode : 16; 
+    U64 ModelErrorCode : 16; 
+    U64 ImplementationSpecific2 : 11; 
+    U64 Poison : 1; 
+    U64 Deferred : 1; 
+    U64 ImplementationSpecific1 : 12; 
+    U64 ContextCorrupt : 1; 
+    U64 AddressValid : 1; 
+    U64 MiscValid : 1; 
+    U64 ErrorEnabled : 1; 
+    U64 UncorrectedError : 1; 
+    U64 StatusOverFlow : 1; 
+    U64 Valid : 1; 
+  }; 
+} MCI_STATUS_AMD_BITS, *PMCI_STATUS_AMD_BITS; 
+
+typedef struct _MCI_STATUS_INTEL_BITS
+{
+  struct 
+  {
+    U64 McaErrorCode : 16; 
+    U64 ModelErrorCode : 16; 
+    U64 OtherInfo : 5; 
+    U64 FirmwareUpdateError : 1; 
+    U64 CorrectedErrorCount : 15; 
+    U64 ThresholdErrorStatus : 2; 
+    U64 ActionRequired : 1; 
+    U64 Signalling : 1; 
+    U64 ContextCorrupt : 1; 
+    U64 AddressValid : 1; 
+    U64 MiscValid : 1; 
+    U64 ErrorEnabled : 1; 
+    U64 UncorrectedError : 1; 
+    U64 StatusOverFlow : 1; 
+    U64 Valid : 1; 
+  }; 
+} MCI_STATUS_INTEL_BITS, *PMCI_STATUS_INTEL_BITS; 
+
+typedef union _MCI_STATUS
+{
+  union
+  {
+    struct _MCI_STATUS_BITS_COMMON CommonBits;
+    struct _MCI_STATUS_AMD_BITS AmdBits;
+    struct _MCI_STATUS_INTEL_BITS IntelBits;
+    U64 QuadPart;
+  }; 
+} MCI_STATUS, *PMCI_STATUS; 
+
+typedef struct _WHEA_AMD_EXTENDED_REGISTERS
+{
+  U64 IPID;
+  U64 SYND;
+  U64 CONFIG;
+  U64 DESTAT;
+  U64 DEADDR;
+  U64 MISC1;
+  U64 MISC2;
+  U64 MISC3;
+  U64 MISC4;
+  U64 RasCap;
+  U64 Reserved[14];
+} WHEA_AMD_EXTENDED_REGISTERS, *PWHEA_AMD_EXTENDED_REGISTERS; 
+
+typedef union _MCG_CAP
+{
+  union
+  {
+    struct 
+    {
+      U64 CountField : 8; 
+      U64 ControlMsrPresent : 1; 
+      U64 ExtendedMsrsPresent : 1; 
+      U64 SignalingExtensionPresent : 1; 
+      U64 ThresholdErrorStatusPresent : 1; 
+      U64 Reserved : 4; 
+      U64 ExtendedRegisterCount : 8; 
+      U64 SoftwareErrorRecoverySupported : 1; 
+      U64 EnhancedMachineCheckCapability : 1; 
+      U64 ExtendedErrorLogging : 1; 
+      U64 LocalMachineCheckException : 1; 
+    }; 
+    U64 QuadPart;
+  }; 
+} MCG_CAP, *PMCG_CAP; 
+
+typedef struct _WHEA_XPF_MCA_SECTION
+{
+  U32 VersionNumber;
+  enum _WHEA_CPU_VENDOR CpuVendor;
+  union _LARGE_INTEGER Timestamp;
+  U32 ProcessorNumber;
+  union _MCG_STATUS GlobalStatus;
+  U64 InstructionPointer;
+  U32 BankNumber;
+  union _MCI_STATUS Status;
+  U64 Address;
+  U64 Misc;
+  U32 ExtendedRegisterCount;
+  U32 ApicId;
+  union
+  {
+    U64 ExtendedRegisters[24];
+    struct _WHEA_AMD_EXTENDED_REGISTERS AMDExtendedRegisters;
+  }; 
+  union _MCG_CAP GlobalCapability;
+} WHEA_XPF_MCA_SECTION, *PWHEA_XPF_MCA_SECTION; 
+

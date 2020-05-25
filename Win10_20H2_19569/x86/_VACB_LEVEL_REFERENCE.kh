@@ -1,0 +1,6 @@
+typedef struct _VACB_LEVEL_REFERENCE
+{
+  S32 Reference;
+  S32 SpecialReference;
+} VACB_LEVEL_REFERENCE, *PVACB_LEVEL_REFERENCE; 
+

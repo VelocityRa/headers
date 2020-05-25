@@ -1,0 +1,13 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _TRIAGE_POP_IRP_DATA
+{
+  struct _LIST_ENTRY Link;
+  struct _IRP* Irp;
+  struct _DEVICE_OBJECT* Pdo;
+} TRIAGE_POP_IRP_DATA, *PTRIAGE_POP_IRP_DATA; 
+

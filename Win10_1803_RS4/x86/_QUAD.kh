@@ -1,0 +1,9 @@
+typedef struct _QUAD
+{
+  union
+  {
+    S64 UseThisFieldToCopy;
+    double DoNotUseThisField;
+  }; 
+} QUAD, *PQUAD; 
+

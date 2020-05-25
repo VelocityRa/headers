@@ -1,0 +1,14 @@
+typedef struct _POP_THERMAL_TELEMETRY_TRACKER
+{
+  U8 AccountingDisabled;
+  U8 ActiveLevels;
+  U64 LastPassiveUpdateTime;
+  U64 LastActiveUpdateTime;
+  U64 TotalPassiveTime[21];
+  U64 PassiveTimeSnap[21];
+  U64 TotalActiveTime[10];
+  U64 ActiveTimeSnap[10];
+  U64 TotalTime;
+  U64 TotalTimeSnap;
+} POP_THERMAL_TELEMETRY_TRACKER, *PPOP_THERMAL_TELEMETRY_TRACKER; 
+

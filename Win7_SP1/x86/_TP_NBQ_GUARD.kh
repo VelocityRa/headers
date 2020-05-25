@@ -1,0 +1,12 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _TP_NBQ_GUARD
+{
+  struct _LIST_ENTRY GuardLinks;
+  void* Guards[2];
+} TP_NBQ_GUARD, *PTP_NBQ_GUARD; 
+

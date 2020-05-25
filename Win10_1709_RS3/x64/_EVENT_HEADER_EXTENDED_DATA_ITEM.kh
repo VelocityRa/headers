@@ -1,0 +1,13 @@
+typedef struct _EVENT_HEADER_EXTENDED_DATA_ITEM
+{
+  U16 Reserved1;
+  U16 ExtType;
+  struct 
+  {
+    U16 Linkage : 1; 
+    U16 Reserved2 : 15; 
+  }; 
+  U16 DataSize;
+  U64 DataPtr;
+} EVENT_HEADER_EXTENDED_DATA_ITEM, *PEVENT_HEADER_EXTENDED_DATA_ITEM; 
+

@@ -1,0 +1,7 @@
+typedef struct _HAL_LBR_ENTRY
+{
+  void* FromAddress;
+  void* ToAddress;
+  void* Reserved;
+} HAL_LBR_ENTRY, *PHAL_LBR_ENTRY; 
+

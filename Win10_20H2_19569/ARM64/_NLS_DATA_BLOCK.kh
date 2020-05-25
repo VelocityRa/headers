@@ -1,0 +1,7 @@
+typedef struct _NLS_DATA_BLOCK
+{
+  void* AnsiCodePageData;
+  void* OemCodePageData;
+  void* UnicodeCaseTableData;
+} NLS_DATA_BLOCK, *PNLS_DATA_BLOCK; 
+

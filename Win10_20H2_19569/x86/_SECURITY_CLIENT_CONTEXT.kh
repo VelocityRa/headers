@@ -1,0 +1,47 @@
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SECURITY_QUALITY_OF_SERVICE
+{
+  U32 Length;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  U8 ContextTrackingMode;
+  U8 EffectiveOnly;
+  char __PADDING__[2];
+} SECURITY_QUALITY_OF_SERVICE, *PSECURITY_QUALITY_OF_SERVICE; 
+
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _TOKEN_SOURCE
+{
+  char SourceName[8];
+  struct _LUID SourceIdentifier;
+} TOKEN_SOURCE, *PTOKEN_SOURCE; 
+
+typedef struct _TOKEN_CONTROL
+{
+  struct _LUID TokenId;
+  struct _LUID AuthenticationId;
+  struct _LUID ModifiedId;
+  struct _TOKEN_SOURCE TokenSource;
+} TOKEN_CONTROL, *PTOKEN_CONTROL; 
+
+typedef struct _SECURITY_CLIENT_CONTEXT
+{
+  struct _SECURITY_QUALITY_OF_SERVICE SecurityQos;
+  void* ClientToken;
+  U8 DirectlyAccessClientToken;
+  U8 DirectAccessEffectiveOnly;
+  U8 ServerIsRemote;
+  struct _TOKEN_CONTROL ClientTokenControl;
+} SECURITY_CLIENT_CONTEXT, *PSECURITY_CLIENT_CONTEXT; 
+

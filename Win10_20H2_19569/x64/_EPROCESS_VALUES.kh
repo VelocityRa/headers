@@ -1,0 +1,17 @@
+typedef struct _EPROCESS_VALUES
+{
+  U64 KernelTime;
+  U64 UserTime;
+  U64 ReadyTime;
+  U64 CycleTime;
+  U64 ContextSwitches;
+  S64 ReadOperationCount;
+  S64 WriteOperationCount;
+  S64 OtherOperationCount;
+  S64 ReadTransferCount;
+  S64 WriteTransferCount;
+  S64 OtherTransferCount;
+  U64 KernelWaitTime;
+  U64 UserWaitTime;
+} EPROCESS_VALUES, *PEPROCESS_VALUES; 
+

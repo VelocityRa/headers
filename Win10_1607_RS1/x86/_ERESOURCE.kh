@@ -1,0 +1,61 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _KWAIT_CHAIN
+{
+  struct _SINGLE_LIST_ENTRY Head;
+} KWAIT_CHAIN, *PKWAIT_CHAIN; 
+
+typedef struct _OWNER_ENTRY
+{
+  U32 OwnerThread;
+  union
+  {
+    struct 
+    {
+      U32 IoPriorityBoosted : 1; 
+      U32 OwnerReferenced : 1; 
+      U32 IoQoSPriorityBoosted : 1; 
+      U32 OwnerCount : 29; 
+    }; 
+    U32 TableSize;
+  }; 
+} OWNER_ENTRY, *POWNER_ENTRY; 
+
+typedef struct _ERESOURCE
+{
+  struct _LIST_ENTRY SystemResourcesList;
+  struct _OWNER_ENTRY* OwnerTable;
+  S16 ActiveCount;
+  union
+  {
+    U16 Flag;
+    struct
+    {
+      U8 ReservedLowFlags;
+      U8 WaiterPriority;
+    }; 
+  }; 
+  struct _KWAIT_CHAIN SharedWaiters;
+  struct _KEVENT* ExclusiveWaiters;
+  struct _OWNER_ENTRY OwnerEntry;
+  U32 ActiveEntries;
+  U32 ContentionCount;
+  U32 NumberOfSharedWaiters;
+  U32 NumberOfExclusiveWaiters;
+  union
+  {
+    void* Address;
+    U32 CreatorBackTraceIndex;
+  }; 
+  U32 SpinLock;
+} ERESOURCE, *PERESOURCE; 
+

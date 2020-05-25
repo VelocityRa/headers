@@ -1,0 +1,6 @@
+typedef struct _OBJECT_HANDLE_INFORMATION
+{
+  U32 HandleAttributes;
+  U32 GrantedAccess;
+} OBJECT_HANDLE_INFORMATION, *POBJECT_HANDLE_INFORMATION; 
+

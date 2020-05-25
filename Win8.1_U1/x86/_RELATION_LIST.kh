@@ -1,0 +1,9 @@
+typedef struct _RELATION_LIST
+{
+  U32 Count;
+  U32 TagCount;
+  U32 FirstLevel;
+  U32 MaxLevel;
+  struct _RELATION_LIST_ENTRY* Entries[1];
+} RELATION_LIST, *PRELATION_LIST; 
+

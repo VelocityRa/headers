@@ -1,0 +1,23 @@
+typedef struct _KARM64_ARCH_STATE
+{
+  U64 Midr_El1;
+  U64 Sctlr_El1;
+  U64 Actlr_El1;
+  U64 Cpacr_El1;
+  U64 Tcr_El1;
+  U64 Ttbr0_El1;
+  U64 Ttbr1_El1;
+  U64 Esr_El1;
+  U64 Far_El1;
+  U64 Pmcr_El0;
+  U64 Pmcntenset_El0;
+  U64 Pmccntr_El0;
+  U64 Pmxevcntr_El0[31];
+  U64 Pmxevtyper_El0[31];
+  U64 Pmovsclr_El0;
+  U64 Pmselr_El0;
+  U64 Pmuserenr_El0;
+  U64 Mair_El1;
+  U64 Vbar_El1;
+} KARM64_ARCH_STATE, *PKARM64_ARCH_STATE; 
+

@@ -1,0 +1,16 @@
+typedef struct _EX_FAST_REF
+{
+  union
+  {
+    void* Object;
+    U32 RefCnt : 3; 
+    U32 Value;
+  }; 
+} EX_FAST_REF, *PEX_FAST_REF; 
+
+typedef struct _ETW_SILO_TRACING_BLOCK
+{
+  struct _EX_FAST_REF ProcessorBuffers[64];
+  U64 EventsLoggedCount[64];
+} ETW_SILO_TRACING_BLOCK, *PETW_SILO_TRACING_BLOCK; 
+

@@ -1,0 +1,143 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _GENERIC_MAPPING
+{
+  U32 GenericRead;
+  U32 GenericWrite;
+  U32 GenericExecute;
+  U32 GenericAll;
+} GENERIC_MAPPING, *PGENERIC_MAPPING; 
+
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+} POOL_TYPE, *PPOOL_TYPE;
+
+typedef struct _OBJECT_TYPE_INITIALIZER
+{
+  U16 Length;
+  union
+  {
+    U8 ObjectTypeFlags;
+    struct 
+    {
+      U8 CaseInsensitive : 1; 
+      U8 UnnamedObjectsOnly : 1; 
+      U8 UseDefaultObject : 1; 
+      U8 SecurityRequired : 1; 
+      U8 MaintainHandleCount : 1; 
+      U8 MaintainTypeList : 1; 
+      U8 SupportsObjectCallbacks : 1; 
+    }; 
+  }; 
+  U32 ObjectTypeCode;
+  U32 InvalidAttributes;
+  struct _GENERIC_MAPPING GenericMapping;
+  U32 ValidAccessMask;
+  U32 RetainAccess;
+  enum _POOL_TYPE PoolType;
+  U32 DefaultPagedPoolCharge;
+  U32 DefaultNonPagedPoolCharge;
+  void* DumpProcedure;
+  void* OpenProcedure;
+  void* CloseProcedure;
+  void* DeleteProcedure;
+  void* ParseProcedure;
+  void* SecurityProcedure;
+  void* QueryNameProcedure;
+  void* OkayToCloseProcedure;
+} OBJECT_TYPE_INITIALIZER, *POBJECT_TYPE_INITIALIZER; 
+
+typedef struct _OWNER_ENTRY
+{
+  U64 OwnerThread;
+  union
+  {
+    S32 OwnerCount;
+    U32 TableSize;
+  }; 
+  S32 __PADDING__[1];
+} OWNER_ENTRY, *POWNER_ENTRY; 
+
+typedef struct _ERESOURCE
+{
+  struct _LIST_ENTRY SystemResourcesList;
+  struct _OWNER_ENTRY* OwnerTable;
+  S16 ActiveCount;
+  U16 Flag;
+  struct _KSEMAPHORE* SharedWaiters;
+  struct _KEVENT* ExclusiveWaiters;
+  struct _OWNER_ENTRY OwnerEntry;
+  U32 ActiveEntries;
+  U32 ContentionCount;
+  U32 NumberOfSharedWaiters;
+  U32 NumberOfExclusiveWaiters;
+  void* Reserved2;
+  union
+  {
+    void* Address;
+    U64 CreatorBackTraceIndex;
+  }; 
+  U64 SpinLock;
+} ERESOURCE, *PERESOURCE; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _OBJECT_TYPE
+{
+  struct _LIST_ENTRY TypeList;
+  struct _UNICODE_STRING Name;
+  void* DefaultObject;
+  U32 Index;
+  U32 TotalNumberOfObjects;
+  U32 TotalNumberOfHandles;
+  U32 HighWaterNumberOfObjects;
+  U32 HighWaterNumberOfHandles;
+  struct _OBJECT_TYPE_INITIALIZER TypeInfo;
+  struct _ERESOURCE Mutex;
+  struct _EX_PUSH_LOCK TypeLock;
+  U32 Key;
+  struct _EX_PUSH_LOCK ObjectLocks[32];
+  struct _LIST_ENTRY CallbackList;
+} OBJECT_TYPE, *POBJECT_TYPE; 
+

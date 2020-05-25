@@ -1,0 +1,29 @@
+typedef struct _MMINPAGE_FLAGS
+{
+  struct 
+  {
+    U32 GetExtents : 1; 
+    U32 PrefetchSystemVmType : 2; 
+    U32 VaPrefetchReadBlock : 1; 
+    U32 CollidedFlowThrough : 1; 
+    U32 ForceCollisions : 1; 
+    U32 InPageExpanded : 1; 
+    U32 IssuedAtLowPriority : 1; 
+    U32 FaultFromStore : 1; 
+    U32 PagePriority : 3; 
+    U32 ClusteredPagePriority : 3; 
+    U32 MakeClusterValid : 1; 
+    U32 PerformRelocations : 1; 
+    U32 ZeroLastPage : 1; 
+    U32 UserFault : 1; 
+    U32 StandbyProtectionNeeded : 1; 
+    U32 PteChanged : 1; 
+    U32 PageFileFault : 1; 
+    U32 PageFilePageHashActive : 1; 
+    U32 CoalescedIo : 1; 
+    U32 VmLockNotNeeded : 1; 
+    U32 Spare0 : 1; 
+    U32 Spare1 : 6; 
+  }; 
+} MMINPAGE_FLAGS, *PMMINPAGE_FLAGS; 
+

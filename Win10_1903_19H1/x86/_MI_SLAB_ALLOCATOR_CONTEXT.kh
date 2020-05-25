@@ -1,0 +1,73 @@
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef enum _MI_SLAB_ALLOCATOR_TYPE
+{
+  MiSlabAllocatorTypeSlatProtected = 0,
+  MiSlabAllocatorTypeUnprotected = 1,
+  MiSlabAllocatorTypeMax = 2,
+} MI_SLAB_ALLOCATOR_TYPE, *PMI_SLAB_ALLOCATOR_TYPE;
+
+typedef enum _MI_SLAB_ALLOCATOR_PROTECTION
+{
+  MiSlabAllocatorProtectionReadExecute = 0,
+  MiSlabAllocatorProtectionReadOnly = 1,
+  MiSlabAllocatorProtectionNoAccess = 2,
+  MiSlabAllocatorProtectionReadWrite = 3,
+  MiSlabAllocatorProtectionMax = 4,
+} MI_SLAB_ALLOCATOR_PROTECTION, *PMI_SLAB_ALLOCATOR_PROTECTION;
+
+typedef enum _MMLISTS
+{
+  ZeroedPageList = 0,
+  FreePageList = 1,
+  StandbyPageList = 2,
+  ModifiedPageList = 3,
+  ModifiedNoWritePageList = 4,
+  BadPageList = 5,
+  ActiveAndValid = 6,
+  TransitionPage = 7,
+} MMLISTS, *PMMLISTS;
+
+typedef struct _MMPFNLIST
+{
+  U32 Total;
+  enum _MMLISTS ListName;
+  U32 Flink;
+  U32 Blink;
+  U32 Lock;
+} MMPFNLIST, *PMMPFNLIST; 
+
+typedef struct _MI_SLAB_ALLOCATOR_CONTEXT
+{
+  struct _RTL_RB_TREE AllocationsTree;
+  volatile S32 Lock;
+  struct _MI_SLAB_ALLOCATOR_ENTRY* SlabEntryHint;
+  U32 FreePageCount;
+  U32 SlabEntryCount;
+  enum _MI_SLAB_ALLOCATOR_TYPE Type;
+  enum _MI_SLAB_ALLOCATOR_PROTECTION Protection;
+  union
+  {
+    union
+    {
+      struct 
+      {
+        U32 EntryBecameEmpty : 1; 
+        U32 Spare : 31; 
+      }; 
+      U32 AllFlags;
+    }; 
+  } Flags;
+  struct _MMPFNLIST StandbyList;
+  U64 LastReplenishTime;
+  U64 LastFailureTime;
+} MI_SLAB_ALLOCATOR_CONTEXT, *PMI_SLAB_ALLOCATOR_CONTEXT; 
+

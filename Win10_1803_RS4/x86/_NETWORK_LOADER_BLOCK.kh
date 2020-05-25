@@ -1,0 +1,8 @@
+typedef struct _NETWORK_LOADER_BLOCK
+{
+  U8* DHCPServerACK;
+  U32 DHCPServerACKLength;
+  U8* BootServerReplyPacket;
+  U32 BootServerReplyPacketLength;
+} NETWORK_LOADER_BLOCK, *PNETWORK_LOADER_BLOCK; 
+

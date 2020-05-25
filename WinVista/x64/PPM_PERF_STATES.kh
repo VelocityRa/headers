@@ -1,0 +1,52 @@
+struct PPM_PERF_STATE
+{
+  U32 Frequency;
+  U32 Power;
+  U8 PercentFrequency;
+  U8 IncreaseLevel;
+  U8 DecreaseLevel;
+  U8 Type;
+  U64 Control;
+  U64 Status;
+  U32 TotalHitCount;
+  U32 DesiredCount;
+}; 
+
+struct PPM_PERF_STATES
+{
+  U32 Count;
+  U32 MaxFrequency;
+  U32 MaxPerfState;
+  U32 MinPerfState;
+  U32 LowestPState;
+  U32 IncreaseTime;
+  U32 DecreaseTime;
+  U8 BusyAdjThreshold;
+  U8 Reserved;
+  U8 ThrottleStatesOnly;
+  U8 PolicyType;
+  U32 TimerInterval;
+  union
+  {
+    union
+    {
+      U32 AsULONG;
+      struct 
+      {
+        U32 UsingHypervisor : 1; 
+        U32 NoDomainAccounting : 1; 
+        U32 IncreasePolicy : 2; 
+        U32 DecreasePolicy : 2; 
+        U32 Reserved : 26; 
+      }; 
+    }; 
+  } Flags;
+  U64 TargetProcessors;
+  void* PStateHandler;
+  U64 PStateContext;
+  void* TStateHandler;
+  U64 TStateContext;
+  void* FeedbackHandler;
+  struct PPM_PERF_STATE State[1];
+}; 
+

@@ -1,0 +1,30 @@
+typedef struct _HARDWARE_PTE
+{
+  union
+  {
+    struct 
+    {
+      U64 Valid : 1; 
+      U64 Write : 1; 
+      U64 Owner : 1; 
+      U64 WriteThrough : 1; 
+      U64 CacheDisable : 1; 
+      U64 Accessed : 1; 
+      U64 Dirty : 1; 
+      U64 LargePage : 1; 
+      U64 Global : 1; 
+      U64 CopyOnWrite : 1; 
+      U64 Prototype : 1; 
+      U64 reserved0 : 1; 
+      U64 PageFrameNumber : 26; 
+      U64 reserved1 : 25; 
+      U64 NoExecute : 1; 
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+  }; 
+} HARDWARE_PTE, *PHARDWARE_PTE; 
+

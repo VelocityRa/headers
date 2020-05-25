@@ -1,0 +1,14 @@
+typedef struct _POOL_TRACKER_BIG_PAGES
+{
+  volatile U32 Va;
+  U32 Key;
+  struct 
+  {
+    U32 Pattern : 8; 
+    U32 PoolType : 12; 
+    U32 SlushSize : 12; 
+  }; 
+  U32 NumberOfBytes;
+  struct _EPROCESS* ProcessBilled;
+} POOL_TRACKER_BIG_PAGES, *PPOOL_TRACKER_BIG_PAGES; 
+

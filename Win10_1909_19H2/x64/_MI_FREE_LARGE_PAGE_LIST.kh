@@ -1,0 +1,12 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MI_FREE_LARGE_PAGE_LIST
+{
+  struct _LIST_ENTRY ListHead;
+  U64 EntryCount;
+} MI_FREE_LARGE_PAGE_LIST, *PMI_FREE_LARGE_PAGE_LIST; 
+

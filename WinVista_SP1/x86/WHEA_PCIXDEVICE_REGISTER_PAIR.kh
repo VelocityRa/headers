@@ -1,0 +1,6 @@
+struct WHEA_PCIXDEVICE_REGISTER_PAIR
+{
+  U64 Register;
+  U64 Data;
+}; 
+

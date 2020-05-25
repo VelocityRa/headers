@@ -1,0 +1,13 @@
+enum WHEA_PCIEXPRESS_DEVICE_TYPE
+{
+  WheaPciExpressEndpoS32 = 0,
+  WheaPciExpressLegacyEndpoS32 = 1,
+  WheaPciExpressRootPort = 4,
+  WheaPciExpressUpstreamSwitchPort = 5,
+  WheaPciExpressDownstreamSwitchPort = 6,
+  WheaPciExpressToPciXBridge = 7,
+  WheaPciXToExpressBridge = 8,
+  WheaPciExpressRootComplexIntegratedEndpoS32 = 9,
+  WheaPciExpressRootComplexEventCollector = 10,
+};
+

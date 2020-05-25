@@ -1,0 +1,19 @@
+typedef struct _WHEA_PCIXDEVICE_ID
+{
+  U16 VendorId;
+  U16 DeviceId;
+  struct 
+  {
+    U32 ClassCode : 24; 
+    U32 FunctionNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 DeviceNumber : 8; 
+    U32 BusNumber : 8; 
+    U32 SegmentNumber : 8; 
+    U32 Reserved1 : 8; 
+  }; 
+  U32 Reserved2;
+} WHEA_PCIXDEVICE_ID, *PWHEA_PCIXDEVICE_ID; 
+

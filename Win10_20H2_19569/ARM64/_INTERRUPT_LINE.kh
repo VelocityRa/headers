@@ -1,0 +1,6 @@
+typedef struct _INTERRUPT_LINE
+{
+  U32 UnitId;
+  S32 Line;
+} INTERRUPT_LINE, *PINTERRUPT_LINE; 
+

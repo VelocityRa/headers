@@ -1,0 +1,28 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _RTL_ATOM_TABLE
+{
+  U32 Signature;
+  volatile S32 ReferenceCount;
+  struct _EX_PUSH_LOCK PushLock;
+  struct _HANDLE_TABLE* ExHandleTable;
+  U32 Flags;
+  U32 NumberOfBuckets;
+  struct _RTL_ATOM_TABLE_ENTRY* Buckets[1];
+} RTL_ATOM_TABLE, *PRTL_ATOM_TABLE; 
+

@@ -1,0 +1,6 @@
+typedef struct _WHEA_XPF_NMI_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+} WHEA_XPF_NMI_DESCRIPTOR, *PWHEA_XPF_NMI_DESCRIPTOR; 
+

@@ -1,0 +1,16 @@
+typedef union _RTL_RUN_ONCE
+{
+  union
+  {
+    void* Ptr;
+    U64 Value;
+    U64 State : 2; 
+  }; 
+} RTL_RUN_ONCE, *PRTL_RUN_ONCE; 
+
+typedef struct _RTLP_HP_METADATA_HEAP_CTX
+{
+  struct _SEGMENT_HEAP* Heap;
+  union _RTL_RUN_ONCE InitOnce;
+} RTLP_HP_METADATA_HEAP_CTX, *PRTLP_HP_METADATA_HEAP_CTX; 
+

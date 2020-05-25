@@ -1,0 +1,11 @@
+typedef struct _DEVICE_MAP
+{
+  struct _OBJECT_DIRECTORY* DosDevicesDirectory;
+  struct _OBJECT_DIRECTORY* GlobalDosDevicesDirectory;
+  void* DosDevicesDirectoryHandle;
+  volatile S32 ReferenceCount;
+  U32 DriveMap;
+  U8 DriveType[32];
+  struct _EJOB* ServerSilo;
+} DEVICE_MAP, *PDEVICE_MAP; 
+

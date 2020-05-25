@@ -1,0 +1,40 @@
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_IO_CACHE_STATS
+{
+  U32 UnmappedCacheFlush;
+  U32 UnmappedCacheConflict;
+  U32 PermanentIoAttributeConflict;
+  U32 PermanentIoNodeConflict;
+} MI_IO_CACHE_STATS, *PMI_IO_CACHE_STATS; 
+
+typedef struct _MI_IO_PAGE_STATE
+{
+  struct _RTL_AVL_TREE IoPfnRoot[2];
+  U32 UnmappedNodeCount[2];
+  U32 UnmappedNodeCountMaximum;
+  U32 TotalNodeCount[2];
+  struct _RTL_AVL_TREE InvariantIoSpace;
+  volatile S32 IoPfnPruneLock;
+  U32 ResumePageForDeleteScans[2];
+  struct _WORK_QUEUE_ITEM UnmappedNodeWorkItem;
+  struct _MI_IO_CACHE_STATS IoCacheStats;
+  S32 __PADDING__[1];
+} MI_IO_PAGE_STATE, *PMI_IO_PAGE_STATE; 
+

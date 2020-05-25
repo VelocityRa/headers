@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _CALL_HASH_ENTRY
+{
+  struct _LIST_ENTRY ListEntry;
+  void* CallersAddress;
+  void* CallersCaller;
+  U32 CallCount;
+} CALL_HASH_ENTRY, *PCALL_HASH_ENTRY; 
+

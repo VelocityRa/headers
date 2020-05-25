@@ -1,0 +1,39 @@
+typedef struct _SEGMENT_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 TotalNumberOfPtes4132 : 10; 
+      U16 Spare0 : 1; 
+      U16 LargePages : 1; 
+      U16 LockedPages : 1; 
+      U16 DebugSymbolsLoaded : 1; 
+      U16 WriteCombined : 1; 
+      U16 NoCache : 1; 
+    }; 
+    U16 Short0;
+  }; 
+  union
+  {
+    struct 
+    {
+      U8 FloppyMedia : 1; 
+      U8 DefaultProtectionMask : 5; 
+      U8 Binary32 : 1; 
+      U8 ContainsDebug : 1; 
+    }; 
+    U8 UChar1;
+  }; 
+  union
+  {
+    struct 
+    {
+      U8 ILOnly : 1; 
+      U8 ImageSigningType : 3; 
+      U8 ImageSigningLevel : 4; 
+    }; 
+    U8 UChar2;
+  }; 
+} SEGMENT_FLAGS, *PSEGMENT_FLAGS; 
+

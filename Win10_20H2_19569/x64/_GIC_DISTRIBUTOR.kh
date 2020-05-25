@@ -1,0 +1,12 @@
+typedef struct _GIC_DISTRIBUTOR
+{
+  U8 Type;
+  U8 Length;
+  U16 Reserved1;
+  U32 Identifier;
+  U64 ControllerPhysicalAddress;
+  U32 GsivBase;
+  U8 Version;
+  U8 Reserved[3];
+} GIC_DISTRIBUTOR, *PGIC_DISTRIBUTOR; 
+

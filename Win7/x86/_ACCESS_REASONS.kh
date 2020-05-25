@@ -1,0 +1,5 @@
+typedef struct _ACCESS_REASONS
+{
+  U32 Data[32];
+} ACCESS_REASONS, *PACCESS_REASONS; 
+

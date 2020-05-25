@@ -1,0 +1,11 @@
+typedef struct _MMPTE_SUBSECTION
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 SubsectionAddressLow : 9; 
+    U32 Prototype : 1; 
+    U32 SubsectionAddressHigh : 21; 
+  }; 
+} MMPTE_SUBSECTION, *PMMPTE_SUBSECTION; 
+

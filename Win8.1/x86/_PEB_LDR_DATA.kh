@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PEB_LDR_DATA
+{
+  U32 Length;
+  U8 Initialized;
+  void* SsHandle;
+  struct _LIST_ENTRY InLoadOrderModuleList;
+  struct _LIST_ENTRY InMemoryOrderModuleList;
+  struct _LIST_ENTRY InInitializationOrderModuleList;
+  void* EntryInProgress;
+  U8 ShutdownInProgress;
+  void* ShutdownThreadId;
+} PEB_LDR_DATA, *PPEB_LDR_DATA; 
+

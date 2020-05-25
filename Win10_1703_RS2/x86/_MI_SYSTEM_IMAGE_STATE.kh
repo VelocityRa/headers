@@ -1,0 +1,179 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 1; 
+              U8 Processor : 5; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 Instrumented : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          U8 DebugActive;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KMUTANT
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY MutantListEntry;
+  struct _KTHREAD* OwnerThread;
+  U8 Abandoned;
+  U8 ApcDisable;
+  char __PADDING__[2];
+} KMUTANT, *PKMUTANT; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MM_SYSTEM_PAGE_COUNTS
+{
+  U32 SystemCodePage;
+  U32 SystemDriverPage;
+  S32 TotalSystemCodePages;
+  S32 TotalSystemDriverPages;
+} MM_SYSTEM_PAGE_COUNTS, *PMM_SYSTEM_PAGE_COUNTS; 
+
+typedef struct _MI_SYSTEM_IMAGE_STATE
+{
+  struct _LIST_ENTRY FixupList;
+  struct _KMUTANT LoadLock;
+  volatile S32 FixupLock;
+  U8 FirstLoadEver;
+  U8 LargePageAll;
+  U32 LastPage;
+  struct _LIST_ENTRY LargePageList;
+  struct _LIST_ENTRY StrongCodeLoadFailureList;
+  struct _KLDR_DATA_TABLE_ENTRY* BeingDeleted;
+  struct _EX_PUSH_LOCK MappingRangesPushLock;
+  struct _MI_DRIVER_VA* MappingRanges[2];
+  U32 PageCount;
+  struct _MM_SYSTEM_PAGE_COUNTS PageCounts;
+  struct _EX_PUSH_LOCK CollidedLock;
+} MI_SYSTEM_IMAGE_STATE, *PMI_SYSTEM_IMAGE_STATE; 
+

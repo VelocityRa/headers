@@ -1,0 +1,15 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _tlgProviderMetadata_t
+{
+  U8 Type;
+  struct _GUID ProviderId;
+  U16 RemainingSize;
+} tlgProviderMetadata_t, *PtlgProviderMetadata_t; 
+

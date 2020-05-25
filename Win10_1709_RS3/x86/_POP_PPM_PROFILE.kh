@@ -1,0 +1,152 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef union _PPM_POLICY_SETTINGS_MASK
+{
+  union
+  {
+    U64 Value;
+    struct
+    {
+      struct 
+      {
+        U32 PerfDecreaseTime : 1; 
+        U32 PerfIncreaseTime : 1; 
+        U32 PerfDecreasePolicy : 1; 
+        U32 PerfIncreasePolicy : 1; 
+        U32 PerfDecreaseThreshold : 1; 
+        U32 PerfIncreaseThreshold : 1; 
+        U32 PerfMinPolicy : 1; 
+        U32 PerfMaxPolicy : 1; 
+        U32 PerfTimeCheck : 1; 
+        U32 PerfBoostPolicy : 1; 
+        U32 PerfBoostMode : 1; 
+        U32 AllowThrottling : 1; 
+        U32 PerfHistoryCount : 1; 
+        U32 ParkingPerfState : 1; 
+        U32 LatencyHintPerf : 1; 
+        U32 LatencyHintUnpark : 1; 
+        U32 CoreParkingMinCores : 1; 
+        U32 CoreParkingMaxCores : 1; 
+        U32 CoreParkingDecreasePolicy : 1; 
+        U32 CoreParkingIncreasePolicy : 1; 
+        U32 CoreParkingDecreaseTime : 1; 
+        U32 CoreParkingIncreaseTime : 1; 
+        U32 CoreParkingOverUtilizationThreshold : 1; 
+        U32 CoreParkingDistributeUtility : 1; 
+        U32 CoreParkingConcurrencyThreshold : 1; 
+        U32 CoreParkingHeadroomThreshold : 1; 
+        U32 CoreParkingDistributionThreshold : 1; 
+        U32 IdleAllowScaling : 1; 
+        U32 IdleDisable : 1; 
+        U32 IdleTimeCheck : 1; 
+        U32 IdleDemoteThreshold : 1; 
+        U32 IdlePromoteThreshold : 1; 
+      }; 
+      struct 
+      {
+        U32 HeteroDecreaseTime : 1; 
+        U32 HeteroIncreaseTime : 1; 
+        U32 HeteroDecreaseThreshold : 1; 
+        U32 HeteroIncreaseThreshold : 1; 
+        U32 Class0FloorPerformance : 1; 
+        U32 Class1InitialPerformance : 1; 
+        U32 EnergyPerfPreference : 1; 
+        U32 AutonomousActivityWindow : 1; 
+        U32 AutonomousMode : 1; 
+        U32 DutyCycling : 1; 
+        U32 FrequencyCap : 1; 
+        U32 ThreadPolicy : 1; 
+        U32 ShortThreadPolicy : 1; 
+        U32 Spare : 19; 
+      }; 
+    }; 
+  }; 
+} PPM_POLICY_SETTINGS_MASK, *PPPM_POLICY_SETTINGS_MASK; 
+
+typedef enum _KHETERO_CPU_POLICY
+{
+  KHeteroCpuPolicyAll = 0,
+  KHeteroCpuPolicyLarge = 1,
+  KHeteroCpuPolicyLargeOrIdle = 2,
+  KHeteroCpuPolicySmall = 3,
+  KHeteroCpuPolicySmallOrIdle = 4,
+  KHeteroCpuPolicyDynamic = 5,
+  KHeteroCpuPolicyStaticMax = 5,
+  KHeteroCpuPolicyBiasedSmall = 6,
+  KHeteroCpuPolicyBiasedLarge = 7,
+  KHeteroCpuPolicyDefault = 8,
+  KHeteroCpuPolicyMax = 9,
+} KHETERO_CPU_POLICY, *PKHETERO_CPU_POLICY;
+
+typedef struct _PPM_ENGINE_SETTINGS
+{
+  union _PPM_POLICY_SETTINGS_MASK ExplicitSetting[2];
+  U8 ThrottlingPolicy;
+  U32 PerfTimeCheck;
+  U8 PerfHistoryCount[2];
+  U8 PerfMinPolicy[2];
+  U8 PerfMaxPolicy[2];
+  U8 PerfDecreaseTime[2];
+  U8 PerfIncreaseTime[2];
+  U8 PerfDecreasePolicy[2];
+  U8 PerfIncreasePolicy[2];
+  U8 PerfDecreaseThreshold[2];
+  U8 PerfIncreaseThreshold[2];
+  U32 PerfFrequencyCap[2];
+  U32 PerfBoostPolicy;
+  U32 PerfBoostMode;
+  U32 PerfReductionTolerance;
+  U32 EnergyPerfPreference;
+  U32 AutonomousActivityWindow;
+  U8 AutonomousPreference;
+  U8 LatencyHintPerf[2];
+  U8 LatencyHintUnpark[2];
+  U8 DutyCycling;
+  U8 ParkingPerfState[2];
+  U8 DistributeUtility;
+  U8 CoreParkingOverUtilizationThreshold;
+  U8 CoreParkingConcurrencyThreshold;
+  U8 CoreParkingHeadroomThreshold;
+  U8 CoreParkingDistributionThreshold;
+  U8 CoreParkingDecreasePolicy;
+  U8 CoreParkingIncreasePolicy;
+  U32 CoreParkingDecreaseTime;
+  U32 CoreParkingIncreaseTime;
+  U8 CoreParkingMinCores[2];
+  U8 CoreParkingMaxCores[2];
+  U8 AllowScaling;
+  U8 IdleDisabled;
+  U32 IdleTimeCheck;
+  U8 IdleDemotePercent;
+  U8 IdlePromotePercent;
+  U8 HeteroDecreaseTime;
+  U8 HeteroIncreaseTime;
+  U8 HeteroDecreaseThreshold[32];
+  U8 HeteroIncreaseThreshold[32];
+  U8 Class0FloorPerformance;
+  U8 Class1InitialPerformance;
+  enum _KHETERO_CPU_POLICY ThreadPolicies[2];
+  S32 __PADDING__[1];
+} PPM_ENGINE_SETTINGS, *PPPM_ENGINE_SETTINGS; 
+
+typedef struct _POP_PPM_PROFILE
+{
+  wchar_t* Name;
+  U8 Id;
+  struct _GUID Guid;
+  U32 Flags;
+  U8 Priority;
+  struct _PPM_ENGINE_SETTINGS Settings[2];
+  U64 StartTime;
+  U64 Count;
+  U64 MaxDuration;
+  U64 MinDuration;
+  U64 TotalDuration;
+} POP_PPM_PROFILE, *PPOP_PPM_PROFILE; 
+

@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MCUPDATE_INFO
+{
+  struct _LIST_ENTRY List;
+  U32 Status;
+  U64 Id;
+  U64 VendorScratch[2];
+} MCUPDATE_INFO, *PMCUPDATE_INFO; 
+

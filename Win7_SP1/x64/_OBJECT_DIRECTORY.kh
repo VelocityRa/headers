@@ -1,0 +1,28 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _OBJECT_DIRECTORY
+{
+  struct _OBJECT_DIRECTORY_ENTRY* HashBuckets[37];
+  struct _EX_PUSH_LOCK Lock;
+  struct _DEVICE_MAP* DeviceMap;
+  U32 SessionId;
+  void* NamespaceEntry;
+  U32 Flags;
+  S32 __PADDING__[1];
+} OBJECT_DIRECTORY, *POBJECT_DIRECTORY; 
+

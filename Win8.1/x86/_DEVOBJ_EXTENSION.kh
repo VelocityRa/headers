@@ -1,0 +1,18 @@
+typedef struct _DEVOBJ_EXTENSION
+{
+  S16 Type;
+  U16 Size;
+  struct _DEVICE_OBJECT* DeviceObject;
+  U32 PowerFlags;
+  struct _DEVICE_OBJECT_POWER_EXTENSION* Dope;
+  U32 ExtensionFlags;
+  void* DeviceNode;
+  struct _DEVICE_OBJECT* AttachedTo;
+  S32 StartIoCount;
+  S32 StartIoKey;
+  U32 StartIoFlags;
+  struct _VPB* Vpb;
+  void* DependencyNode;
+  void* VerifierContext;
+} DEVOBJ_EXTENSION, *PDEVOBJ_EXTENSION; 
+

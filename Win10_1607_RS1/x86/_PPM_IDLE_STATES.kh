@@ -1,0 +1,136 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _PROCESSOR_IDLE_CONSTRAINTS
+{
+  U64 TotalTime;
+  U64 IdleTime;
+  U64 ExpectedIdleDuration;
+  U64 MaxIdleDuration;
+  U32 OverrideState;
+  U32 TimeCheck;
+  U8 PromotePercent;
+  U8 DemotePercent;
+  U8 Parked;
+  U8 Interruptible;
+  U8 PlatformIdle;
+  U8 ExpectedWakeReason;
+  char __PADDING__[2];
+} PROCESSOR_IDLE_CONSTRAINTS, *PPROCESSOR_IDLE_CONSTRAINTS; 
+
+typedef struct _PROCESSOR_IDLE_PREPARE_INFO
+{
+  void* Context;
+  struct _PROCESSOR_IDLE_CONSTRAINTS Constraints;
+  U32 DependencyCount;
+  U32 DependencyUsed;
+  struct _PROCESSOR_IDLE_DEPENDENCY* DependencyArray;
+  U32 PlatformIdleStateIndex;
+  U32 ProcessorIdleStateIndex;
+  U32 IdleSelectFailureMask;
+} PROCESSOR_IDLE_PREPARE_INFO, *PPROCESSOR_IDLE_PREPARE_INFO; 
+
+typedef struct _PPM_SELECTION_MENU
+{
+  U32 Count;
+  struct _PPM_SELECTION_MENU_ENTRY* Entries;
+} PPM_SELECTION_MENU, *PPPM_SELECTION_MENU; 
+
+typedef struct _PPM_COORDINATED_SELECTION
+{
+  U32 MaximumStates;
+  U32 SelectedStates;
+  U32 DefaultSelection;
+  U32* Selection;
+} PPM_COORDINATED_SELECTION, *PPPM_COORDINATED_SELECTION; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PPM_VETO_ACCOUNTING
+{
+  volatile S32 VetoPresent;
+  struct _LIST_ENTRY VetoListHead;
+  U8 CsAccountingBlocks;
+  U8 BlocksDrips;
+  U32 PreallocatedVetoCount;
+  struct _PPM_VETO_ENTRY* PreallocatedVetoList;
+} PPM_VETO_ACCOUNTING, *PPPM_VETO_ACCOUNTING; 
+
+typedef struct _PPM_IDLE_STATE
+{
+  struct _KAFFINITY_EX DomainMembers;
+  struct _UNICODE_STRING Name;
+  U32 Latency;
+  U32 BreakEvenDuration;
+  U32 Power;
+  U32 StateFlags;
+  struct _PPM_VETO_ACCOUNTING VetoAccounting;
+  U8 StateType;
+  U8 InterruptsEnabled;
+  U8 Interruptible;
+  U8 ContextRetained;
+  U8 CacheCoherent;
+  U8 WakesSpuriously;
+  U8 PlatformOnly;
+  U8 NoCState;
+} PPM_IDLE_STATE, *PPPM_IDLE_STATE; 
+
+typedef struct _PPM_IDLE_STATES
+{
+  U8 InterfaceVersion;
+  U8 ForceIdle;
+  U8 EstimateIdleDuration;
+  U8 ExitLatencyTraceEnabled;
+  U8 NonInterruptibleTransition;
+  U8 UnaccountedTransition;
+  U8 IdleDurationLimited;
+  U8 IdleCheckLimited;
+  U32 ExitLatencyCountdown;
+  U32 TargetState;
+  U32 ActualState;
+  U32 OldState;
+  U32 OverrideIndex;
+  U32 ProcessorIdleCount;
+  U32 Type;
+  U16 ReasonFlags;
+  volatile U64 InitiateWakeStamp;
+  S32 PreviousStatus;
+  U32 PreviousCancelReason;
+  struct _KAFFINITY_EX PrimaryProcessorMask;
+  struct _KAFFINITY_EX SecondaryProcessorMask;
+  void* IdlePrepare;
+  void* IdlePreExecute;
+  void* IdleExecute;
+  void* IdlePreselect;
+  void* IdleTest;
+  void* IdleAvailabilityCheck;
+  void* IdleComplete;
+  void* IdleCancel;
+  void* IdleIsHalted;
+  void* IdleInitiateWake;
+  struct _PROCESSOR_IDLE_PREPARE_INFO PrepareInfo;
+  struct _KAFFINITY_EX DeepIdleSnapshot;
+  struct _PERFINFO_PPM_STATE_SELECTION* Tracing;
+  struct _PERFINFO_PPM_STATE_SELECTION* CoordinatedTracing;
+  struct _PPM_SELECTION_MENU ProcessorMenu;
+  struct _PPM_SELECTION_MENU CoordinatedMenu;
+  struct _PPM_COORDINATED_SELECTION CoordinatedSelection;
+  struct _PPM_IDLE_STATE State[1];
+} PPM_IDLE_STATES, *PPPM_IDLE_STATES; 
+

@@ -1,0 +1,16 @@
+typedef struct _MMWSL_SHARED
+{
+  U64 FirstFree;
+  U64 FirstDynamic;
+  U64 LastEntry;
+  U64 LastInitializedWsle;
+  U32 WsleSize;
+  U64 NonDirectCount;
+  void* LowestPagableAddress;
+  struct _MMWSLE_NONDIRECT_HASH* NonDirectHash;
+  struct _MMWSLE_HASH* HashTableStart;
+  struct _MMWSLE_HASH* HighestPermittedHashAddress;
+  struct _MMWSLE* Wsle;
+  S32 __PADDING__[2];
+} MMWSL_SHARED, *PMMWSL_SHARED; 
+

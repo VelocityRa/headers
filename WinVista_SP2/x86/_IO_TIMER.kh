@@ -1,0 +1,16 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _IO_TIMER
+{
+  S16 Type;
+  S16 TimerFlag;
+  struct _LIST_ENTRY TimerList;
+  void* TimerRoutine;
+  void* Context;
+  struct _DEVICE_OBJECT* DeviceObject;
+} IO_TIMER, *PIO_TIMER; 
+

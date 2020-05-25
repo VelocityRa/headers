@@ -1,0 +1,24 @@
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    U64 Count;
+    void* Ptr;
+  }; 
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF; 
+
+typedef struct _HMAP_ENTRY
+{
+  U64 BlockOffset;
+  U64 PermanentBinAddress;
+  U64 TemporaryBinAddress;
+  struct _EX_RUNDOWN_REF TemporaryBinRundown;
+  U32 MemAlloc;
+  S32 __PADDING__[1];
+} HMAP_ENTRY, *PHMAP_ENTRY; 
+
+typedef struct _HMAP_TABLE
+{
+  struct _HMAP_ENTRY Table[512];
+} HMAP_TABLE, *PHMAP_TABLE; 
+

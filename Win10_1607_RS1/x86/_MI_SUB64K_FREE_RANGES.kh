@@ -1,0 +1,22 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MI_SUB64K_FREE_RANGES
+{
+  struct _RTL_BITMAP BitMap;
+  struct _LIST_ENTRY ListEntry;
+  struct _MMVAD_SHORT* Vad;
+  U16 SubListIndex;
+  U16 Hint;
+  U32 SetBits;
+} MI_SUB64K_FREE_RANGES, *PMI_SUB64K_FREE_RANGES; 
+

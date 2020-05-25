@@ -1,0 +1,6 @@
+typedef struct _PERIODIC_CAPTURE_STATE_GUIDS
+{
+  U16 ProviderCount;
+  struct _GUID* Providers;
+} PERIODIC_CAPTURE_STATE_GUIDS, *PPERIODIC_CAPTURE_STATE_GUIDS; 
+

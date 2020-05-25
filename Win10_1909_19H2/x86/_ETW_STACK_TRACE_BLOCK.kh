@@ -1,0 +1,72 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _KDPC
+{
+  union
+  {
+    U32 TargetInfoAsUlong;
+    struct
+    {
+      U8 Type;
+      U8 Importance;
+      volatile U16 Number;
+    }; 
+  }; 
+  struct _SINGLE_LIST_ENTRY DpcListEntry;
+  U32 ProcessorHistory;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 CpuId;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _ETW_STACK_TRACE_BLOCK
+{
+  union _LARGE_INTEGER RelatedTimestamp;
+  struct _ETHREAD* Thread;
+  struct _KDPC StackWalkDpc;
+  union _SLIST_HEADER ApcListHead;
+  struct _ETW_APC_ENTRY* ApcEntry;
+  U32 ApcEntryCount;
+  S32 Flags;
+  S32 ApcCount;
+  S32 MaxApcCount;
+  S32 __PADDING__[1];
+} ETW_STACK_TRACE_BLOCK, *PETW_STACK_TRACE_BLOCK; 
+

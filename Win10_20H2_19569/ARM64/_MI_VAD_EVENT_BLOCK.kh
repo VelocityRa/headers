@@ -1,0 +1,256 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 6; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 SchedulerAssist : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          union
+          {
+            U8 DebugActive;
+            struct 
+            {
+              U8 ActiveDR7 : 1; 
+              U8 Instrumented : 1; 
+              U8 Minimal : 1; 
+              U8 Reserved4 : 2; 
+              U8 AltSyscall : 1; 
+              U8 UmsScheduled : 1; 
+              U8 UmsPrimary : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KGATE
+{
+  struct _DISPATCHER_HEADER Header;
+} KGATE, *PKGATE; 
+
+typedef struct _MMSECURE_FLAGS
+{
+  struct 
+  {
+    U32 ReadOnly : 1; 
+    U32 ReadWrite : 1; 
+    U32 SecNoChange : 1; 
+    U32 NoDelete : 1; 
+    U32 RequiresPteReversal : 1; 
+    U32 ExclusiveSecure : 1; 
+    U32 UserModeOnly : 1; 
+    U32 NoInherit : 1; 
+    U32 CheckVad : 1; 
+    U32 Spare : 3; 
+  }; 
+} MMSECURE_FLAGS, *PMMSECURE_FLAGS; 
+
+typedef struct _MMADDRESS_LIST
+{
+  union
+  {
+    union
+    {
+      struct _MMSECURE_FLAGS Flags;
+      U32 FlagsLong;
+      void* StartVa;
+    }; 
+  } u1;
+  void* EndVa;
+} MMADDRESS_LIST, *PMMADDRESS_LIST; 
+
+typedef struct _RTL_BITMAP_EX
+{
+  U64 SizeOfBitMap;
+  U64* Buffer;
+} RTL_BITMAP_EX, *PRTL_BITMAP_EX; 
+
+typedef struct _MI_LARGEPAGE_VAD_INFO
+{
+  U8 LargeImageBias;
+  U8 Spare[3];
+  U64 ActualImageViewSize;
+  struct _EPARTITION* ReferencedPartition;
+} MI_LARGEPAGE_VAD_INFO, *PMI_LARGEPAGE_VAD_INFO; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _MI_PHYSICAL_VIEW
+{
+  struct _RTL_BALANCED_NODE PhysicalNode;
+  struct _MMVAD_SHORT* Vad;
+  struct _AWEINFO* AweInfo;
+  union
+  {
+    union
+    {
+      U32 ViewPageSize : 2; 
+      struct _CONTROL_AREA* ControlArea;
+    }; 
+  } u1;
+} MI_PHYSICAL_VIEW, *PMI_PHYSICAL_VIEW; 
+
+typedef struct _MI_SUB64K_FREE_RANGES
+{
+  struct _RTL_BITMAP_EX BitMap;
+  struct _LIST_ENTRY ListEntry;
+  struct _MMVAD_SHORT* Vad;
+  U32 SetBits;
+  U32 FullSetBits;
+  struct 
+  {
+    U32 SubListIndex : 2; 
+    U32 HS32 : 30; 
+  }; 
+  S32 __PADDING__[1];
+} MI_SUB64K_FREE_RANGES, *PMI_SUB64K_FREE_RANGES; 
+
+typedef struct _MI_VAD_EVENT_BLOCK
+{
+  struct _MI_VAD_EVENT_BLOCK* Next;
+  union
+  {
+    struct _KGATE Gate;
+    struct _MMADDRESS_LIST SecureInfo;
+    struct _RTL_BITMAP_EX BitMap;
+    struct _MMINPAGE_SUPPORT* InPageSupport;
+    struct _MI_LARGEPAGE_VAD_INFO LargePage;
+    struct _MI_PHYSICAL_VIEW AweView;
+    struct _ETHREAD* CreatingThread;
+    struct _MI_SUB64K_FREE_RANGES PebTeb;
+    struct _MMVAD_SHORT* PlaceholderVad;
+  }; 
+  U32 WaitReason;
+  S32 __PADDING__[1];
+} MI_VAD_EVENT_BLOCK, *PMI_VAD_EVENT_BLOCK; 
+

@@ -1,0 +1,302 @@
+typedef struct _GROUP_AFFINITY
+{
+  U64 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+
+typedef struct _flags
+{
+  struct 
+  {
+    U8 Removable : 1; 
+    U8 GroupAssigned : 1; 
+    U8 GroupCommitted : 1; 
+    U8 GroupAssignmentFixed : 1; 
+    U8 Fill : 4; 
+  }; 
+} flags, *Pflags; 
+
+typedef struct _KHETERO_PROCESSOR_SET
+{
+  U64 IdealMask;
+  U64 PreferredMask;
+  U64 AvailableMask;
+} KHETERO_PROCESSOR_SET, *PKHETERO_PROCESSOR_SET; 
+
+typedef struct _KNODE
+{
+  U64 IdleNonParkedCpuSet;
+  U64 IdleSmtSet;
+  U64 IdleCpuSet;
+  U64 DeepIdleSet;
+  U64 IdleConstrainedSet;
+  U64 NonParkedSet;
+  S32 ParkLock;
+  U32 Seed;
+  U32 SiblingMask;
+  union
+  {
+    struct _GROUP_AFFINITY Affinity;
+    struct
+    {
+      U8 AffinityFill[10];
+      U16 NodeNumber;
+      U16 PrimaryNodeNumber;
+      U8 Stride;
+      U8 Spare0;
+    }; 
+  }; 
+  U64 SharedReadyQueueLeaders;
+  U32 ProximityId;
+  U32 Lowest;
+  U32 Highest;
+  U8 MaximumProcessors;
+  struct _flags Flags;
+  U8 Spare10;
+  struct _KHETERO_PROCESSOR_SET HeteroSets[5];
+  S32 __PADDING__[6];
+} KNODE, *PKNODE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 6; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2Reserved1;
+          U8 Timer2Reserved2;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 ThreadReservedControlFlags : 2; 
+          }; 
+          union
+          {
+            U8 DebugActive;
+            struct 
+            {
+              U8 ActiveDR7 : 1; 
+              U8 Instrumented : 1; 
+              U8 Minimal : 1; 
+              U8 Reserved4 : 3; 
+              U8 UmsScheduled : 1; 
+              U8 UmsPrimary : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KPRIQUEUE
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY EntryListHead[32];
+  volatile S32 CurrentCount[32];
+  U32 MaximumCount;
+  struct _LIST_ENTRY ThreadListHead;
+} KPRIQUEUE, *PKPRIQUEUE; 
+
+typedef enum _EXQUEUEINDEX
+{
+  ExPoolUntrusted = 0,
+  IoPoolUntrusted = 1,
+  ExPoolTrusted = 2,
+  ExPoolMax = 8,
+} EXQUEUEINDEX, *PEXQUEUEINDEX;
+
+typedef struct _EX_WORK_QUEUE
+{
+  struct _KPRIQUEUE WorkPriQueue;
+  struct _ENODE* Node;
+  volatile U32 WorkItemsProcessed;
+  U32 WorkItemsProcessedLastPass;
+  volatile S32 ThreadCount;
+  struct 
+  {
+    S32 MinThreads : 31; 
+    volatile U32 TryFailed : 1; 
+  }; 
+  S32 MaxThreads;
+  enum _EXQUEUEINDEX QueueIndex;
+} EX_WORK_QUEUE, *PEX_WORK_QUEUE; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Processor;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _KWAIT_BLOCK
+{
+  struct _LIST_ENTRY WaitListEntry;
+  U8 WaitType;
+  volatile U8 BlockState;
+  U16 WaitKey;
+  S32 SpareLong;
+  union
+  {
+    struct _KTHREAD* Thread;
+    struct _KQUEUE* NotificationQueue;
+  }; 
+  void* Object;
+  void* SparePtr;
+} KWAIT_BLOCK, *PKWAIT_BLOCK; 
+
+typedef struct _ENODE
+{
+  struct _KNODE Ncb;
+  struct _EX_WORK_QUEUE* volatile ExWorkQueues[8];
+  struct _EX_WORK_QUEUE ExWorkQueue;
+  struct _EX_WORK_QUEUE IoWorkQueue;
+  struct _KEVENT ExpThreadSetManagerEvent;
+  struct _KTIMER ExpDeadlockTimer;
+  struct _KEVENT ExpThreadReaperEvent;
+  struct _KWAIT_BLOCK WaitBlocks[3];
+  struct _ETHREAD* ExpWorkerThreadBalanceManagerPtr;
+  U32 ExpWorkerSeed;
+  union
+  {
+    struct 
+    {
+      volatile U32 ExWorkerFullInit : 1; 
+      volatile U32 ExWorkerStructInit : 1; 
+    }; 
+    volatile U32 ExWorkerFlags;
+  }; 
+  S32 __PADDING__[4];
+} ENODE, *PENODE; 
+

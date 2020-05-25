@@ -1,0 +1,8 @@
+typedef struct _IO_NMISOURCE
+{
+  U8 Type;
+  U8 Length;
+  U16 Flags;
+  U32 GlobalSystemInterruptVector;
+} IO_NMISOURCE, *PIO_NMISOURCE; 
+

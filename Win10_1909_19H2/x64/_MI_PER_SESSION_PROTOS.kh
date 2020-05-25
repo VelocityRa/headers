@@ -1,0 +1,74 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _MI_PROTOTYPE_PTES_NODE
+{
+  struct _RTL_BALANCED_NODE Node;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U64 AllocationType : 3; 
+          U64 Inserted : 1; 
+        }; 
+      } e1;
+      struct
+      {
+        U64 PrototypePtesFlags;
+      } e2;
+    }; 
+  } u1;
+} MI_PROTOTYPE_PTES_NODE, *PMI_PROTOTYPE_PTES_NODE; 
+
+typedef struct _MI_PER_SESSION_PROTOS
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE SessionProtoNode;
+    struct _SINGLE_LIST_ENTRY FreeList;
+    void* DriverAddress;
+  }; 
+  struct _MI_PROTOTYPE_PTES_NODE ProtosNode;
+  U64 NumberOfPtes;
+  union
+  {
+    U32 SessionId;
+    struct _SUBSECTION* Subsection;
+  }; 
+  struct _MMPTE* SubsectionBase;
+  union
+  {
+    union
+    {
+      U32 ReferenceCount;
+      U32 NumberOfPtesToFree;
+    }; 
+  } u2;
+  S32 __PADDING__[1];
+} MI_PER_SESSION_PROTOS, *PMI_PER_SESSION_PROTOS; 
+

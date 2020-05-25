@@ -1,0 +1,72 @@
+typedef struct _WNF_NODE_HEADER
+{
+  U16 NodeTypeCode;
+  U16 NodeByteSize;
+} WNF_NODE_HEADER, *PWNF_NODE_HEADER; 
+
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    U32 Count;
+    void* Ptr;
+  }; 
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF; 
+
+typedef enum _WNF_DATA_SCOPE
+{
+  WnfDataScopeSystem = 0,
+  WnfDataScopeSession = 1,
+  WnfDataScopeUser = 2,
+  WnfDataScopeProcess = 3,
+  WnfDataScopeMachine = 4,
+  WnfDataScopePhysicalMachine = 5,
+} WNF_DATA_SCOPE, *PWNF_DATA_SCOPE;
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _WNF_LOCK
+{
+  struct _EX_PUSH_LOCK PushLock;
+} WNF_LOCK, *PWNF_LOCK; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _WNF_SCOPE_INSTANCE
+{
+  struct _WNF_NODE_HEADER Header;
+  struct _EX_RUNDOWN_REF RunRef;
+  enum _WNF_DATA_SCOPE DataScope;
+  U32 InstanceIdSize;
+  void* InstanceIdData;
+  struct _LIST_ENTRY ResolverListEntry;
+  struct _WNF_LOCK NameSetLock;
+  struct _RTL_AVL_TREE NameSet;
+  void* PermanentDataStore;
+  void* VolatilePermanentDataStore;
+} WNF_SCOPE_INSTANCE, *PWNF_SCOPE_INSTANCE; 
+

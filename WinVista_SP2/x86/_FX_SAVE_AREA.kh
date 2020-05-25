@@ -1,0 +1,44 @@
+typedef struct _FNSAVE_FORMAT
+{
+  U32 ControlWord;
+  U32 StatusWord;
+  U32 TagWord;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U8 RegisterArea[80];
+} FNSAVE_FORMAT, *PFNSAVE_FORMAT; 
+
+typedef struct _FXSAVE_FORMAT
+{
+  U16 ControlWord;
+  U16 StatusWord;
+  U16 TagWord;
+  U16 ErrorOpcode;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U32 MXCsr;
+  U32 MXCsrMask;
+  U8 RegisterArea[128];
+  U8 Reserved3[128];
+  U8 Reserved4[224];
+  U8 Align16Byte[8];
+} FXSAVE_FORMAT, *PFXSAVE_FORMAT; 
+
+typedef struct _FX_SAVE_AREA
+{
+  union
+  {
+    union
+    {
+      struct _FNSAVE_FORMAT FnArea;
+      struct _FXSAVE_FORMAT FxArea;
+    }; 
+  } U;
+  U32 NpxSavedCpu;
+  U32 Cr0NpxState;
+} FX_SAVE_AREA, *PFX_SAVE_AREA; 
+

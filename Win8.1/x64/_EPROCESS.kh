@@ -1,0 +1,574 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 QueueControlFlags;
+        struct 
+        {
+          U8 Abandoned : 1; 
+          U8 DisableIncrement : 1; 
+        }; 
+        U8 Signalling;
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Reserved1 : 2; 
+          }; 
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved2 : 4; 
+            }; 
+            U8 Hand;
+            U8 Reserved3;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 6; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Minimal : 1; 
+                  U8 Reserved4 : 3; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+                U8 DpcActive;
+                U8 Reserved5;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[20];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _KEXECUTE_OPTIONS
+{
+  union
+  {
+    struct 
+    {
+      U8 ExecuteDisable : 1; 
+      U8 ExecuteEnable : 1; 
+      U8 DisableThunkEmulation : 1; 
+      U8 Permanent : 1; 
+      U8 ExecuteDispatchEnable : 1; 
+      U8 ImageDispatchEnable : 1; 
+      U8 DisableExceptionChainValidation : 1; 
+      U8 Spare : 1; 
+    }; 
+    volatile U8 ExecuteOptions;
+    U8 ExecuteOptionsNV;
+  }; 
+} KEXECUTE_OPTIONS, *PKEXECUTE_OPTIONS; 
+
+typedef union _KSTACK_COUNT
+{
+  union
+  {
+    S32 Value;
+    struct 
+    {
+      U32 State : 3; 
+      U32 StackCount : 29; 
+    }; 
+  }; 
+} KSTACK_COUNT, *PKSTACK_COUNT; 
+
+typedef union _KGDTENTRY64
+{
+  union
+  {
+    struct
+    {
+      U16 LimitLow;
+      U16 BaseLow;
+      union
+      {
+        struct
+        {
+          U8 BaseMiddle;
+          U8 Flags1;
+          U8 Flags2;
+          U8 BaseHigh;
+        } Bytes;
+        struct
+        {
+          struct
+          {
+            struct 
+            {
+              U32 BaseMiddle : 8; 
+              U32 Type : 5; 
+              U32 Dpl : 2; 
+              U32 Present : 1; 
+              U32 LimitHigh : 4; 
+              U32 System : 1; 
+              U32 LongMode : 1; 
+              U32 DefaultBig : 1; 
+              U32 Granularity : 1; 
+              U32 BaseHigh : 8; 
+            }; 
+          } Bits;
+          U32 BaseUpper;
+          U32 MustBeZero;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      S64 DataLow;
+      S64 DataHigh;
+    }; 
+  }; 
+} KGDTENTRY64, *PKGDTENTRY64; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _FAST_MUTEX
+{
+  S32 Count;
+  void* Owner;
+  U32 Contention;
+  struct _KEVENT Event;
+  U32 OldIrql;
+  S32 __PADDING__[1];
+} FAST_MUTEX, *PFAST_MUTEX; 
+
+typedef struct _KPROCESS
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY ProfileListHead;
+  U64 DirectoryTableBase;
+  struct _LIST_ENTRY ThreadListHead;
+  U32 ProcessLock;
+  U32 Spare0;
+  struct _KAFFINITY_EX Affinity;
+  struct _LIST_ENTRY ReadyListHead;
+  struct _SINGLE_LIST_ENTRY SwapListEntry;
+  volatile struct _KAFFINITY_EX ActiveProcessors;
+  union
+  {
+    struct 
+    {
+      S32 AutoAlignment : 1; 
+      S32 DisableBoost : 1; 
+      S32 DisableQuantum : 1; 
+      S32 AffinitySet : 1; 
+      U32 DeepFreeze : 1; 
+      U32 TimerVirtualization : 1; 
+      U32 CheckStackExtents : 1; 
+      U32 ActiveGroupsMask : 20; 
+      S32 ReservedFlags : 5; 
+    }; 
+    volatile S32 ProcessFlags;
+  }; 
+  char BasePriority;
+  char QuantumReset;
+  U8 Visited;
+  union _KEXECUTE_OPTIONS Flags;
+  U32 ThreadSeed[20];
+  U16 IdealNode[20];
+  U16 IdealGlobalNode;
+  U16 Spare1;
+  volatile union _KSTACK_COUNT StackCount;
+  struct _LIST_ENTRY ProcessListEntry;
+  U64 CycleTime;
+  U64 ContextSwitches;
+  struct _KSCHEDULING_GROUP* SchedulingGroup;
+  U32 FreezeCount;
+  U32 KernelTime;
+  U32 UserTime;
+  U16 LdtFreeSelectorHint;
+  U16 LdtTableLength;
+  union _KGDTENTRY64 LdtSystemDescriptor;
+  void* LdtBaseAddress;
+  struct _FAST_MUTEX LdtProcessLock;
+  void* InstrumentationCallback;
+} KPROCESS, *PKPROCESS; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    U64 Count;
+    void* Ptr;
+  }; 
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF; 
+
+typedef struct _EX_FAST_REF
+{
+  union
+  {
+    void* Object;
+    U64 RefCnt : 4; 
+    U64 Value;
+  }; 
+} EX_FAST_REF, *PEX_FAST_REF; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _SE_AUDIT_PROCESS_CREATION_INFO
+{
+  struct _OBJECT_NAME_INFORMATION* ImageFileName;
+} SE_AUDIT_PROCESS_CREATION_INFO, *PSE_AUDIT_PROCESS_CREATION_INFO; 
+
+typedef struct _MMSUPPORT_FLAGS
+{
+  struct 
+  {
+    U8 WorkingSetType : 3; 
+    U8 ForceCredits : 3; 
+    U8 MaximumWorkingSetHard : 1; 
+    U8 MinimumWorkingSetHard : 1; 
+  }; 
+  struct 
+  {
+    U8 SessionMaster : 1; 
+    U8 TrimmerState : 2; 
+    U8 Reserved : 1; 
+    U8 PageStealers : 4; 
+  }; 
+  U8 MemoryPriority;
+  struct 
+  {
+    U8 WsleDeleted : 1; 
+    U8 VmExiting : 1; 
+    U8 ExpansionFailed : 1; 
+    U8 SvmEnabled : 1; 
+    U8 Available : 4; 
+  }; 
+} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS; 
+
+typedef struct _MMSUPPORT
+{
+  struct _EX_PUSH_LOCK WorkingSetMutex;
+  struct _KGATE* ExitGate;
+  void* AccessLog;
+  struct _LIST_ENTRY WorkingSetExpansionLinks;
+  U64 AgeDistribution[7];
+  U64 MinimumWorkingSetSize;
+  U64 WorkingSetSize;
+  U64 WorkingSetPrivateSize;
+  U64 MaximumWorkingSetSize;
+  U64 ChargedWslePages;
+  U64 ActualWslePages;
+  U64 WorkingSetSizeOverhead;
+  U64 PeakWorkingSetSize;
+  U32 HardFaultCount;
+  struct _MMWSL* VmWorkingSetList;
+  U16 NextPageColor;
+  U16 LastTrimStamp;
+  U32 PageFaultCount;
+  U64 TrimmedPageCount;
+  U64 ForceTrimPages;
+  struct _MMSUPPORT_FLAGS Flags;
+  void* WsSwapSupport;
+} MMSUPPORT, *PMMSUPPORT; 
+
+typedef struct _ALPC_PROCESS_CONTEXT
+{
+  struct _EX_PUSH_LOCK Lock;
+  struct _LIST_ENTRY ViewListHead;
+  volatile U64 PagedPoolQuotaCache;
+} ALPC_PROCESS_CONTEXT, *PALPC_PROCESS_CONTEXT; 
+
+typedef struct _PS_PROTECTION
+{
+  union
+  {
+    U8 Level;
+    struct 
+    {
+      U8 Type : 3; 
+      U8 Audit : 1; 
+      U8 Signer : 4; 
+    }; 
+  }; 
+} PS_PROTECTION, *PPS_PROTECTION; 
+
+typedef struct _EPROCESS
+{
+  struct _KPROCESS Pcb;
+  struct _EX_PUSH_LOCK ProcessLock;
+  union _LARGE_INTEGER CreateTime;
+  struct _EX_RUNDOWN_REF RundownProtect;
+  void* UniqueProcessId;
+  struct _LIST_ENTRY ActiveProcessLinks;
+  union
+  {
+    U32 Flags2;
+    struct 
+    {
+      U32 JobNotReallyActive : 1; 
+      U32 AccountingFolded : 1; 
+      U32 NewProcessReported : 1; 
+      U32 ExitProcessReported : 1; 
+      U32 ReportCommitChanges : 1; 
+      U32 LastReportMemory : 1; 
+      U32 ForceWakeCharge : 1; 
+      U32 CrossSessionCreate : 1; 
+      U32 NeedsHandleRundown : 1; 
+      U32 RefTraceEnabled : 1; 
+      U32 DisableDynamicCode : 1; 
+      U32 EmptyJobEvaluated : 1; 
+      U32 DefaultPagePriority : 3; 
+      U32 PrimaryTokenFrozen : 1; 
+      U32 ProcessVerifierTarget : 1; 
+      U32 StackRandomizationDisabled : 1; 
+      U32 AffinityPermanent : 1; 
+      U32 AffinityUpdateEnable : 1; 
+      U32 PropagateNode : 1; 
+      U32 ExplicitAffinity : 1; 
+      U32 ProcessExecutionState : 2; 
+      U32 DisallowStrippedImages : 1; 
+      U32 HighEntropyASLREnabled : 1; 
+      U32 ExtensionPointDisable : 1; 
+      U32 ForceRelocateImages : 1; 
+      U32 ProcessStateChangeRequest : 2; 
+      U32 ProcessStateChangeInProgress : 1; 
+      U32 DisallowWin32kSystemCalls : 1; 
+    }; 
+  }; 
+  union
+  {
+    U32 Flags;
+    struct 
+    {
+      U32 CreateReported : 1; 
+      U32 NoDebugInherit : 1; 
+      U32 ProcessExiting : 1; 
+      U32 ProcessDelete : 1; 
+      U32 ControlFlowGuardEnabled : 1; 
+      U32 VmDeleted : 1; 
+      U32 OutswapEnabled : 1; 
+      U32 Outswapped : 1; 
+      U32 ForkFailed : 1; 
+      U32 Wow64VaSpace4Gb : 1; 
+      U32 AddressSpaceInitialized : 2; 
+      U32 SetTimerResolution : 1; 
+      U32 BreakOnTermination : 1; 
+      U32 DeprioritizeViews : 1; 
+      U32 WriteWatch : 1; 
+      U32 ProcessInSession : 1; 
+      U32 OverrideAddressSpace : 1; 
+      U32 HasAddressSpace : 1; 
+      U32 LaunchPrefetched : 1; 
+      U32 Background : 1; 
+      U32 VmTopDown : 1; 
+      U32 ImageNotifyDone : 1; 
+      U32 PdeUpdateNeeded : 1; 
+      U32 VdmAllowed : 1; 
+      U32 ProcessRundown : 1; 
+      U32 ProcessInserted : 1; 
+      U32 DefaultIoPriority : 3; 
+      U32 ProcessSelfDelete : 1; 
+      U32 SetTimerResolutionLink : 1; 
+    }; 
+  }; 
+  U64 ProcessQuotaUsage[2];
+  U64 ProcessQuotaPeak[2];
+  U64 PeakVirtualSize;
+  U64 VirtualSize;
+  struct _LIST_ENTRY SessionProcessLinks;
+  union
+  {
+    void* ExceptionPortData;
+    U64 ExceptionPortValue;
+    U64 ExceptionPortState : 3; 
+  }; 
+  struct _EX_FAST_REF Token;
+  U64 WorkingSetPage;
+  struct _EX_PUSH_LOCK AddressCreationLock;
+  struct _EX_PUSH_LOCK PageTableCommitmentLock;
+  struct _ETHREAD* RotateInProgress;
+  struct _ETHREAD* ForkInProgress;
+  struct _EJOB* volatile CommitChargeJob;
+  struct _RTL_AVL_TREE CloneRoot;
+  volatile U64 NumberOfPrivatePages;
+  volatile U64 NumberOfLockedPages;
+  void* Win32Process;
+  struct _EJOB* volatile Job;
+  void* SectionObject;
+  void* SectionBaseAddress;
+  U32 Cookie;
+  struct _PAGEFAULT_HISTORY* WorkingSetWatch;
+  void* Win32WindowStation;
+  void* InheritedFromUniqueProcessId;
+  void* LdtInformation;
+  volatile U64 OwnerProcessId;
+  struct _PEB* Peb;
+  void* Session;
+  void* AweInfo;
+  struct _EPROCESS_QUOTA_BLOCK* QuotaBlock;
+  struct _HANDLE_TABLE* ObjectTable;
+  void* DebugPort;
+  void* Wow64Process;
+  void* DeviceMap;
+  void* EtwDataSource;
+  U64 PageDirectoryPte;
+  U8 ImageFileName[15];
+  U8 PriorityClass;
+  void* SecurityPort;
+  struct _SE_AUDIT_PROCESS_CREATION_INFO SeAuditProcessCreationInfo;
+  struct _LIST_ENTRY JobLinks;
+  void* HighestUserAddress;
+  struct _LIST_ENTRY ThreadListHead;
+  volatile U32 ActiveThreads;
+  U32 ImagePathHash;
+  U32 DefaultHardErrorProcessing;
+  S32 LastThreadExitStatus;
+  struct _EX_FAST_REF PrefetchTrace;
+  void* LockedPagesList;
+  union _LARGE_INTEGER ReadOperationCount;
+  union _LARGE_INTEGER WriteOperationCount;
+  union _LARGE_INTEGER OtherOperationCount;
+  union _LARGE_INTEGER ReadTransferCount;
+  union _LARGE_INTEGER WriteTransferCount;
+  union _LARGE_INTEGER OtherTransferCount;
+  U64 CommitChargeLimit;
+  volatile U64 CommitCharge;
+  volatile U64 CommitChargePeak;
+  struct _MMSUPPORT Vm;
+  struct _LIST_ENTRY MmProcessLinks;
+  U32 ModifiedPageCount;
+  S32 ExitStatus;
+  struct _RTL_AVL_TREE VadRoot;
+  void* VadHint;
+  U64 VadCount;
+  volatile U64 VadPhysicalPages;
+  U64 VadPhysicalPagesLimit;
+  struct _ALPC_PROCESS_CONTEXT AlpcContext;
+  struct _LIST_ENTRY TimerResolutionLink;
+  struct _PO_DIAG_STACK_RECORD* TimerResolutionStackRecord;
+  U32 RequestedTimerResolution;
+  U32 SmallestTimerResolution;
+  union _LARGE_INTEGER ExitTime;
+  struct _INVERTED_FUNCTION_TABLE* InvertedFunctionTable;
+  struct _EX_PUSH_LOCK InvertedFunctionTableLock;
+  U32 ActiveThreadsHighWatermark;
+  U32 LargePrivateVadCount;
+  struct _EX_PUSH_LOCK ThreadListLock;
+  void* WnfContext;
+  U64 Spare0;
+  U8 SignatureLevel;
+  U8 SectionSignatureLevel;
+  struct _PS_PROTECTION Protection;
+  U8 SpareByte20[1];
+  union
+  {
+    U32 Flags3;
+    U32 Minimal : 1; 
+  }; 
+  S32 SvmReserved;
+  void* SvmReserved1;
+  U64 SvmReserved2;
+  U64 LastFreezeInterruptTime;
+  struct _PROCESS_DISK_COUNTERS* DiskCounters;
+  void* PicoContext;
+  U32 KeepAliveCounter;
+  U32 NoWakeKeepAliveCounter;
+} EPROCESS, *PEPROCESS; 
+

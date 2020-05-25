@@ -1,0 +1,22 @@
+union RTLP_HP_LFH_PERF_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 HotspotDetection : 1; 
+      U32 HotspotFullCommit : 1; 
+      U32 ActiveSubsegment : 1; 
+      U32 SmallerSubsegment : 1; 
+      U32 SingleAffinitySlot : 1; 
+      U32 ApplyLfhDecommitPolicy : 1; 
+      U32 EnableGarbageCollection : 1; 
+      U32 LargePagePreCommit : 1; 
+      U32 OpportunisticLargePreCommit : 1; 
+      U32 LfhForcedAffinity : 1; 
+      U32 LfhCachelinePadding : 1; 
+    }; 
+    U32 AllFlags;
+  }; 
+}; 
+

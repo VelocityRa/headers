@@ -1,0 +1,24 @@
+typedef enum _PROXY_CLASS
+{
+  ProxyFull = 0,
+  ProxyService = 1,
+  ProxyTree = 2,
+  ProxyDirectory = 3,
+} PROXY_CLASS, *PPROXY_CLASS;
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _SECURITY_TOKEN_PROXY_DATA
+{
+  U32 Length;
+  enum _PROXY_CLASS ProxyClass;
+  struct _UNICODE_STRING PathInfo;
+  U32 ContainerMask;
+  U32 ObjectMask;
+} SECURITY_TOKEN_PROXY_DATA, *PSECURITY_TOKEN_PROXY_DATA; 
+

@@ -1,0 +1,42 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _HEAP_LFH_SUBSEGMENT_OWNER
+{
+  struct 
+  {
+    U8 IsBucket : 1; 
+    U8 Spare0 : 7; 
+  }; 
+  U8 BucketIndex;
+  union
+  {
+    U8 SlotCount;
+    U8 SlotIndex;
+  }; 
+  U8 Spare1;
+  U64 AvailableSubsegmentCount;
+  U64 Lock;
+  struct _LIST_ENTRY AvailableSubsegmentList;
+  struct _LIST_ENTRY FullSubsegmentList;
+} HEAP_LFH_SUBSEGMENT_OWNER, *PHEAP_LFH_SUBSEGMENT_OWNER; 
+
+typedef struct _HEAP_LFH_FAST_REF
+{
+  union
+  {
+    void* Target;
+    U64 Value;
+    U64 RefCount : 12; 
+  }; 
+} HEAP_LFH_FAST_REF, *PHEAP_LFH_FAST_REF; 
+
+typedef struct _HEAP_LFH_AFFINITY_SLOT
+{
+  struct _HEAP_LFH_SUBSEGMENT_OWNER State;
+  struct _HEAP_LFH_FAST_REF ActiveSubsegment;
+} HEAP_LFH_AFFINITY_SLOT, *PHEAP_LFH_AFFINITY_SLOT; 
+

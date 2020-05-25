@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _POWER_CHANNEL_SUMMARY
+{
+  U32 Signature;
+  U32 TotalCount;
+  U32 D0Count;
+  struct _LIST_ENTRY NotifyList;
+} POWER_CHANNEL_SUMMARY, *PPOWER_CHANNEL_SUMMARY; 
+

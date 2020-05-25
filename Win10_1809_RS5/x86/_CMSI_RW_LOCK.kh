@@ -1,0 +1,5 @@
+typedef struct _CMSI_RW_LOCK
+{
+  void* Reserved;
+} CMSI_RW_LOCK, *PCMSI_RW_LOCK; 
+

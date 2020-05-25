@@ -1,0 +1,92 @@
+typedef struct _M128A
+{
+  U64 Low;
+  S64 High;
+} M128A, *PM128A; 
+
+typedef struct _KTRAP_FRAME
+{
+  U64 P1Home;
+  U64 P2Home;
+  U64 P3Home;
+  U64 P4Home;
+  U64 P5;
+  char PreviousMode;
+  U8 PreviousIrql;
+  U8 FaultIndicator;
+  U8 ExceptionActive;
+  U32 MxCsr;
+  U64 Rax;
+  U64 Rcx;
+  U64 Rdx;
+  U64 R8;
+  U64 R9;
+  U64 R10;
+  U64 R11;
+  union
+  {
+    U64 GsBase;
+    U64 GsSwap;
+  }; 
+  struct _M128A Xmm0;
+  struct _M128A Xmm1;
+  struct _M128A Xmm2;
+  struct _M128A Xmm3;
+  struct _M128A Xmm4;
+  struct _M128A Xmm5;
+  union
+  {
+    U64 FaultAddress;
+    U64 ContextRecord;
+    U64 TimeStampCKCL;
+  }; 
+  U64 Dr0;
+  U64 Dr1;
+  U64 Dr2;
+  U64 Dr3;
+  U64 Dr6;
+  U64 Dr7;
+  union
+  {
+    struct
+    {
+      U64 DebugControl;
+      U64 LastBranchToRip;
+      U64 LastBranchFromRip;
+      U64 LastExceptionToRip;
+      U64 LastExceptionFromRip;
+    }; 
+    struct
+    {
+      U64 LastBranchControl;
+      U32 LastBranchMSR;
+    }; 
+  }; 
+  U16 SegDs;
+  U16 SegEs;
+  U16 SegFs;
+  U16 SegGs;
+  U64 TrapFrame;
+  U64 Rbx;
+  U64 Rdi;
+  U64 Rsi;
+  U64 Rbp;
+  union
+  {
+    U64 ErrorCode;
+    U64 ExceptionFrame;
+    U64 TimeStampKlog;
+  }; 
+  U64 Rip;
+  U16 SegCs;
+  U8 Fill0;
+  U8 Logging;
+  U16 Fill1[2];
+  U32 EFlags;
+  U32 Fill2;
+  U64 Rsp;
+  U16 SegSs;
+  U16 Fill3;
+  U32 Fill4;
+} KTRAP_FRAME, *PKTRAP_FRAME; 
+

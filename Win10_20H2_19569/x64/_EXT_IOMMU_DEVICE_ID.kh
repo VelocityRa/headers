@@ -1,0 +1,75 @@
+typedef enum _EXT_IOMMU_DEVICE_TYPE
+{
+  EXT_IOMMU_DEVICE_TYPE_INVALID = 0,
+  EXT_IOMMU_DEVICE_TYPE_PCI = 1,
+  EXT_IOMMU_DEVICE_TYPE_ACPI = 2,
+  EXT_IOMMU_DEVICE_TYPE_IOAPIC = 3,
+  EXT_IOMMU_DEVICE_TYPE_LOGICAL = 4,
+  EXT_IOMMU_DEVICE_TYPE_GIC = 5,
+  EXT_IOMMU_DEVICE_TYPE_TEST = 6,
+  EXT_IOMMU_DEVICE_TYPE_MAX = 7,
+} EXT_IOMMU_DEVICE_TYPE, *PEXT_IOMMU_DEVICE_TYPE;
+
+typedef struct _EXT_IOMMU_DEVICE_ID_PCI
+{
+  union
+  {
+    U64 AsUINT64;
+    struct
+    {
+      U16 PciSegmentNumber;
+      struct 
+      {
+        U16 PhantomFunctionBits : 2; 
+        U16 BusRange : 1; 
+        U16 Reserved : 5; 
+        U16 StartBusNumber : 8; 
+      }; 
+      union
+      {
+        U16 Bdf;
+        struct
+        {
+          U8 SubordinateBus;
+          U8 SecondaryBus;
+        }; 
+      }; 
+      U16 DevicePathLength;
+    }; 
+  }; 
+  wchar_t* DevicePath;
+} EXT_IOMMU_DEVICE_ID_PCI, *PEXT_IOMMU_DEVICE_ID_PCI; 
+
+typedef struct _EXT_IOMMU_DEVICE_ID_ACPI
+{
+  const char* ObjectName;
+} EXT_IOMMU_DEVICE_ID_ACPI, *PEXT_IOMMU_DEVICE_ID_ACPI; 
+
+typedef struct _EXT_IOMMU_DEVICE_ID_TEST
+{
+  U64 UniqueId;
+} EXT_IOMMU_DEVICE_ID_TEST, *PEXT_IOMMU_DEVICE_ID_TEST; 
+
+typedef struct _EXT_IOMMU_DEVICE_ID_GIC
+{
+  U32 LineNumber;
+} EXT_IOMMU_DEVICE_ID_GIC, *PEXT_IOMMU_DEVICE_ID_GIC; 
+
+typedef struct _EXT_IOMMU_DEVICE_ID
+{
+  enum _EXT_IOMMU_DEVICE_TYPE DeviceType;
+  union
+  {
+    struct _EXT_IOMMU_DEVICE_ID_PCI Pci;
+    struct _EXT_IOMMU_DEVICE_ID_ACPI Acpi;
+    U8 IoApicId;
+    U64 LogicalId;
+    struct _EXT_IOMMU_DEVICE_ID_TEST Test;
+    struct
+    {
+      struct _EXT_IOMMU_DEVICE_ID_GIC Gic;
+      S32 __PADDING__[3];
+    }; 
+  }; 
+} EXT_IOMMU_DEVICE_ID, *PEXT_IOMMU_DEVICE_ID; 
+

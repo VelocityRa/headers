@@ -1,0 +1,52 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _IOP_IRP_EXTENSION
+{
+  union
+  {
+    U16 ExtensionFlags;
+    struct 
+    {
+      U16 Allocated : 1; 
+      U16 PropagateId : 1; 
+      U16 SpareBits : 14; 
+    }; 
+  }; 
+  U16 TypesAllocated;
+  U8 GenericExtension[4];
+  void* VerifierContext;
+  U64 DiskIoAttributionHandle;
+  struct _GUID ActivityId;
+  union
+  {
+    union _LARGE_INTEGER Timestamp;
+    U32 ZeroingOffset;
+    struct _IO_IRP_EXT_TRACK_OFFSET_HEADER* FsTrackOffsetBlob;
+  }; 
+  S64 FsTrackedOffset;
+} IOP_IRP_EXTENSION, *PIOP_IRP_EXTENSION; 
+

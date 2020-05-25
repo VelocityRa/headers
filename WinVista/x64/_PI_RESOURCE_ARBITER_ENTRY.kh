@@ -1,0 +1,21 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PI_RESOURCE_ARBITER_ENTRY
+{
+  struct _LIST_ENTRY DeviceArbiterList;
+  U8 ResourceType;
+  struct _ARBITER_INTERFACE* ArbiterInterface;
+  struct _DEVICE_NODE* DeviceNode;
+  struct _LIST_ENTRY ResourceList;
+  struct _LIST_ENTRY BestResourceList;
+  struct _LIST_ENTRY BestConfig;
+  struct _LIST_ENTRY ActiveArbiterList;
+  U8 State;
+  U8 ResourcesChanged;
+  char __PADDING__[6];
+} PI_RESOURCE_ARBITER_ENTRY, *PPI_RESOURCE_ARBITER_ENTRY; 
+

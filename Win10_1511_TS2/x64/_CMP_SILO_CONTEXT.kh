@@ -1,0 +1,30 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _CMP_SILO_CONTEXT
+{
+  struct _LIST_ENTRY LockEntryHead;
+  U8 LockListUnderCleanup;
+  struct _EX_PUSH_LOCK ContextLock;
+} CMP_SILO_CONTEXT, *PCMP_SILO_CONTEXT; 
+

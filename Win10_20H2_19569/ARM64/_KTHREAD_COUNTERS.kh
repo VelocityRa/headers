@@ -1,0 +1,25 @@
+typedef enum _HARDWARE_COUNTER_TYPE
+{
+  PMCCounter = 0,
+  MaxHardwareCounterType = 1,
+} HARDWARE_COUNTER_TYPE, *PHARDWARE_COUNTER_TYPE;
+
+typedef struct _COUNTER_READING
+{
+  enum _HARDWARE_COUNTER_TYPE Type;
+  U32 Index;
+  U64 Start;
+  U64 Total;
+} COUNTER_READING, *PCOUNTER_READING; 
+
+typedef struct _KTHREAD_COUNTERS
+{
+  U64 WaitReasonBitMap;
+  struct _THREAD_PERFORMANCE_DATA* UserData;
+  U32 Flags;
+  U32 ContextSwitches;
+  U64 CycleTimeBias;
+  U64 HardwareCounters;
+  struct _COUNTER_READING HwCounter[16];
+} KTHREAD_COUNTERS, *PKTHREAD_COUNTERS; 
+

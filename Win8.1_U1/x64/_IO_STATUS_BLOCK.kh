@@ -1,0 +1,10 @@
+typedef struct _IO_STATUS_BLOCK
+{
+  union
+  {
+    S32 Status;
+    void* Pointer;
+  }; 
+  U64 Information;
+} IO_STATUS_BLOCK, *PIO_STATUS_BLOCK; 
+

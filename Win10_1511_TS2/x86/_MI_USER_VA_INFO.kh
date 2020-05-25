@@ -1,0 +1,50 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _MI_VAD_ALLOCATION_CELL
+{
+  struct _RTL_BITMAP AllocationBitMap;
+  U32 BitMapHint;
+  U32 LastAllocationSize;
+  U32 LastAllocationSizeHint;
+  U32 LowestBottomUpVadBit;
+  void* LowestBottomUpAllocationAddress;
+} MI_VAD_ALLOCATION_CELL, *PMI_VAD_ALLOCATION_CELL; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MI_CFG_BITMAP_INFO
+{
+  void* BaseAddress;
+  U32 RegionSize;
+  struct _MMVAD* BitmapVad;
+} MI_CFG_BITMAP_INFO, *PMI_CFG_BITMAP_INFO; 
+
+typedef struct _MI_USER_VA_INFO
+{
+  U32 NumberOfCommittedPageTables;
+  void* HighestTopDownAllocationAddress;
+  struct _MI_VAD_ALLOCATION_CELL VadCell[2];
+  U32 VadBitMapCommitment;
+  U32 MaximumLastVadBit;
+  S32 VadsBeingDeleted;
+  S32 NumberOfDebugEnclaves;
+  U32 PhysicalMappingCount;
+  struct _KEVENT* LastVadDeletionEvent;
+  struct _LIST_ENTRY SubVadRanges[1];
+  U8 NumaAware;
+  U64 CloneNestingLevel;
+  U32 PrivateFixupVadCount;
+  struct _MI_CFG_BITMAP_INFO CfgBitMap[1];
+  U32 CommittedPageTableBufferForTopLevel[48];
+  struct _RTL_BITMAP CommittedPageTableBitmaps[1];
+  U16 UsedPageTableEntries[1536];
+} MI_USER_VA_INFO, *PMI_USER_VA_INFO; 
+

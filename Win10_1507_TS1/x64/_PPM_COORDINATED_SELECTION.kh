@@ -1,0 +1,8 @@
+typedef struct _PPM_COORDINATED_SELECTION
+{
+  U32 MaximumStates;
+  U32 SelectedStates;
+  U32 DefaultSelection;
+  U32* Selection;
+} PPM_COORDINATED_SELECTION, *PPPM_COORDINATED_SELECTION; 
+

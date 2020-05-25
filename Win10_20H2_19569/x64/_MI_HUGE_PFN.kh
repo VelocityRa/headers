@@ -1,0 +1,27 @@
+typedef struct _MI_HUGE_PFN
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        U64 EntireField;
+      } e1;
+      struct
+      {
+        struct 
+        {
+          U64 Flink : 22; 
+          U64 PageState : 3; 
+          U64 Blink : 22; 
+          U64 WriteInProgress : 1; 
+          U64 HasError : 1; 
+          U64 Partition : 11; 
+          U64 Reserved : 4; 
+        }; 
+      } e2;
+    }; 
+  } u1;
+} MI_HUGE_PFN, *PMI_HUGE_PFN; 
+

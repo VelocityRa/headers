@@ -1,0 +1,5 @@
+struct RTL_HP_ENV_HANDLE
+{
+  void* h[2];
+}; 
+

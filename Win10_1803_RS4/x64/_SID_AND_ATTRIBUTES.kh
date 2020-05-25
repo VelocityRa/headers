@@ -1,0 +1,7 @@
+typedef struct _SID_AND_ATTRIBUTES
+{
+  void* Sid;
+  U32 Attributes;
+  S32 __PADDING__[1];
+} SID_AND_ATTRIBUTES, *PSID_AND_ATTRIBUTES; 
+

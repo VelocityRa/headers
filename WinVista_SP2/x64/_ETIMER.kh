@@ -1,0 +1,119 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 Abandoned;
+        U8 Absolute;
+        U8 NpxIrql;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 Size;
+            struct
+            {
+              U8 Hand;
+              union
+              {
+                U8 Inserted;
+                U8 DebugActive;
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  S32 Period;
+  S32 __PADDING__[1];
+} KTIMER, *PKTIMER; 
+
+typedef struct _KAPC
+{
+  U8 Type;
+  U8 SpareByte0;
+  U8 Size;
+  U8 SpareByte1;
+  U32 SpareLong0;
+  struct _KTHREAD* Thread;
+  struct _LIST_ENTRY ApcListEntry;
+  void* KernelRoutine;
+  void* RundownRoutine;
+  void* NormalRoutine;
+  void* NormalContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  char ApcStateIndex;
+  char ApcMode;
+  U8 Inserted;
+  char __PADDING__[5];
+} KAPC, *PKAPC; 
+
+typedef struct _KDPC
+{
+  U8 Type;
+  U8 Importance;
+  volatile U16 Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _ETIMER
+{
+  struct _KTIMER KeTimer;
+  struct _KAPC TimerApc;
+  struct _KDPC TimerDpc;
+  struct _LIST_ENTRY ActiveTimerListEntry;
+  U64 Lock;
+  S32 Period;
+  U8 ApcAssociated;
+  U8 WakeTimer;
+  struct _LIST_ENTRY WakeTimerListEntry;
+} ETIMER, *PETIMER; 
+

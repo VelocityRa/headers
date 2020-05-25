@@ -1,2 +1,0 @@
-struct _OBJECT_CREATE_INFORMATION;
-

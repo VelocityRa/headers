@@ -1,0 +1,6 @@
+typedef struct _KiIoAccessMap
+{
+  U8 DirectionMap[32];
+  U8 IoMap[8196];
+} KiIoAccessMap, *PKiIoAccessMap; 
+

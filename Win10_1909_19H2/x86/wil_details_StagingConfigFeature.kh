@@ -1,0 +1,19 @@
+struct wil_details_StagingConfigFeature
+{
+  U32 featureId;
+  struct 
+  {
+    U32 changedInSession : 1; 
+    U32 isVariantConfig : 1; 
+    U32 unused1 : 6; 
+    U32 serviceState : 2; 
+    U32 userState : 2; 
+    U32 testState : 2; 
+    U32 unused2 : 2; 
+    U32 unused3 : 8; 
+    U32 variant : 6; 
+    U32 payloadKind : 2; 
+  }; 
+  U32 payload;
+}; 
+

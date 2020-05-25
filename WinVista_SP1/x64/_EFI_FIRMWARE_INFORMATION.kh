@@ -1,0 +1,8 @@
+typedef struct _EFI_FIRMWARE_INFORMATION
+{
+  U32 FirmwareVersion;
+  struct _VIRTUAL_EFI_RUNTIME_SERVICES* VirtualEfiRuntimeServices;
+  S32 SetVirtualAddressMapStatus;
+  U32 MissedMappingsCount;
+} EFI_FIRMWARE_INFORMATION, *PEFI_FIRMWARE_INFORMATION; 
+

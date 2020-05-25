@@ -1,0 +1,9 @@
+typedef struct _PROCESS_DISK_COUNTERS
+{
+  U64 BytesRead;
+  U64 BytesWritten;
+  U64 ReadOperationCount;
+  U64 WriteOperationCount;
+  U64 FlushOperationCount;
+} PROCESS_DISK_COUNTERS, *PPROCESS_DISK_COUNTERS; 
+

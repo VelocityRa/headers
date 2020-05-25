@@ -1,0 +1,28 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 CpuId;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _CACHED_KSTACK_LIST
+{
+  union _SLIST_HEADER SListHead;
+  S32 MinimumFree;
+  U32 Misses;
+  U32 MissesLast;
+  U32 AllStacksInUse;
+} CACHED_KSTACK_LIST, *PCACHED_KSTACK_LIST; 
+

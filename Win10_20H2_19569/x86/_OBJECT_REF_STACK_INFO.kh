@@ -1,0 +1,8 @@
+typedef struct _OBJECT_REF_STACK_INFO
+{
+  U32 Sequence;
+  U16 Index;
+  U16 NumTraces;
+  U32 Tag;
+} OBJECT_REF_STACK_INFO, *POBJECT_REF_STACK_INFO; 
+

@@ -1,0 +1,11 @@
+typedef struct _DEVICE_DSM_DEFINITION
+{
+  U32 Action;
+  U8 SingleRange;
+  U32 ParameterBlockAlignment;
+  U32 ParameterBlockLength;
+  U8 HasOutput;
+  U32 OutputBlockAlignment;
+  U32 OutputBlockLength;
+} DEVICE_DSM_DEFINITION, *PDEVICE_DSM_DEFINITION; 
+

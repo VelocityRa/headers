@@ -1,0 +1,50 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef enum _DEVICE_POWER_STATE
+{
+  PowerDeviceUnspecified = 0,
+  PowerDeviceD0 = 1,
+  PowerDeviceD1 = 2,
+  PowerDeviceD2 = 3,
+  PowerDeviceD3 = 4,
+  PowerDeviceMaximum = 5,
+} DEVICE_POWER_STATE, *PDEVICE_POWER_STATE;
+
+typedef struct _POWER_CHANNEL_SUMMARY
+{
+  U32 Signature;
+  U32 TotalCount;
+  U32 D0Count;
+  struct _LIST_ENTRY NotifyList;
+} POWER_CHANNEL_SUMMARY, *PPOWER_CHANNEL_SUMMARY; 
+
+typedef struct _DEVICE_OBJECT_POWER_EXTENSION
+{
+  volatile U32 IdleCount;
+  volatile U32 BusyCount;
+  U32 TotalBusyCount;
+  U32 ConservationIdleTime;
+  U32 PerformanceIdleTime;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _LIST_ENTRY IdleList;
+  U8 DeviceType;
+  enum _DEVICE_POWER_STATE IdleState;
+  enum _DEVICE_POWER_STATE CurrentState;
+  struct _LIST_ENTRY NotifySourceList;
+  struct _LIST_ENTRY NotifyTargetList;
+  struct _POWER_CHANNEL_SUMMARY PowerChannelSummary;
+  struct _LIST_ENTRY Volume;
+  union
+  {
+    struct
+    {
+      U32 IdleTime;
+      U32 NonIdleTime;
+    } Disk;
+  } Specific;
+} DEVICE_OBJECT_POWER_EXTENSION, *PDEVICE_OBJECT_POWER_EXTENSION; 
+

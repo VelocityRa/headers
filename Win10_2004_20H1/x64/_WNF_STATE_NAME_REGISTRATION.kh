@@ -1,0 +1,7 @@
+typedef struct _WNF_STATE_NAME_REGISTRATION
+{
+  U32 MaxStateSize;
+  const struct _WNF_TYPE_ID* TypeId;
+  struct _SECURITY_DESCRIPTOR* SecurityDescriptor;
+} WNF_STATE_NAME_REGISTRATION, *PWNF_STATE_NAME_REGISTRATION; 
+

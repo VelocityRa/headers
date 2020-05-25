@@ -1,0 +1,60 @@
+typedef enum _PEP_ACPI_RESOURCE_TYPE
+{
+  PepAcpiMemory = 0,
+  PepAcpiIoPort = 1,
+  PepAcpiInterrupt = 2,
+  PepAcpiGpioIo = 3,
+  PepAcpiGpioInt = 4,
+  PepAcpiSpbI2c = 5,
+  PepAcpiSpbSpi = 6,
+  PepAcpiSpbUart = 7,
+  PepAcpiExtendedMemory = 8,
+  PepAcpiExtendedIo = 9,
+} PEP_ACPI_RESOURCE_TYPE, *PPEP_ACPI_RESOURCE_TYPE;
+
+typedef enum _KINTERRUPT_MODE
+{
+  LevelSensitive = 0,
+  Latched = 1,
+} KINTERRUPT_MODE, *PKINTERRUPT_MODE;
+
+typedef enum _KINTERRUPT_POLARITY
+{
+  InterruptPolarityUnknown = 0,
+  InterruptActiveHigh = 1,
+  InterruptRisingEdge = 1,
+  InterruptActiveLow = 2,
+  InterruptFallingEdge = 2,
+  InterruptActiveBoth = 3,
+  InterruptActiveBothTriggerLow = 3,
+  InterruptActiveBothTriggerHigh = 4,
+} KINTERRUPT_POLARITY, *PKINTERRUPT_POLARITY;
+
+typedef union _PEP_ACPI_RESOURCE_FLAGS
+{
+  union
+  {
+    U32 AsULong;
+    struct 
+    {
+      U32 Shared : 1; 
+      U32 Wake : 1; 
+      U32 ResourceUsage : 1; 
+      U32 SlaveMode : 1; 
+      U32 AddressingMode : 1; 
+      U32 SharedMode : 1; 
+      U32 Reserved : 26; 
+    }; 
+  }; 
+} PEP_ACPI_RESOURCE_FLAGS, *PPEP_ACPI_RESOURCE_FLAGS; 
+
+typedef struct _PEP_ACPI_INTERRUPT_RESOURCE
+{
+  enum _PEP_ACPI_RESOURCE_TYPE Type;
+  enum _KINTERRUPT_MODE InterruptType;
+  enum _KINTERRUPT_POLARITY InterruptPolarity;
+  union _PEP_ACPI_RESOURCE_FLAGS Flags;
+  U8 Count;
+  U32* Pins;
+} PEP_ACPI_INTERRUPT_RESOURCE, *PPEP_ACPI_INTERRUPT_RESOURCE; 
+

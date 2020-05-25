@@ -1,0 +1,202 @@
+typedef struct _RTL_CSPARSE_BITMAP
+{
+  U32* CommitBitmap;
+  U32* UserBitmap;
+  S32 BitCount;
+  U32 BitmapLock;
+  U32 DecommitPageIndex;
+  U32 RtlpCSparseBitmapWakeLock;
+  U8 LockType;
+  U8 AddressSpace;
+  U8 MemType;
+  U8 AllocAlignment;
+  U32 CommitDirectoryMaxSize;
+  U32 CommitDirectory[1];
+} RTL_CSPARSE_BITMAP, *PRTL_CSPARSE_BITMAP; 
+
+typedef struct _RTLP_HP_ALLOC_TRACKER
+{
+  U32 BaseAddress;
+  union
+  {
+    struct _RTL_CSPARSE_BITMAP AllocTrackerBitmap;
+    U8 AllocTrackerBitmapBuffer[40];
+  }; 
+} RTLP_HP_ALLOC_TRACKER, *PRTLP_HP_ALLOC_TRACKER; 
+
+typedef enum _RTLP_HP_ADDRESS_SPACE_TYPE
+{
+  HeapAddressUser = 0,
+  HeapAddressKernel = 1,
+  HeapAddressSession = 2,
+  HeapAddressTypeMax = 3,
+} RTLP_HP_ADDRESS_SPACE_TYPE, *PRTLP_HP_ADDRESS_SPACE_TYPE;
+
+typedef struct _RTL_SPARSE_ARRAY
+{
+  U32 ElementCount;
+  U32 ElementSizeShift;
+  struct _RTL_CSPARSE_BITMAP Bitmap;
+} RTL_SPARSE_ARRAY, *PRTL_SPARSE_ARRAY; 
+
+typedef struct _HEAP_VAMGR_VASPACE
+{
+  enum _RTLP_HP_ADDRESS_SPACE_TYPE AddressSpaceType;
+  U32 BaseAddress;
+  union
+  {
+    struct _RTL_SPARSE_ARRAY VaRangeArray;
+    U8 VaRangeArrayBuffer[44];
+  }; 
+} HEAP_VAMGR_VASPACE, *PHEAP_VAMGR_VASPACE; 
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _HEAP_VAMGR_ALLOCATOR
+{
+  U32 TreeLock;
+  struct _RTL_RB_TREE FreeRanges;
+  struct _HEAP_VAMGR_VASPACE* VaSpace;
+  void* PartitionHandle;
+  U16 ChunksPerRegion;
+  U16 RefCount;
+  U8 AllocatorIndex;
+  U8 NumaNode;
+  struct 
+  {
+    U8 LockType : 1; 
+    U8 MemoryType : 2; 
+    U8 ConstrainedVA : 1; 
+    U8 AllowFreeHead : 1; 
+    U8 Spare0 : 3; 
+  }; 
+  U8 Spare1;
+} HEAP_VAMGR_ALLOCATOR, *PHEAP_VAMGR_ALLOCATOR; 
+
+typedef struct _HEAP_VAMGR_CTX
+{
+  struct _HEAP_VAMGR_VASPACE VaSpace;
+  U32 AllocatorLock;
+  U32 AllocatorCount;
+  struct _HEAP_VAMGR_ALLOCATOR Allocators[255];
+} HEAP_VAMGR_CTX, *PHEAP_VAMGR_CTX; 
+
+typedef union _RTL_RUN_ONCE
+{
+  union
+  {
+    void* Ptr;
+    U32 Value;
+    U32 State : 2; 
+  }; 
+} RTL_RUN_ONCE, *PRTL_RUN_ONCE; 
+
+typedef struct _RTLP_HP_METADATA_HEAP_CTX
+{
+  struct _SEGMENT_HEAP* Heap;
+  union _RTL_RUN_ONCE InitOnce;
+} RTLP_HP_METADATA_HEAP_CTX, *PRTLP_HP_METADATA_HEAP_CTX; 
+
+typedef struct _RTL_HP_LFH_CONFIG
+{
+  U16 MaxBlockSize;
+  struct 
+  {
+    U16 WitholdPageCrossingBlocks : 1; 
+    U16 DisableRandomization : 1; 
+  }; 
+} RTL_HP_LFH_CONFIG, *PRTL_HP_LFH_CONFIG; 
+
+typedef struct _RTL_HP_VS_CONFIG
+{
+  struct
+  {
+    struct 
+    {
+      U32 PageAlignLargeAllocs : 1; 
+      U32 FullDecommit : 1; 
+      U32 EnableDelayFree : 1; 
+    }; 
+  } Flags;
+} RTL_HP_VS_CONFIG, *PRTL_HP_VS_CONFIG; 
+
+typedef struct _RTL_HP_SUB_ALLOCATOR_CONFIGS
+{
+  struct _RTL_HP_LFH_CONFIG LfhConfigs;
+  struct _RTL_HP_VS_CONFIG VsConfigs;
+} RTL_HP_SUB_ALLOCATOR_CONFIGS, *PRTL_HP_SUB_ALLOCATOR_CONFIGS; 
+
+typedef struct _RTLP_HP_HEAP_MANAGER
+{
+  struct _RTLP_HP_HEAP_GLOBALS* Globals;
+  struct _RTLP_HP_ALLOC_TRACKER AllocTracker;
+  struct _HEAP_VAMGR_CTX VaMgr;
+  struct _RTLP_HP_METADATA_HEAP_CTX MetadataHeaps[3];
+  struct _RTL_HP_SUB_ALLOCATOR_CONFIGS SubAllocConfigs;
+} RTLP_HP_HEAP_MANAGER, *PRTLP_HP_HEAP_MANAGER; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 CpuId;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _RTL_LOOKASIDE
+{
+  union _SLIST_HEADER ListHead;
+  U16 Depth;
+  U16 MaximumDepth;
+  U32 TotalAllocates;
+  U32 AllocateMisses;
+  U32 TotalFrees;
+  U32 FreeMisses;
+  U32 LastTotalAllocates;
+  U32 LastAllocateMisses;
+  U32 LastTotalFrees;
+  S32 __PADDING__[6];
+} RTL_LOOKASIDE, *PRTL_LOOKASIDE; 
+
+typedef struct _RTL_DYNAMIC_LOOKASIDE
+{
+  U64 EnabledBucketBitmap;
+  U32 BucketCount;
+  U32 ActiveBucketCount;
+  struct _RTL_LOOKASIDE Buckets[64];
+} RTL_DYNAMIC_LOOKASIDE, *PRTL_DYNAMIC_LOOKASIDE; 
+
+typedef struct _EX_HEAP_POOL_NODE
+{
+  struct _SEGMENT_HEAP* Heaps[4];
+  struct _RTL_DYNAMIC_LOOKASIDE Lookasides[2];
+} EX_HEAP_POOL_NODE, *PEX_HEAP_POOL_NODE; 
+
+typedef struct _EX_POOL_HEAP_MANAGER_STATE
+{
+  struct _RTLP_HP_HEAP_MANAGER HeapManager;
+  U32 NumberOfPools;
+  struct _EX_HEAP_POOL_NODE PoolNode[16];
+  struct _SEGMENT_HEAP* SpecialHeaps[3];
+  S32 __PADDING__[13];
+} EX_POOL_HEAP_MANAGER_STATE, *PEX_POOL_HEAP_MANAGER_STATE; 
+

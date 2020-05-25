@@ -1,0 +1,8 @@
+typedef struct _KIST_LINK_FRAME
+{
+  struct _KIST_BASE_FRAME* IstBaseFrame;
+  U32 Signature;
+  U32 Reserved0;
+  U64 Reserved[2];
+} KIST_LINK_FRAME, *PKIST_LINK_FRAME; 
+

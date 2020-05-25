@@ -1,0 +1,10 @@
+typedef struct _CM_INDEX
+{
+  U32 Cell;
+  union
+  {
+    U8 NameHint[4];
+    U32 HashKey;
+  }; 
+} CM_INDEX, *PCM_INDEX; 
+

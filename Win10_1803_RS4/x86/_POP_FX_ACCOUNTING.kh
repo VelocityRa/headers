@@ -1,0 +1,13 @@
+typedef struct _POP_FX_ACCOUNTING
+{
+  U32 Lock;
+  U8 Active;
+  U32 DripsRequiredState;
+  S32 Level;
+  S64 ActiveStamp;
+  U64 CsActiveTime;
+  S64 CriticalActiveTime;
+  U64 CriticalActiveTimeBuckets[5];
+  U64 CsActiveTimeBuckets[5];
+} POP_FX_ACCOUNTING, *PPOP_FX_ACCOUNTING; 
+

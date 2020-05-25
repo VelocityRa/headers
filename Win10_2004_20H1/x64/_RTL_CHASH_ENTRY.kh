@@ -1,0 +1,5 @@
+typedef struct _RTL_CHASH_ENTRY
+{
+  U64 Key;
+} RTL_CHASH_ENTRY, *PRTL_CHASH_ENTRY; 
+

@@ -1,0 +1,9 @@
+typedef struct _ETW_PMC_SUPPORT
+{
+  enum _KPROFILE_SOURCE* Source;
+  volatile U32 HookIdCount;
+  U16 HookId[4];
+  volatile U32 CountersCount;
+  struct _HAL_PMC_COUNTERS* ProcessorCtrs[1];
+} ETW_PMC_SUPPORT, *PETW_PMC_SUPPORT; 
+

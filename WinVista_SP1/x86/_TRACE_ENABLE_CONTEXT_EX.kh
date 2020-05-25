@@ -1,0 +1,10 @@
+typedef struct _TRACE_ENABLE_CONTEXT_EX
+{
+  U16 LoggerId;
+  U8 Level;
+  U8 InternalFlag;
+  U32 EnableFlags;
+  U32 EnableFlagsHigh;
+  U32 Reserved;
+} TRACE_ENABLE_CONTEXT_EX, *PTRACE_ENABLE_CONTEXT_EX; 
+

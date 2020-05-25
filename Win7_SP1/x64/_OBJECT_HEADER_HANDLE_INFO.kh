@@ -1,0 +1,20 @@
+typedef struct _OBJECT_HANDLE_COUNT_ENTRY
+{
+  struct _EPROCESS* Process;
+  struct 
+  {
+    U32 HandleCount : 24; 
+    U32 LockCount : 8; 
+  }; 
+  S32 __PADDING__[1];
+} OBJECT_HANDLE_COUNT_ENTRY, *POBJECT_HANDLE_COUNT_ENTRY; 
+
+typedef struct _OBJECT_HEADER_HANDLE_INFO
+{
+  union
+  {
+    struct _OBJECT_HANDLE_COUNT_DATABASE* HandleCountDataBase;
+    struct _OBJECT_HANDLE_COUNT_ENTRY SingleEntry;
+  }; 
+} OBJECT_HEADER_HANDLE_INFO, *POBJECT_HEADER_HANDLE_INFO; 
+

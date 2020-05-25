@@ -1,0 +1,14 @@
+typedef struct _JOBOBJECT_WAKE_FILTER
+{
+  U32 HighEdgeFilter;
+  U32 LowEdgeFilter;
+} JOBOBJECT_WAKE_FILTER, *PJOBOBJECT_WAKE_FILTER; 
+
+typedef struct _PS_PROCESS_WAKE_INFORMATION
+{
+  U64 NotificationChannel;
+  U32 WakeCounters[7];
+  struct _JOBOBJECT_WAKE_FILTER WakeFilter;
+  U32 NoWakeCounter;
+} PS_PROCESS_WAKE_INFORMATION, *PPS_PROCESS_WAKE_INFORMATION; 
+

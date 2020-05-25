@@ -1,0 +1,11 @@
+typedef struct _SEP_TOKEN_DIAG_TRACK_ENTRY
+{
+  void* ProcessCid;
+  void* ThreadCid;
+  U8 ImageFileName[16];
+  U32 CreateMethod;
+  U32 CreateTrace[30];
+  S32 Count;
+  S32 CaptureCount;
+} SEP_TOKEN_DIAG_TRACK_ENTRY, *PSEP_TOKEN_DIAG_TRACK_ENTRY; 
+

@@ -1,0 +1,40 @@
+typedef struct _WHEA_PCIX_DEV_VALIDATION_BITS
+{
+  struct 
+  {
+    U64 ErrorStatusValid : 1; 
+    U64 IdInfoValid : 1; 
+    U64 MemoryNumberValid : 1; 
+    U64 IoNumberValid : 1; 
+    U64 RegisterDataPairValid : 1; 
+    U64 Reserved : 59; 
+  }; 
+} WHEA_PCIX_DEV_VALIDATION_BITS, *PWHEA_PCIX_DEV_VALIDATION_BITS; 
+
+typedef struct _WHEA_ERROR_STATUS
+{
+  struct 
+  {
+    U64 Reserved1 : 8; 
+    U64 ErrorType : 8; 
+    U64 Address : 1; 
+    U64 Control : 1; 
+    U64 Data : 1; 
+    U64 Responder : 1; 
+    U64 Requester : 1; 
+    U64 FirstError : 1; 
+    U64 Overflow : 1; 
+    U64 Reserved2 : 41; 
+  }; 
+} WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS; 
+
+typedef struct _WHEA_PCIX_DEVICE_ERROR
+{
+  struct _WHEA_PCIX_DEV_VALIDATION_BITS ValidationBits;
+  struct _WHEA_ERROR_STATUS ErrorStatus;
+  U8 IdInfo[16];
+  U32 MemoryNumber;
+  U32 IoNumber;
+  U8 RegisterDataPairs[64];
+} WHEA_PCIX_DEVICE_ERROR, *PWHEA_PCIX_DEVICE_ERROR; 
+

@@ -1,0 +1,17 @@
+typedef struct _RTL_SRWLOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} RTL_SRWLOCK, *PRTL_SRWLOCK; 
+

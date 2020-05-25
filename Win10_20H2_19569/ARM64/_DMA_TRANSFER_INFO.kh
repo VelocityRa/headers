@@ -1,0 +1,25 @@
+typedef struct _DMA_TRANSFER_INFO_V1
+{
+  U32 MapRegisterCount;
+  U32 ScatterGatherElementCount;
+  U32 ScatterGatherListSize;
+} DMA_TRANSFER_INFO_V1, *PDMA_TRANSFER_INFO_V1; 
+
+typedef struct _DMA_TRANSFER_INFO_V2
+{
+  U32 MapRegisterCount;
+  U32 ScatterGatherElementCount;
+  U32 ScatterGatherListSize;
+  U32 LogicalPageCount;
+} DMA_TRANSFER_INFO_V2, *PDMA_TRANSFER_INFO_V2; 
+
+typedef struct _DMA_TRANSFER_INFO
+{
+  U32 Version;
+  union
+  {
+    struct _DMA_TRANSFER_INFO_V1 V1;
+    struct _DMA_TRANSFER_INFO_V2 V2;
+  }; 
+} DMA_TRANSFER_INFO, *PDMA_TRANSFER_INFO; 
+

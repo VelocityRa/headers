@@ -1,0 +1,10 @@
+typedef struct _KALPC_RESERVE
+{
+  struct _ALPC_PORT* OwnerPort;
+  struct _ALPC_HANDLE_TABLE* HandleTable;
+  void* Handle;
+  struct _KALPC_MESSAGE* Message;
+  volatile S32 Active;
+  S32 __PADDING__[1];
+} KALPC_RESERVE, *PKALPC_RESERVE; 
+

@@ -1,0 +1,871 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 1; 
+              U8 Processor : 5; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2Reserved1;
+          U8 Timer2Reserved2;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 Instrumented : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          U8 DebugActive;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef union _KWAIT_STATUS_REGISTER
+{
+  union
+  {
+    U8 Flags;
+    struct 
+    {
+      U8 State : 3; 
+      U8 Affinity : 1; 
+      U8 Priority : 1; 
+      U8 Apc : 1; 
+      U8 UserApc : 1; 
+      U8 Alert : 1; 
+    }; 
+  }; 
+} KWAIT_STATUS_REGISTER, *PKWAIT_STATUS_REGISTER; 
+
+typedef struct _KAPC_STATE
+{
+  struct _LIST_ENTRY ApcListHead[2];
+  struct _KPROCESS* Process;
+  union
+  {
+    U8 InProgressFlags;
+    struct 
+    {
+      U8 KernelApcInProgress : 1; 
+      U8 SpecialApcInProgress : 1; 
+    }; 
+  }; 
+  U8 KernelApcPending;
+  U8 UserApcPending;
+  char __PADDING__[1];
+} KAPC_STATE, *PKAPC_STATE; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _KWAIT_BLOCK
+{
+  struct _LIST_ENTRY WaitListEntry;
+  U8 WaitType;
+  volatile U8 BlockState;
+  U16 WaitKey;
+  union
+  {
+    struct _KTHREAD* Thread;
+    struct _KQUEUE* NotificationQueue;
+  }; 
+  void* Object;
+  void* SparePtr;
+} KWAIT_BLOCK, *PKWAIT_BLOCK; 
+
+typedef struct _GROUP_AFFINITY
+{
+  U32 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+
+typedef struct _KAPC
+{
+  U8 Type;
+  U8 SpareByte0;
+  U8 Size;
+  U8 SpareByte1;
+  U32 SpareLong0;
+  struct _KTHREAD* Thread;
+  struct _LIST_ENTRY ApcListEntry;
+  union
+  {
+    struct
+    {
+      void* KernelRoutine;
+      void* RundownRoutine;
+      void* NormalRoutine;
+    }; 
+    void* Reserved[3];
+  }; 
+  void* NormalContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  char ApcStateIndex;
+  char ApcMode;
+  U8 Inserted;
+  char __PADDING__[1];
+} KAPC, *PKAPC; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U32 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _KLOCK_ENTRY_LOCK_STATE
+{
+  union
+  {
+    struct 
+    {
+      U32 CrossThreadReleasable : 1; 
+      U32 Busy : 1; 
+      U32 Reserved : 29; 
+      U32 InTree : 1; 
+    }; 
+    void* LockState;
+  }; 
+  union
+  {
+    void* SessionState;
+    U32 SessionId;
+  }; 
+} KLOCK_ENTRY_LOCK_STATE, *PKLOCK_ENTRY_LOCK_STATE; 
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  struct _RTL_BALANCED_NODE* Min;
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _KLOCK_ENTRY
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE TreeNode;
+    struct _SINGLE_LIST_ENTRY FreeListEntry;
+  }; 
+  union
+  {
+    U32 EntryFlags;
+    struct
+    {
+      U8 EntryOffset;
+      union
+      {
+        U8 ThreadLocalFlags;
+        struct
+        {
+          struct 
+          {
+            U8 WaitingBit : 1; 
+            U8 Spare0 : 7; 
+          }; 
+          union
+          {
+            U8 AcquiredByte;
+            struct
+            {
+              U8 AcquiredBit : 1; 
+              union
+              {
+                U8 CrossThreadFlags;
+                struct 
+                {
+                  U8 HeadNodeBit : 1; 
+                  U8 IoPriorityBit : 1; 
+                  U8 Spare1 : 6; 
+                }; 
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct 
+    {
+      U32 StaticState : 8; 
+      U32 AllFlags : 24; 
+    }; 
+  }; 
+  union
+  {
+    struct _KLOCK_ENTRY_LOCK_STATE LockState;
+    void* volatile LockUnsafe;
+    struct
+    {
+      volatile U8 CrossThreadReleasableAndBusyByte;
+      U8 Reserved[2];
+      volatile U8 InTreeByte;
+      union
+      {
+        void* SessionState;
+        U32 SessionId;
+      }; 
+    }; 
+  }; 
+  union
+  {
+    struct
+    {
+      struct _RTL_RB_TREE OwnerTree;
+      struct _RTL_RB_TREE WaiterTree;
+    }; 
+    char CpuPriorityKey;
+  }; 
+  U32 EntryLock;
+  union
+  {
+    U16 AllBoosts;
+    struct 
+    {
+      U16 IoBoost : 1; 
+      U16 CpuBoostsBitmap : 15; 
+    }; 
+  }; 
+  U16 IoNormalPriorityWaiterCount;
+} KLOCK_ENTRY, *PKLOCK_ENTRY; 
+
+typedef struct _KTHREAD
+{
+  struct _DISPATCHER_HEADER Header;
+  void* SListFaultAddress;
+  U64 QuantumTarget;
+  void* InitialStack;
+  void* volatile StackLimit;
+  void* StackBase;
+  U32 ThreadLock;
+  volatile U64 CycleTime;
+  volatile U32 HighCycleTime;
+  void* ServiceTable;
+  U32 CurrentRunTime;
+  U32 ExpectedRunTime;
+  void* KernelStack;
+  struct _XSAVE_FORMAT* StateSaveArea;
+  struct _KSCHEDULING_GROUP* volatile SchedulingGroup;
+  union _KWAIT_STATUS_REGISTER WaitRegister;
+  volatile U8 Running;
+  U8 Alerted[2];
+  union
+  {
+    struct 
+    {
+      U32 AutoBoostActive : 1; 
+      U32 ReadyTransition : 1; 
+      U32 WaitNext : 1; 
+      U32 SystemAffinityActive : 1; 
+      U32 Alertable : 1; 
+      U32 UserStackWalkActive : 1; 
+      U32 ApcInterruptRequest : 1; 
+      U32 QuantumEndMigrate : 1; 
+      U32 UmsDirectedSwitchEnable : 1; 
+      U32 TimerActive : 1; 
+      U32 SystemThread : 1; 
+      U32 ProcessDetachActive : 1; 
+      U32 CalloutActive : 1; 
+      U32 ScbReadyQueue : 1; 
+      U32 ApcQueueable : 1; 
+      U32 ReservedStackInUse : 1; 
+      U32 UmsPerformingSyscall : 1; 
+      U32 TimerSuspended : 1; 
+      U32 SuspendedWaitMode : 1; 
+      U32 SuspendSchedulerApcWait : 1; 
+      U32 Reserved : 12; 
+    }; 
+    S32 MiscFlags;
+  }; 
+  union
+  {
+    struct 
+    {
+      U32 AutoAlignment : 1; 
+      U32 DisableBoost : 1; 
+      U32 ThreadFlagsSpare0 : 1; 
+      U32 AlertedByThreadId : 1; 
+      U32 QuantumDonation : 1; 
+      U32 EnableStackSwap : 1; 
+      U32 GuiThread : 1; 
+      U32 DisableQuantum : 1; 
+      U32 ChargeOnlySchedulingGroup : 1; 
+      U32 DeferPreemption : 1; 
+      U32 QueueDeferPreemption : 1; 
+      U32 ForceDeferSchedule : 1; 
+      U32 SharedReadyQueueAffinity : 1; 
+      U32 FreezeCount : 1; 
+      U32 TerminationApcRequest : 1; 
+      U32 AutoBoostEntriesExhausted : 1; 
+      U32 KernelStackResident : 1; 
+      U32 CommitFailTerminateRequest : 1; 
+      U32 ProcessStackCountDecremented : 1; 
+      U32 ThreadFlagsSpare : 5; 
+      U32 EtwStackTraceApcInserted : 8; 
+    }; 
+    volatile S32 ThreadFlags;
+  }; 
+  volatile U8 Tag;
+  U8 SystemHeteroCpuPolicy;
+  struct 
+  {
+    U8 UserHeteroCpuPolicy : 7; 
+    U8 ExplicitSystemHeteroCpuPolicy : 1; 
+  }; 
+  U8 Spare0;
+  U32 SystemCallNumber;
+  void* FirstArgument;
+  struct _KTRAP_FRAME* TrapFrame;
+  union
+  {
+    struct _KAPC_STATE ApcState;
+    struct
+    {
+      U8 ApcStateFill[23];
+      char Priority;
+    }; 
+  }; 
+  U32 UserIdealProcessor;
+  U32 ContextSwitches;
+  volatile U8 State;
+  char Spare12;
+  U8 WaitIrql;
+  char WaitMode;
+  volatile S32 WaitStatus;
+  struct _KWAIT_BLOCK* WaitBlockList;
+  union
+  {
+    struct _LIST_ENTRY WaitListEntry;
+    struct _SINGLE_LIST_ENTRY SwapListEntry;
+  }; 
+  struct _DISPATCHER_HEADER* volatile Queue;
+  void* Teb;
+  U64 RelativeTimerBias;
+  struct _KTIMER Timer;
+  union
+  {
+    struct _KWAIT_BLOCK WaitBlock[4];
+    struct
+    {
+      U8 WaitBlockFill8[20];
+      struct _KTHREAD_COUNTERS* ThreadCounters;
+    }; 
+    struct
+    {
+      U8 WaitBlockFill9[44];
+      struct _XSTATE_SAVE* XStateSave;
+    }; 
+    struct
+    {
+      U8 WaitBlockFill10[68];
+      void* volatile Win32Thread;
+    }; 
+    struct
+    {
+      U8 WaitBlockFill11[88];
+      U32 WaitTime;
+      union
+      {
+        struct
+        {
+          S16 KernelApcDisable;
+          S16 SpecialApcDisable;
+        }; 
+        U32 CombinedApcDisable;
+      }; 
+    }; 
+  }; 
+  struct _LIST_ENTRY QueueListEntry;
+  union
+  {
+    volatile U32 NextProcessor;
+    struct 
+    {
+      U32 NextProcessorNumber : 31; 
+      U32 SharedReadyQueue : 1; 
+    }; 
+  }; 
+  S32 QueuePriority;
+  struct _KPROCESS* Process;
+  union
+  {
+    struct _GROUP_AFFINITY UserAffinity;
+    struct
+    {
+      U8 UserAffinityFill[6];
+      char PreviousMode;
+      char BasePriority;
+      union
+      {
+        char PriorityDecrement;
+        struct 
+        {
+          U8 ForegroundBoost : 4; 
+          U8 UnusualBoost : 4; 
+        }; 
+      }; 
+      U8 Preempted;
+      U8 AdjustReason;
+      char AdjustIncrement;
+    }; 
+  }; 
+  U32 AffinityVersion;
+  union
+  {
+    struct _GROUP_AFFINITY Affinity;
+    struct
+    {
+      U8 AffinityFill[6];
+      U8 ApcStateIndex;
+      U8 WaitBlockCount;
+      U32 IdealProcessor;
+    }; 
+  }; 
+  U32 Spare15[1];
+  union
+  {
+    struct _KAPC_STATE SavedApcState;
+    struct
+    {
+      U8 SavedApcStateFill[23];
+      U8 WaitReason;
+    }; 
+  }; 
+  char SuspendCount;
+  char Saturation;
+  U16 SListFaultCount;
+  union
+  {
+    struct _KAPC SchedulerApc;
+    struct
+    {
+      U8 SchedulerApcFill0[1];
+      U8 ResourceIndex;
+    }; 
+    struct
+    {
+      U8 SchedulerApcFill1[3];
+      U8 QuantumReset;
+    }; 
+    struct
+    {
+      U8 SchedulerApcFill2[4];
+      U32 KernelTime;
+    }; 
+    struct
+    {
+      U8 SchedulerApcFill3[36];
+      struct _KPRCB* volatile WaitPrcb;
+    }; 
+    struct
+    {
+      U8 SchedulerApcFill4[40];
+      void* LegoData;
+    }; 
+    struct
+    {
+      U8 SchedulerApcFill5[47];
+      U8 CallbackNestingLevel;
+    }; 
+  }; 
+  U32 UserTime;
+  struct _KEVENT SuspendEvent;
+  struct _LIST_ENTRY ThreadListEntry;
+  struct _LIST_ENTRY MutantListHead;
+  U8 AbEntrySummary;
+  U8 AbWaitEntryCount;
+  U16 Spare20;
+  struct _KLOCK_ENTRY LockEntries[6];
+  struct _SINGLE_LIST_ENTRY PropagateBoostsEntry;
+  struct _SINGLE_LIST_ENTRY IoSelfBoostsEntry;
+  U8 PriorityFloorCounts[16];
+  U32 PriorityFloorSummary;
+  volatile S32 AbCompletedIoBoostCount;
+  volatile S16 KeReferenceCount;
+  U8 AbOrphanedEntrySummary;
+  U8 AbOwnedEntryCount;
+  U32 ForegroundLossTime;
+  union
+  {
+    struct _LIST_ENTRY GlobalForegroundListEntry;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY ForegroundDpcStackListEntry;
+      U32 InGlobalForegroundList;
+    }; 
+  }; 
+  struct _KSCB* QueuedScb;
+  U64 NpxState;
+} KTHREAD, *PKTHREAD; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _CLIENT_ID
+{
+  void* UniqueProcess;
+  void* UniqueThread;
+} CLIENT_ID, *PCLIENT_ID; 
+
+typedef struct _KSEMAPHORE
+{
+  struct _DISPATCHER_HEADER Header;
+  S32 Limit;
+} KSEMAPHORE, *PKSEMAPHORE; 
+
+typedef union _PS_CLIENT_SECURITY_CONTEXT
+{
+  union
+  {
+    U32 ImpersonationData;
+    void* ImpersonationToken;
+    struct 
+    {
+      U32 ImpersonationLevel : 2; 
+      U32 EffectiveOnly : 1; 
+    }; 
+  }; 
+} PS_CLIENT_SECURITY_CONTEXT, *PPS_CLIENT_SECURITY_CONTEXT; 
+
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    U32 Count;
+    void* Ptr;
+  }; 
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _PS_PROPERTY_SET
+{
+  struct _LIST_ENTRY ListHead;
+  U32 Lock;
+} PS_PROPERTY_SET, *PPS_PROPERTY_SET; 
+
+typedef struct _ETHREAD
+{
+  struct _KTHREAD Tcb;
+  union _LARGE_INTEGER CreateTime;
+  union
+  {
+    union _LARGE_INTEGER ExitTime;
+    struct _LIST_ENTRY KeyedWaitChain;
+  }; 
+  void* ChargeOnlySession;
+  union
+  {
+    struct _LIST_ENTRY PostBlockList;
+    struct
+    {
+      void* ForwardLinkShadow;
+      void* StartAddress;
+    }; 
+  }; 
+  union
+  {
+    struct _TERMINATION_PORT* TerminationPort;
+    struct _ETHREAD* ReaperLink;
+    void* KeyedWaitValue;
+  }; 
+  U32 ActiveTimerListLock;
+  struct _LIST_ENTRY ActiveTimerListHead;
+  struct _CLIENT_ID Cid;
+  union
+  {
+    struct _KSEMAPHORE KeyedWaitSemaphore;
+    struct _KSEMAPHORE AlpcWaitSemaphore;
+  }; 
+  union _PS_CLIENT_SECURITY_CONTEXT ClientSecurity;
+  struct _LIST_ENTRY IrpList;
+  U32 TopLevelIrp;
+  struct _DEVICE_OBJECT* DeviceToVerify;
+  void* Win32StartAddress;
+  void* LegacyPowerObject;
+  struct _LIST_ENTRY ThreadListEntry;
+  struct _EX_RUNDOWN_REF RundownProtect;
+  struct _EX_PUSH_LOCK ThreadLock;
+  U32 ReadClusterSize;
+  volatile S32 MmLockOrdering;
+  volatile S32 CmLockOrdering;
+  union
+  {
+    U32 CrossThreadFlags;
+    struct 
+    {
+      U32 Terminated : 1; 
+      U32 ThreadInserted : 1; 
+      U32 HideFromDebugger : 1; 
+      U32 ActiveImpersonationInfo : 1; 
+      U32 HardErrorsAreDisabled : 1; 
+      U32 BreakOnTermination : 1; 
+      U32 SkipCreationMsg : 1; 
+      U32 SkipTerminationMsg : 1; 
+      U32 CopyTokenOnOpen : 1; 
+      U32 ThreadIoPriority : 3; 
+      U32 ThreadPagePriority : 3; 
+      U32 RundownFail : 1; 
+      U32 UmsForceQueueTermination : 1; 
+      U32 IndirectCpuSets : 1; 
+      U32 ReservedCrossThreadFlags : 14; 
+    }; 
+  }; 
+  union
+  {
+    U32 SameThreadPassiveFlags;
+    struct 
+    {
+      U32 ActiveExWorker : 1; 
+      U32 MemoryMaker : 1; 
+      U32 ClonedThread : 1; 
+      U32 KeyedEventInUse : 1; 
+      U32 SelfTerminate : 1; 
+      U32 RespectIoPriority : 1; 
+      U32 ReservedSameThreadPassiveFlags : 26; 
+    }; 
+  }; 
+  union
+  {
+    U32 SameThreadApcFlags;
+    struct
+    {
+      struct 
+      {
+        U8 OwnsProcessAddressSpaceExclusive : 1; 
+        U8 OwnsProcessAddressSpaceShared : 1; 
+        U8 HardFaultBehavior : 1; 
+        volatile U8 StartAddressInvalid : 1; 
+        U8 EtwCalloutActive : 1; 
+        U8 SuppressSymbolLoad : 1; 
+        U8 Prefetching : 1; 
+        U8 OwnsVadExclusive : 1; 
+      }; 
+      struct 
+      {
+        U8 SystemPagePriorityActive : 1; 
+        U8 SystemPagePriority : 3; 
+      }; 
+    }; 
+  }; 
+  U8 CacheManagerActive;
+  U8 DisablePageFaultClustering;
+  U8 ActiveFaultCount;
+  U8 LockOrderState;
+  U32 AlpcMessageId;
+  union
+  {
+    void* AlpcMessage;
+    U32 AlpcReceiveAttributeSet;
+  }; 
+  S32 ExitStatus;
+  struct _LIST_ENTRY AlpcWaitListEntry;
+  U32 CacheManagerCount;
+  U32 IoBoostCount;
+  struct _LIST_ENTRY BoostList;
+  struct _LIST_ENTRY DeboostList;
+  U32 BoostListLock;
+  U32 IrpListLock;
+  void* ReservedForSynchTracking;
+  struct _SINGLE_LIST_ENTRY CmCallbackListHead;
+  const struct _GUID* ActivityId;
+  struct _SINGLE_LIST_ENTRY SeLearningModeListHead;
+  void* VerifierContext;
+  U32 KernelStackReference;
+  void* AdjustedClientToken;
+  void* WorkingOnBehalfClient;
+  struct _PS_PROPERTY_SET PropertySet;
+  void* PicoContext;
+  U32 UserFsBase;
+  U32 UserGsBase;
+  struct _THREAD_ENERGY_VALUES* EnergyValues;
+  volatile U32 CmCellReferences;
+  union
+  {
+    U32 SelectedCpuSets;
+    U32* SelectedCpuSetsIndirect;
+  }; 
+  struct _ESILO* Silo;
+  S32 __PADDING__[1];
+} ETHREAD, *PETHREAD; 
+

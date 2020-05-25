@@ -1,0 +1,17 @@
+typedef struct _FXSAVE_FORMAT
+{
+  U16 ControlWord;
+  U16 StatusWord;
+  U16 TagWord;
+  U16 ErrorOpcode;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U32 MXCsr;
+  U32 MXCsrMask;
+  U8 RegisterArea[128];
+  U8 Reserved3[128];
+  U8 Reserved4[192];
+} FXSAVE_FORMAT, *PFXSAVE_FORMAT; 
+

@@ -1,0 +1,8 @@
+typedef struct _DBGKD_FILL_MEMORY
+{
+  U64 Address;
+  U32 Length;
+  U16 Flags;
+  U16 PatternLength;
+} DBGKD_FILL_MEMORY, *PDBGKD_FILL_MEMORY; 
+

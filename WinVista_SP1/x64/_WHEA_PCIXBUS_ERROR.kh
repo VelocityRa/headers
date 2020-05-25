@@ -1,0 +1,84 @@
+typedef union _WHEA_PCIXBUS_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 ErrorStatus : 1; 
+      U64 ErrorType : 1; 
+      U64 BusId : 1; 
+      U64 BusAddress : 1; 
+      U64 BusData : 1; 
+      U64 BusCommand : 1; 
+      U64 RequesterId : 1; 
+      U64 CompleterId : 1; 
+      U64 TargetId : 1; 
+      U64 Reserved : 55; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_PCIXBUS_ERROR_VALIDBITS, *PWHEA_PCIXBUS_ERROR_VALIDBITS; 
+
+typedef union _WHEA_ERROR_STATUS
+{
+  union
+  {
+    U64 ErrorStatus;
+    struct 
+    {
+      U64 Reserved1 : 8; 
+      U64 ErrorType : 8; 
+      U64 Address : 1; 
+      U64 Control : 1; 
+      U64 Data : 1; 
+      U64 Responder : 1; 
+      U64 Requester : 1; 
+      U64 FirstError : 1; 
+      U64 Overflow : 1; 
+      U64 Reserved2 : 41; 
+    }; 
+  }; 
+} WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS; 
+
+typedef union _WHEA_PCIXBUS_ID
+{
+  union
+  {
+    struct
+    {
+      U8 BusNumber;
+      U8 BusSegment;
+    }; 
+    U16 AsUSHORT;
+  }; 
+} WHEA_PCIXBUS_ID, *PWHEA_PCIXBUS_ID; 
+
+typedef union _WHEA_PCIXBUS_COMMAND
+{
+  union
+  {
+    struct 
+    {
+      U64 Command : 56; 
+      U64 PCIXCommand : 1; 
+      U64 Reserved : 7; 
+    }; 
+    U64 AsULONGLONG;
+  }; 
+} WHEA_PCIXBUS_COMMAND, *PWHEA_PCIXBUS_COMMAND; 
+
+typedef struct _WHEA_PCIXBUS_ERROR
+{
+  union _WHEA_PCIXBUS_ERROR_VALIDBITS ValidBits;
+  union _WHEA_ERROR_STATUS ErrorStatus;
+  U16 ErrorType;
+  union _WHEA_PCIXBUS_ID BusId;
+  U32 Reserved;
+  U64 BusAddress;
+  U64 BusData;
+  union _WHEA_PCIXBUS_COMMAND BusCommand;
+  U64 RequesterId;
+  U64 CompleterId;
+  U64 TargetId;
+} WHEA_PCIXBUS_ERROR, *PWHEA_PCIXBUS_ERROR; 
+

@@ -1,0 +1,20 @@
+typedef struct _MI_CACHED_PTE
+{
+  union
+  {
+    struct
+    {
+      U32 GlobalTimeStamp;
+      U32 PteIndex;
+    }; 
+    S64 Long;
+  }; 
+} MI_CACHED_PTE, *PMI_CACHED_PTE; 
+
+typedef struct _MI_CACHED_PTES
+{
+  struct _MI_CACHED_PTE Bins[8];
+  S32 CachedPteCount;
+  S32 __PADDING__[1];
+} MI_CACHED_PTES, *PMI_CACHED_PTES; 
+

@@ -1,0 +1,9 @@
+typedef union _CM_TRANS_PTR
+{
+  union
+  {
+    U32 LightWeight : 1; 
+    void* TransPtr;
+  }; 
+} CM_TRANS_PTR, *PCM_TRANS_PTR; 
+

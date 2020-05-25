@@ -1,0 +1,8 @@
+typedef struct _HV_HYPERVISOR_INTERFACE_INFO
+{
+  U32 Interface;
+  U32 ReservedEbx;
+  U32 ReservedEcx;
+  U32 ReservedEdx;
+} HV_HYPERVISOR_INTERFACE_INFO, *PHV_HYPERVISOR_INTERFACE_INFO; 
+

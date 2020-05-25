@@ -1,0 +1,50 @@
+typedef enum _ETW_NOTIFICATION_TYPE
+{
+  EtwNotificationTypeNoReply = 1,
+  EtwNotificationTypeLegacyEnable = 2,
+  EtwNotificationTypeEnable = 3,
+  EtwNotificationTypePrivateLogger = 4,
+  EtwNotificationTypePerflib = 5,
+  EtwNotificationTypeAudio = 6,
+  EtwNotificationTypeSession = 7,
+  EtwNotificationTypeReserved = 8,
+  EtwNotificationTypeCredentialUI = 9,
+  EtwNotificationTypeMax = 10,
+} ETW_NOTIFICATION_TYPE, *PETW_NOTIFICATION_TYPE;
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _ETWP_NOTIFICATION_HEADER
+{
+  enum _ETW_NOTIFICATION_TYPE NotificationType;
+  U32 NotificationSize;
+  S32 RefCount;
+  U8 ReplyRequested;
+  union
+  {
+    U32 ReplyIndex;
+    U32 Timeout;
+  }; 
+  union
+  {
+    U32 ReplyCount;
+    U32 NotifyeeCount;
+  }; 
+  union
+  {
+    U64 ReplyHandle;
+    void* ReplyObject;
+    U32 RegIndex;
+  }; 
+  U32 TargetPID;
+  U32 SourcePID;
+  struct _GUID DestinationGuid;
+  struct _GUID SourceGuid;
+} ETWP_NOTIFICATION_HEADER, *PETWP_NOTIFICATION_HEADER; 
+

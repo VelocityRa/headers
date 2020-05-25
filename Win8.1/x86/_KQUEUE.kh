@@ -1,0 +1,93 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 QueueControlFlags;
+        struct 
+        {
+          U8 Abandoned : 1; 
+          U8 DisableIncrement : 1; 
+        }; 
+        U8 Signalling;
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Reserved1 : 2; 
+          }; 
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved2 : 4; 
+            }; 
+            U8 Hand;
+            U8 Reserved3;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 1; 
+                  U8 Processor : 5; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                U8 DpcActive;
+                U8 Reserved5;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KQUEUE
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY EntryListHead;
+  volatile U32 CurrentCount;
+  U32 MaximumCount;
+  struct _LIST_ENTRY ThreadListHead;
+} KQUEUE, *PKQUEUE; 
+

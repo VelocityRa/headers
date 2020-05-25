@@ -1,0 +1,18 @@
+typedef union _PEP_ACPI_RESOURCE_FLAGS
+{
+  union
+  {
+    U32 AsULong;
+    struct 
+    {
+      U32 Shared : 1; 
+      U32 Wake : 1; 
+      U32 ResourceUsage : 1; 
+      U32 SlaveMode : 1; 
+      U32 AddressingMode : 1; 
+      U32 SharedMode : 1; 
+      U32 Reserved : 26; 
+    }; 
+  }; 
+} PEP_ACPI_RESOURCE_FLAGS, *PPEP_ACPI_RESOURCE_FLAGS; 
+

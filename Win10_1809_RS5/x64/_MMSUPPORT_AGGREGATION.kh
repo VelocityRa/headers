@@ -1,0 +1,8 @@
+typedef struct _MMSUPPORT_AGGREGATION
+{
+  U32 PageFaultCount;
+  U64 WorkingSetSize;
+  U64 WorkingSetLeafSize;
+  U64 PeakWorkingSetSize;
+} MMSUPPORT_AGGREGATION, *PMMSUPPORT_AGGREGATION; 
+

@@ -1,0 +1,21 @@
+typedef struct _PEBS_DS_SAVE_AREA
+{
+  U64 BtsBufferBase;
+  U64 BtsIndex;
+  U64 BtsAbsoluteMaximum;
+  U64 BtsInterruptThreshold;
+  U64 PebsBufferBase;
+  U64 PebsIndex;
+  U64 PebsAbsoluteMaximum;
+  U64 PebsInterruptThreshold;
+  U64 PebsCounterReset0;
+  U64 PebsCounterReset1;
+  U64 PebsCounterReset2;
+  U64 PebsCounterReset3;
+} PEBS_DS_SAVE_AREA, *PPEBS_DS_SAVE_AREA; 
+
+typedef struct _PROCESSOR_PROFILE_CONTROL_AREA
+{
+  struct _PEBS_DS_SAVE_AREA PebsDsSaveArea;
+} PROCESSOR_PROFILE_CONTROL_AREA, *PPROCESSOR_PROFILE_CONTROL_AREA; 
+

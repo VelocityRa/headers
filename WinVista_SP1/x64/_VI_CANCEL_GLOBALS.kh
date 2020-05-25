@@ -1,0 +1,8 @@
+typedef struct _VI_CANCEL_GLOBALS
+{
+  U64 CancelLock;
+  U64 IssueLock;
+  S32 Counters[25];
+  S32 __PADDING__[1];
+} VI_CANCEL_GLOBALS, *PVI_CANCEL_GLOBALS; 
+

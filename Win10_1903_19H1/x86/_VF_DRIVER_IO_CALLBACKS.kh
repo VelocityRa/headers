@@ -1,0 +1,9 @@
+typedef struct _VF_DRIVER_IO_CALLBACKS
+{
+  void* DriverInit;
+  void* DriverStartIo;
+  void* DriverUnload;
+  void* AddDevice;
+  void* MajorFunction[28];
+} VF_DRIVER_IO_CALLBACKS, *PVF_DRIVER_IO_CALLBACKS; 
+

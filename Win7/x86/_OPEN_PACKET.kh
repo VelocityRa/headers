@@ -1,0 +1,65 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef enum _CREATE_FILE_TYPE
+{
+  CreateFileTypeNone = 0,
+  CreateFileTypeNamedPipe = 1,
+  CreateFileTypeMailslot = 2,
+} CREATE_FILE_TYPE, *PCREATE_FILE_TYPE;
+
+typedef struct _IO_DRIVER_CREATE_CONTEXT
+{
+  S16 Size;
+  struct _ECP_LIST* ExtraCreateParameter;
+  void* DeviceObjectHint;
+  struct _TXN_PARAMETER_BLOCK* TxnParameters;
+} IO_DRIVER_CREATE_CONTEXT, *PIO_DRIVER_CREATE_CONTEXT; 
+
+typedef struct _OPEN_PACKET
+{
+  S16 Type;
+  S16 Size;
+  struct _FILE_OBJECT* FileObject;
+  S32 FinalStatus;
+  U32 Information;
+  U32 ParseCheck;
+  struct _FILE_OBJECT* RelatedFileObject;
+  struct _OBJECT_ATTRIBUTES* OriginalAttributes;
+  union _LARGE_INTEGER AllocationSize;
+  U32 CreateOptions;
+  U16 FileAttributes;
+  U16 ShareAccess;
+  void* EaBuffer;
+  U32 EaLength;
+  U32 Options;
+  U32 Disposition;
+  struct _FILE_BASIC_INFORMATION* BasicInformation;
+  struct _FILE_NETWORK_OPEN_INFORMATION* NetworkInformation;
+  enum _CREATE_FILE_TYPE CreateFileType;
+  void* MailslotOrPipeParameters;
+  U8 Override;
+  U8 QueryOnly;
+  U8 DeleteOnly;
+  U8 FullAttributes;
+  struct _DUMMY_FILE_OBJECT* LocalFileObject;
+  U32 InternalFlags;
+  struct _IO_DRIVER_CREATE_CONTEXT DriverCreateContext;
+  S32 __PADDING__[1];
+} OPEN_PACKET, *POPEN_PACKET; 
+

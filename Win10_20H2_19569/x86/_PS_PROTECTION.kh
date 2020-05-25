@@ -1,0 +1,14 @@
+typedef struct _PS_PROTECTION
+{
+  union
+  {
+    U8 Level;
+    struct 
+    {
+      U8 Type : 3; 
+      U8 Audit : 1; 
+      U8 Signer : 4; 
+    }; 
+  }; 
+} PS_PROTECTION, *PPS_PROTECTION; 
+

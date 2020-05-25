@@ -1,0 +1,8 @@
+typedef struct _MI_LARGEPAGE_VAD_INFO
+{
+  U8 LargeImageBias;
+  U8 Spare[3];
+  U32 ActualImageViewSize;
+  struct _EPARTITION* ReferencedPartition;
+} MI_LARGEPAGE_VAD_INFO, *PMI_LARGEPAGE_VAD_INFO; 
+

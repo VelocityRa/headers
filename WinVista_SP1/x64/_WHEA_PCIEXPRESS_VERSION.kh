@@ -1,0 +1,14 @@
+typedef union _WHEA_PCIEXPRESS_VERSION
+{
+  union
+  {
+    struct
+    {
+      U8 MinorVersion;
+      U8 MajorVersion;
+      U16 Reserved;
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_PCIEXPRESS_VERSION, *PWHEA_PCIEXPRESS_VERSION; 
+

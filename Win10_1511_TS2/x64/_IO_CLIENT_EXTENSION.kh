@@ -1,0 +1,6 @@
+typedef struct _IO_CLIENT_EXTENSION
+{
+  struct _IO_CLIENT_EXTENSION* NextExtension;
+  void* ClientIdentificationAddress;
+} IO_CLIENT_EXTENSION, *PIO_CLIENT_EXTENSION; 
+

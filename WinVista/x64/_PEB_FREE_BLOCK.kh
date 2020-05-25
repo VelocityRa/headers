@@ -1,0 +1,7 @@
+typedef struct _PEB_FREE_BLOCK
+{
+  struct _PEB_FREE_BLOCK* Next;
+  U32 Size;
+  S32 __PADDING__[1];
+} PEB_FREE_BLOCK, *PPEB_FREE_BLOCK; 
+

@@ -1,0 +1,18 @@
+union wil_details_RecordedState
+{
+  union
+  {
+    U32 exchange;
+    struct 
+    {
+      U32 recordedDeviceUsage : 1; 
+      U32 recordedDevicePotential : 1; 
+      U32 recordedDeviceOpportunity : 1; 
+      U32 recordedDevicePotentialOpportunity : 1; 
+      U32 recordedVariantDeviceUsage : 1; 
+      U32 recordedVariant : 6; 
+      U32 unused : 21; 
+    }; 
+  }; 
+}; 
+

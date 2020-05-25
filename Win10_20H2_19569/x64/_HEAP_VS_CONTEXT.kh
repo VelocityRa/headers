@@ -1,0 +1,91 @@
+typedef enum _RTLP_HP_LOCK_TYPE
+{
+  HeapLockPaged = 0,
+  HeapLockNonPaged = 1,
+  HeapLockTypeMax = 2,
+} RTLP_HP_LOCK_TYPE, *PRTLP_HP_LOCK_TYPE;
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _HEAP_VS_DELAY_FREE_CONTEXT
+{
+  union _SLIST_HEADER ListHead;
+} HEAP_VS_DELAY_FREE_CONTEXT, *PHEAP_VS_DELAY_FREE_CONTEXT; 
+
+typedef struct _HEAP_SUBALLOCATOR_CALLBACKS
+{
+  U64 Allocate;
+  U64 Free;
+  U64 Commit;
+  U64 Decommit;
+  U64 ExtendContext;
+} HEAP_SUBALLOCATOR_CALLBACKS, *PHEAP_SUBALLOCATOR_CALLBACKS; 
+
+typedef struct _RTL_HP_VS_CONFIG
+{
+  struct
+  {
+    struct 
+    {
+      U32 PageAlignLargeAllocs : 1; 
+      U32 FullDecommit : 1; 
+      U32 EnableDelayFree : 1; 
+    }; 
+  } Flags;
+} RTL_HP_VS_CONFIG, *PRTL_HP_VS_CONFIG; 
+
+typedef struct _HEAP_VS_CONTEXT
+{
+  U64 Lock;
+  enum _RTLP_HP_LOCK_TYPE LockType;
+  struct _RTL_RB_TREE FreeChunkTree;
+  struct _LIST_ENTRY SubsegmentList;
+  U64 TotalCommittedUnits;
+  U64 FreeCommittedUnits;
+  struct _HEAP_VS_DELAY_FREE_CONTEXT DelayFreeContext;
+  void* BackendCtx;
+  struct _HEAP_SUBALLOCATOR_CALLBACKS Callbacks;
+  struct _RTL_HP_VS_CONFIG Config;
+  U32 Flags;
+  S32 __PADDING__[2];
+} HEAP_VS_CONTEXT, *PHEAP_VS_CONTEXT; 
+

@@ -1,0 +1,28 @@
+struct PROCESSOR_IDLESTATE_INFO
+{
+  U32 TimeCheck;
+  U8 DemotePercent;
+  U8 PromotePercent;
+  U8 Spare[2];
+}; 
+
+struct PROCESSOR_IDLESTATE_POLICY
+{
+  U16 Revision;
+  union
+  {
+    union
+    {
+      U16 AsUSHORT;
+      struct 
+      {
+        U16 AllowScaling : 1; 
+        U16 Disabled : 1; 
+        U16 Reserved : 14; 
+      }; 
+    }; 
+  } Flags;
+  U32 PolicyCount;
+  struct PROCESSOR_IDLESTATE_INFO Policy[3];
+}; 
+

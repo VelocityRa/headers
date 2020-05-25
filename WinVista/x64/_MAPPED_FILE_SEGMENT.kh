@@ -1,0 +1,53 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _SEGMENT_FLAGS
+{
+  struct 
+  {
+    U64 TotalNumberOfPtes4132 : 10; 
+    U64 ExtraSharedWowSubsections : 1; 
+    U64 LargePages : 1; 
+    U64 WatchProto : 1; 
+    U64 DebugSymbolsLoaded : 1; 
+    U64 WriteCombined : 1; 
+    U64 NoCache : 1; 
+    U64 FloppyMedia : 1; 
+    U64 DefaultProtectionMask : 5; 
+    U64 ContainsPxeSubsection : 1; 
+    U64 Spare : 40; 
+    U64 Binary32 : 1; 
+  }; 
+} SEGMENT_FLAGS, *PSEGMENT_FLAGS; 
+
+typedef struct _MAPPED_FILE_SEGMENT
+{
+  struct _CONTROL_AREA* ControlArea;
+  U32 TotalNumberOfPtes;
+  U32 NonExtendedPtes;
+  U64 NumberOfCommittedPages;
+  U64 SizeOfSegment;
+  union
+  {
+    struct _MMEXTEND_INFO* ExtendInfo;
+    void* BasedAddress;
+  }; 
+  struct _EX_PUSH_LOCK SegmentLock;
+  struct _SEGMENT_FLAGS SegmentFlags;
+  struct _MSUBSECTION* LastSubsectionHint;
+} MAPPED_FILE_SEGMENT, *PMAPPED_FILE_SEGMENT; 
+

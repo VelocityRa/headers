@@ -1,0 +1,24 @@
+typedef struct _SUPPORTED_RANGE
+{
+  struct _SUPPORTED_RANGE* Next;
+  U32 SystemAddressSpace;
+  S64 SystemBase;
+  S64 Base;
+  S64 Limit;
+} SUPPORTED_RANGE, *PSUPPORTED_RANGE; 
+
+typedef struct _SUPPORTED_RANGES
+{
+  U16 Version;
+  U8 Sorted;
+  U8 Reserved;
+  U32 NoIO;
+  struct _SUPPORTED_RANGE IO;
+  U32 NoMemory;
+  struct _SUPPORTED_RANGE Memory;
+  U32 NoPrefetchMemory;
+  struct _SUPPORTED_RANGE PrefetchMemory;
+  U32 NoDma;
+  struct _SUPPORTED_RANGE Dma;
+} SUPPORTED_RANGES, *PSUPPORTED_RANGES; 
+

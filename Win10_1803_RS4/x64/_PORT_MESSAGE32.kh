@@ -1,0 +1,45 @@
+typedef struct _CLIENT_ID32
+{
+  U32 UniqueProcess;
+  U32 UniqueThread;
+} CLIENT_ID32, *PCLIENT_ID32; 
+
+typedef struct _PORT_MESSAGE32
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        S16 DataLength;
+        S16 TotalLength;
+      } s1;
+      U32 Length;
+    }; 
+  } u1;
+  union
+  {
+    union
+    {
+      struct
+      {
+        S16 Type;
+        S16 DataInfoOffset;
+      } s2;
+      U32 ZeroInit;
+    }; 
+  } u2;
+  union
+  {
+    struct _CLIENT_ID32 ClientId;
+    double DoNotUseThisField;
+  }; 
+  U32 MessageId;
+  union
+  {
+    U32 ClientViewSize;
+    U32 CallbackId;
+  }; 
+} PORT_MESSAGE32, *PPORT_MESSAGE32; 
+

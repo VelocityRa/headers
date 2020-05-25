@@ -1,0 +1,22 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[20];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _KSTATIC_AFFINITY_BLOCK
+{
+  union
+  {
+    struct _KAFFINITY_EX KeFlushTbAffinity;
+    struct _KAFFINITY_EX KeFlushWbAffinity;
+    struct _KAFFINITY_EX KeSyncContextAffinity;
+  }; 
+  struct _KAFFINITY_EX KeFlushTbDeepIdleAffinity;
+  struct _KAFFINITY_EX KeIpiSendAffinity;
+  struct _KAFFINITY_EX KeIpiSendIpiSet;
+  U64 Padding[48];
+} KSTATIC_AFFINITY_BLOCK, *PKSTATIC_AFFINITY_BLOCK; 
+

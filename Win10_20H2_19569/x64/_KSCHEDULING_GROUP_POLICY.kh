@@ -1,0 +1,25 @@
+typedef struct _KSCHEDULING_GROUP_POLICY
+{
+  union
+  {
+    U32 Value;
+    U16 Weight;
+    struct
+    {
+      U16 MinRate;
+      U16 MaxRate;
+    }; 
+  }; 
+  union
+  {
+    U32 AllFlags;
+    struct 
+    {
+      U32 Type : 1; 
+      U32 Disabled : 1; 
+      U32 RankBias : 1; 
+      U32 Spare1 : 29; 
+    }; 
+  }; 
+} KSCHEDULING_GROUP_POLICY, *PKSCHEDULING_GROUP_POLICY; 
+

@@ -1,0 +1,20 @@
+typedef struct _ALPC_COMPLETION_LIST_STATE
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          volatile U64 Head : 24; 
+          volatile U64 Tail : 24; 
+          volatile U64 ActiveThreadCount : 16; 
+        }; 
+      } s1;
+      volatile U64 Value;
+    }; 
+  } u1;
+} ALPC_COMPLETION_LIST_STATE, *PALPC_COMPLETION_LIST_STATE; 
+

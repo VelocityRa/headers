@@ -1,0 +1,39 @@
+typedef struct _MI_ACTIVE_WSLE_LISTHEAD
+{
+  U32 Flink;
+  U32 Blink;
+} MI_ACTIVE_WSLE_LISTHEAD, *PMI_ACTIVE_WSLE_LISTHEAD; 
+
+typedef struct _MMWSL_INSTANCE
+{
+  U32 NextSlot;
+  U32 NextAgingSlot;
+  U32 NextAccessClearingSlot;
+  U32 LastAccessClearingRemainder;
+  U32 LastAgingRemainder;
+  U32 ActiveWsleCounts[16];
+  struct _MI_ACTIVE_WSLE_LISTHEAD ActiveWsles[16];
+} MMWSL_INSTANCE, *PMMWSL_INSTANCE; 
+
+typedef struct _MMWSL_SHARED
+{
+  U32 FirstFree;
+  U32 FirstDynamic;
+  U32 LastEntry;
+  U32 LastInitializedWsle;
+  U32 WsleSize;
+  U32 NonDirectCount;
+  void* LowestPagableAddress;
+  struct _MMWSLE_NONDIRECT_HASH* NonDirectHash;
+  struct _MMWSLE_HASH* HashTableStart;
+  struct _MMWSLE_HASH* HighestPermittedHashAddress;
+  struct _MMWSLE* Wsle;
+  S32 __PADDING__[3];
+} MMWSL_SHARED, *PMMWSL_SHARED; 
+
+typedef struct _MMWSL_FULL
+{
+  struct _MMWSL_INSTANCE Instance;
+  struct _MMWSL_SHARED Shared;
+} MMWSL_FULL, *PMMWSL_FULL; 
+

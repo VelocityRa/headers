@@ -1,0 +1,14 @@
+typedef struct _HMAP_ENTRY
+{
+  U64 BlockAddress;
+  U64 BinAddress;
+  struct _CM_VIEW_OF_FILE* CmView;
+  U32 MemAlloc;
+  S32 __PADDING__[1];
+} HMAP_ENTRY, *PHMAP_ENTRY; 
+
+typedef struct _HMAP_TABLE
+{
+  struct _HMAP_ENTRY Table[512];
+} HMAP_TABLE, *PHMAP_TABLE; 
+

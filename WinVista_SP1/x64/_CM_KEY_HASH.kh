@@ -1,0 +1,9 @@
+typedef struct _CM_KEY_HASH
+{
+  U32 ConvKey;
+  struct _CM_KEY_HASH* NextHash;
+  struct _HHIVE* KeyHive;
+  U32 KeyCell;
+  S32 __PADDING__[1];
+} CM_KEY_HASH, *PCM_KEY_HASH; 
+

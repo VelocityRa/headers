@@ -1,0 +1,6 @@
+typedef struct _IO_STATUS_BLOCK32
+{
+  S32 Status;
+  U32 Information;
+} IO_STATUS_BLOCK32, *PIO_STATUS_BLOCK32; 
+

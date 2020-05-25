@@ -1,0 +1,60 @@
+typedef struct _ALPC_COMPLETION_LIST_STATE
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U64 Head : 24; 
+          U64 Tail : 24; 
+          U64 ActiveThreadCount : 16; 
+        }; 
+      } s1;
+      S64 Value;
+    }; 
+  } u1;
+} ALPC_COMPLETION_LIST_STATE, *PALPC_COMPLETION_LIST_STATE; 
+
+typedef struct _RTL_SRWLOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} RTL_SRWLOCK, *PRTL_SRWLOCK; 
+
+typedef struct _ALPC_COMPLETION_LIST_HEADER
+{
+  U64 StartMagic;
+  U32 TotalSize;
+  U32 ListOffset;
+  U32 ListSize;
+  U32 BitmapOffset;
+  U32 BitmapSize;
+  U32 DataOffset;
+  U32 DataSize;
+  U32 AttributeFlags;
+  U32 AttributeSize;
+  volatile struct _ALPC_COMPLETION_LIST_STATE State;
+  volatile U32 LastMessageId;
+  volatile U32 LastCallbackId;
+  volatile U32 PostCount;
+  volatile U32 ReturnCount;
+  volatile U32 LogSequenceNumber;
+  struct _RTL_SRWLOCK UserLock;
+  U64 EndMagic;
+  S32 __PADDING__[12];
+} ALPC_COMPLETION_LIST_HEADER, *PALPC_COMPLETION_LIST_HEADER; 
+

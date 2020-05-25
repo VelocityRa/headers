@@ -1,0 +1,39 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _ETW_KERNEL_TRACE_TIMESTAMP
+{
+  union _LARGE_INTEGER KernelTraceTimeStamp[2];
+} ETW_KERNEL_TRACE_TIMESTAMP, *PETW_KERNEL_TRACE_TIMESTAMP; 
+
+typedef struct _PERFINFO_HARDPAGEFAULT_INFORMATION
+{
+  union _LARGE_INTEGER ReadOffset;
+  void* VirtualAddress;
+  void* FileObject;
+  U32 ThreadId;
+  U32 ByteCount;
+} PERFINFO_HARDPAGEFAULT_INFORMATION, *PPERFINFO_HARDPAGEFAULT_INFORMATION; 
+
+typedef struct _PF_HARD_FAULT_INFO
+{
+  struct _ETW_KERNEL_TRACE_TIMESTAMP KernelTimeStamp;
+  struct _PERFINFO_HARDPAGEFAULT_INFORMATION HardFaultEvent;
+  union _LARGE_INTEGER IoTimeInTicks;
+} PF_HARD_FAULT_INFO, *PPF_HARD_FAULT_INFO; 
+

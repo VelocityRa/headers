@@ -1,0 +1,6 @@
+typedef struct _FAKE_HEAP_ENTRY
+{
+  U32 Size;
+  U32 PreviousSize;
+} FAKE_HEAP_ENTRY, *PFAKE_HEAP_ENTRY; 
+

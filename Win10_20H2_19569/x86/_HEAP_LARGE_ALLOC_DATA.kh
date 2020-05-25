@@ -1,0 +1,37 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U32 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _HEAP_LARGE_ALLOC_DATA
+{
+  struct _RTL_BALANCED_NODE TreeNode;
+  union
+  {
+    U32 VirtualAddress;
+    U32 UnusedBytes : 16; 
+  }; 
+  struct 
+  {
+    U32 ExtraPresent : 1; 
+    U32 GuardPageCount : 1; 
+    U32 GuardPageAlignment : 6; 
+    U32 Spare : 4; 
+    U32 AllocatedPages : 20; 
+  }; 
+} HEAP_LARGE_ALLOC_DATA, *PHEAP_LARGE_ALLOC_DATA; 
+

@@ -1,0 +1,21 @@
+typedef struct _INVERTED_FUNCTION_TABLE_ENTRY
+{
+  union
+  {
+    struct _IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY* FunctionTable;
+    struct _DYNAMIC_FUNCTION_TABLE* DynamicTable;
+  }; 
+  void* ImageBase;
+  U32 SizeOfImage;
+  U32 SizeOfTable;
+} INVERTED_FUNCTION_TABLE_ENTRY, *PINVERTED_FUNCTION_TABLE_ENTRY; 
+
+typedef struct _INVERTED_FUNCTION_TABLE
+{
+  U32 CurrentSize;
+  U32 MaximumSize;
+  volatile U32 Epoch;
+  U8 Overflow;
+  struct _INVERTED_FUNCTION_TABLE_ENTRY TableEntry[256];
+} INVERTED_FUNCTION_TABLE, *PINVERTED_FUNCTION_TABLE; 
+

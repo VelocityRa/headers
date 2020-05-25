@@ -1,0 +1,6 @@
+typedef struct _VF_KE_CRITICAL_REGION_TRACE
+{
+  struct _ETHREAD* Thread;
+  void* StackTrace[7];
+} VF_KE_CRITICAL_REGION_TRACE, *PVF_KE_CRITICAL_REGION_TRACE; 
+

@@ -1,0 +1,74 @@
+typedef enum _MI_PFN_CACHE_ATTRIBUTE
+{
+  MiNonCached = 0,
+  MiCached = 1,
+  MiWriteCombined = 2,
+  MiNotMapped = 3,
+} MI_PFN_CACHE_ATTRIBUTE, *PMI_PFN_CACHE_ATTRIBUTE;
+
+typedef struct _MI_ZERO_COST_COUNTS
+{
+  U64 NativeSum;
+  U64 CachedSum;
+} MI_ZERO_COST_COUNTS, *PMI_ZERO_COST_COUNTS; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MI_HARDWARE_STATE
+{
+  U32 NodeMask;
+  U32 NumaLastRangeIndex;
+  U8 NumaTableCaptured;
+  U8 NodeShift;
+  U8 ChannelShift;
+  wchar_t* NodeGraph;
+  struct _MI_SYSTEM_NODE_INFORMATION* SystemNodeInformation;
+  struct _HAL_NODE_RANGE* NumaMemoryRanges;
+  struct _HAL_CHANNEL_MEMORY_RANGES* ChannelMemoryRanges;
+  U32 SecondLevelCacheSize;
+  U32 FirstLevelCacheSize;
+  U32 PhysicalAddressBits;
+  U8 ProcessorCachesFlushedOnPowerLoss;
+  U32 TotalPagesAllowed;
+  U32 SecondaryColorMask;
+  U32 SecondaryColors;
+  U32 FlushTbForAttributeChange;
+  U32 FlushCacheForAttributeChange;
+  U32 FlushCacheForPageAttributeChange;
+  U32 CacheFlushPromoteThreshold;
+  U64 InvalidPteMask;
+  U32 LargePageColors[2];
+  U32 FlushTbThreshold;
+  enum _MI_PFN_CACHE_ATTRIBUTE OptimalZeroingAttribute[4][4];
+  U8 AttributeChangeRequiresReZero;
+  struct _MI_ZERO_COST_COUNTS ZeroCostCounts[2];
+  U32 HighestPossiblePhysicalPage;
+  U32 VsmKernelPageCount;
+  struct _RTL_AVL_TREE EnclaveRegions;
+  void* EnclaveMetadataPage;
+  struct _RTL_BITMAP* EnclaveMetadataBitMap;
+  struct _EX_PUSH_LOCK EnclaveMetadataEntryLock;
+  volatile S32 EnclaveMetadataPageLock;
+  S32 __PADDING__[13];
+} MI_HARDWARE_STATE, *PMI_HARDWARE_STATE; 
+

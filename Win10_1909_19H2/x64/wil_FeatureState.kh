@@ -1,0 +1,24 @@
+enum wil_FeatureEnabledState
+{
+  wil_FeatureEnabledState_Default = 0,
+  wil_FeatureEnabledState_Disabled = 1,
+  wil_FeatureEnabledState_Enabled = 2,
+};
+
+enum wil_FeatureVariantPayloadKind
+{
+  wil_FeatureVariantPayloadKind_None = 0,
+  wil_FeatureVariantPayloadKind_Resident = 1,
+  wil_FeatureVariantPayloadKind_External = 2,
+};
+
+struct wil_FeatureState
+{
+  enum wil_FeatureEnabledState enabledState;
+  U8 variant;
+  enum wil_FeatureVariantPayloadKind payloadKind;
+  U32 payload;
+  S32 hasNotification;
+  S32 isVariantConfiguration;
+}; 
+

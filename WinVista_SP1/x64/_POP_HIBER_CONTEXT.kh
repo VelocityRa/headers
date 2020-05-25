@@ -1,0 +1,94 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _PO_HIBER_PERF
+{
+  U64 IoTicks;
+  U64 InitTicks;
+  U64 CopyTicks;
+  U64 StartCount;
+  U32 ElapsedTime;
+  U32 IoTime;
+  U32 CopyTime;
+  U32 InitTime;
+  U32 PagesWritten;
+  U32 PagesProcessed;
+  U32 BytesCopied;
+  U32 DumpCount;
+  U32 FileRuns;
+  U64 ResumeAppStartTime;
+  U64 ResumeAppEndTime;
+  U64 HiberFileResumeTime;
+} PO_HIBER_PERF, *PPO_HIBER_PERF; 
+
+typedef struct _POP_HIBER_CONTEXT
+{
+  U8 WriteToFile;
+  U8 ReserveLoaderMemory;
+  U8 ReserveFreeMemory;
+  U8 VerifyOnWake;
+  U8 Reset;
+  U8 HiberFlags;
+  U8 WroteHiberFile;
+  U64 Lock;
+  U8 MapFrozen;
+  struct _RTL_BITMAP MemoryMap;
+  struct _RTL_BITMAP DiscardedMemoryPages;
+  struct _LIST_ENTRY ClonedRanges;
+  U32 ClonedRangeCount;
+  struct _LIST_ENTRY* NextCloneRange;
+  U64 NextPreserve;
+  struct _MDL* LoaderMdl;
+  struct _MDL* AllocatedMdl;
+  U64 PagesOut;
+  void* IoPages;
+  U32 IoPagesCount;
+  void* CurrentMcb;
+  struct _DUMP_STACK_CONTEXT* DumpStack;
+  struct _KPROCESSOR_STATE* WakeState;
+  U64 HiberVa;
+  union _LARGE_INTEGER HiberPte;
+  S32 Status;
+  struct PO_MEMORY_IMAGE* MemoryImage;
+  struct _PO_MEMORY_RANGE_ARRAY* TableHead;
+  U8* CompressionWorkspace;
+  U8* CompressedWriteBuffer;
+  U32* PerformanceStats;
+  void* CompressionBlock;
+  void* DmaIO;
+  void* TemporaryHeap;
+  struct _PO_HIBER_PERF PerfInfo;
+  struct _MDL* BootLoaderLogMdl;
+  struct _MDL* FirmwareRuntimeInformationMdl;
+  void* ResumeContext;
+  U32 ResumeContextPages;
+  S32 __PADDING__[1];
+} POP_HIBER_CONTEXT, *PPOP_HIBER_CONTEXT; 
+

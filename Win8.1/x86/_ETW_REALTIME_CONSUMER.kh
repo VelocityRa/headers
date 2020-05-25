@@ -1,0 +1,46 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _ETW_REALTIME_CONSUMER
+{
+  struct _LIST_ENTRY Links;
+  void* ProcessHandle;
+  struct _EPROCESS* ProcessObject;
+  void* NextNotDelivered;
+  void* RealtimeConnectContext;
+  struct _KEVENT* DisconnectEvent;
+  struct _KEVENT* DataAvailableEvent;
+  U32* UserBufferCount;
+  struct _SINGLE_LIST_ENTRY* UserBufferListHead;
+  U32 BuffersLost;
+  U32 EmptyBuffersCount;
+  U16 LoggerId;
+  union
+  {
+    U8 Flags;
+    struct 
+    {
+      U8 ShutDownRequested : 1; 
+      U8 NewBuffersLost : 1; 
+      U8 Disconnected : 1; 
+      U8 Notified : 1; 
+    }; 
+  }; 
+  struct _RTL_BITMAP ReservedBufferSpaceBitMap;
+  U8* ReservedBufferSpace;
+  U32 ReservedBufferSpaceSize;
+  U32 UserPagesAllocated;
+  U32 UserPagesReused;
+  U32* EventsLostCount;
+  U32* BuffersLostCount;
+} ETW_REALTIME_CONSUMER, *PETW_REALTIME_CONSUMER; 
+

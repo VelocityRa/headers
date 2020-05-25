@@ -1,0 +1,8 @@
+typedef struct _VF_POOL_TRACE
+{
+  void* Address;
+  U32 Size;
+  struct _ETHREAD* Thread;
+  void* StackTrace[13];
+} VF_POOL_TRACE, *PVF_POOL_TRACE; 
+

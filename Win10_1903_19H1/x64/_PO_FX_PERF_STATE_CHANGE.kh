@@ -1,0 +1,10 @@
+typedef struct _PO_FX_PERF_STATE_CHANGE
+{
+  U32 Set;
+  union
+  {
+    U32 StateIndex;
+    U64 StateValue;
+  }; 
+} PO_FX_PERF_STATE_CHANGE, *PPO_FX_PERF_STATE_CHANGE; 
+

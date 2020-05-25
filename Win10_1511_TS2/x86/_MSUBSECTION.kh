@@ -1,0 +1,101 @@
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MMSUBSECTION_FLAGS
+{
+  struct 
+  {
+    U16 SubsectionAccessed : 1; 
+    U16 Protection : 5; 
+    U16 StartingSector4132 : 10; 
+  }; 
+  struct 
+  {
+    U16 SubsectionStatic : 1; 
+    U16 GlobalMemory : 1; 
+    U16 SubsectionMappedDirect : 1; 
+    U16 OnDereferenceList : 1; 
+    U16 SectorEndOffset : 12; 
+  }; 
+} MMSUBSECTION_FLAGS, *PMMSUBSECTION_FLAGS; 
+
+typedef struct _SUBSECTION
+{
+  struct _CONTROL_AREA* ControlArea;
+  struct _MMPTE* SubsectionBase;
+  struct _SUBSECTION* NextSubsection;
+  union
+  {
+    struct _RTL_AVL_TREE GlobalPerSessionHead;
+    struct _MI_SUBSECTION_WAIT_BLOCK* CreationWaitList;
+    struct _MI_PER_SESSION_PROTOS* SessionDriverProtos;
+  }; 
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSUBSECTION_FLAGS SubsectionFlags;
+    }; 
+  } u;
+  U32 StartingSector;
+  U32 NumberOfFullSectors;
+  U32 PtesInSubsection;
+  union
+  {
+    U32 NumberOfChildViews;
+  } u1;
+  union
+  {
+    struct 
+    {
+      U32 UnusedPtes : 31; 
+      U32 DirtyPages : 1; 
+    }; 
+    struct
+    {
+      struct 
+      {
+        U32 AlignmentNoAccessPtes : 31; 
+        U32 DirtyPages : 1; 
+      }; 
+    } u2;
+  }; 
+} SUBSECTION, *PSUBSECTION; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U32 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MSUBSECTION
+{
+  struct _SUBSECTION Core;
+  struct _RTL_BALANCED_NODE SubsectionNode;
+  struct _LIST_ENTRY DereferenceList;
+  U32 NumberOfMappedViews;
+  U32 NumberOfPfnReferences;
+} MSUBSECTION, *PMSUBSECTION; 
+

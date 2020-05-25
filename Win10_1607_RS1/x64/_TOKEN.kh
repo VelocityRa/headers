@@ -1,0 +1,119 @@
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _TOKEN_SOURCE
+{
+  char SourceName[8];
+  struct _LUID SourceIdentifier;
+} TOKEN_SOURCE, *PTOKEN_SOURCE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _SEP_TOKEN_PRIVILEGES
+{
+  U64 Present;
+  U64 Enabled;
+  U64 EnabledByDefault;
+} SEP_TOKEN_PRIVILEGES, *PSEP_TOKEN_PRIVILEGES; 
+
+typedef struct _TOKEN_AUDIT_POLICY
+{
+  U8 PerUserPolicy[30];
+} TOKEN_AUDIT_POLICY, *PTOKEN_AUDIT_POLICY; 
+
+typedef struct _SEP_AUDIT_POLICY
+{
+  struct _TOKEN_AUDIT_POLICY AdtTokenPolicy;
+  U8 PolicySetStatus;
+} SEP_AUDIT_POLICY, *PSEP_AUDIT_POLICY; 
+
+typedef enum _TOKEN_TYPE
+{
+  TokenPrimary = 1,
+  TokenImpersonation = 2,
+} TOKEN_TYPE, *PTOKEN_TYPE;
+
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SID_AND_ATTRIBUTES_HASH
+{
+  U32 SidCount;
+  struct _SID_AND_ATTRIBUTES* SidAttr;
+  U64 Hash[32];
+} SID_AND_ATTRIBUTES_HASH, *PSID_AND_ATTRIBUTES_HASH; 
+
+typedef struct _TOKEN
+{
+  struct _TOKEN_SOURCE TokenSource;
+  struct _LUID TokenId;
+  struct _LUID AuthenticationId;
+  struct _LUID ParentTokenId;
+  union _LARGE_INTEGER ExpirationTime;
+  struct _ERESOURCE* TokenLock;
+  struct _LUID ModifiedId;
+  struct _SEP_TOKEN_PRIVILEGES Privileges;
+  struct _SEP_AUDIT_POLICY AuditPolicy;
+  U32 SessionId;
+  U32 UserAndGroupCount;
+  U32 RestrictedSidCount;
+  U32 VariableLength;
+  U32 DynamicCharged;
+  U32 DynamicAvailable;
+  U32 DefaultOwnerIndex;
+  struct _SID_AND_ATTRIBUTES* UserAndGroups;
+  struct _SID_AND_ATTRIBUTES* RestrictedSids;
+  void* PrimaryGroup;
+  U32* DynamicPart;
+  struct _ACL* DefaultDacl;
+  enum _TOKEN_TYPE TokenType;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  U32 TokenFlags;
+  U8 TokenInUse;
+  U32 IntegrityLevelIndex;
+  U32 MandatoryPolicy;
+  struct _SEP_LOGON_SESSION_REFERENCES* LogonSession;
+  struct _LUID OriginatingLogonSession;
+  struct _SID_AND_ATTRIBUTES_HASH SidHash;
+  struct _SID_AND_ATTRIBUTES_HASH RestrictedSidHash;
+  struct _AUTHZBASEP_SECURITY_ATTRIBUTES_INFORMATION* pSecurityAttributes;
+  void* Package;
+  struct _SID_AND_ATTRIBUTES* Capabilities;
+  U32 CapabilityCount;
+  struct _SID_AND_ATTRIBUTES_HASH CapabilitiesHash;
+  struct _SEP_LOWBOX_NUMBER_ENTRY* LowboxNumberEntry;
+  struct _SEP_LOWBOX_HANDLES_ENTRY* LowboxHandlesEntry;
+  struct _AUTHZBASEP_CLAIM_ATTRIBUTES_COLLECTION* pClaimAttributes;
+  void* TrustLevelSid;
+  struct _TOKEN* TrustLinkedToken;
+  void* IntegrityLevelSidValue;
+  struct _SEP_SID_VALUES_BLOCK* TokenSidValues;
+  struct _SEP_LUID_TO_INDEX_MAP_ENTRY* IndexEntry;
+  struct _SEP_TOKEN_DIAG_TRACK_ENTRY* DiagnosticInfo;
+  U64 VariablePart;
+} TOKEN, *PTOKEN; 
+

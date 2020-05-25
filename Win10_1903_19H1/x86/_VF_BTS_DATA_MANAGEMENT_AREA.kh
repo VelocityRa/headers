@@ -1,0 +1,14 @@
+typedef struct _VF_BTS_DATA_MANAGEMENT_AREA
+{
+  void* BTSBufferBase;
+  void* BTSIndex;
+  void* BTSMax;
+  void* BTSInterruptThreshold;
+  void* PEBSBufferBase;
+  void* PEBSIndex;
+  void* PEBSMax;
+  void* PEBSInterruptThreshold;
+  void* PEBSCounterReset[2];
+  char Reserved[12];
+} VF_BTS_DATA_MANAGEMENT_AREA, *PVF_BTS_DATA_MANAGEMENT_AREA; 
+

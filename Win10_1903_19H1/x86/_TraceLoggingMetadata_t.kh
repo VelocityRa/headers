@@ -1,0 +1,9 @@
+typedef struct _TraceLoggingMetadata_t
+{
+  U32 Signature;
+  U16 Size;
+  U8 Version;
+  U8 Flags;
+  U64 Magic;
+} TraceLoggingMetadata_t, *PTraceLoggingMetadata_t; 
+

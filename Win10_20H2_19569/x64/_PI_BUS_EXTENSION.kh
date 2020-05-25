@@ -1,0 +1,49 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+typedef enum _DEVICE_POWER_STATE
+{
+  PowerDeviceUnspecified = 0,
+  PowerDeviceD0 = 1,
+  PowerDeviceD1 = 2,
+  PowerDeviceD2 = 3,
+  PowerDeviceD3 = 4,
+  PowerDeviceMaximum = 5,
+} DEVICE_POWER_STATE, *PDEVICE_POWER_STATE;
+
+typedef struct _PI_BUS_EXTENSION
+{
+  U32 Flags;
+  U8 NumberCSNs;
+  U8* ReadDataPort;
+  U8 DataPortMapped;
+  U8* AddressPort;
+  U8 AddrPortMapped;
+  U8* CommandPort;
+  U8 CmdPortMapped;
+  U32 NextSlotNumber;
+  struct _SINGLE_LIST_ENTRY DeviceList;
+  struct _SINGLE_LIST_ENTRY CardList;
+  struct _DEVICE_OBJECT* PhysicalBusDevice;
+  struct _DEVICE_OBJECT* FunctionalBusDevice;
+  struct _DEVICE_OBJECT* AttachedDevice;
+  U32 BusNumber;
+  enum _SYSTEM_POWER_STATE SystemPowerState;
+  enum _DEVICE_POWER_STATE DevicePowerState;
+  S32 __PADDING__[1];
+} PI_BUS_EXTENSION, *PPI_BUS_EXTENSION; 
+

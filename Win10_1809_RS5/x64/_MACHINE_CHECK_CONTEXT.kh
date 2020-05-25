@@ -1,0 +1,22 @@
+typedef struct _MACHINE_FRAME
+{
+  U64 Rip;
+  U16 SegCs;
+  U16 Fill1[3];
+  U32 EFlags;
+  U32 Fill2;
+  U64 Rsp;
+  U16 SegSs;
+  U16 Fill3[3];
+} MACHINE_FRAME, *PMACHINE_FRAME; 
+
+typedef struct _MACHINE_CHECK_CONTEXT
+{
+  struct _MACHINE_FRAME MachineFrame;
+  U64 Rax;
+  U64 Rcx;
+  U64 Rdx;
+  U64 GsBase;
+  U64 Cr3;
+} MACHINE_CHECK_CONTEXT, *PMACHINE_CHECK_CONTEXT; 
+

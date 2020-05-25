@@ -1,0 +1,23 @@
+typedef struct _TRAPFRAME_LOG_ENTRY
+{
+  U64 Thread;
+  U8 CpuNumber;
+  U8 TrapType;
+  U16 Padding;
+  U32 Cpsr;
+  U64 X0;
+  U64 X1;
+  U64 X2;
+  U64 X3;
+  U64 X4;
+  U64 X5;
+  U64 X6;
+  U64 X7;
+  U64 Fp;
+  U64 Lr;
+  U64 Sp;
+  U64 Pc;
+  U64 Reserved1;
+  U64 Reserved2;
+} TRAPFRAME_LOG_ENTRY, *PTRAPFRAME_LOG_ENTRY; 
+

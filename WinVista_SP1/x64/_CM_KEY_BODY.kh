@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _CM_KEY_BODY
+{
+  U32 Type;
+  struct _CM_KEY_CONTROL_BLOCK* KeyControlBlock;
+  struct _CM_NOTIFY_BLOCK* NotifyBlock;
+  void* ProcessID;
+  struct _LIST_ENTRY KeyBodyList;
+  U32 Flags;
+  void* KtmTrans;
+  struct _GUID* KtmUow;
+  struct _LIST_ENTRY ContextListHead;
+} CM_KEY_BODY, *PCM_KEY_BODY; 
+

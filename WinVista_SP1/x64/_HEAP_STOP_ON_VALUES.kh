@@ -1,0 +1,24 @@
+typedef struct _HEAP_STOP_ON_TAG
+{
+  union
+  {
+    U32 HeapAndTagIndex;
+    struct
+    {
+      U16 TagIndex;
+      U16 HeapIndex;
+    }; 
+  }; 
+} HEAP_STOP_ON_TAG, *PHEAP_STOP_ON_TAG; 
+
+typedef struct _HEAP_STOP_ON_VALUES
+{
+  U64 AllocAddress;
+  struct _HEAP_STOP_ON_TAG AllocTag;
+  U64 ReAllocAddress;
+  struct _HEAP_STOP_ON_TAG ReAllocTag;
+  U64 FreeAddress;
+  struct _HEAP_STOP_ON_TAG FreeTag;
+  S32 __PADDING__[1];
+} HEAP_STOP_ON_VALUES, *PHEAP_STOP_ON_VALUES; 
+

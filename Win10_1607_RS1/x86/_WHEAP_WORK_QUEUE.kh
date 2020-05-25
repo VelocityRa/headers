@@ -1,0 +1,49 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _KDPC
+{
+  union
+  {
+    U32 TargetInfoAsUlong;
+    struct
+    {
+      U8 Type;
+      U8 Importance;
+      volatile U16 Number;
+    }; 
+  }; 
+  struct _SINGLE_LIST_ENTRY DpcListEntry;
+  U32 ProcessorHistory;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _WHEAP_WORK_QUEUE
+{
+  struct _LIST_ENTRY ListHead;
+  U32 ListLock;
+  volatile S32 ItemCount;
+  struct _KDPC Dpc;
+  struct _WORK_QUEUE_ITEM WorkItem;
+  void* WorkRoutine;
+} WHEAP_WORK_QUEUE, *PWHEAP_WORK_QUEUE; 
+

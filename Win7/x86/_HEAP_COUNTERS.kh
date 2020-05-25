@@ -1,0 +1,25 @@
+typedef struct _HEAP_COUNTERS
+{
+  U32 TotalMemoryReserved;
+  U32 TotalMemoryCommitted;
+  U32 TotalMemoryLargeUCR;
+  U32 TotalSizeInVirtualBlocks;
+  U32 TotalSegments;
+  U32 TotalUCRs;
+  U32 CommittOps;
+  U32 DeCommitOps;
+  U32 LockAcquires;
+  U32 LockCollisions;
+  U32 CommitRate;
+  U32 DecommittRate;
+  U32 CommitFailures;
+  U32 InBlockCommitFailures;
+  U32 CompactHeapCalls;
+  U32 CompactedUCRs;
+  U32 AllocAndFreeOps;
+  U32 InBlockDeccommits;
+  U32 InBlockDeccomitSize;
+  U32 HighWatermarkSize;
+  U32 LastPolledSize;
+} HEAP_COUNTERS, *PHEAP_COUNTERS; 
+

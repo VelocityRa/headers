@@ -1,0 +1,9 @@
+typedef struct _LOCAL_NMISOURCE
+{
+  U8 Type;
+  U8 Length;
+  U8 ProcessorID;
+  U16 Flags;
+  U8 LINTIN;
+} LOCAL_NMISOURCE, *PLOCAL_NMISOURCE; 
+

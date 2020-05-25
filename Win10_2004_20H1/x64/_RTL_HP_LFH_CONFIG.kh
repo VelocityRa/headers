@@ -1,0 +1,10 @@
+typedef struct _RTL_HP_LFH_CONFIG
+{
+  U16 MaxBlockSize;
+  struct 
+  {
+    U16 WitholdPageCrossingBlocks : 1; 
+    U16 DisableRandomization : 1; 
+  }; 
+} RTL_HP_LFH_CONFIG, *PRTL_HP_LFH_CONFIG; 
+

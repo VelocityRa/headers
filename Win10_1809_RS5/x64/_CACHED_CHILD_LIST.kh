@@ -1,0 +1,10 @@
+typedef struct _CACHED_CHILD_LIST
+{
+  U32 Count;
+  union
+  {
+    U64 ValueList;
+    struct _CM_KEY_CONTROL_BLOCK* RealKcb;
+  }; 
+} CACHED_CHILD_LIST, *PCACHED_CHILD_LIST; 
+

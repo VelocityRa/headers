@@ -1,0 +1,10 @@
+typedef struct _NB10
+{
+  U32 Signature;
+  U32 Offset;
+  U32 TimeStamp;
+  U32 Age;
+  char PdbName[1];
+  char __PADDING__[3];
+} NB10, *PNB10; 
+

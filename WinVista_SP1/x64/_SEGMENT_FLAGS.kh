@@ -1,0 +1,19 @@
+typedef struct _SEGMENT_FLAGS
+{
+  struct 
+  {
+    U32 TotalNumberOfPtes4132 : 10; 
+    U32 ExtraSharedWowSubsections : 1; 
+    U32 LargePages : 1; 
+    U32 WatchProto : 1; 
+    U32 DebugSymbolsLoaded : 1; 
+    U32 WriteCombined : 1; 
+    U32 NoCache : 1; 
+    U32 FloppyMedia : 1; 
+    U32 DefaultProtectionMask : 5; 
+    U32 ContainsPxeSubsection : 1; 
+    U32 Binary32 : 1; 
+    U32 Spare : 8; 
+  }; 
+} SEGMENT_FLAGS, *PSEGMENT_FLAGS; 
+

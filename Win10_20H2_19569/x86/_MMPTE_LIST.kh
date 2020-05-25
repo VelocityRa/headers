@@ -1,0 +1,16 @@
+typedef struct _MMPTE_LIST
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 OneEntry : 1; 
+    U64 filler0 : 2; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 filler2 : 20; 
+    U64 NextEntry : 32; 
+  }; 
+} MMPTE_LIST, *PMMPTE_LIST; 
+

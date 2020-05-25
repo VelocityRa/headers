@@ -1,0 +1,24 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MM_PAGED_POOL_INFO
+{
+  struct _EX_PUSH_LOCK Lock;
+  U64 MaximumSize;
+  U64 AllocatedPagedPool;
+} MM_PAGED_POOL_INFO, *PMM_PAGED_POOL_INFO; 
+

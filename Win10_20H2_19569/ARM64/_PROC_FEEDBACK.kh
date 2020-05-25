@@ -1,0 +1,21 @@
+typedef struct _PROC_FEEDBACK
+{
+  U64 Lock;
+  U64 CyclesLast;
+  U64 CyclesActive;
+  struct _PROC_FEEDBACK_COUNTER* Counters[2];
+  U64 LastUpdateTime;
+  U64 UnscaledTime;
+  volatile S64 UnaccountedTime;
+  U64 ScaledTime[2];
+  U64 UnaccountedKernelTime;
+  U64 PerformanceScaledKernelTime;
+  U32 UserTimeLast;
+  U32 KernelTimeLast;
+  U64 IdleGenerationNumberLast;
+  U64 HvActiveTimeLast;
+  U8 KernelTimesIndex;
+  U8 CounterDiscardsIdleTime;
+  char __PADDING__[6];
+} PROC_FEEDBACK, *PPROC_FEEDBACK; 
+

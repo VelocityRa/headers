@@ -1,0 +1,8 @@
+typedef struct _BOOT_FIRMWARE_RAMDISK_INFO
+{
+  U32 Version;
+  U32 BlockSize;
+  U64 BaseAddress;
+  U64 Size;
+} BOOT_FIRMWARE_RAMDISK_INFO, *PBOOT_FIRMWARE_RAMDISK_INFO; 
+

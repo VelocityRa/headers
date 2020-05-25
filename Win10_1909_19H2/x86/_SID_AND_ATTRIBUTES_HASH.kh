@@ -1,0 +1,7 @@
+typedef struct _SID_AND_ATTRIBUTES_HASH
+{
+  U32 SidCount;
+  struct _SID_AND_ATTRIBUTES* SidAttr;
+  U32 Hash[32];
+} SID_AND_ATTRIBUTES_HASH, *PSID_AND_ATTRIBUTES_HASH; 
+

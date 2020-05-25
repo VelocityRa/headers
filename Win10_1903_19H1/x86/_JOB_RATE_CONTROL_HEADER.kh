@@ -1,0 +1,14 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _JOB_RATE_CONTROL_HEADER
+{
+  void* RateControlQuotaReference;
+  struct _RTL_BITMAP OverQuotaHistory;
+  U8* BitMapBuffer;
+  U32 BitMapBufferSize;
+} JOB_RATE_CONTROL_HEADER, *PJOB_RATE_CONTROL_HEADER; 
+

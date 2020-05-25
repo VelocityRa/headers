@@ -1,0 +1,27 @@
+typedef union _KLOCK_ENTRY_BOOST_BITMAP
+{
+  union
+  {
+    U32 AllFields;
+    struct 
+    {
+      U32 AllBoosts : 17; 
+      U32 Reserved : 15; 
+    }; 
+    struct
+    {
+      struct 
+      {
+        U16 CpuBoostsBitmap : 15; 
+        U16 IoBoost : 1; 
+      }; 
+      struct 
+      {
+        U16 IoQoSBoost : 1; 
+        U16 IoNormalPriorityWaiterCount : 8; 
+        U16 IoQoSWaiterCount : 7; 
+      }; 
+    }; 
+  }; 
+} KLOCK_ENTRY_BOOST_BITMAP, *PKLOCK_ENTRY_BOOST_BITMAP; 
+

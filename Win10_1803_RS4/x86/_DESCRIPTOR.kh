@@ -1,0 +1,7 @@
+typedef struct _DESCRIPTOR
+{
+  U16 Pad;
+  U16 Limit;
+  U32 Base;
+} DESCRIPTOR, *PDESCRIPTOR; 
+

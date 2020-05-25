@@ -1,0 +1,15 @@
+typedef struct _HANDLE_TABLE_ENTRY_INFO
+{
+  U32 AuditMask;
+} HANDLE_TABLE_ENTRY_INFO, *PHANDLE_TABLE_ENTRY_INFO; 
+
+typedef struct _OB_DUPLICATE_OBJECT_STATE
+{
+  struct _EPROCESS* SourceProcess;
+  void* SourceHandle;
+  void* Object;
+  U32 TargetAccess;
+  struct _HANDLE_TABLE_ENTRY_INFO ObjectInfo;
+  U32 HandleAttributes;
+} OB_DUPLICATE_OBJECT_STATE, *POB_DUPLICATE_OBJECT_STATE; 
+

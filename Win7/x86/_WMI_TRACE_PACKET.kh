@@ -1,0 +1,14 @@
+typedef struct _WMI_TRACE_PACKET
+{
+  U16 Size;
+  union
+  {
+    U16 HookId;
+    struct
+    {
+      U8 Type;
+      U8 Group;
+    }; 
+  }; 
+} WMI_TRACE_PACKET, *PWMI_TRACE_PACKET; 
+

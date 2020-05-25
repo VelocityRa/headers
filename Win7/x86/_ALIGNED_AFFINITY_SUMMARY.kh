@@ -1,0 +1,15 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _ALIGNED_AFFINITY_SUMMARY
+{
+  struct _KAFFINITY_EX CpuSet;
+  struct _KAFFINITY_EX SMTSet;
+  S32 __PADDING__[10];
+} ALIGNED_AFFINITY_SUMMARY, *PALIGNED_AFFINITY_SUMMARY; 
+

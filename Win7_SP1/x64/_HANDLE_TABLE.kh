@@ -1,0 +1,46 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _HANDLE_TABLE
+{
+  U64 TableCode;
+  struct _EPROCESS* QuotaProcess;
+  void* UniqueProcessId;
+  struct _EX_PUSH_LOCK HandleLock;
+  struct _LIST_ENTRY HandleTableList;
+  struct _EX_PUSH_LOCK HandleContentionEvent;
+  struct _HANDLE_TRACE_DEBUG_INFO* DebugInfo;
+  S32 ExtraInfoPages;
+  union
+  {
+    U32 Flags;
+    U8 StrictFIFO : 1; 
+  }; 
+  U32 FirstFreeHandle;
+  struct _HANDLE_TABLE_ENTRY* LastFreeHandleEntry;
+  U32 HandleCount;
+  U32 NextHandleNeedingPool;
+  U32 HandleCountHighWatermark;
+  S32 __PADDING__[1];
+} HANDLE_TABLE, *PHANDLE_TABLE; 
+

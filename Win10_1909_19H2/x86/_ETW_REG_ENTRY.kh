@@ -1,0 +1,52 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _ETW_REG_ENTRY
+{
+  struct _LIST_ENTRY RegList;
+  struct _LIST_ENTRY GroupRegList;
+  struct _ETW_GUID_ENTRY* GuidEntry;
+  struct _ETW_GUID_ENTRY* GroupEntry;
+  union
+  {
+    struct _ETW_REPLY_QUEUE* ReplyQueue;
+    struct _ETW_QUEUE_ENTRY* ReplySlot[4];
+    struct
+    {
+      void* Caller;
+      U32 SessionId;
+    }; 
+  }; 
+  union
+  {
+    struct _EPROCESS* Process;
+    void* CallbackContext;
+  }; 
+  void* Callback;
+  U16 Index;
+  union
+  {
+    U16 Flags;
+    struct 
+    {
+      U16 DbgKernelRegistration : 1; 
+      U16 DbgUserRegistration : 1; 
+      U16 DbgReplyRegistration : 1; 
+      U16 DbgClassicRegistration : 1; 
+      U16 DbgSessionSpaceRegistration : 1; 
+      U16 DbgModernRegistration : 1; 
+      U16 DbgClosed : 1; 
+      U16 DbgInserted : 1; 
+      U16 DbgWow64 : 1; 
+      U16 DbgUseDescriptorType : 1; 
+      U16 DbgDropProviderTraits : 1; 
+    }; 
+  }; 
+  U8 EnableMask;
+  U8 GroupEnableMask;
+  struct _ETW_PROVIDER_TRAITS* Traits;
+} ETW_REG_ENTRY, *PETW_REG_ENTRY; 
+

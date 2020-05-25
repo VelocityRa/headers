@@ -1,0 +1,29 @@
+typedef struct _WNF_STATE_NAME
+{
+  U32 Data[2];
+} WNF_STATE_NAME, *PWNF_STATE_NAME; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _WNF_TYPE_ID
+{
+  struct _GUID TypeId;
+} WNF_TYPE_ID, *PWNF_TYPE_ID; 
+
+typedef struct _WNF_DELIVERY_DESCRIPTOR
+{
+  U64 SubscriptionId;
+  struct _WNF_STATE_NAME StateName;
+  U32 ChangeStamp;
+  U32 StateDataSize;
+  U32 EventMask;
+  struct _WNF_TYPE_ID TypeId;
+  U32 StateDataOffset;
+} WNF_DELIVERY_DESCRIPTOR, *PWNF_DELIVERY_DESCRIPTOR; 
+

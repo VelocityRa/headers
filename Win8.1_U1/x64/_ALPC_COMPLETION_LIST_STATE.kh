@@ -1,0 +1,20 @@
+typedef struct _ALPC_COMPLETION_LIST_STATE
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U64 Head : 24; 
+          U64 Tail : 24; 
+          U64 ActiveThreadCount : 16; 
+        }; 
+      } s1;
+      S64 Value;
+    }; 
+  } u1;
+} ALPC_COMPLETION_LIST_STATE, *PALPC_COMPLETION_LIST_STATE; 
+

@@ -1,0 +1,14 @@
+typedef struct _ETW_BUFFER_CONTEXT
+{
+  union
+  {
+    struct
+    {
+      U8 ProcessorNumber;
+      U8 Alignment;
+    }; 
+    U16 ProcessorIndex;
+  }; 
+  U16 LoggerId;
+} ETW_BUFFER_CONTEXT, *PETW_BUFFER_CONTEXT; 
+

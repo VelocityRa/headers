@@ -1,0 +1,44 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_DYNAMIC_HASH_TABLE_ENTRY
+{
+  struct _LIST_ENTRY Linkage;
+  U32 Signature;
+} RTL_DYNAMIC_HASH_TABLE_ENTRY, *PRTL_DYNAMIC_HASH_TABLE_ENTRY; 
+
+typedef enum _SEP_CACHED_HANDLES_ENTRY_TYPE
+{
+  SepCachedHandlesEntryLowbox = 0,
+  SepCachedHandlesEntryBnoIsolation = 1,
+} SEP_CACHED_HANDLES_ENTRY_TYPE, *PSEP_CACHED_HANDLES_ENTRY_TYPE;
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _SEP_CACHED_HANDLES_ENTRY_DESCRIPTOR
+{
+  enum _SEP_CACHED_HANDLES_ENTRY_TYPE DescriptorType;
+  union
+  {
+    void* PackageSid;
+    struct _UNICODE_STRING IsolationPrefix;
+  }; 
+} SEP_CACHED_HANDLES_ENTRY_DESCRIPTOR, *PSEP_CACHED_HANDLES_ENTRY_DESCRIPTOR; 
+
+typedef struct _SEP_CACHED_HANDLES_ENTRY
+{
+  struct _RTL_DYNAMIC_HASH_TABLE_ENTRY HashEntry;
+  S32 ReferenceCount;
+  struct _SEP_CACHED_HANDLES_ENTRY_DESCRIPTOR EntryDescriptor;
+  U32 HandleCount;
+  void** Handles;
+} SEP_CACHED_HANDLES_ENTRY, *PSEP_CACHED_HANDLES_ENTRY; 
+

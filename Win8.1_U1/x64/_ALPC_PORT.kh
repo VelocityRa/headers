@@ -1,0 +1,158 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SECURITY_QUALITY_OF_SERVICE
+{
+  U32 Length;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  U8 ContextTrackingMode;
+  U8 EffectiveOnly;
+  char __PADDING__[2];
+} SECURITY_QUALITY_OF_SERVICE, *PSECURITY_QUALITY_OF_SERVICE; 
+
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _TOKEN_SOURCE
+{
+  char SourceName[8];
+  struct _LUID SourceIdentifier;
+} TOKEN_SOURCE, *PTOKEN_SOURCE; 
+
+typedef struct _TOKEN_CONTROL
+{
+  struct _LUID TokenId;
+  struct _LUID AuthenticationId;
+  struct _LUID ModifiedId;
+  struct _TOKEN_SOURCE TokenSource;
+} TOKEN_CONTROL, *PTOKEN_CONTROL; 
+
+typedef struct _SECURITY_CLIENT_CONTEXT
+{
+  struct _SECURITY_QUALITY_OF_SERVICE SecurityQos;
+  void* ClientToken;
+  U8 DirectlyAccessClientToken;
+  U8 DirectAccessEffectiveOnly;
+  U8 ServerIsRemote;
+  struct _TOKEN_CONTROL ClientTokenControl;
+  S32 __PADDING__[1];
+} SECURITY_CLIENT_CONTEXT, *PSECURITY_CLIENT_CONTEXT; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _ALPC_PORT_ATTRIBUTES
+{
+  U32 Flags;
+  struct _SECURITY_QUALITY_OF_SERVICE SecurityQos;
+  U64 MaxMessageLength;
+  U64 MemoryBandwidth;
+  U64 MaxPoolUsage;
+  U64 MaxSectionSize;
+  U64 MaxViewSize;
+  U64 MaxTotalSectionSize;
+  U32 DupObjectTypes;
+  U32 Reserved;
+} ALPC_PORT_ATTRIBUTES, *PALPC_PORT_ATTRIBUTES; 
+
+typedef struct _ALPC_PORT
+{
+  struct _LIST_ENTRY PortListEntry;
+  struct _ALPC_COMMUNICATION_INFO* CommunicationInfo;
+  struct _EPROCESS* OwnerProcess;
+  void* CompletionPort;
+  void* CompletionKey;
+  struct _ALPC_COMPLETION_PACKET_LOOKASIDE* CompletionPacketLookaside;
+  void* PortContext;
+  struct _SECURITY_CLIENT_CONTEXT StaticSecurity;
+  struct _EX_PUSH_LOCK IncomingQueueLock;
+  struct _LIST_ENTRY MainQueue;
+  struct _LIST_ENTRY LargeMessageQueue;
+  struct _EX_PUSH_LOCK PendingQueueLock;
+  struct _LIST_ENTRY PendingQueue;
+  struct _EX_PUSH_LOCK WaitQueueLock;
+  struct _LIST_ENTRY WaitQueue;
+  union
+  {
+    struct _KSEMAPHORE* Semaphore;
+    struct _KEVENT* DummyEvent;
+  }; 
+  struct _ALPC_PORT_ATTRIBUTES PortAttributes;
+  struct _EX_PUSH_LOCK ResourceListLock;
+  struct _LIST_ENTRY ResourceListHead;
+  struct _EX_PUSH_LOCK PortObjectLock;
+  struct _ALPC_COMPLETION_LIST* CompletionList;
+  struct _CALLBACK_OBJECT* CallbackObject;
+  void* CallbackContext;
+  struct _LIST_ENTRY CanceledQueue;
+  S32 SequenceNo;
+  S32 ReferenceNo;
+  struct _PALPC_PORT_REFERENCE_WAIT_BLOCK* ReferenceNoWait;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 Initialized : 1; 
+          U32 Type : 2; 
+          U32 ConnectionPending : 1; 
+          U32 ConnectionRefused : 1; 
+          U32 Disconnected : 1; 
+          U32 Closed : 1; 
+          U32 NoFlushOnClose : 1; 
+          U32 ReturnExtendedInfo : 1; 
+          U32 Waitable : 1; 
+          U32 DynamicSecurity : 1; 
+          U32 Wow64CompletionList : 1; 
+          U32 Lpc : 1; 
+          U32 LpcToLpc : 1; 
+          U32 HasCompletionList : 1; 
+          U32 HadCompletionList : 1; 
+          U32 EnableCompletionList : 1; 
+        }; 
+      } s1;
+      U32 State;
+    }; 
+  } u1;
+  struct _ALPC_PORT* TargetQueuePort;
+  struct _ALPC_PORT* TargetSequencePort;
+  struct _KALPC_MESSAGE* CachedMessage;
+  U32 MainQueueLength;
+  U32 LargeMessageQueueLength;
+  U32 PendingQueueLength;
+  U32 CanceledQueueLength;
+  U32 WaitQueueLength;
+  S32 __PADDING__[1];
+} ALPC_PORT, *PALPC_PORT; 
+

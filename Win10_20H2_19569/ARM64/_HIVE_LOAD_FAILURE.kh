@@ -1,0 +1,122 @@
+typedef enum _CM_LOAD_FAILURE_TYPE
+{
+  _None = 0,
+  _CmpCreateHive = 1,
+  _HvpBuildMap = 3,
+  _HvpBuildMapForLoaderHive = 4,
+  _HvpInitMap = 5,
+  _HvLoadHive = 6,
+  _HvpMapHiveImage = 7,
+  _HvpRecoverData = 8,
+  _CmpValidateHiveSecurityDescriptors = 9,
+  _HvpEnlistBinInMap = 10,
+  _CmCheckRegistry = 11,
+  _CmRegistryIO = 12,
+  _CmCheckRegistry2 = 13,
+  _CmpCheckKey = 14,
+  _CmpCheckValueList = 15,
+  _HvCheckHive = 16,
+  _HvCheckBin = 17,
+  _HvpGetLogEntryDirtyVector = 18,
+  _HvpReadLogEntryHeader = 19,
+  _HvpReadLogEntry = 20,
+  _CmpMountPreloadedHives = 21,
+  _CmpLoadHiveThread = 22,
+  _CmpCheckLeaf = 23,
+  _HvHiveStartFileBacked = 24,
+  _HvStartHiveMemoryBacked = 25,
+  _HvpEnlistFreeCells = 26,
+  _HvpPerformLogFileRecovery = 27,
+  _CmpInitHiveFromFile = 28,
+  _CmpLoadKeyCommon = 29,
+  _CmpLinkHiveToMaster = 30,
+  _CmLoadKey = 31,
+  _CmLoadAppKey = 32,
+  _CmpResolveHiveLoadConflict = 33,
+} CM_LOAD_FAILURE_TYPE, *PCM_LOAD_FAILURE_TYPE;
+
+typedef struct _CM_PARSE_DEBUG_INFO
+{
+  struct _CM_KEY_CONTROL_BLOCK* SymlinkCachedKcb;
+  struct _CM_KEY_CONTROL_BLOCK* StartingKcb;
+  struct _CM_KEY_CONTROL_BLOCK* KcbCacheResult;
+  struct _CM_KEY_CONTROL_BLOCK* WalkResult;
+  struct _CM_KEY_CONTROL_BLOCK* DeepestKcbFound;
+  U8 KcbCacheLevels;
+  U8 WalkLevels;
+  U8 FailureCount;
+  struct
+  {
+    S32 Status;
+    U32 Point;
+  } FailurePoints[4];
+  S32 __PADDING__[1];
+} CM_PARSE_DEBUG_INFO, *PCM_PARSE_DEBUG_INFO; 
+
+typedef struct _HIVE_LOAD_FAILURE
+{
+  struct _HHIVE* Hive;
+  U16 Index;
+  U16 RecoverableIndex;
+  struct
+  {
+    enum _CM_LOAD_FAILURE_TYPE Failure;
+    S32 Status;
+    U32 Point;
+  } Locations[8];
+  struct
+  {
+    enum _CM_LOAD_FAILURE_TYPE Failure;
+    S32 Status;
+    U32 Point;
+  } RecoverableLocations[8];
+  struct
+  {
+    U32 Action;
+    void* Handle;
+    S32 Status;
+    S32 __PADDING__[1];
+  } RegistryIO;
+  struct
+  {
+    void* CheckStack;
+  } CheckRegistry2;
+  struct
+  {
+    U32 Cell;
+    struct _CELL_DATA* CellPoint;
+    void* RootPoint;
+    U32 Index;
+    S32 __PADDING__[1];
+  } CheckKey;
+  struct
+  {
+    struct _CELL_DATA* List;
+    U32 Index;
+    U32 Cell;
+    struct _CELL_DATA* CellPoint;
+  } CheckValueList;
+  struct
+  {
+    U32 Space;
+    U32 MapPoint;
+    struct _HBIN* BinPoint;
+  } CheckHive;
+  struct
+  {
+    U32 Space;
+    U32 MapPoint;
+    struct _HBIN* BinPoint;
+  } CheckHive1;
+  struct
+  {
+    struct _HBIN* Bin;
+    struct _HCELL* CellPoint;
+  } CheckBin;
+  struct
+  {
+    U32 FileOffset;
+  } RecoverData;
+  struct _CM_PARSE_DEBUG_INFO LinkDebug;
+} HIVE_LOAD_FAILURE, *PHIVE_LOAD_FAILURE; 
+

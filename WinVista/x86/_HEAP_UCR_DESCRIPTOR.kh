@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _HEAP_UCR_DESCRIPTOR
+{
+  struct _LIST_ENTRY ListEntry;
+  struct _LIST_ENTRY SegmentEntry;
+  void* Address;
+  U32 Size;
+} HEAP_UCR_DESCRIPTOR, *PHEAP_UCR_DESCRIPTOR; 
+

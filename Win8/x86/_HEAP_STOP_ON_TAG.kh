@@ -1,0 +1,13 @@
+typedef struct _HEAP_STOP_ON_TAG
+{
+  union
+  {
+    U32 HeapAndTagIndex;
+    struct
+    {
+      U16 TagIndex;
+      U16 HeapIndex;
+    }; 
+  }; 
+} HEAP_STOP_ON_TAG, *PHEAP_STOP_ON_TAG; 
+

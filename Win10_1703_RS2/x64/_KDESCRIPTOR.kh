@@ -1,0 +1,7 @@
+typedef struct _KDESCRIPTOR
+{
+  U16 Pad[3];
+  U16 Limit;
+  void* Base;
+} KDESCRIPTOR, *PKDESCRIPTOR; 
+

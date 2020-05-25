@@ -1,0 +1,83 @@
+typedef struct _PROFILE_PARAMETER_BLOCK
+{
+  U16 Status;
+  U16 Reserved;
+  U16 DockingState;
+  U16 Capabilities;
+  U32 DockID;
+  U32 SerialNumber;
+} PROFILE_PARAMETER_BLOCK, *PPROFILE_PARAMETER_BLOCK; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef enum _TPM_BOOT_ENTROPY_RESULT_CODE
+{
+  TpmBootEntropyStructureUninitialized = 0,
+  TpmBootEntropyDisabledByPolicy = 1,
+  TpmBootEntropyNoTpmFound = 2,
+  TpmBootEntropyTpmError = 3,
+  TpmBootEntropySuccess = 4,
+} TPM_BOOT_ENTROPY_RESULT_CODE, *PTPM_BOOT_ENTROPY_RESULT_CODE;
+
+typedef struct _TPM_BOOT_ENTROPY_LDR_RESULT
+{
+  U64 Policy;
+  enum _TPM_BOOT_ENTROPY_RESULT_CODE ResultCode;
+  S32 ResultStatus;
+  U64 Time;
+  U32 EntropyLength;
+  U8 EntropyData[40];
+  S32 __PADDING__[1];
+} TPM_BOOT_ENTROPY_LDR_RESULT, *PTPM_BOOT_ENTROPY_LDR_RESULT; 
+
+typedef struct _LOADER_PARAMETER_EXTENSION
+{
+  U32 Size;
+  struct _PROFILE_PARAMETER_BLOCK Profile;
+  void* EmInfFileImage;
+  U32 EmInfFileSize;
+  void* TriageDumpBlock;
+  U64 LoaderPagesSpanned;
+  struct _HEADLESS_LOADER_BLOCK* HeadlessLoaderBlock;
+  struct _SMBIOS_TABLE_HEADER* SMBiosEPSHeader;
+  void* DrvDBImage;
+  U32 DrvDBSize;
+  struct _NETWORK_LOADER_BLOCK* NetworkLoaderBlock;
+  struct _LIST_ENTRY FirmwareDescriptorListHead;
+  void* AcpiTable;
+  U32 AcpiTableSize;
+  struct 
+  {
+    U32 LastBootSucceeded : 1; 
+    U32 LastBootShutdown : 1; 
+    U32 IoPortAccessSupported : 1; 
+    U32 Reserved : 29; 
+  }; 
+  struct _LOADER_PERFORMANCE_DATA* LoaderPerformanceData;
+  struct _LIST_ENTRY BootApplicationPersistentData;
+  void* WmdTestResult;
+  struct _GUID BootIdentifier;
+  U32 ResumePages;
+  void* DumpHeader;
+  void* BgContext;
+  void* NumaLocalityInfo;
+  void* NumaGroupAssignment;
+  struct _LIST_ENTRY AttachedHives;
+  U32 MemoryCachingRequirementsCount;
+  void* MemoryCachingRequirements;
+  struct _TPM_BOOT_ENTROPY_LDR_RESULT TpmBootEntropyResult;
+  U64 ProcessorCounterFrequency;
+} LOADER_PARAMETER_EXTENSION, *PLOADER_PARAMETER_EXTENSION; 
+

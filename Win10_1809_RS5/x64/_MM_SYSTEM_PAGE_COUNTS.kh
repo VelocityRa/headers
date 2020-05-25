@@ -1,0 +1,8 @@
+typedef struct _MM_SYSTEM_PAGE_COUNTS
+{
+  U32 SystemCodePage;
+  U32 SystemDriverPage;
+  S32 TotalSystemCodePages;
+  S32 TotalSystemDriverPages;
+} MM_SYSTEM_PAGE_COUNTS, *PMM_SYSTEM_PAGE_COUNTS; 
+

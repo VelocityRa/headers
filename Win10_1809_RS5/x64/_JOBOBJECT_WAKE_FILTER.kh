@@ -1,0 +1,6 @@
+typedef struct _JOBOBJECT_WAKE_FILTER
+{
+  U32 HighEdgeFilter;
+  U32 LowEdgeFilter;
+} JOBOBJECT_WAKE_FILTER, *PJOBOBJECT_WAKE_FILTER; 
+

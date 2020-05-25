@@ -1,0 +1,6 @@
+typedef struct _TEB_ACTIVE_FRAME_CONTEXT
+{
+  U32 Flags;
+  const char* FrameName;
+} TEB_ACTIVE_FRAME_CONTEXT, *PTEB_ACTIVE_FRAME_CONTEXT; 
+

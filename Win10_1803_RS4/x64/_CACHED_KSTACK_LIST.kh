@@ -1,0 +1,34 @@
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _CACHED_KSTACK_LIST
+{
+  union _SLIST_HEADER SListHead;
+  S32 MinimumFree;
+  U32 Misses;
+  U32 MissesLast;
+  U32 AllStacksInUse;
+} CACHED_KSTACK_LIST, *PCACHED_KSTACK_LIST; 
+

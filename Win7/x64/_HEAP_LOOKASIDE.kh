@@ -1,0 +1,72 @@
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 9; 
+        U64 NextEntry : 39; 
+      }; 
+      struct 
+      {
+        U64 HeaderType : 1; 
+        U64 Init : 1; 
+        U64 Reserved : 59; 
+        U64 Region : 3; 
+      }; 
+    } Header8;
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 HeaderType : 1; 
+        U64 Init : 1; 
+        U64 Reserved : 2; 
+        U64 NextEntry : 60; 
+      }; 
+    } Header16;
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 HeaderType : 1; 
+        U64 Reserved : 3; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _HEAP_LOOKASIDE
+{
+  union _SLIST_HEADER ListHead;
+  U16 Depth;
+  U16 MaximumDepth;
+  U32 TotalAllocates;
+  U32 AllocateMisses;
+  U32 TotalFrees;
+  U32 FreeMisses;
+  U32 LastTotalAllocates;
+  U32 LastAllocateMisses;
+  U32 Counters[2];
+  S32 __PADDING__[3];
+} HEAP_LOOKASIDE, *PHEAP_LOOKASIDE; 
+

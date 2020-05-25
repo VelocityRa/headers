@@ -1,0 +1,200 @@
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  NonPagedPoolExecute = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolBase = 0,
+  NonPagedPoolBaseMustSucceed = 2,
+  NonPagedPoolBaseCacheAligned = 4,
+  NonPagedPoolBaseCacheAlignedMustS = 6,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+  NonPagedPoolNx = 512,
+  NonPagedPoolNxCacheAligned = 516,
+  NonPagedPoolSessionNx = 544,
+} POOL_TYPE, *PPOOL_TYPE;
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _GENERAL_LOOKASIDE
+{
+  union
+  {
+    union _SLIST_HEADER ListHead;
+    struct _SINGLE_LIST_ENTRY SingleListHead;
+  }; 
+  U16 Depth;
+  U16 MaximumDepth;
+  U32 TotalAllocates;
+  union
+  {
+    U32 AllocateMisses;
+    U32 AllocateHits;
+  }; 
+  U32 TotalFrees;
+  union
+  {
+    U32 FreeMisses;
+    U32 FreeHits;
+  }; 
+  enum _POOL_TYPE Type;
+  U32 Tag;
+  U32 Size;
+  union
+  {
+    void* AllocateEx;
+    void* Allocate;
+  }; 
+  union
+  {
+    void* FreeEx;
+    void* Free;
+  }; 
+  struct _LIST_ENTRY ListEntry;
+  U32 LastTotalAllocates;
+  union
+  {
+    U32 LastAllocateMisses;
+    U32 LastAllocateHits;
+  }; 
+  U32 Future[2];
+  S32 __PADDING__[8];
+} GENERAL_LOOKASIDE, *PGENERAL_LOOKASIDE; 
+
+typedef struct _NPAGED_LOOKASIDE_LIST
+{
+  struct _GENERAL_LOOKASIDE L;
+} NPAGED_LOOKASIDE_LIST, *PNPAGED_LOOKASIDE_LIST; 
+
+typedef struct _RTL_BITMAP_EX
+{
+  U64 SizeOfBitMap;
+  U64* Buffer;
+} RTL_BITMAP_EX, *PRTL_BITMAP_EX; 
+
+typedef enum _MI_SYSTEM_VA_TYPE
+{
+  MiVaUnused = 0,
+  MiVaSessionSpace = 1,
+  MiVaProcessSpace = 2,
+  MiVaBootLoaded = 3,
+  MiVaPfnDatabase = 4,
+  MiVaNonPagedPool = 5,
+  MiVaPagedPool = 6,
+  MiVaSpecialPoolPaged = 7,
+  MiVaSystemCache = 8,
+  MiVaSystemPtes = 9,
+  MiVaHal = 10,
+  MiVaSessionGlobalSpace = 11,
+  MiVaDriverImages = 12,
+  MiVaSpecialPoolNonPaged = 13,
+  MiVaSystemPtesLarge = 14,
+  MiVaKernelStacks = 15,
+  MiVaMaximumType = 16,
+} MI_SYSTEM_VA_TYPE, *PMI_SYSTEM_VA_TYPE;
+
+typedef struct _MI_SYSTEM_PTE_TYPE
+{
+  struct _RTL_BITMAP_EX Bitmap;
+  struct _MMPTE* BasePte;
+  U32 Flags;
+  enum _MI_SYSTEM_VA_TYPE VaType;
+  U32* FailureCount;
+  U32 PteFailures;
+  union
+  {
+    U64 SpinLock;
+    struct _EX_PUSH_LOCK* GlobalPushLock;
+  }; 
+  volatile U64 TotalSystemPtes;
+  U64 Hint;
+  U64 LowestBitEverAllocated;
+  volatile struct _MI_CACHED_PTES* CachedPtes;
+  volatile U64 TotalFreeSystemPtes;
+} MI_SYSTEM_PTE_TYPE, *PMI_SYSTEM_PTE_TYPE; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MI_ULTRA_VA_CONTEXT
+{
+  U64 Lock;
+  void* ZeroMapping;
+  U64 AllocationHintBit;
+  struct _RTL_BITMAP_EX Bitmap[2];
+  volatile S32 ConcurrencyMaximum;
+  volatile S32 ConcurrencyCount;
+} MI_ULTRA_VA_CONTEXT, *PMI_ULTRA_VA_CONTEXT; 
+
+typedef struct _MI_SYSTEM_PTE_STATE
+{
+  struct _NPAGED_LOOKASIDE_LIST MdlTrackerLookaside;
+  union _SLIST_HEADER DeadPteTrackerSListHead;
+  U64 PteTrackerLock;
+  struct _RTL_BITMAP_EX PteTrackingBitmap;
+  volatile struct _MI_CACHED_PTES* CachedPteHeads;
+  volatile struct _MI_CACHED_PTES* CachedKernelStackPteHeads;
+  struct _MI_SYSTEM_PTE_TYPE SystemViewPteInfo;
+  struct _MI_SYSTEM_PTE_TYPE KernelStackPteInfo;
+  U32 StackGrowthFailures;
+  U8 KernelStackPages;
+  U8 TrackPtesAborted;
+  U8 AdjustCounter;
+  volatile S32 ReservedMappingLock;
+  struct _RTL_AVL_TREE ReservedMappingTree;
+  struct _MMPFN* ReservedMappingPageTablePfns;
+  struct _RTL_AVL_TREE OutswappedKernelStackRoot;
+  volatile S32 OutswappedKernelStackLock;
+  struct _MI_ULTRA_VA_CONTEXT UltraSpaceContext;
+  U32 NumberOfUltraMdlMaps;
+  struct _MI_ULTRA_MDL_NODE* UltraMdlNodeMappings;
+  S32 __PADDING__[2];
+} MI_SYSTEM_PTE_STATE, *PMI_SYSTEM_PTE_STATE; 
+

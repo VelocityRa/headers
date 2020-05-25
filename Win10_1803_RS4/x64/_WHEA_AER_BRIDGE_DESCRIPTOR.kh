@@ -1,0 +1,57 @@
+typedef struct _WHEA_PCI_SLOT_NUMBER
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 DeviceNumber : 5; 
+          U32 FunctionNumber : 3; 
+          U32 Reserved : 24; 
+        }; 
+      } bits;
+      U32 AsULONG;
+    }; 
+  } u;
+} WHEA_PCI_SLOT_NUMBER, *PWHEA_PCI_SLOT_NUMBER; 
+
+typedef union _AER_BRIDGE_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 UncorrectableErrorMaskRW : 1; 
+      U16 UncorrectableErrorSeverityRW : 1; 
+      U16 CorrectableErrorMaskRW : 1; 
+      U16 AdvancedCapsAndControlRW : 1; 
+      U16 SecondaryUncorrectableErrorMaskRW : 1; 
+      U16 SecondaryUncorrectableErrorSevRW : 1; 
+      U16 SecondaryCapsAndControlRW : 1; 
+      U16 Reserved : 9; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} AER_BRIDGE_DESCRIPTOR_FLAGS, *PAER_BRIDGE_DESCRIPTOR_FLAGS; 
+
+typedef struct _WHEA_AER_BRIDGE_DESCRIPTOR
+{
+  U16 Type;
+  U8 Enabled;
+  U8 Reserved;
+  U32 BusNumber;
+  struct _WHEA_PCI_SLOT_NUMBER Slot;
+  U16 DeviceControl;
+  union _AER_BRIDGE_DESCRIPTOR_FLAGS Flags;
+  U32 UncorrectableErrorMask;
+  U32 UncorrectableErrorSeverity;
+  U32 CorrectableErrorMask;
+  U32 AdvancedCapsAndControl;
+  U32 SecondaryUncorrectableErrorMask;
+  U32 SecondaryUncorrectableErrorSev;
+  U32 SecondaryCapsAndControl;
+} WHEA_AER_BRIDGE_DESCRIPTOR, *PWHEA_AER_BRIDGE_DESCRIPTOR; 
+

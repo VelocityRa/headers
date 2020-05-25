@@ -1,0 +1,44 @@
+typedef enum _PEP_ACPI_RESOURCE_TYPE
+{
+  PepAcpiMemory = 0,
+  PepAcpiIoPort = 1,
+  PepAcpiInterrupt = 2,
+  PepAcpiGpioIo = 3,
+  PepAcpiGpioInt = 4,
+  PepAcpiSpbI2c = 5,
+  PepAcpiSpbSpi = 6,
+  PepAcpiSpbUart = 7,
+  PepAcpiExtendedMemory = 8,
+  PepAcpiExtendedIo = 9,
+} PEP_ACPI_RESOURCE_TYPE, *PPEP_ACPI_RESOURCE_TYPE;
+
+typedef union _PEP_ACPI_RESOURCE_FLAGS
+{
+  union
+  {
+    U32 AsULong;
+    struct 
+    {
+      U32 Shared : 1; 
+      U32 Wake : 1; 
+      U32 ResourceUsage : 1; 
+      U32 SlaveMode : 1; 
+      U32 AddressingMode : 1; 
+      U32 SharedMode : 1; 
+      U32 Reserved : 26; 
+    }; 
+  }; 
+} PEP_ACPI_RESOURCE_FLAGS, *PPEP_ACPI_RESOURCE_FLAGS; 
+
+typedef struct _PEP_ACPI_SPB_RESOURCE
+{
+  enum _PEP_ACPI_RESOURCE_TYPE Type;
+  union _PEP_ACPI_RESOURCE_FLAGS Flags;
+  U16 TypeSpecificFlags;
+  U8 ResourceSourceIndex;
+  struct _UNICODE_STRING* ResourceSourceName;
+  char* VendorData;
+  U16 VendorDataLength;
+  char __PADDING__[2];
+} PEP_ACPI_SPB_RESOURCE, *PPEP_ACPI_SPB_RESOURCE; 
+

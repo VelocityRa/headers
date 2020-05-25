@@ -1,0 +1,14 @@
+typedef struct _MMPTE_SUBSECTION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Unused0 : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Unused1 : 4; 
+    U64 ExecutePrivilege : 1; 
+    S64 SubsectionAddress : 48; 
+  }; 
+} MMPTE_SUBSECTION, *PMMPTE_SUBSECTION; 
+

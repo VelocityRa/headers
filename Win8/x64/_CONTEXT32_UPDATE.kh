@@ -1,0 +1,5 @@
+typedef struct _CONTEXT32_UPDATE
+{
+  U32 NumberEntries;
+} CONTEXT32_UPDATE, *PCONTEXT32_UPDATE; 
+

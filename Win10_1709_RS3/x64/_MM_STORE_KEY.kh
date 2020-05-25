@@ -1,0 +1,13 @@
+typedef union _MM_STORE_KEY
+{
+  union
+  {
+    struct 
+    {
+      U64 KeyLow : 60; 
+      U64 KeyHigh : 4; 
+    }; 
+    U64 EntireKey;
+  }; 
+} MM_STORE_KEY, *PMM_STORE_KEY; 
+

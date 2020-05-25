@@ -1,0 +1,10 @@
+typedef struct _HEAP_LFH_FAST_REF
+{
+  union
+  {
+    void* Target;
+    U32 Value;
+    U32 RefCount : 12; 
+  }; 
+} HEAP_LFH_FAST_REF, *PHEAP_LFH_FAST_REF; 
+

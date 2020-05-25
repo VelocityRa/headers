@@ -1,0 +1,6 @@
+typedef struct _CM_CELL_REMAP_BLOCK
+{
+  U32 OldCell;
+  U32 NewCell;
+} CM_CELL_REMAP_BLOCK, *PCM_CELL_REMAP_BLOCK; 
+

@@ -1,0 +1,16 @@
+typedef struct _EVENT_DATA_DESCRIPTOR
+{
+  U64 Ptr;
+  U32 Size;
+  union
+  {
+    U32 Reserved;
+    struct
+    {
+      U8 Type;
+      U8 Reserved1;
+      U16 Reserved2;
+    }; 
+  }; 
+} EVENT_DATA_DESCRIPTOR, *PEVENT_DATA_DESCRIPTOR; 
+

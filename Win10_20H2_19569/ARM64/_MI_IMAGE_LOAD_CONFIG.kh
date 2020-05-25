@@ -1,0 +1,9 @@
+typedef struct _MI_IMAGE_LOAD_CONFIG
+{
+  U32 Flags;
+  U16 CfgAlignmentBias;
+  U16 MachineType;
+  struct _RTL_RVA_LIST* RvaList;
+  void* ConditionalFixups;
+} MI_IMAGE_LOAD_CONFIG, *PMI_IMAGE_LOAD_CONFIG; 
+

@@ -1,0 +1,14 @@
+typedef struct _ETW_FILTER_HEADER
+{
+  S32 FilterFlags;
+  struct _ETW_FILTER_PID* PidFilter;
+  struct _ETW_FILTER_STRING_TOKEN* ExeFilter;
+  struct _ETW_FILTER_STRING_TOKEN* PkgIdFilter;
+  struct _ETW_FILTER_STRING_TOKEN* PkgAppIdFilter;
+  struct _ETW_PERFECT_HASH_FUNCTION* StackWalkFilter;
+  struct _ETW_PERFECT_HASH_FUNCTION* EventIdFilter;
+  struct _ETW_PAYLOAD_FILTER* PayloadFilter;
+  struct _EVENT_FILTER_HEADER* ProviderSideFilter;
+  struct _ETW_FILTER_EVENT_NAME_DATA* EventNameFilter;
+} ETW_FILTER_HEADER, *PETW_FILTER_HEADER; 
+

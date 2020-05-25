@@ -1,0 +1,9 @@
+typedef struct _HVIEW_MAP_PIN_LOG_ENTRY
+{
+  U32 ViewOffset;
+  U8 Pinned;
+  U64 PinMask;
+  struct _KTHREAD* Thread;
+  void* Stack[6];
+} HVIEW_MAP_PIN_LOG_ENTRY, *PHVIEW_MAP_PIN_LOG_ENTRY; 
+

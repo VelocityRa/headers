@@ -1,0 +1,10 @@
+typedef struct _ALPC_MESSAGE_ZONE
+{
+  struct _MDL* Mdl;
+  void* UserVa;
+  void* UserLimit;
+  void* SystemVa;
+  void* SystemLimit;
+  U32 Size;
+} ALPC_MESSAGE_ZONE, *PALPC_MESSAGE_ZONE; 
+

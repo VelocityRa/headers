@@ -1,0 +1,11 @@
+typedef struct _POOL_TRACKER_TABLE
+{
+  volatile S32 Key;
+  volatile S32 NonPagedAllocs;
+  volatile S32 NonPagedFrees;
+  U32 NonPagedBytes;
+  U32 PagedAllocs;
+  U32 PagedFrees;
+  U32 PagedBytes;
+} POOL_TRACKER_TABLE, *PPOOL_TRACKER_TABLE; 
+

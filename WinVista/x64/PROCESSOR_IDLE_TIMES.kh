@@ -1,0 +1,7 @@
+struct PROCESSOR_IDLE_TIMES
+{
+  U64 StartTime;
+  U64 EndTime;
+  U32 Reserved[4];
+}; 
+

@@ -1,0 +1,81 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PPM_VETO_ACCOUNTING
+{
+  volatile S32 VetoPresent;
+  struct _LIST_ENTRY VetoListHead;
+  U8 CsAccountingBlocks;
+  U8 BlocksDrips;
+  U32 PreallocatedVetoCount;
+  struct _PPM_VETO_ENTRY* PreallocatedVetoList;
+} PPM_VETO_ACCOUNTING, *PPPM_VETO_ACCOUNTING; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[20];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef union _PPM_COORDINATED_SYNCHRONIZATION
+{
+  union
+  {
+    S32 AsLong;
+    struct 
+    {
+      U32 EnterProcessor : 12; 
+      U32 ExitProcessor : 12; 
+      U32 Transition : 2; 
+      U32 Entered : 1; 
+      U32 EntryPriority : 5; 
+    }; 
+  }; 
+} PPM_COORDINATED_SYNCHRONIZATION, *PPPM_COORDINATED_SYNCHRONIZATION; 
+
+typedef struct _PPM_PLATFORM_STATE
+{
+  U32 Latency;
+  U32 BreakEvenDuration;
+  struct _PPM_VETO_ACCOUNTING VetoAccounting;
+  U8 TransitionDebugger;
+  U8 Platform;
+  U32 DependencyListCount;
+  struct _KAFFINITY_EX Processors;
+  struct _UNICODE_STRING Name;
+  struct _PPM_SELECTION_DEPENDENCY* DependencyLists;
+  volatile union _PPM_COORDINATED_SYNCHRONIZATION Synchronization;
+  volatile U64 EnterTime;
+  union
+  {
+    volatile S32 RefCount;
+    U8 CacheAlign0[64];
+  }; 
+} PPM_PLATFORM_STATE, *PPPM_PLATFORM_STATE; 
+
+typedef struct _PPM_PLATFORM_STATES
+{
+  U32 StateCount;
+  U32 InterfaceVersion;
+  U32 ProcessorCount;
+  U8 CoordinatedInterface;
+  void* IdleTest;
+  void* IdlePreExecute;
+  void* IdleComplete;
+  void* QueryPlatformStateResidency;
+  struct _PLATFORM_IDLE_ACCOUNTING* Accounting;
+  struct _PPM_PLATFORM_STATE State[1];
+} PPM_PLATFORM_STATES, *PPPM_PLATFORM_STATES; 
+

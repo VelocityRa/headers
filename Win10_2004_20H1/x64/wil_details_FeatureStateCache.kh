@@ -1,0 +1,26 @@
+union wil_details_FeatureStateCache
+{
+  union
+  {
+    U32 exchange;
+    struct
+    {
+      struct 
+      {
+        U32 stateCached : 1; 
+        U32 hasNotificationCached : 1; 
+        U32 variantCached : 1; 
+        U32 effectiveState : 1; 
+        U32 desiredState : 1; 
+        U32 reservedForKernelModeSupport : 2; 
+        U32 hasNotification : 1; 
+        U32 isVariant : 1; 
+        U32 variant : 6; 
+        U32 unused : 17; 
+      }; 
+      U32 payloadId;
+    }; 
+    U64 exchange64;
+  }; 
+}; 
+

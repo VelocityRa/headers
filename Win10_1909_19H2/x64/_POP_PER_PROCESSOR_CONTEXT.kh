@@ -1,0 +1,19 @@
+typedef struct _POP_PER_PROCESSOR_CONTEXT
+{
+  U8* UncompressedData;
+  void* MappingVa;
+  void* XpressEncodeWorkspace;
+  U8* CompressedDataBuffer;
+  U64 CopyTicks;
+  U64 CompressTicks;
+  U64 BytesCopied;
+  U64 PagesProcessed;
+  U64 DecompressTicks;
+  U64 ResumeCopyTicks;
+  U64 SharedBufferTicks;
+  U64 DecompressTicksByMethod[2];
+  U64 DecompressSizeByMethod[2];
+  U32 CompressCount;
+  U32 HuffCompressCount;
+} POP_PER_PROCESSOR_CONTEXT, *PPOP_PER_PROCESSOR_CONTEXT; 
+

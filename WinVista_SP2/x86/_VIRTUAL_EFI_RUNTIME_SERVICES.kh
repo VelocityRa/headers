@@ -1,0 +1,18 @@
+typedef struct _VIRTUAL_EFI_RUNTIME_SERVICES
+{
+  U32 GetTime;
+  U32 SetTime;
+  U32 GetWakeupTime;
+  U32 SetWakeupTime;
+  U32 SetVirtualAddressMap;
+  U32 ConvertPointer;
+  U32 GetVariable;
+  U32 GetNextVariableName;
+  U32 SetVariable;
+  U32 GetNextHighMonotonicCount;
+  U32 ResetSystem;
+  U32 UpdateCapsule;
+  U32 QueryCapsuleCapabilities;
+  U32 QueryVariableInfo;
+} VIRTUAL_EFI_RUNTIME_SERVICES, *PVIRTUAL_EFI_RUNTIME_SERVICES; 
+

@@ -1,0 +1,13 @@
+typedef struct _SLIST_ENTRY
+{
+  struct _SLIST_ENTRY* Next;
+  S32 __PADDING__[2];
+} SLIST_ENTRY, *PSLIST_ENTRY; 
+
+typedef struct _NBQUEUE_BLOCK
+{
+  struct _SLIST_ENTRY SListEntry;
+  U64 Next;
+  U64 Data;
+} NBQUEUE_BLOCK, *PNBQUEUE_BLOCK; 
+

@@ -1,0 +1,100 @@
+typedef struct _GROUP_AFFINITY
+{
+  U32 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+
+typedef struct _flags
+{
+  struct 
+  {
+    U8 Removable : 1; 
+    U8 GroupAssigned : 1; 
+    U8 GroupCommitted : 1; 
+    U8 GroupAssignmentFixed : 1; 
+    U8 ProcessorOnly : 1; 
+    U8 Fill : 3; 
+  }; 
+} flags, *Pflags; 
+
+typedef struct _KHETERO_PROCESSOR_SET
+{
+  U32 IdealMask;
+  U32 PreferredMask;
+  U32 AvailableMask;
+} KHETERO_PROCESSOR_SET, *PKHETERO_PROCESSOR_SET; 
+
+typedef union _KQOS_GROUPING_SETS
+{
+  union
+  {
+    struct
+    {
+      U32 SingleCoreSet;
+      U32 SmtSet;
+    }; 
+    S64 QosGroupingMasks;
+  }; 
+} KQOS_GROUPING_SETS, *PKQOS_GROUPING_SETS; 
+
+typedef struct _KNODE
+{
+  U32 IdleNonParkedCpuSet;
+  U32 IdleSmtSet;
+  U32 IdleCpuSet;
+  U32 DeepIdleSet;
+  U32 IdleConstrainedSet;
+  U32 NonParkedSet;
+  U32 SoftParkedSet;
+  U32 NonIsrTargetedSet;
+  S32 ParkLock;
+  U16 ThreadSeed;
+  U16 ProcessSeed;
+  U32 SiblingMask;
+  union
+  {
+    struct _GROUP_AFFINITY Affinity;
+    struct
+    {
+      U8 AffinityFill[6];
+      U16 NodeNumber;
+      U16 PrimaryNodeNumber;
+      U16 Spare0;
+    }; 
+  }; 
+  U32 SharedReadyQueueMask;
+  U32 StrideMask;
+  U32 ProximityId;
+  U32 Lowest;
+  U32 Highest;
+  U8 MaximumProcessors;
+  struct _flags Flags;
+  U8 Spare10;
+  struct _KHETERO_PROCESSOR_SET HeteroSets[5];
+  U32 PpmConfiguredQosSets[4];
+  union _KQOS_GROUPING_SETS QosGroupingSets;
+  U32 LLCLeaders;
+  S32 __PADDING__[15];
+} KNODE, *PKNODE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _ENODE
+{
+  struct _KNODE Ncb;
+  struct _WORK_QUEUE_ITEM HotAddProcessorWorkItem;
+  S32 __PADDING__[12];
+} ENODE, *PENODE; 
+

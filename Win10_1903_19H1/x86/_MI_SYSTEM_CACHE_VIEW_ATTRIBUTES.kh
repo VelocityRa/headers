@@ -1,0 +1,10 @@
+typedef struct _MI_SYSTEM_CACHE_VIEW_ATTRIBUTES
+{
+  struct 
+  {
+    U64 NumberOfPtes : 6; 
+    U64 PartitionId : 10; 
+    U64 SectionOffset : 48; 
+  }; 
+} MI_SYSTEM_CACHE_VIEW_ATTRIBUTES, *PMI_SYSTEM_CACHE_VIEW_ATTRIBUTES; 
+

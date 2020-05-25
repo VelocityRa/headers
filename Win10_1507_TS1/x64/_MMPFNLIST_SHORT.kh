@@ -1,0 +1,7 @@
+typedef struct _MMPFNLIST_SHORT
+{
+  U64 Total;
+  U64 Flink;
+  U64 Blink;
+} MMPFNLIST_SHORT, *PMMPFNLIST_SHORT; 
+

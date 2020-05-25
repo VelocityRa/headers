@@ -1,0 +1,47 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef enum _MM_PAGE_ACCESS_TYPE
+{
+  MmPteAccessType = 0,
+  MmCcReadAheadType = 1,
+  MmPfnRepurposeType = 2,
+  MmMaximumPageAccessType = 3,
+} MM_PAGE_ACCESS_TYPE, *PMM_PAGE_ACCESS_TYPE;
+
+typedef struct _MM_PAGE_ACCESS_INFO_HEADER
+{
+  struct _SINGLE_LIST_ENTRY Link;
+  enum _MM_PAGE_ACCESS_TYPE Type;
+  union
+  {
+    U32 EmptySequenceNumber;
+    U32 CurrentFileIndex;
+  }; 
+  U64 CreateTime;
+  union
+  {
+    U64 EmptyTime;
+    struct _MM_PAGE_ACCESS_INFO* TempEntry;
+  }; 
+  union
+  {
+    struct
+    {
+      struct _MM_PAGE_ACCESS_INFO* PageEntry;
+      U64* FileEntry;
+      U64* FirstFileEntry;
+      struct _EPROCESS* Process;
+      U32 SessionId;
+    }; 
+    struct
+    {
+      U64* PageFrameEntry;
+      U64* LastPageFrameEntry;
+      S32 __PADDING__[6];
+    }; 
+  }; 
+} MM_PAGE_ACCESS_INFO_HEADER, *PMM_PAGE_ACCESS_INFO_HEADER; 
+

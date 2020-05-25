@@ -1,0 +1,279 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MMSUBSECTION_FLAGS
+{
+  struct 
+  {
+    U16 SubsectionAccessed : 1; 
+    U16 Protection : 5; 
+    U16 StartingSector4132 : 10; 
+  }; 
+  struct 
+  {
+    U16 SubsectionStatic : 1; 
+    U16 GlobalMemory : 1; 
+    U16 DirtyPages : 1; 
+    U16 OnDereferenceList : 1; 
+    U16 SectorEndOffset : 12; 
+  }; 
+} MMSUBSECTION_FLAGS, *PMMSUBSECTION_FLAGS; 
+
+typedef struct _SUBSECTION
+{
+  struct _CONTROL_AREA* ControlArea;
+  struct _MMPTE* SubsectionBase;
+  struct _SUBSECTION* NextSubsection;
+  union
+  {
+    struct _MI_FILE_EXTENTS* FileExtents;
+    struct _RTL_AVL_TREE GlobalPerSessionHead;
+    struct _MI_PER_SESSION_PROTOS* SessionDriverProtos;
+  }; 
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSUBSECTION_FLAGS SubsectionFlags;
+    }; 
+  } u;
+  U32 StartingSector;
+  U32 NumberOfFullSectors;
+  U32 PtesInSubsection;
+  union
+  {
+    U32 NumberOfChildViews;
+  } u1;
+  union
+  {
+    U32 UnusedPtes;
+    U32 AlignmentNoAccessPtes;
+  }; 
+} SUBSECTION, *PSUBSECTION; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MSUBSECTION
+{
+  struct _SUBSECTION Core;
+  struct _RTL_BALANCED_NODE SubsectionNode;
+  struct _LIST_ENTRY DereferenceList;
+  U64 NumberOfMappedViews;
+  U64 NumberOfPfnReferences;
+} MSUBSECTION, *PMSUBSECTION; 
+
+typedef struct _MMSECTION_FLAGS
+{
+  struct 
+  {
+    U32 BeingDeleted : 1; 
+    U32 BeingCreated : 1; 
+    U32 BeingPurged : 1; 
+    U32 NoModifiedWriting : 1; 
+    U32 FailAllIo : 1; 
+    U32 Image : 1; 
+    U32 Based : 1; 
+    U32 File : 1; 
+    U32 AttemptingDelete : 1; 
+    U32 PrefetchCreated : 1; 
+    U32 PhysicalMemory : 1; 
+    U32 CopyOnWrite : 1; 
+    U32 Reserve : 1; 
+    U32 Commit : 1; 
+    U32 NoChange : 1; 
+    U32 WasPurged : 1; 
+    U32 UserReference : 1; 
+    U32 GlobalMemory : 1; 
+    U32 DeleteOnClose : 1; 
+    U32 FilePointerNull : 1; 
+    U32 PreferredNode : 6; 
+    U32 GlobalOnlyPerSession : 1; 
+    U32 UserWritable : 1; 
+    U32 SystemVaAllocated : 1; 
+    U32 PreferredFsCompressionBoundary : 1; 
+    U32 UsingFileExtents : 1; 
+    U32 Spare : 1; 
+  }; 
+} MMSECTION_FLAGS, *PMMSECTION_FLAGS; 
+
+typedef struct _MMSECTION_FLAGS2
+{
+  struct 
+  {
+    U32 PartitionId : 10; 
+    U32 NumberOfChildViews : 22; 
+  }; 
+} MMSECTION_FLAGS2, *PMMSECTION_FLAGS2; 
+
+typedef struct _EX_FAST_REF
+{
+  union
+  {
+    void* Object;
+    U64 RefCnt : 4; 
+    U64 Value;
+  }; 
+} EX_FAST_REF, *PEX_FAST_REF; 
+
+typedef struct _CONTROL_AREA
+{
+  struct _SEGMENT* Segment;
+  struct _LIST_ENTRY ListHead;
+  U64 NumberOfSectionReferences;
+  U64 NumberOfPfnReferences;
+  U64 NumberOfMappedViews;
+  U64 NumberOfUserReferences;
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSECTION_FLAGS Flags;
+    }; 
+  } u;
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSECTION_FLAGS2 Flags;
+    }; 
+  } u1;
+  struct _EX_FAST_REF FilePointer;
+  volatile S32 ControlAreaLock;
+  U32 ModifiedWriteCount;
+  struct _MI_CONTROL_AREA_WAIT_BLOCK* WaitList;
+  union
+  {
+    struct
+    {
+      union
+      {
+        U32 NumberOfSystemCacheViews;
+        U32 ImageRelocationStartBit;
+      }; 
+      union
+      {
+        volatile S32 WritableUserReferences;
+        struct 
+        {
+          U32 ImageRelocationSizeIn64k : 16; 
+          U32 Unused : 9; 
+          U32 SystemImage : 1; 
+          U32 StrongCode : 2; 
+          U32 CantMove : 1; 
+          U32 BitMap : 2; 
+          U32 ImageActive : 1; 
+        }; 
+      }; 
+      union
+      {
+        U32 FlushInProgressCount;
+        U32 NumberOfSubsections;
+        struct _MI_IMAGE_SECURITY_REFERENCE* SeImageStub;
+      }; 
+    } e2;
+  } u2;
+  volatile U64 LockedPages;
+  struct _EX_PUSH_LOCK FileObjectLock;
+} CONTROL_AREA, *PCONTROL_AREA; 
+
+typedef struct _MI_CROSS_PARTITION_CHARGES
+{
+  U64 CurrentCharges;
+  U64 ChargeFailures;
+  U64 ChargePeak;
+  U64 ChargeMinimum;
+  U64 ChargeMaximum;
+} MI_CROSS_PARTITION_CHARGES, *PMI_CROSS_PARTITION_CHARGES; 
+
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _MI_SECTION_STATE
+{
+  volatile S32 SegmentListLock;
+  volatile S32 SectionObjectPointersLock;
+  struct _EX_PUSH_LOCK SectionExtendLock;
+  struct _EX_PUSH_LOCK SectionExtendSetLock;
+  struct _RTL_AVL_TREE SectionBasedRoot;
+  struct _EX_PUSH_LOCK SectionBasedLock;
+  U64 UnusedSubsectionPagedPool;
+  U32 UnusedSegmentForceFree;
+  U32 DataSectionProtectionMask;
+  void* HighSectionBase;
+  struct _MSUBSECTION PhysicalSubsection;
+  struct _CONTROL_AREA PhysicalControlArea;
+  struct _RTL_AVL_TREE PageFileSectionHead;
+  volatile S32 PageFileSectionListSpinLock;
+  struct _MI_CROSS_PARTITION_CHARGES SharedSegmentCharges;
+  struct _MI_CROSS_PARTITION_CHARGES SharedPageCombineCharges;
+  U32 ImageBias;
+  struct _EX_PUSH_LOCK RelocateBitmapsLock;
+  struct _RTL_BITMAP ImageBitMap;
+  U32 ImageBias64Low;
+  U32 ImageBias64High;
+  struct _RTL_BITMAP ImageBitMap64Low;
+  struct _RTL_BITMAP ImageBitMap64High;
+  struct _RTL_BITMAP ImageBitMapWow64Dll;
+  void* ApiSetSection;
+  void* ApiSetSchema;
+  U64 ApiSetSchemaSize;
+  U32 LostDataFiles;
+  U32 LostDataPages;
+  U32 ImageFailureReason;
+  struct _SECTION* CfgBitMapSection32;
+  struct _CONTROL_AREA* CfgBitMapControlArea32;
+  struct _SECTION* CfgBitMapSection64;
+  struct _CONTROL_AREA* CfgBitMapControlArea64;
+  U32 ImageCfgFailure;
+  volatile S32 ImageValidationFailed;
+  S32 __PADDING__[4];
+} MI_SECTION_STATE, *PMI_SECTION_STATE; 
+

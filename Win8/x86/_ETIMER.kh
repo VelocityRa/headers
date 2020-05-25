@@ -1,0 +1,164 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 Abandoned;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved : 4; 
+            }; 
+            U8 Hand;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 1; 
+                  U8 Processor : 5; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _KAPC
+{
+  U8 Type;
+  U8 SpareByte0;
+  U8 Size;
+  U8 SpareByte1;
+  U32 SpareLong0;
+  struct _KTHREAD* Thread;
+  struct _LIST_ENTRY ApcListEntry;
+  union
+  {
+    struct
+    {
+      void* KernelRoutine;
+      void* RundownRoutine;
+      void* NormalRoutine;
+    }; 
+    void* Reserved[3];
+  }; 
+  void* NormalContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  char ApcStateIndex;
+  char ApcMode;
+  U8 Inserted;
+  char __PADDING__[1];
+} KAPC, *PKAPC; 
+
+typedef struct _KDPC
+{
+  U8 Type;
+  U8 Importance;
+  volatile U16 Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _ETIMER
+{
+  struct _KTIMER KeTimer;
+  U32 Lock;
+  struct _KAPC TimerApc;
+  struct _KDPC TimerDpc;
+  struct _LIST_ENTRY ActiveTimerListEntry;
+  U32 Period;
+  union
+  {
+    char TimerFlags;
+    struct 
+    {
+      U8 ApcAssociated : 1; 
+      U8 FlushDpcs : 1; 
+      U8 Paused : 1; 
+      U8 Spare1 : 5; 
+    }; 
+  }; 
+  U8 DueTimeType;
+  U16 Spare2;
+  struct _DIAGNOSTIC_CONTEXT* volatile WakeReason;
+  struct _LIST_ENTRY WakeTimerListEntry;
+  void* VirtualizedTimerCookie;
+  struct _LIST_ENTRY VirtualizedTimerLinks;
+  U64 DueTime;
+  U32 CoalescingWindow;
+  S32 __PADDING__[1];
+} ETIMER, *PETIMER; 
+

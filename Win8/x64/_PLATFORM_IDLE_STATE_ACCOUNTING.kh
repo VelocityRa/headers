@@ -1,0 +1,21 @@
+typedef struct _PROC_IDLE_STATE_BUCKET
+{
+  U64 TotalTime;
+  U64 MinTime;
+  U64 MaxTime;
+  U32 Count;
+  S32 __PADDING__[1];
+} PROC_IDLE_STATE_BUCKET, *PPROC_IDLE_STATE_BUCKET; 
+
+typedef struct _PLATFORM_IDLE_STATE_ACCOUNTING
+{
+  U32 CancelCount;
+  U32 FailureCount;
+  U32 SuccessCount;
+  U64 MaxTime;
+  U64 MinTime;
+  U64 TotalTime;
+  U32 InvalidBucketIndex;
+  struct _PROC_IDLE_STATE_BUCKET IdleTimeBuckets[26];
+} PLATFORM_IDLE_STATE_ACCOUNTING, *PPLATFORM_IDLE_STATE_ACCOUNTING; 
+

@@ -1,0 +1,45 @@
+typedef struct _KiIoAccessMap
+{
+  U8 DirectionMap[32];
+  U8 IoMap[8196];
+} KiIoAccessMap, *PKiIoAccessMap; 
+
+typedef struct _KTSS
+{
+  U16 Backlink;
+  U16 Reserved0;
+  U32 Esp0;
+  U16 Ss0;
+  U16 Reserved1;
+  U32 NotUsed1[4];
+  U32 CR3;
+  U32 Eip;
+  U32 EFlags;
+  U32 Eax;
+  U32 Ecx;
+  U32 Edx;
+  U32 Ebx;
+  U32 Esp;
+  U32 Ebp;
+  U32 Esi;
+  U32 Edi;
+  U16 Es;
+  U16 Reserved2;
+  U16 Cs;
+  U16 Reserved3;
+  U16 Ss;
+  U16 Reserved4;
+  U16 Ds;
+  U16 Reserved5;
+  U16 Fs;
+  U16 Reserved6;
+  U16 Gs;
+  U16 Reserved7;
+  U16 LDT;
+  U16 Reserved8;
+  U16 Flags;
+  U16 IoMapBase;
+  struct _KiIoAccessMap IoMaps[1];
+  U8 IntDirectionMap[32];
+} KTSS, *PKTSS; 
+

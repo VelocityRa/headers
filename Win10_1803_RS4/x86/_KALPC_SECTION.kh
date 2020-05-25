@@ -1,0 +1,29 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KALPC_SECTION
+{
+  void* SectionObject;
+  U32 Size;
+  struct _ALPC_HANDLE_TABLE* HandleTable;
+  void* SectionHandle;
+  struct _EPROCESS* OwnerProcess;
+  struct _ALPC_PORT* OwnerPort;
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U32 Internal : 1; 
+        U32 Secure : 1; 
+      }; 
+    } s1;
+  } u1;
+  U32 NumberOfRegions;
+  struct _LIST_ENTRY RegionListHead;
+} KALPC_SECTION, *PKALPC_SECTION; 
+

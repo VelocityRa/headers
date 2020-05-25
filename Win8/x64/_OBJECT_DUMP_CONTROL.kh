@@ -1,0 +1,7 @@
+typedef struct _OBJECT_DUMP_CONTROL
+{
+  void* Stream;
+  U32 Detail;
+  S32 __PADDING__[1];
+} OBJECT_DUMP_CONTROL, *POBJECT_DUMP_CONTROL; 
+

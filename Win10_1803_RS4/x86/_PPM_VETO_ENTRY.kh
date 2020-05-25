@@ -1,0 +1,18 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PPM_VETO_ENTRY
+{
+  struct _LIST_ENTRY Link;
+  U32 VetoReason;
+  U32 ReferenceCount;
+  U64 HitCount;
+  U64 LastActivationTime;
+  U64 TotalActiveTime;
+  U64 CsActivationTime;
+  U64 CsActiveTime;
+} PPM_VETO_ENTRY, *PPPM_VETO_ENTRY; 
+

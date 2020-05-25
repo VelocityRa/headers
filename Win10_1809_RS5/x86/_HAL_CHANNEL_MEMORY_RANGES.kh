@@ -1,0 +1,10 @@
+typedef struct _HAL_CHANNEL_MEMORY_RANGES
+{
+  U32 PageFrameIndex;
+  U16 MpnId;
+  U16 Node;
+  U16 Channel;
+  U8 IsPowerManageable;
+  U8 DeepPowerState;
+} HAL_CHANNEL_MEMORY_RANGES, *PHAL_CHANNEL_MEMORY_RANGES; 
+

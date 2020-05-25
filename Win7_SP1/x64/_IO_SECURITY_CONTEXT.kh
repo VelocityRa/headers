@@ -1,0 +1,8 @@
+typedef struct _IO_SECURITY_CONTEXT
+{
+  struct _SECURITY_QUALITY_OF_SERVICE* SecurityQos;
+  struct _ACCESS_STATE* AccessState;
+  U32 DesiredAccess;
+  U32 FullCreateOptions;
+} IO_SECURITY_CONTEXT, *PIO_SECURITY_CONTEXT; 
+

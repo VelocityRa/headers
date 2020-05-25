@@ -1,0 +1,25 @@
+typedef enum _ARBITER_REQUEST_SOURCE
+{
+  ArbiterRequestUndefined = -1,
+  ArbiterRequestLegacyReported = 0,
+  ArbiterRequestHalReported = 1,
+  ArbiterRequestLegacyAssigned = 2,
+  ArbiterRequestPnpDetected = 3,
+  ArbiterRequestPnpEnumerated = 4,
+} ARBITER_REQUEST_SOURCE, *PARBITER_REQUEST_SOURCE;
+
+typedef struct _PNP_RESOURCE_REQUEST
+{
+  struct _DEVICE_OBJECT* PhysicalDevice;
+  U32 Flags;
+  enum _ARBITER_REQUEST_SOURCE AllocationType;
+  U32 Priority;
+  U32 Position;
+  struct _IO_RESOURCE_REQUIREMENTS_LIST* ResourceRequirements;
+  void* ReqList;
+  struct _CM_RESOURCE_LIST* ResourceAssignment;
+  struct _CM_RESOURCE_LIST* TranslatedResourceAssignment;
+  S32 Status;
+  S32 __PADDING__[1];
+} PNP_RESOURCE_REQUEST, *PPNP_RESOURCE_REQUEST; 
+

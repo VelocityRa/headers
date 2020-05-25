@@ -1,0 +1,6 @@
+typedef struct _MI_ACTIVE_WSLE
+{
+  U32 Flink;
+  U32 Blink;
+} MI_ACTIVE_WSLE, *PMI_ACTIVE_WSLE; 
+

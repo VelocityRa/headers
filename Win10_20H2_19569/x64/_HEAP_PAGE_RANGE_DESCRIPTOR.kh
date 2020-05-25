@@ -1,0 +1,67 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _HEAP_DESCRIPTOR_KEY
+{
+  union
+  {
+    U32 Key;
+    struct 
+    {
+      U32 EncodedCommittedPageCount : 16; 
+      U32 LargePageCost : 8; 
+      U32 UnitCount : 8; 
+    }; 
+  }; 
+} HEAP_DESCRIPTOR_KEY, *PHEAP_DESCRIPTOR_KEY; 
+
+typedef struct _HEAP_PAGE_RANGE_DESCRIPTOR
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE TreeNode;
+    struct
+    {
+      U32 TreeSignature;
+      U32 UnusedBytes;
+      struct 
+      {
+        U16 ExtraPresent : 1; 
+        U16 Spare0 : 15; 
+      }; 
+    }; 
+  }; 
+  volatile U8 RangeFlags;
+  U8 CommittedPageCount;
+  U16 Spare;
+  union
+  {
+    struct _HEAP_DESCRIPTOR_KEY Key;
+    struct
+    {
+      U8 Align[3];
+      union
+      {
+        U8 UnitOffset;
+        U8 UnitSize;
+      }; 
+    }; 
+  }; 
+} HEAP_PAGE_RANGE_DESCRIPTOR, *PHEAP_PAGE_RANGE_DESCRIPTOR; 
+

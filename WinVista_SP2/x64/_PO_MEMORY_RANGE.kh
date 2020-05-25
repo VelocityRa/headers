@@ -1,0 +1,6 @@
+typedef struct _PO_MEMORY_RANGE
+{
+  U64 StartPage;
+  U64 EndPage;
+} PO_MEMORY_RANGE, *PPO_MEMORY_RANGE; 
+

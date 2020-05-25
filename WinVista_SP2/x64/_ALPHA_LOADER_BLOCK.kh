@@ -1,0 +1,5 @@
+typedef struct _ALPHA_LOADER_BLOCK
+{
+  U32 PlaceHolder;
+} ALPHA_LOADER_BLOCK, *PALPHA_LOADER_BLOCK; 
+

@@ -1,0 +1,12 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _CALL_PERFORMANCE_DATA
+{
+  U64 SpinLock;
+  struct _LIST_ENTRY HashTable[64];
+} CALL_PERFORMANCE_DATA, *PCALL_PERFORMANCE_DATA; 
+

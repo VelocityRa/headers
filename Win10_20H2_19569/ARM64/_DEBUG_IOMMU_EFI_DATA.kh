@@ -1,0 +1,6 @@
+typedef struct _DEBUG_IOMMU_EFI_DATA
+{
+  void* PciIoProtocolHandle;
+  void* Mapping;
+} DEBUG_IOMMU_EFI_DATA, *PDEBUG_IOMMU_EFI_DATA; 
+

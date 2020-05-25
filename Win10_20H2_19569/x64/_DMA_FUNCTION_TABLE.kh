@@ -1,0 +1,14 @@
+typedef struct _DMA_FUNCTION_TABLE
+{
+  void* InitializeController;
+  void* ValidateRequestLineBinding;
+  void* QueryMaxFragments;
+  void* ProgramChannel;
+  void* ConfigureChannel;
+  void* FlushChannel;
+  void* HandleInterrupt;
+  void* ReadDmaCounter;
+  void* ReportCommonBuffer;
+  void* CancelTransfer;
+} DMA_FUNCTION_TABLE, *PDMA_FUNCTION_TABLE; 
+

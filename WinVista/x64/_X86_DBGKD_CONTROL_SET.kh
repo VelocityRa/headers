@@ -1,0 +1,8 @@
+typedef struct _X86_DBGKD_CONTROL_SET
+{
+  U32 TraceFlag;
+  U32 Dr7;
+  U32 CurrentSymbolStart;
+  U32 CurrentSymbolEnd;
+} X86_DBGKD_CONTROL_SET, *PX86_DBGKD_CONTROL_SET; 
+

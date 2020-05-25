@@ -1,0 +1,8 @@
+typedef struct _KAFFINITY_ENUMERATION_CONTEXT
+{
+  struct _KAFFINITY_EX* Affinity;
+  U32 CurrentMask;
+  U16 CurrentIndex;
+  char __PADDING__[2];
+} KAFFINITY_ENUMERATION_CONTEXT, *PKAFFINITY_ENUMERATION_CONTEXT; 
+

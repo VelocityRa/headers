@@ -1,0 +1,7 @@
+typedef struct _XSAVE_AREA_HEADER
+{
+  U64 Mask;
+  U64 CompactionMask;
+  U64 Reserved2[6];
+} XSAVE_AREA_HEADER, *PXSAVE_AREA_HEADER; 
+

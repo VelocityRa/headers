@@ -1,0 +1,5 @@
+typedef struct _IA64_LOADER_BLOCK
+{
+  U32 PlaceHolder;
+} IA64_LOADER_BLOCK, *PIA64_LOADER_BLOCK; 
+

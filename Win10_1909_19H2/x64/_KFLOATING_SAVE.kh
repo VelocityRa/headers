@@ -1,0 +1,5 @@
+typedef struct _KFLOATING_SAVE
+{
+  U32 Dummy;
+} KFLOATING_SAVE, *PKFLOATING_SAVE; 
+

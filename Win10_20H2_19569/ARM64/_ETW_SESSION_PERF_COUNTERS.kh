@@ -1,0 +1,9 @@
+typedef struct _ETW_SESSION_PERF_COUNTERS
+{
+  S32 BufferMemoryPagedPool;
+  S32 BufferMemoryNonPagedPool;
+  U64 EventsLoggedCount;
+  S32 EventsLost;
+  S32 NumConsumers;
+} ETW_SESSION_PERF_COUNTERS, *PETW_SESSION_PERF_COUNTERS; 
+

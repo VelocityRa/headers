@@ -1,0 +1,11 @@
+struct DOCK_INTERFACE
+{
+  U16 Size;
+  U16 Version;
+  void* Context;
+  void* InterfaceReference;
+  void* InterfaceDereference;
+  void* ProfileDepartureSetMode;
+  void* ProfileDepartureUpdate;
+}; 
+

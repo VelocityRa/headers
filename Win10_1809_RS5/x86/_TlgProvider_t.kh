@@ -1,0 +1,11 @@
+typedef struct _TlgProvider_t
+{
+  U32 LevelPlus1;
+  const U16* ProviderMetadataPtr;
+  U64 KeywordAny;
+  U64 KeywordAll;
+  U64 RegHandle;
+  void* EnableCallback;
+  void* CallbackContext;
+} TlgProvider_t, *PTlgProvider_t; 
+

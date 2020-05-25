@@ -1,0 +1,41 @@
+typedef union _INVPCID_DESCRIPTOR
+{
+  union
+  {
+    struct
+    {
+      union
+      {
+        struct 
+        {
+          U64 Pcid : 12; 
+          U64 Reserved : 52; 
+        }; 
+        U64 EntirePcid;
+      }; 
+      U64 Virtual;
+    } IndividualAddress;
+    struct
+    {
+      union
+      {
+        struct 
+        {
+          U64 Pcid : 12; 
+          U64 Reserved : 52; 
+        }; 
+        U64 EntirePcid;
+      }; 
+      U64 Reserved2;
+    } SingleContext;
+    struct
+    {
+      U64 Reserved[2];
+    } AllContextAndGlobals;
+    struct
+    {
+      U64 Reserved[2];
+    } AllContext;
+  }; 
+} INVPCID_DESCRIPTOR, *PINVPCID_DESCRIPTOR; 
+

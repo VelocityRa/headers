@@ -1,0 +1,18 @@
+typedef struct _MM_SESSION_SPACE_FLAGS
+{
+  struct 
+  {
+    U32 Initialized : 1; 
+    U32 DeletePending : 1; 
+    U32 PoolInitialized : 1; 
+    U32 DynamicVaInitialized : 1; 
+    U32 WsInitialized : 1; 
+    U32 PoolDestroyed : 1; 
+    U32 ObjectInitialized : 1; 
+    U32 LeakedPoolDeliberately : 1; 
+    U32 SessionHeapInitialized : 1; 
+    U32 SessionHeapDestroyed : 1; 
+    U32 Filler : 22; 
+  }; 
+} MM_SESSION_SPACE_FLAGS, *PMM_SESSION_SPACE_FLAGS; 
+

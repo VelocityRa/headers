@@ -1,0 +1,8 @@
+typedef struct _ETW_SILO_TRACING_BLOCK
+{
+  struct _EX_FAST_REF* ProcessorBuffers;
+  U64* EventsLoggedCount;
+  S64* volatile QpcDelta;
+  S32 __PADDING__[10];
+} ETW_SILO_TRACING_BLOCK, *PETW_SILO_TRACING_BLOCK; 
+

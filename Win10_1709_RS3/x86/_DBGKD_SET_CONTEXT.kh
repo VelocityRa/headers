@@ -1,0 +1,5 @@
+typedef struct _DBGKD_SET_CONTEXT
+{
+  U32 ContextFlags;
+} DBGKD_SET_CONTEXT, *PDBGKD_SET_CONTEXT; 
+

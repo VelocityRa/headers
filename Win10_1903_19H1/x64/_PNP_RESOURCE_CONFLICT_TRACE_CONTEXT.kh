@@ -1,0 +1,8 @@
+typedef struct _PNP_RESOURCE_CONFLICT_TRACE_CONTEXT
+{
+  U8 ResourceType;
+  U32 AlternativeCount;
+  struct _IO_RESOURCE_DESCRIPTOR* ResourceRequests;
+  void* ArbiterInstance;
+} PNP_RESOURCE_CONFLICT_TRACE_CONTEXT, *PPNP_RESOURCE_CONFLICT_TRACE_CONTEXT; 
+

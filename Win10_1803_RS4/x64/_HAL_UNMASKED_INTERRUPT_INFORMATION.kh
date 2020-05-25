@@ -1,0 +1,43 @@
+typedef union _HAL_UNMASKED_INTERRUPT_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 SecondaryInterrupt : 1; 
+      U16 Reserved : 15; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} HAL_UNMASKED_INTERRUPT_FLAGS, *PHAL_UNMASKED_INTERRUPT_FLAGS; 
+
+typedef enum _KINTERRUPT_MODE
+{
+  LevelSensitive = 0,
+  Latched = 1,
+} KINTERRUPT_MODE, *PKINTERRUPT_MODE;
+
+typedef enum _KINTERRUPT_POLARITY
+{
+  InterruptPolarityUnknown = 0,
+  InterruptActiveHigh = 1,
+  InterruptRisingEdge = 1,
+  InterruptActiveLow = 2,
+  InterruptFallingEdge = 2,
+  InterruptActiveBoth = 3,
+  InterruptActiveBothTriggerLow = 3,
+  InterruptActiveBothTriggerHigh = 4,
+} KINTERRUPT_POLARITY, *PKINTERRUPT_POLARITY;
+
+typedef struct _HAL_UNMASKED_INTERRUPT_INFORMATION
+{
+  U16 Version;
+  U16 Size;
+  union _HAL_UNMASKED_INTERRUPT_FLAGS Flags;
+  enum _KINTERRUPT_MODE Mode;
+  enum _KINTERRUPT_POLARITY Polarity;
+  U32 Gsiv;
+  U16 PinNumber;
+  void* DeviceHandle;
+} HAL_UNMASKED_INTERRUPT_INFORMATION, *PHAL_UNMASKED_INTERRUPT_INFORMATION; 
+

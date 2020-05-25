@@ -1,0 +1,8 @@
+typedef struct _DBGKD_QUERY_MEMORY
+{
+  U64 Address;
+  U64 Reserved;
+  U32 AddressSpace;
+  U32 Flags;
+} DBGKD_QUERY_MEMORY, *PDBGKD_QUERY_MEMORY; 
+

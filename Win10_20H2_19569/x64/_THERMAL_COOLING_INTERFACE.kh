@@ -1,0 +1,12 @@
+typedef struct _THERMAL_COOLING_INTERFACE
+{
+  U16 Size;
+  U16 Version;
+  void* Context;
+  void* InterfaceReference;
+  void* InterfaceDereference;
+  U32 Flags;
+  void* ActiveCooling;
+  void* PassiveCooling;
+} THERMAL_COOLING_INTERFACE, *PTHERMAL_COOLING_INTERFACE; 
+

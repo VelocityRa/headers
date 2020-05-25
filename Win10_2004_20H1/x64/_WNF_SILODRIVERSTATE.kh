@@ -1,0 +1,33 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _WNF_LOCK
+{
+  struct _EX_PUSH_LOCK PushLock;
+} WNF_LOCK, *PWNF_LOCK; 
+
+typedef struct _WNF_SILODRIVERSTATE
+{
+  struct _WNF_SCOPE_MAP* ScopeMap;
+  void* volatile PermanentNameStoreRootKey;
+  void* volatile PersistentNameStoreRootKey;
+  volatile S64 PermanentNameSequenceNumber;
+  struct _WNF_LOCK PermanentNameSequenceNumberLock;
+  volatile S64 PermanentNameSequenceNumberPool;
+  volatile S64 RuntimeNameSequenceNumber;
+} WNF_SILODRIVERSTATE, *PWNF_SILODRIVERSTATE; 
+

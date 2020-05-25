@@ -1,0 +1,8 @@
+typedef struct _GENERIC_MAPPING
+{
+  U32 GenericRead;
+  U32 GenericWrite;
+  U32 GenericExecute;
+  U32 GenericAll;
+} GENERIC_MAPPING, *PGENERIC_MAPPING; 
+

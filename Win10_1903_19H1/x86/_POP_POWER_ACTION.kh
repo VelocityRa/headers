@@ -1,0 +1,330 @@
+enum POWER_ACTION
+{
+  PowerActionNone = 0,
+  PowerActionReserved = 1,
+  PowerActionSleep = 2,
+  PowerActionHibernate = 3,
+  PowerActionShutdown = 4,
+  PowerActionShutdownReset = 5,
+  PowerActionShutdownOff = 6,
+  PowerActionWarmEject = 7,
+  PowerActionDisplayOff = 8,
+};
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+enum POWER_POLICY_DEVICE_TYPE
+{
+  PolicyDeviceSystemButton = 0,
+  PolicyDeviceThermalZone = 1,
+  PolicyDeviceBattery = 2,
+  PolicyDeviceMemory = 3,
+  PolicyInitiatePowerActionAPI = 4,
+  PolicySetPowerStateAPI = 5,
+  PolicyImmediateDozeS4 = 6,
+  PolicySystemIdle = 7,
+  PolicyDeviceWakeAlarm = 8,
+  PolicyDeviceFan = 9,
+  PolicyCsBatterySaver = 10,
+  PolicyImmediateDozeS4Predicted = 11,
+  PolicyImmediateDozeS4PredictedNoWake = 12,
+  PolicyImmediateDozeS4AdaptiveBudget = 13,
+  PolicyImmediateDozeS4AdaptiveReserveNoWake = 14,
+  PolicySystemInitiatedShutdown = 15,
+  PolicyDeviceMax = 16,
+};
+
+enum SYSTEM_POWER_CONDITION
+{
+  PoAc = 0,
+  PoDc = 1,
+  PoHot = 2,
+  PoConditionMaximum = 3,
+};
+
+struct BATTERY_REPORTING_SCALE
+{
+  U32 Granularity;
+  U32 Capacity;
+}; 
+
+struct SYSTEM_POWER_CAPABILITIES
+{
+  U8 PowerButtonPresent;
+  U8 SleepButtonPresent;
+  U8 LidPresent;
+  U8 SystemS1;
+  U8 SystemS2;
+  U8 SystemS3;
+  U8 SystemS4;
+  U8 SystemS5;
+  U8 HiberFilePresent;
+  U8 FullWake;
+  U8 VideoDimPresent;
+  U8 ApmPresent;
+  U8 UpsPresent;
+  U8 ThermalControl;
+  U8 ProcessorThrottle;
+  U8 ProcessorMinThrottle;
+  U8 ProcessorMaxThrottle;
+  U8 FastSystemS4;
+  U8 Hiberboot;
+  U8 WakeAlarmPresent;
+  U8 AoAc;
+  U8 DiskSpinDown;
+  U8 HiberFileType;
+  U8 AoAcConnectivitySupported;
+  U8 spare3[6];
+  U8 SystemBatteriesPresent;
+  U8 BatteriesAreShortTerm;
+  struct BATTERY_REPORTING_SCALE BatteryScale[3];
+  enum _SYSTEM_POWER_STATE AcOnLineWake;
+  enum _SYSTEM_POWER_STATE SoftLidWake;
+  enum _SYSTEM_POWER_STATE RtcWake;
+  enum _SYSTEM_POWER_STATE MinDeviceWakeState;
+  enum _SYSTEM_POWER_STATE DefaultLowLatencyWake;
+}; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _KDPC
+{
+  union
+  {
+    U32 TargetInfoAsUlong;
+    struct
+    {
+      U8 Type;
+      U8 Importance;
+      volatile U16 Number;
+    }; 
+  }; 
+  struct _SINGLE_LIST_ENTRY DpcListEntry;
+  U32 ProcessorHistory;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 1; 
+              U8 Processor : 5; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 SchedulerAssist : 1; 
+            U8 Instrumented : 1; 
+          }; 
+          U8 DebugActive;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef enum _POP_POWER_ACTION_WATCHDOG_STATE
+{
+  PopPowerActionWatchdogStateDisabled = 0,
+  PopPowerActionWatchdogStateTransitioning = 1,
+  PopPowerActionWatchdogStateResuming = 2,
+  PopPowerActionWatchdogStateMax = 3,
+} POP_POWER_ACTION_WATCHDOG_STATE, *PPOP_POWER_ACTION_WATCHDOG_STATE;
+
+typedef struct _POP_POWER_ACTION
+{
+  U8 Updates;
+  U8 State;
+  U8 Shutdown;
+  enum POWER_ACTION Action;
+  enum _SYSTEM_POWER_STATE LightestState;
+  U32 Flags;
+  S32 Status;
+  enum POWER_POLICY_DEVICE_TYPE DeviceType;
+  U32 DeviceTypeFlags;
+  U8 IrpMinor;
+  U8 Waking;
+  enum _SYSTEM_POWER_STATE SystemState;
+  enum _SYSTEM_POWER_STATE NextSystemState;
+  enum _SYSTEM_POWER_STATE EffectiveSystemState;
+  enum _SYSTEM_POWER_STATE CurrentSystemState;
+  struct _POP_SHUTDOWN_BUG_CHECK* ShutdownBugCode;
+  struct _POP_DEVICE_SYS_STATE* DevState;
+  struct _POP_HIBER_CONTEXT* HiberContext;
+  U64 WakeTime;
+  U64 SleepTime;
+  U64 WakeFirstUnattendedTime;
+  enum SYSTEM_POWER_CONDITION WakeAlarmSignaled;
+  struct
+  {
+    U64 RequestedTime;
+    U64 ProgrammedTime;
+    struct _DIAGNOSTIC_BUFFER* TimerInfo;
+    S32 __PADDING__[1];
+  } WakeAlarm[3];
+  U8 WakeAlarmPaused;
+  U64 WakeAlarmLastTime;
+  U64 DozeDeferralStartTime;
+  struct SYSTEM_POWER_CAPABILITIES FilteredCapabilities;
+  struct _KDPC WatchdogDpc;
+  struct _KTIMER WatchdogTimer;
+  U8 WatchdogInitialized;
+  enum _POP_POWER_ACTION_WATCHDOG_STATE WatchdogState;
+  U64 WatchdogStartTime;
+  struct _KTHREAD* ActionWorkerThread;
+  struct _KTHREAD* PromoteActionWorkerThread;
+  struct _KTHREAD* UnlockAfterSleepWorkerThread;
+  S32 __PADDING__[1];
+} POP_POWER_ACTION, *PPOP_POWER_ACTION; 
+

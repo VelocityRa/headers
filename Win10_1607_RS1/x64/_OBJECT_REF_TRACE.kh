@@ -1,0 +1,5 @@
+typedef struct _OBJECT_REF_TRACE
+{
+  void* StackTrace[16];
+} OBJECT_REF_TRACE, *POBJECT_REF_TRACE; 
+

@@ -1,0 +1,7 @@
+struct CMP_OFFSET_ARRAY
+{
+  U32 FileOffset;
+  void* DataBuffer;
+  U32 DataLength;
+}; 
+

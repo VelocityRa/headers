@@ -1,0 +1,7 @@
+typedef struct _DIRTY_PAGE_STATISTICS
+{
+  U32 DirtyPages;
+  U32 DirtyPagesLastScan;
+  U32 DirtyPagesScheduledLastScan;
+} DIRTY_PAGE_STATISTICS, *PDIRTY_PAGE_STATISTICS; 
+

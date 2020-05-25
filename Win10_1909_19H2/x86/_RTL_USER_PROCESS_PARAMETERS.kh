@@ -1,0 +1,69 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _CURDIR
+{
+  struct _UNICODE_STRING DosPath;
+  void* Handle;
+} CURDIR, *PCURDIR; 
+
+typedef struct _STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  char* Buffer;
+} STRING, *PSTRING; 
+
+typedef struct _RTL_DRIVE_LETTER_CURDIR
+{
+  U16 Flags;
+  U16 Length;
+  U32 TimeStamp;
+  struct _STRING DosPath;
+} RTL_DRIVE_LETTER_CURDIR, *PRTL_DRIVE_LETTER_CURDIR; 
+
+typedef struct _RTL_USER_PROCESS_PARAMETERS
+{
+  U32 MaximumLength;
+  U32 Length;
+  U32 Flags;
+  U32 DebugFlags;
+  void* ConsoleHandle;
+  U32 ConsoleFlags;
+  void* StandardInput;
+  void* StandardOutput;
+  void* StandardError;
+  struct _CURDIR CurrentDirectory;
+  struct _UNICODE_STRING DllPath;
+  struct _UNICODE_STRING ImagePathName;
+  struct _UNICODE_STRING CommandLine;
+  void* Environment;
+  U32 StartingX;
+  U32 StartingY;
+  U32 CountX;
+  U32 CountY;
+  U32 CountCharsX;
+  U32 CountCharsY;
+  U32 FillAttribute;
+  U32 WindowFlags;
+  U32 ShowWindowFlags;
+  struct _UNICODE_STRING WindowTitle;
+  struct _UNICODE_STRING DesktopInfo;
+  struct _UNICODE_STRING ShellInfo;
+  struct _UNICODE_STRING RuntimeData;
+  struct _RTL_DRIVE_LETTER_CURDIR CurrentDirectores[32];
+  U32 EnvironmentSize;
+  U32 EnvironmentVersion;
+  void* PackageDependencyData;
+  U32 ProcessGroupId;
+  U32 LoaderThreads;
+  struct _UNICODE_STRING RedirectionDllName;
+  struct _UNICODE_STRING HeapPartitionName;
+  U64* DefaultThreadpoolCpuSetMasks;
+  U32 DefaultThreadpoolCpuSetMaskCount;
+} RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS; 
+

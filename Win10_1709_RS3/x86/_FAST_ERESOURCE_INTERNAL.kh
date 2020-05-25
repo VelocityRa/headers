@@ -1,0 +1,32 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KWAIT_CHAIN
+{
+  void* Head;
+} KWAIT_CHAIN, *PKWAIT_CHAIN; 
+
+typedef struct _FAST_ERESOURCE_INTERNAL
+{
+  struct _LIST_ENTRY SystemResourcesList;
+  void* ReservedPointer;
+  S16 ActiveCount;
+  U16 Flag;
+  struct _KWAIT_CHAIN SharedWaiters;
+  struct _KWAIT_CHAIN ExclusiveWaiters;
+  struct _LIST_ENTRY OwnerEntryListHead;
+  U32 ActiveEntries;
+  U32 ContentionCount;
+  U32 NumberOfSharedWaiters;
+  U32 NumberOfExclusiveWaiters;
+  union
+  {
+    void* Address;
+    U32 CreatorBackTraceIndex;
+  }; 
+  U32 SpinLock;
+} FAST_ERESOURCE_INTERNAL, *PFAST_ERESOURCE_INTERNAL; 
+

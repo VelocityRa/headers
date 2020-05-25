@@ -1,0 +1,11 @@
+typedef struct _COMPRESSED_DATA_INFO
+{
+  U16 CompressionFormatAndEngine;
+  U8 CompressionUnitShift;
+  U8 ChunkShift;
+  U8 ClusterShift;
+  U8 Reserved;
+  U16 NumberOfChunks;
+  U32 CompressedChunkSizes[1];
+} COMPRESSED_DATA_INFO, *PCOMPRESSED_DATA_INFO; 
+

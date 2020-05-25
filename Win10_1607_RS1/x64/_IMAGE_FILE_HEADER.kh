@@ -1,0 +1,11 @@
+typedef struct _IMAGE_FILE_HEADER
+{
+  U16 Machine;
+  U16 NumberOfSections;
+  U32 TimeDateStamp;
+  U32 PointerToSymbolTable;
+  U32 NumberOfSymbols;
+  U16 SizeOfOptionalHeader;
+  U16 Characteristics;
+} IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER; 
+

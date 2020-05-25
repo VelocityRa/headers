@@ -1,0 +1,56 @@
+typedef struct _WMI_TRACE_PACKET
+{
+  U16 Size;
+  union
+  {
+    U16 HookId;
+    struct
+    {
+      U8 Type;
+      U8 Group;
+    }; 
+  }; 
+} WMI_TRACE_PACKET, *PWMI_TRACE_PACKET; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _SYSTEM_TRACE_HEADER
+{
+  union
+  {
+    U32 Marker;
+    struct
+    {
+      U16 Version;
+      U8 HeaderType;
+      U8 Flags;
+    }; 
+  }; 
+  union
+  {
+    U32 Header;
+    struct _WMI_TRACE_PACKET Packet;
+  }; 
+  U32 ThreadId;
+  U32 ProcessId;
+  union _LARGE_INTEGER SystemTime;
+  U32 KernelTime;
+  U32 UserTime;
+} SYSTEM_TRACE_HEADER, *PSYSTEM_TRACE_HEADER; 
+

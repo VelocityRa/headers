@@ -1,0 +1,6 @@
+typedef struct _CM_INTENT_LOCK
+{
+  U32 OwnerCount;
+  struct _CM_KCB_UOW** OwnerTable;
+} CM_INTENT_LOCK, *PCM_INTENT_LOCK; 
+

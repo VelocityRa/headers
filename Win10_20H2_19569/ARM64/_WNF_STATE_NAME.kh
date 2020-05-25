@@ -1,0 +1,5 @@
+typedef struct _WNF_STATE_NAME
+{
+  U32 Data[2];
+} WNF_STATE_NAME, *PWNF_STATE_NAME; 
+

@@ -1,0 +1,13 @@
+typedef struct _RTL_HP_VS_CONFIG
+{
+  struct
+  {
+    struct 
+    {
+      U32 PageAlignLargeAllocs : 1; 
+      U32 FullDecommit : 1; 
+      U32 EnableDelayFree : 1; 
+    }; 
+  } Flags;
+} RTL_HP_VS_CONFIG, *PRTL_HP_VS_CONFIG; 
+

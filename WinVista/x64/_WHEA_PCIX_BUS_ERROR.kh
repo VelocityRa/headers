@@ -1,0 +1,49 @@
+typedef struct _WHEA_PCIX_BUS_VALIDATION_BITS
+{
+  struct 
+  {
+    U64 ErrorStatusValid : 1; 
+    U64 ErrorTypeValid : 1; 
+    U64 BusIdValid : 1; 
+    U64 BusAddressValid : 1; 
+    U64 BusDataValid : 1; 
+    U64 CommandValid : 1; 
+    U64 RequestorIdValid : 1; 
+    U64 CompleterIdValid : 1; 
+    U64 TargetIdValid : 1; 
+    U64 Reserved : 55; 
+  }; 
+} WHEA_PCIX_BUS_VALIDATION_BITS, *PWHEA_PCIX_BUS_VALIDATION_BITS; 
+
+typedef struct _WHEA_ERROR_STATUS
+{
+  struct 
+  {
+    U64 Reserved1 : 8; 
+    U64 ErrorType : 8; 
+    U64 Address : 1; 
+    U64 Control : 1; 
+    U64 Data : 1; 
+    U64 Responder : 1; 
+    U64 Requester : 1; 
+    U64 FirstError : 1; 
+    U64 Overflow : 1; 
+    U64 Reserved2 : 41; 
+  }; 
+} WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS; 
+
+typedef struct _WHEA_PCIX_BUS_ERROR
+{
+  struct _WHEA_PCIX_BUS_VALIDATION_BITS ValidationBits;
+  struct _WHEA_ERROR_STATUS ErrorStatus;
+  U16 ErrorType;
+  U16 BusId;
+  U32 Reserved;
+  U64 BusAddress;
+  U64 BusData;
+  U64 BusCommand;
+  U64 BusRequestorId;
+  U64 BusCompleterId;
+  U64 TargetId;
+} WHEA_PCIX_BUS_ERROR, *PWHEA_PCIX_BUS_ERROR; 
+

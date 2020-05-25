@@ -1,0 +1,7 @@
+typedef struct _IOP_IRP_EXTENSION_STATUS
+{
+  U32 Flags;
+  U32 ActivityId;
+  U32 IoTracking;
+} IOP_IRP_EXTENSION_STATUS, *PIOP_IRP_EXTENSION_STATUS; 
+

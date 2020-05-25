@@ -1,0 +1,25 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _SCATTER_GATHER_ELEMENT
+{
+  union _LARGE_INTEGER Address;
+  U32 Length;
+  U64 Reserved;
+} SCATTER_GATHER_ELEMENT, *PSCATTER_GATHER_ELEMENT; 
+

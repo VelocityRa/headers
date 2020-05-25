@@ -1,0 +1,15 @@
+typedef struct _KERNEL_STACK_SEGMENT
+{
+  U64 StackBase;
+  U64 StackLimit;
+  U64 KernelStack;
+  U64 InitialStack;
+  U64 ActualLimit;
+} KERNEL_STACK_SEGMENT, *PKERNEL_STACK_SEGMENT; 
+
+typedef struct _KERNEL_STACK_CONTROL
+{
+  struct _KERNEL_STACK_SEGMENT Current;
+  struct _KERNEL_STACK_SEGMENT Previous;
+} KERNEL_STACK_CONTROL, *PKERNEL_STACK_CONTROL; 
+

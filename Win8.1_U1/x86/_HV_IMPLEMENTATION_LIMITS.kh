@@ -1,0 +1,8 @@
+typedef struct _HV_IMPLEMENTATION_LIMITS
+{
+  U32 MaxVirtualProcessorCount;
+  U32 MaxLogicalProcessorCount;
+  U32 MaxInterruptMappingCount;
+  U32 ReservedEdx;
+} HV_IMPLEMENTATION_LIMITS, *PHV_IMPLEMENTATION_LIMITS; 
+

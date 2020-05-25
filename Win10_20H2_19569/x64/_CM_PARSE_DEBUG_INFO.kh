@@ -1,0 +1,18 @@
+typedef struct _CM_PARSE_DEBUG_INFO
+{
+  struct _CM_KEY_CONTROL_BLOCK* SymlinkCachedKcb;
+  struct _CM_KEY_CONTROL_BLOCK* StartingKcb;
+  struct _CM_KEY_CONTROL_BLOCK* KcbCacheResult;
+  struct _CM_KEY_CONTROL_BLOCK* WalkResult;
+  struct _CM_KEY_CONTROL_BLOCK* DeepestKcbFound;
+  U8 KcbCacheLevels;
+  U8 WalkLevels;
+  U8 FailureCount;
+  struct
+  {
+    S32 Status;
+    U32 Point;
+  } FailurePoints[4];
+  S32 __PADDING__[1];
+} CM_PARSE_DEBUG_INFO, *PCM_PARSE_DEBUG_INFO; 
+

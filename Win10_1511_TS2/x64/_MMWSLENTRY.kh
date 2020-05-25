@@ -1,0 +1,17 @@
+typedef struct _MMWSLENTRY
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Spare : 1; 
+    U64 Hashed : 1; 
+    U64 Direct : 1; 
+    U64 Protection : 5; 
+    U64 Age : 3; 
+    U64 VirtualPageNumber : 36; 
+    U64 HighActiveFlink : 4; 
+    U64 HighActiveBlink : 4; 
+    U64 Unused : 8; 
+  }; 
+} MMWSLENTRY, *PMMWSLENTRY; 
+

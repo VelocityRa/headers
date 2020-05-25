@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _VOLUME_CACHE_MAP
+{
+  S16 NodeTypeCode;
+  S16 NodeByteCode;
+  U32 UseCount;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _LIST_ENTRY VolumeCacheMapLinks;
+  U32 Flags;
+  U64 DirtyPages;
+  U32 PagesQueuedToDisk;
+  S32 __PADDING__[1];
+} VOLUME_CACHE_MAP, *PVOLUME_CACHE_MAP; 
+

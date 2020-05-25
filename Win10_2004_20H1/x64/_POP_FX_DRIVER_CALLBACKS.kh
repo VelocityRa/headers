@@ -1,0 +1,14 @@
+typedef struct _POP_FX_DRIVER_CALLBACKS
+{
+  void* ComponentActive;
+  void* ComponentIdle;
+  void* ComponentIdleState;
+  void* DevicePowerRequired;
+  void* DevicePowerNotRequired;
+  void* PowerControl;
+  void* ComponentCriticalTransition;
+  void* DripsWatchdogCallback;
+  void* DirectedPowerUpCallback;
+  void* DirectedPowerDownCallback;
+} POP_FX_DRIVER_CALLBACKS, *PPOP_FX_DRIVER_CALLBACKS; 
+

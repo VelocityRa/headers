@@ -1,0 +1,15 @@
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MI_COMBINE_STATE
+{
+  volatile S32 ActiveSpinLock;
+  U32 CombiningThreadCount;
+  struct _RTL_AVL_TREE ActiveThreadTree;
+  U64 CommonPageCombineDomain;
+  U32 CommonCombineDomainAssigned;
+  S32 __PADDING__[1];
+} MI_COMBINE_STATE, *PMI_COMBINE_STATE; 
+

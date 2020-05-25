@@ -1,0 +1,17 @@
+typedef union _WHEA_PCIXDEVICE_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 ErrorStatus : 1; 
+      U64 IdInfo : 1; 
+      U64 MemoryNumber : 1; 
+      U64 IoNumber : 1; 
+      U64 RegisterDataPairs : 1; 
+      U64 Reserved : 59; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_PCIXDEVICE_ERROR_VALIDBITS, *PWHEA_PCIXDEVICE_ERROR_VALIDBITS; 
+

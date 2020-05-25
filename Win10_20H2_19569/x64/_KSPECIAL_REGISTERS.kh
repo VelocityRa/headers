@@ -1,0 +1,41 @@
+typedef struct _KDESCRIPTOR
+{
+  U16 Pad[3];
+  U16 Limit;
+  void* Base;
+} KDESCRIPTOR, *PKDESCRIPTOR; 
+
+typedef struct _KSPECIAL_REGISTERS
+{
+  U64 Cr0;
+  U64 Cr2;
+  U64 Cr3;
+  U64 Cr4;
+  U64 KernelDr0;
+  U64 KernelDr1;
+  U64 KernelDr2;
+  U64 KernelDr3;
+  U64 KernelDr6;
+  U64 KernelDr7;
+  struct _KDESCRIPTOR Gdtr;
+  struct _KDESCRIPTOR Idtr;
+  U16 Tr;
+  U16 Ldtr;
+  U32 MxCsr;
+  U64 DebugControl;
+  U64 LastBranchToRip;
+  U64 LastBranchFromRip;
+  U64 LastExceptionToRip;
+  U64 LastExceptionFromRip;
+  U64 Cr8;
+  U64 MsrGsBase;
+  U64 MsrGsSwap;
+  U64 MsrStar;
+  U64 MsrLStar;
+  U64 MsrCStar;
+  U64 MsrSyscallMask;
+  U64 Xcr0;
+  U64 MsrFsBase;
+  U64 SpecialPadding0;
+} KSPECIAL_REGISTERS, *PKSPECIAL_REGISTERS; 
+

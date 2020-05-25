@@ -1,0 +1,20 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_QUEUED_DEADSTACK_WORKITEM
+{
+  struct _WORK_QUEUE_ITEM WorkItem;
+  volatile S32 Active;
+  S32 __PADDING__[1];
+} MI_QUEUED_DEADSTACK_WORKITEM, *PMI_QUEUED_DEADSTACK_WORKITEM; 
+

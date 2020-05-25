@@ -1,0 +1,16 @@
+typedef union _PPM_COORDINATED_SYNCHRONIZATION
+{
+  union
+  {
+    S32 AsLong;
+    struct 
+    {
+      U32 EnterProcessor : 14; 
+      U32 ExitProcessor : 14; 
+      U32 Transition : 2; 
+      U32 Entered : 1; 
+      U32 Reserved : 1; 
+    }; 
+  }; 
+} PPM_COORDINATED_SYNCHRONIZATION, *PPPM_COORDINATED_SYNCHRONIZATION; 
+

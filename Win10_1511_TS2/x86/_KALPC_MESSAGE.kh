@@ -1,0 +1,129 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _KALPC_DIRECT_EVENT
+{
+  union
+  {
+    U32 Event;
+    struct 
+    {
+      U32 Referenced : 1; 
+      U32 Reserved : 31; 
+    }; 
+  }; 
+} KALPC_DIRECT_EVENT, *PKALPC_DIRECT_EVENT; 
+
+typedef struct _KALPC_MESSAGE_ATTRIBUTES
+{
+  void* ClientContext;
+  void* ServerContext;
+  void* PortContext;
+  void* CancelPortContext;
+  struct _KALPC_SECURITY_DATA* SecurityData;
+  struct _KALPC_VIEW* View;
+  struct _KALPC_HANDLE_DATA* HandleData;
+  union _KALPC_DIRECT_EVENT DirectEvent;
+} KALPC_MESSAGE_ATTRIBUTES, *PKALPC_MESSAGE_ATTRIBUTES; 
+
+typedef struct _CLIENT_ID
+{
+  void* UniqueProcess;
+  void* UniqueThread;
+} CLIENT_ID, *PCLIENT_ID; 
+
+typedef struct _PORT_MESSAGE
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        S16 DataLength;
+        S16 TotalLength;
+      } s1;
+      U32 Length;
+    }; 
+  } u1;
+  union
+  {
+    union
+    {
+      struct
+      {
+        S16 Type;
+        S16 DataInfoOffset;
+      } s2;
+      U32 ZeroInit;
+    }; 
+  } u2;
+  union
+  {
+    struct _CLIENT_ID ClientId;
+    double DoNotUseThisField;
+  }; 
+  U32 MessageId;
+  union
+  {
+    U32 ClientViewSize;
+    U32 CallbackId;
+  }; 
+} PORT_MESSAGE, *PPORT_MESSAGE; 
+
+typedef struct _KALPC_MESSAGE
+{
+  struct _LIST_ENTRY Entry;
+  struct _ALPC_PORT* PortQueue;
+  struct _ALPC_PORT* OwnerPort;
+  struct _ETHREAD* WaitingThread;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 QueueType : 3; 
+          U32 QueuePortType : 4; 
+          U32 Canceled : 1; 
+          U32 Ready : 1; 
+          U32 ReleaseMessage : 1; 
+          U32 SharedQuota : 1; 
+          U32 ReplyWaitReply : 1; 
+          U32 OwnerPortReference : 1; 
+          U32 ReserveReference : 1; 
+          U32 ReceiverReference : 1; 
+          U32 ViewAttributeRetrieved : 1; 
+          U32 InDispatch : 1; 
+        }; 
+      } s1;
+      U32 State;
+    }; 
+  } u1;
+  S32 SequenceNo;
+  union
+  {
+    struct _EPROCESS* QuotaProcess;
+    void* QuotaBlock;
+  }; 
+  struct _ALPC_PORT* CancelSequencePort;
+  struct _ALPC_PORT* CancelQueuePort;
+  S32 CancelSequenceNo;
+  struct _LIST_ENTRY CancelListEntry;
+  struct _KALPC_RESERVE* Reserve;
+  struct _KALPC_MESSAGE_ATTRIBUTES MessageAttributes;
+  void* DataUserVa;
+  struct _ALPC_COMMUNICATION_INFO* CommunicationInfo;
+  struct _ALPC_PORT* ConnectionPort;
+  struct _ETHREAD* ServerThread;
+  void* WakeReference;
+  void* ExtensionBuffer;
+  U32 ExtensionBufferSize;
+  struct _PORT_MESSAGE PortMessage;
+} KALPC_MESSAGE, *PKALPC_MESSAGE; 
+

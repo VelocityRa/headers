@@ -1,0 +1,10 @@
+typedef struct _DBGKD_WRITE_CUSTOM_BREAKPOINT
+{
+  U64 BreakPointAddress;
+  U64 BreakPointInstruction;
+  U32 BreakPointHandle;
+  U8 BreakPointInstructionSize;
+  U8 BreakPointInstructionAlignment;
+  char __PADDING__[2];
+} DBGKD_WRITE_CUSTOM_BREAKPOINT, *PDBGKD_WRITE_CUSTOM_BREAKPOINT; 
+

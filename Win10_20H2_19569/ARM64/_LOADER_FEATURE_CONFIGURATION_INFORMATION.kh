@@ -1,0 +1,10 @@
+typedef struct _LOADER_FEATURE_CONFIGURATION_INFORMATION
+{
+  void* FeatureConfigurationBuffer;
+  U64 FeatureConfigurationBufferSize;
+  void* UsageSubscriptionBuffer;
+  U64 UsageSubscriptionBufferSize;
+  void* DelayedUsageReportBuffer;
+  U64 DelayedUsageReportBufferSize;
+} LOADER_FEATURE_CONFIGURATION_INFORMATION, *PLOADER_FEATURE_CONFIGURATION_INFORMATION; 
+

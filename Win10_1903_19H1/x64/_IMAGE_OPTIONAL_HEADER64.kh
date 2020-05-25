@@ -1,0 +1,40 @@
+typedef struct _IMAGE_DATA_DIRECTORY
+{
+  U32 VirtualAddress;
+  U32 Size;
+} IMAGE_DATA_DIRECTORY, *PIMAGE_DATA_DIRECTORY; 
+
+typedef struct _IMAGE_OPTIONAL_HEADER64
+{
+  U16 Magic;
+  U8 MajorLinkerVersion;
+  U8 MinorLinkerVersion;
+  U32 SizeOfCode;
+  U32 SizeOfInitializedData;
+  U32 SizeOfUninitializedData;
+  U32 AddressOfEntryPoint;
+  U32 BaseOfCode;
+  U64 ImageBase;
+  U32 SectionAlignment;
+  U32 FileAlignment;
+  U16 MajorOperatingSystemVersion;
+  U16 MinorOperatingSystemVersion;
+  U16 MajorImageVersion;
+  U16 MinorImageVersion;
+  U16 MajorSubsystemVersion;
+  U16 MinorSubsystemVersion;
+  U32 Win32VersionValue;
+  U32 SizeOfImage;
+  U32 SizeOfHeaders;
+  U32 CheckSum;
+  U16 Subsystem;
+  U16 DllCharacteristics;
+  U64 SizeOfStackReserve;
+  U64 SizeOfStackCommit;
+  U64 SizeOfHeapReserve;
+  U64 SizeOfHeapCommit;
+  U32 LoaderFlags;
+  U32 NumberOfRvaAndSizes;
+  struct _IMAGE_DATA_DIRECTORY DataDirectory[16];
+} IMAGE_OPTIONAL_HEADER64, *PIMAGE_OPTIONAL_HEADER64; 
+

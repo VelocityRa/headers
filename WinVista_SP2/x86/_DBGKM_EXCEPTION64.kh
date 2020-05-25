@@ -1,0 +1,18 @@
+typedef struct _EXCEPTION_RECORD64
+{
+  S32 ExceptionCode;
+  U32 ExceptionFlags;
+  U64 ExceptionRecord;
+  U64 ExceptionAddress;
+  U32 NumberParameters;
+  U32 __unusedAlignment;
+  U64 ExceptionInformation[15];
+} EXCEPTION_RECORD64, *PEXCEPTION_RECORD64; 
+
+typedef struct _DBGKM_EXCEPTION64
+{
+  struct _EXCEPTION_RECORD64 ExceptionRecord;
+  U32 FirstChance;
+  S32 __PADDING__[1];
+} DBGKM_EXCEPTION64, *PDBGKM_EXCEPTION64; 
+

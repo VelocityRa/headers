@@ -1,0 +1,13 @@
+typedef struct _WHEA_PCIX_DEV_VALIDATION_BITS
+{
+  struct 
+  {
+    U64 ErrorStatusValid : 1; 
+    U64 IdInfoValid : 1; 
+    U64 MemoryNumberValid : 1; 
+    U64 IoNumberValid : 1; 
+    U64 RegisterDataPairValid : 1; 
+    U64 Reserved : 59; 
+  }; 
+} WHEA_PCIX_DEV_VALIDATION_BITS, *PWHEA_PCIX_DEV_VALIDATION_BITS; 
+

@@ -1,0 +1,21 @@
+union wil_details_ReportedState
+{
+  union
+  {
+    U32 exchange;
+    struct 
+    {
+      U32 queuedForReporting : 1; 
+      U32 reportedDeviceUsage : 1; 
+      U32 reportedDevicePotential : 1; 
+      U32 reportedDeviceOpportunity : 1; 
+      U32 reportedDevicePotentialOpportunity : 1; 
+      U32 usageCount : 9; 
+      U32 usageCountRepresentsPotential : 1; 
+      U32 opportunityCount : 7; 
+      U32 opportunityCountRepresentsPotential : 1; 
+      U32 unused : 9; 
+    }; 
+  }; 
+}; 
+

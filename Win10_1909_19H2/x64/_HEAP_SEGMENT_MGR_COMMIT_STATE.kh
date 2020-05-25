@@ -1,0 +1,16 @@
+typedef union _HEAP_SEGMENT_MGR_COMMIT_STATE
+{
+  union
+  {
+    struct 
+    {
+      U16 CommittedPageCount : 11; 
+      U16 Spare : 3; 
+      U16 LargePageOperationInProgress : 1; 
+      U16 LargePageCommit : 1; 
+    }; 
+    volatile U16 EntireUShortV;
+    U16 EntireUShort;
+  }; 
+} HEAP_SEGMENT_MGR_COMMIT_STATE, *PHEAP_SEGMENT_MGR_COMMIT_STATE; 
+

@@ -1,0 +1,15 @@
+typedef union _MMVIEW_CONTROL_AREA
+{
+  union
+  {
+    struct _CONTROL_AREA* ControlArea;
+    struct 
+    {
+      U32 Writable : 1; 
+      U32 ExceptionForInPageErrors : 1; 
+      U32 Unused : 1; 
+      U32 UsedForControlArea : 29; 
+    }; 
+  }; 
+} MMVIEW_CONTROL_AREA, *PMMVIEW_CONTROL_AREA; 
+

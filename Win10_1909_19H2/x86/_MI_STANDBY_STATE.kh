@@ -1,0 +1,51 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 CpuId;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _KDPC
+{
+  union
+  {
+    U32 TargetInfoAsUlong;
+    struct
+    {
+      U8 Type;
+      U8 Importance;
+      volatile U16 Number;
+    }; 
+  }; 
+  struct _SINGLE_LIST_ENTRY DpcListEntry;
+  U32 ProcessorHistory;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _MI_STANDBY_STATE
+{
+  U32 FirstDecayPage;
+  union _SLIST_HEADER PfnDecayFreeSList;
+  struct _MM_PAGE_ACCESS_INFO_HEADER* PfnRepurposeLog;
+  struct _KDPC AllocatePfnRepurposeDpc;
+  union _SLIST_HEADER PageHeatListSlist;
+  volatile S32 PageHeatListDisableAllocation;
+  S32 __PADDING__[1];
+} MI_STANDBY_STATE, *PMI_STANDBY_STATE; 
+

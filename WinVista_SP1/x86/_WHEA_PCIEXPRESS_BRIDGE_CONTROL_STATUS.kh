@@ -1,0 +1,13 @@
+typedef union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS
+{
+  union
+  {
+    struct
+    {
+      U16 BridgeSecondaryStatus;
+      U16 BridgeControl;
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS, *PWHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS; 
+

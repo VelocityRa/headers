@@ -1,0 +1,240 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_FAST_REF
+{
+  union
+  {
+    void* Object;
+    U32 RefCnt : 3; 
+    U32 Value;
+  }; 
+} EX_FAST_REF, *PEX_FAST_REF; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _LOGGED_STREAM_CALLBACK_V1
+{
+  void* LogHandle;
+  void* FlushToLsnRoutine;
+} LOGGED_STREAM_CALLBACK_V1, *PLOGGED_STREAM_CALLBACK_V1; 
+
+typedef struct _LOGGED_STREAM_CALLBACK_V2
+{
+  struct _LOG_HANDLE_CONTEXT* LogHandleContext;
+} LOGGED_STREAM_CALLBACK_V2, *PLOGGED_STREAM_CALLBACK_V2; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 QueueControlFlags;
+        struct 
+        {
+          U8 Abandoned : 1; 
+          U8 DisableIncrement : 1; 
+        }; 
+        U8 Signalling;
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Reserved1 : 2; 
+          }; 
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved2 : 4; 
+            }; 
+            U8 Hand;
+            U8 Reserved3;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 1; 
+                  U8 Processor : 5; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                U8 DpcActive;
+                U8 Reserved5;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _FAST_MUTEX
+{
+  S32 Count;
+  void* Owner;
+  U32 Contention;
+  struct _KEVENT Event;
+  U32 OldIrql;
+} FAST_MUTEX, *PFAST_MUTEX; 
+
+typedef struct _PRIVATE_CACHE_MAP_FLAGS
+{
+  struct 
+  {
+    U32 DontUse : 16; 
+    U32 ReadAheadActive : 1; 
+    U32 ReadAheadEnabled : 1; 
+    U32 PagePriority : 3; 
+    U32 PipelineReadAheads : 1; 
+    U32 Available : 10; 
+  }; 
+} PRIVATE_CACHE_MAP_FLAGS, *PPRIVATE_CACHE_MAP_FLAGS; 
+
+typedef struct _PRIVATE_CACHE_MAP
+{
+  union
+  {
+    S16 NodeTypeCode;
+    struct _PRIVATE_CACHE_MAP_FLAGS Flags;
+  }; 
+  U32 ReadAheadMask;
+  struct _FILE_OBJECT* FileObject;
+  union _LARGE_INTEGER FileOffset1;
+  union _LARGE_INTEGER BeyondLastByte1;
+  union _LARGE_INTEGER FileOffset2;
+  union _LARGE_INTEGER BeyondLastByte2;
+  U32 SequentialReadCount;
+  U32 ReadAheadLength;
+  union _LARGE_INTEGER ReadAheadOffset;
+  union _LARGE_INTEGER ReadAheadBeyondLastByte;
+  U64 PrevReadAheadBeyondLastByte;
+  U32 ReadAheadSpinLock;
+  U32 PipelinedReadAheadRequestSize;
+  U32 ReadAheadGrowth;
+  struct _LIST_ENTRY PrivateLinks;
+  void* ReadAheadWorkItem;
+} PRIVATE_CACHE_MAP, *PPRIVATE_CACHE_MAP; 
+
+typedef struct _SHARED_CACHE_MAP
+{
+  S16 NodeTypeCode;
+  S16 NodeByteSize;
+  U32 OpenCount;
+  union _LARGE_INTEGER FileSize;
+  struct _LIST_ENTRY BcbList;
+  union _LARGE_INTEGER SectionSize;
+  union _LARGE_INTEGER ValidDataLength;
+  union _LARGE_INTEGER ValidDataGoal;
+  struct _VACB* InitialVacbs[4];
+  struct _VACB** Vacbs;
+  struct _EX_FAST_REF FileObjectFastRef;
+  struct _EX_PUSH_LOCK VacbLock;
+  U32 DirtyPages;
+  struct _LIST_ENTRY LoggedStreamLinks;
+  struct _LIST_ENTRY SharedCacheMapLinks;
+  U32 Flags;
+  S32 Status;
+  struct _MBCB* Mbcb;
+  void* Section;
+  struct _KEVENT* CreateEvent;
+  struct _KEVENT* WaitOnActiveCount;
+  U32 PagesToWrite;
+  S64 BeyondLastFlush;
+  struct _CACHE_MANAGER_CALLBACKS* Callbacks;
+  void* LazyWriteContext;
+  struct _LIST_ENTRY PrivateList;
+  union
+  {
+    struct _LOGGED_STREAM_CALLBACK_V1 V1;
+    struct _LOGGED_STREAM_CALLBACK_V2 V2;
+  }; 
+  union _LARGE_INTEGER LargestLSN;
+  U32 DirtyPageThreshold;
+  U32 LazyWritePassCount;
+  struct _CACHE_UNINITIALIZE_EVENT* UninitializeEvent;
+  struct _FAST_MUTEX BcbLock;
+  union _LARGE_INTEGER LastUnmapBehindOffset;
+  struct _KEVENT Event;
+  union _LARGE_INTEGER HighWaterMappingOffset;
+  struct _PRIVATE_CACHE_MAP PrivateCacheMap;
+  void* WriteBehindWorkQueueEntry;
+  struct _VOLUME_CACHE_MAP* VolumeCacheMap;
+  U32 ProcImagePathHash;
+  U32 WritesInProgress;
+} SHARED_CACHE_MAP, *PSHARED_CACHE_MAP; 
+

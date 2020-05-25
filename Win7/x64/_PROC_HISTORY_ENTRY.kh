@@ -1,0 +1,7 @@
+typedef struct _PROC_HISTORY_ENTRY
+{
+  U16 Utility;
+  U8 Frequency;
+  U8 Reserved;
+} PROC_HISTORY_ENTRY, *PPROC_HISTORY_ENTRY; 
+

@@ -1,0 +1,13 @@
+typedef struct _MI_PARTITION_COMMIT
+{
+  U64 PeakCommitment;
+  U64 TotalCommitLimitMaximum;
+  volatile S32 Popups[2];
+  U64 LowCommitThreshold;
+  U64 HighCommitThreshold;
+  U64 EventLock;
+  U64 SystemCommitReserve;
+  volatile U64 OverCommit;
+  S32 __PADDING__[14];
+} MI_PARTITION_COMMIT, *PMI_PARTITION_COMMIT; 
+

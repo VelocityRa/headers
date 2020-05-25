@@ -1,0 +1,6 @@
+typedef struct _BUS_EXTENSION_LIST
+{
+  void* Next;
+  struct _PI_BUS_EXTENSION* BusExtension;
+} BUS_EXTENSION_LIST, *PBUS_EXTENSION_LIST; 
+

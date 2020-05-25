@@ -1,0 +1,18 @@
+typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 Recovered : 1; 
+      U32 PreviousError : 1; 
+      U32 Simulated : 1; 
+      U32 DeviceDriver : 1; 
+      U32 CriticalEvent : 1; 
+      U32 PersistPfn : 1; 
+      U32 Reserved : 26; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_ERROR_RECORD_HEADER_FLAGS, *PWHEA_ERROR_RECORD_HEADER_FLAGS; 
+

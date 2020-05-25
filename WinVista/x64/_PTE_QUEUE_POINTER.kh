@@ -1,0 +1,13 @@
+typedef union _PTE_QUEUE_POINTER
+{
+  union
+  {
+    struct 
+    {
+      S64 PointerPte : 48; 
+      U64 TimeStamp : 16; 
+    }; 
+    S64 Data;
+  }; 
+} PTE_QUEUE_POINTER, *PPTE_QUEUE_POINTER; 
+

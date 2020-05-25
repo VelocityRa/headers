@@ -1,0 +1,5 @@
+typedef struct _TP_DIRECT
+{
+  void* Callback;
+} TP_DIRECT, *PTP_DIRECT; 
+

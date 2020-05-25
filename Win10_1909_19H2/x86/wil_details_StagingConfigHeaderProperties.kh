@@ -1,0 +1,12 @@
+struct wil_details_StagingConfigHeaderProperties
+{
+  struct 
+  {
+    U32 ignoreServiceState : 1; 
+    U32 ignoreUserState : 1; 
+    U32 ignoreTestState : 1; 
+    U32 ignoreVariants : 1; 
+    U32 unused : 28; 
+  }; 
+}; 
+

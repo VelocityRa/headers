@@ -1,0 +1,23 @@
+struct wil_details_StagingConfigHeaderProperties
+{
+  struct 
+  {
+    U32 ignoreServiceState : 1; 
+    U32 ignoreUserState : 1; 
+    U32 ignoreTestState : 1; 
+    U32 ignoreVariants : 1; 
+    U32 unused : 28; 
+  }; 
+}; 
+
+struct wil_details_StagingConfigHeader
+{
+  U8 version;
+  U8 versionMinor;
+  U16 headerSizeBytes;
+  U16 featureCount;
+  U16 featureUsageTriggerCount;
+  struct wil_details_StagingConfigHeaderProperties sessionProperties;
+  struct wil_details_StagingConfigHeaderProperties properties;
+}; 
+

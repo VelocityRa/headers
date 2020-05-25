@@ -1,0 +1,107 @@
+struct DEBUG_DEVICE_ADDRESS
+{
+  U8 Type;
+  U8 Valid;
+  union
+  {
+    U8 Reserved[2];
+    struct
+    {
+      U8 BitWidth;
+      U8 AccessSize;
+    }; 
+  }; 
+  U8* TranslatedAddress;
+  U32 Length;
+}; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+struct DEBUG_MEMORY_REQUIREMENTS
+{
+  union _LARGE_INTEGER Start;
+  union _LARGE_INTEGER MaxEnd;
+  void* VirtualAddress;
+  U32 Length;
+  U8 Cached;
+  U8 Aligned;
+  char __PADDING__[6];
+}; 
+
+enum KD_NAMESPACE_ENUM
+{
+  KdNameSpacePCI = 0,
+  KdNameSpaceACPI = 1,
+  KdNameSpaceAny = 2,
+  KdNameSpaceNone = 3,
+  KdNameSpaceMax = 4,
+};
+
+typedef struct _DEBUG_TRANSPORT_DATA
+{
+  U32 HwContextSize;
+  U8 UseSerialFraming;
+  U8 ValidUSBCoreId;
+  U8 USBCoreId;
+  char __PADDING__[1];
+} DEBUG_TRANSPORT_DATA, *PDEBUG_TRANSPORT_DATA; 
+
+typedef struct _DEBUG_IOMMU_EFI_DATA
+{
+  void* PciIoProtocolHandle;
+  void* Mapping;
+} DEBUG_IOMMU_EFI_DATA, *PDEBUG_IOMMU_EFI_DATA; 
+
+typedef struct _DEBUG_DEVICE_DESCRIPTOR
+{
+  U32 Bus;
+  U32 Slot;
+  U16 Segment;
+  U16 VendorID;
+  U16 DeviceID;
+  U8 BaseClass;
+  U8 SubClass;
+  U8 ProgIf;
+  union
+  {
+    U8 Flags;
+    struct 
+    {
+      U8 DbgHalScratchAllocated : 1; 
+      U8 DbgBarsMapped : 1; 
+      U8 DbgScratchAllocated : 1; 
+    }; 
+  }; 
+  U8 Initialized;
+  U8 Configured;
+  struct DEBUG_DEVICE_ADDRESS BaseAddress[6];
+  struct DEBUG_MEMORY_REQUIREMENTS Memory;
+  U32 Dbg2TableIndex;
+  U16 PortType;
+  U16 PortSubtype;
+  void* OemData;
+  U32 OemDataLength;
+  enum KD_NAMESPACE_ENUM NameSpace;
+  wchar_t* NameSpacePath;
+  U32 NameSpacePathLength;
+  U32 TransportType;
+  struct _DEBUG_TRANSPORT_DATA TransportData;
+  struct _DEBUG_IOMMU_EFI_DATA EfiIoMmuData;
+} DEBUG_DEVICE_DESCRIPTOR, *PDEBUG_DEVICE_DESCRIPTOR; 
+

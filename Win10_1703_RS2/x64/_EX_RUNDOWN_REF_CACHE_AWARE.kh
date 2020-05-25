@@ -1,0 +1,8 @@
+typedef struct _EX_RUNDOWN_REF_CACHE_AWARE
+{
+  struct _EX_RUNDOWN_REF* RunRefs;
+  void* PoolToFree;
+  U32 RunRefSize;
+  U32 Number;
+} EX_RUNDOWN_REF_CACHE_AWARE, *PEX_RUNDOWN_REF_CACHE_AWARE; 
+

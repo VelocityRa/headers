@@ -1,0 +1,7 @@
+typedef struct _PEP_WORK_DEVICE_POWER
+{
+  struct POHANDLE__* DeviceHandle;
+  U8 PowerRequired;
+  char __PADDING__[7];
+} PEP_WORK_DEVICE_POWER, *PPEP_WORK_DEVICE_POWER; 
+

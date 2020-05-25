@@ -1,0 +1,53 @@
+struct BATTERY_REPORTING_SCALE
+{
+  U32 Granularity;
+  U32 Capacity;
+}; 
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+struct SYSTEM_POWER_CAPABILITIES
+{
+  U8 PowerButtonPresent;
+  U8 SleepButtonPresent;
+  U8 LidPresent;
+  U8 SystemS1;
+  U8 SystemS2;
+  U8 SystemS3;
+  U8 SystemS4;
+  U8 SystemS5;
+  U8 HiberFilePresent;
+  U8 FullWake;
+  U8 VideoDimPresent;
+  U8 ApmPresent;
+  U8 UpsPresent;
+  U8 ThermalControl;
+  U8 ProcessorThrottle;
+  U8 ProcessorMinThrottle;
+  U8 ProcessorMaxThrottle;
+  U8 FastSystemS4;
+  U8 Hiberboot;
+  U8 WakeAlarmPresent;
+  U8 AoAc;
+  U8 DiskSpinDown;
+  U8 spare3[8];
+  U8 SystemBatteriesPresent;
+  U8 BatteriesAreShortTerm;
+  struct BATTERY_REPORTING_SCALE BatteryScale[3];
+  enum _SYSTEM_POWER_STATE AcOnLineWake;
+  enum _SYSTEM_POWER_STATE SoftLidWake;
+  enum _SYSTEM_POWER_STATE RtcWake;
+  enum _SYSTEM_POWER_STATE MinDeviceWakeState;
+  enum _SYSTEM_POWER_STATE DefaultLowLatencyWake;
+}; 
+

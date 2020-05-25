@@ -1,0 +1,102 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_BAD_MEMORY_EVENT_ENTRY
+{
+  U32 BugCheckCode;
+  S32 Active;
+  U32 Data;
+  union _LARGE_INTEGER PhysicalAddress;
+  struct _WORK_QUEUE_ITEM WorkItem;
+} MI_BAD_MEMORY_EVENT_ENTRY, *PMI_BAD_MEMORY_EVENT_ENTRY; 
+
+typedef struct _MI_PROBE_RAISE_TRACKER
+{
+  U32 UserRangeInKernel;
+  U32 FaultFailed;
+  U32 WriteFaultFailed;
+  U32 LargePageFailed;
+  U32 UserAccessToKernelPte;
+  U32 BadPageLocation;
+  U32 InsufficientCharge;
+  U32 PageTableCharge;
+  U32 NoPhysicalMapping;
+  U32 NoIoReference;
+  U32 ProbeFailed;
+  U32 PteIsZero;
+  U32 StrongCodeWrite;
+  U32 ReducedCloneCommitChargeFailed;
+  U32 CopyOnWriteAtDispatchNoPages;
+  U32 NoPageTablesAllowed;
+  U32 EnclavePageFailed;
+} MI_PROBE_RAISE_TRACKER, *PMI_PROBE_RAISE_TRACKER; 
+
+typedef struct _MI_FORCED_COMMITS
+{
+  U32 Regular;
+  U32 Wrap;
+} MI_FORCED_COMMITS, *PMI_FORCED_COMMITS; 
+
+typedef struct _MI_RESAVAIL_FAILURES
+{
+  U32 Wrap;
+  U32 NoCharge;
+} MI_RESAVAIL_FAILURES, *PMI_RESAVAIL_FAILURES; 
+
+typedef struct _MI_ERROR_STATE
+{
+  struct _MI_BAD_MEMORY_EVENT_ENTRY BadMemoryEventEntry;
+  U32 PageOfInterest;
+  struct _MI_PROBE_RAISE_TRACKER ProbeRaises;
+  struct _MI_FORCED_COMMITS ForcedCommits;
+  U32 PrePhase0BugCheckParameter;
+  U32 WsleFailures;
+  U32 PageHashErrors;
+  U32 CheckZeroCount;
+  volatile S32 ZeroedPageSingleBitErrorsDetected;
+  volatile S32 BadPagesDetected;
+  U32 BadPagesInserted;
+  struct _WORK_QUEUE_ITEM BadPageInsertWorkItem;
+  S32 ScrubPasses;
+  S32 ScrubBadPagesFound;
+  U32 UserViewFailures;
+  U32 UserViewCollisionFailures;
+  U32 UserAllocateFailures;
+  U32 UserAllocateCollisionFailures;
+  struct _MI_RESAVAIL_FAILURES ResavailFailures;
+  U8 PendingBadPages;
+  U8 FatalGraphicsFailures;
+  U8 InitFailure;
+  U8 BadPagesInsertSignalState;
+  U8 StopBadMaps;
+  char __PADDING__[7];
+} MI_ERROR_STATE, *PMI_ERROR_STATE; 
+

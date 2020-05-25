@@ -1,0 +1,9 @@
+typedef struct _MMVAD_FLAGS1
+{
+  struct 
+  {
+    U32 CommitCharge : 31; 
+    U32 MemCommit : 1; 
+  }; 
+} MMVAD_FLAGS1, *PMMVAD_FLAGS1; 
+

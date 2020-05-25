@@ -1,0 +1,19 @@
+typedef struct _DESCRIPTION_HEADER
+{
+  U32 Signature;
+  U32 Length;
+  U8 Revision;
+  U8 Checksum;
+  char OEMID[6];
+  char OEMTableID[8];
+  U32 OEMRevision;
+  char CreatorID[4];
+  U32 CreatorRev;
+} DESCRIPTION_HEADER, *PDESCRIPTION_HEADER; 
+
+typedef struct _RSDT_32
+{
+  struct _DESCRIPTION_HEADER Header;
+  U32 Tables[1];
+} RSDT_32, *PRSDT_32; 
+

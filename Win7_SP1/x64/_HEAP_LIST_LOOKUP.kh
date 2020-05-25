@@ -1,0 +1,13 @@
+typedef struct _HEAP_LIST_LOOKUP
+{
+  struct _HEAP_LIST_LOOKUP* ExtendedLookup;
+  U32 ArraySize;
+  U32 ExtraItem;
+  U32 ItemCount;
+  U32 OutOfRangeItems;
+  U32 BaseIndex;
+  struct _LIST_ENTRY* ListHead;
+  U32* ListsInUseUlong;
+  struct _LIST_ENTRY** ListHints;
+} HEAP_LIST_LOOKUP, *PHEAP_LIST_LOOKUP; 
+

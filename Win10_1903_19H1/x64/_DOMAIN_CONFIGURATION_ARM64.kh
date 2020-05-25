@@ -1,0 +1,31 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _DOMAIN_CONFIGURATION_ARM64
+{
+  union _LARGE_INTEGER Ttbr0;
+  union _LARGE_INTEGER Ttbr1;
+  U32 Mair0;
+  U32 Mair1;
+  U8 InputSize0;
+  U8 InputSize1;
+  U8 CoherentTableWalks;
+  U8 TranslationEnabled;
+  S32 __PADDING__[1];
+} DOMAIN_CONFIGURATION_ARM64, *PDOMAIN_CONFIGURATION_ARM64; 
+

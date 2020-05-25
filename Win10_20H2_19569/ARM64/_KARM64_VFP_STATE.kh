@@ -1,0 +1,24 @@
+typedef union _ARM64_NT_NEON128
+{
+  union
+  {
+    struct
+    {
+      U64 Low;
+      S64 High;
+    }; 
+    double D[2];
+    float S[4];
+    U16 H[8];
+    U8 B[16];
+  }; 
+} ARM64_NT_NEON128, *PARM64_NT_NEON128; 
+
+typedef struct _KARM64_VFP_STATE
+{
+  struct _KARM64_VFP_STATE* Link;
+  U32 Fpcr;
+  U32 Fpsr;
+  union _ARM64_NT_NEON128 V[32];
+} KARM64_VFP_STATE, *PKARM64_VFP_STATE; 
+

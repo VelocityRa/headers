@@ -1,0 +1,54 @@
+typedef struct _ARBITER_ORDERING_LIST
+{
+  U16 Count;
+  U16 Maximum;
+  struct _ARBITER_ORDERING* Orderings;
+} ARBITER_ORDERING_LIST, *PARBITER_ORDERING_LIST; 
+
+typedef struct _ARBITER_INSTANCE
+{
+  U32 Signature;
+  struct _KEVENT* MutexEvent;
+  U16* Name;
+  U16* OrderingName;
+  S32 ResourceType;
+  struct _RTL_RANGE_LIST* Allocation;
+  struct _RTL_RANGE_LIST* PossibleAllocation;
+  struct _ARBITER_ORDERING_LIST OrderingList;
+  struct _ARBITER_ORDERING_LIST ReservedList;
+  S32 ReferenceCount;
+  struct _ARBITER_INTERFACE* Interface;
+  U32 AllocationStackMaxSize;
+  struct _ARBITER_ALLOCATION_STATE* AllocationStack;
+  void* UnpackRequirement;
+  void* PackResource;
+  void* UnpackResource;
+  void* ScoreRequirement;
+  void* TestAllocation;
+  void* RetestAllocation;
+  void* CommitAllocation;
+  void* RollbackAllocation;
+  void* BootAllocation;
+  void* QueryArbitrate;
+  void* QueryConflict;
+  void* AddReserved;
+  void* StartArbiter;
+  void* PreprocessEntry;
+  void* AllocateEntry;
+  void* GetNextAllocationRange;
+  void* FindSuitableRange;
+  void* AddAllocation;
+  void* BacktrackAllocation;
+  void* OverrideConflict;
+  void* InitializeRangeList;
+  U8 TransactionInProgress;
+  void* Extension;
+  struct _DEVICE_OBJECT* BusDeviceObject;
+  void* ConflictCallbackContext;
+  void* ConflictCallback;
+  wchar_t PdoDescriptionString[336];
+  char PdoSymbolicNameString[672];
+  wchar_t PdoAddressString[1];
+  char __PADDING__[2];
+} ARBITER_INSTANCE, *PARBITER_INSTANCE; 
+

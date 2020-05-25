@@ -1,0 +1,27 @@
+typedef struct _TP_CALLBACK_ENVIRON
+{
+  U32 Version;
+  struct _TP_POOL* Pool;
+  struct _TP_CLEANUP_GROUP* CleanupGroup;
+  void* CleanupGroupCancelCallback;
+  void* RaceDll;
+  struct _ACTIVATION_CONTEXT* ActivationContext;
+  void* FinalizationCallback;
+  union
+  {
+    union
+    {
+      U32 Flags;
+      struct
+      {
+        struct 
+        {
+          U32 LongFunction : 1; 
+          U32 Private : 31; 
+        }; 
+      } s;
+    }; 
+  } u;
+  S32 __PADDING__[1];
+} TP_CALLBACK_ENVIRON, *PTP_CALLBACK_ENVIRON; 
+

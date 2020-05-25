@@ -1,0 +1,7 @@
+typedef struct _GROUP_AFFINITY
+{
+  U32 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+

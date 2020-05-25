@@ -1,0 +1,118 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef enum _POP_IO_STATUS
+{
+  IoReady = 0,
+  IoPending = 1,
+  IoDone = 2,
+} POP_IO_STATUS, *PPOP_IO_STATUS;
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _POP_IO_INFO
+{
+  struct _MDL* DumpMdl;
+  enum _POP_IO_STATUS IoStatus;
+  U64 IoStartCount;
+  U64 IoBytesCompleted;
+  U64 IoBytesInProgress;
+  U64 RequestSize;
+  union _LARGE_INTEGER IoLocation;
+  U64 FileOffset;
+  void* Buffer;
+  U8 AsyncCapable;
+  U64 BytesToRead;
+  U32 Pages;
+  U64 HighestChecksumIndex;
+  U16 PreviousChecksum;
+  char __PADDING__[6];
+} POP_IO_INFO, *PPOP_IO_INFO; 
+
+typedef struct _POP_HIBER_CONTEXT
+{
+  U8 Reset;
+  U8 HiberFlags;
+  U8 WroteHiberFile;
+  U8 KernelPhaseVerificationActive;
+  volatile U8 InitializationFinished;
+  volatile S32 NextTableLockHeld;
+  volatile S32 BootPhaseFinishedBarrier;
+  volatile S32 KernelResumeFinishedBarrier;
+  volatile S32 HvCaptureReadyBarrier;
+  volatile S32 HvCaptureCompletedBarrier;
+  U8 MapFrozen;
+  union
+  {
+    struct _RTL_BITMAP DiscardMap;
+    struct _RTL_BITMAP KernelPhaseMap;
+  }; 
+  struct _RTL_BITMAP BootPhaseMap;
+  struct _LIST_ENTRY ClonedRanges;
+  U32 ClonedRangeCount;
+  U64 ClonedPageCount;
+  struct _RTL_BITMAP* CurrentMap;
+  struct _LIST_ENTRY* NextCloneRange;
+  U64 NextPreserve;
+  struct _MDL* LoaderMdl;
+  struct _MDL* AllocatedMdl;
+  U64 PagesOut;
+  void* IoPages;
+  U32 IoPagesCount;
+  void* CurrentMcb;
+  struct _DUMP_STACK_CONTEXT* DumpStack;
+  struct _KPROCESSOR_STATE* WakeState;
+  U32 IoProgress;
+  S32 Status;
+  U32 GraphicsProc;
+  struct PO_MEMORY_IMAGE* MemoryImage;
+  U32* PerformanceStats;
+  struct _MDL* BootLoaderLogMdl;
+  struct _MDL* FirmwareRuntimeInformationMdl;
+  void* FirmwareRuntimeInformationVa;
+  void* ResumeContext;
+  U32 ResumeContextPages;
+  U32 SecurePages;
+  U32 ProcessorCount;
+  struct _POP_PER_PROCESSOR_CONTEXT* ProcessorContext;
+  char* ProdConsBuffer;
+  U32 ProdConsSize;
+  U32 MaxDataPages;
+  void* ExtraBuffer;
+  U64 ExtraBufferSize;
+  void* ExtraMapVa;
+  U64 BitlockerKeyPFN;
+  struct _POP_IO_INFO IoInfo;
+  wchar_t* IoChecksums;
+  U64 IoChecksumsSize;
+  U32 HardwareConfigurationSignature;
+  U8 IumEnabled;
+  U8 SecureBoot;
+  char __PADDING__[2];
+} POP_HIBER_CONTEXT, *PPOP_HIBER_CONTEXT; 
+

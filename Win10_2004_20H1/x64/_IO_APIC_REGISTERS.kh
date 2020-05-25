@@ -1,0 +1,9 @@
+typedef struct _IO_APIC_REGISTERS
+{
+  volatile U32 RegisterIndex;
+  volatile U32 Reserved1[3];
+  volatile U32 RegisterValue;
+  volatile U32 Reserved2[11];
+  volatile U32 EndOfInterrupt;
+} IO_APIC_REGISTERS, *PIO_APIC_REGISTERS; 
+

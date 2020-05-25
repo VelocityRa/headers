@@ -1,0 +1,29 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+struct DEBUG_MEMORY_REQUIREMENTS
+{
+  union _LARGE_INTEGER Start;
+  union _LARGE_INTEGER MaxEnd;
+  void* VirtualAddress;
+  U32 Length;
+  U8 Cached;
+  U8 Aligned;
+  char __PADDING__[6];
+}; 
+

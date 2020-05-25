@@ -1,0 +1,43 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _SLIST_ENTRY
+{
+  struct _SLIST_ENTRY* Next;
+  S32 __PADDING__[2];
+} SLIST_ENTRY, *PSLIST_ENTRY; 
+
+typedef struct _MMCLONE_DESCRIPTOR
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE CloneNode;
+    struct _MMCLONE_DESCRIPTOR* Next;
+  }; 
+  struct _MMCLONE_BLOCK* StartingCloneBlock;
+  struct _MMCLONE_BLOCK* EndingCloneBlock;
+  U64 NumberOfPtes;
+  volatile U64 NumberOfReferences;
+  struct _MMCLONE_HEADER* CloneHeader;
+  U64 NonPagedPoolQuotaCharge;
+  struct _SLIST_ENTRY DeleteList;
+  U64 NestingLevel;
+  S32 __PADDING__[2];
+} MMCLONE_DESCRIPTOR, *PMMCLONE_DESCRIPTOR; 
+

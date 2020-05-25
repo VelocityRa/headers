@@ -1,0 +1,17 @@
+typedef struct _SECONDARY_INTERRUPT_PROVIDER_INTERFACE
+{
+  U16 Size;
+  U16 Version;
+  void* Context;
+  U32 GsivBase;
+  U16 GsivSize;
+  struct _DRIVER_OBJECT* DriverObject;
+  void* Reserved1;
+  void* Reserved2;
+  void* Reserved3;
+  void* Reserved4;
+  void* Reserved5;
+  void* Reserved6;
+  void* Reserved7;
+} SECONDARY_INTERRUPT_PROVIDER_INTERFACE, *PSECONDARY_INTERRUPT_PROVIDER_INTERFACE; 
+

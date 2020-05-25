@@ -1,0 +1,30 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef enum _WHEA_ERROR_SEVERITY
+{
+  WheaErrSevRecoverable = 0,
+  WheaErrSevFatal = 1,
+  WheaErrSevCorrected = 2,
+  WheaErrSevNone = 3,
+} WHEA_ERROR_SEVERITY, *PWHEA_ERROR_SEVERITY;
+
+typedef struct _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR
+{
+  U32 SectionOffset;
+  U32 SectionLength;
+  U16 Revision;
+  U8 ValidationBits;
+  U8 Reserved;
+  U32 Flags;
+  struct _GUID SectionType;
+  struct _GUID FRUId;
+  enum _WHEA_ERROR_SEVERITY SectionSeverity;
+  char FRUText[20];
+} WHEA_ERROR_RECORD_SECTION_DESCRIPTOR, *PWHEA_ERROR_RECORD_SECTION_DESCRIPTOR; 
+

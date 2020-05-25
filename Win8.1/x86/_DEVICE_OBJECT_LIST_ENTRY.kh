@@ -1,0 +1,14 @@
+typedef enum _DEVICE_RELATION_LEVEL
+{
+  DeviceRelation = 0,
+  Dependent = 1,
+  DirectDescendant = 2,
+} DEVICE_RELATION_LEVEL, *PDEVICE_RELATION_LEVEL;
+
+typedef struct _DEVICE_OBJECT_LIST_ENTRY
+{
+  struct _DEVICE_OBJECT* DeviceObject;
+  enum _DEVICE_RELATION_LEVEL RelationLevel;
+  U32 Flags;
+} DEVICE_OBJECT_LIST_ENTRY, *PDEVICE_OBJECT_LIST_ENTRY; 
+

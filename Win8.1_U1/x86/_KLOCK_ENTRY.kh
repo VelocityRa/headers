@@ -1,0 +1,109 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U32 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _KLOCK_ENTRY_LOCK_STATE
+{
+  union
+  {
+    struct 
+    {
+      U32 Waiting : 1; 
+      U32 Busy : 1; 
+      U32 Spare : 29; 
+      U32 InTree : 1; 
+    }; 
+    void* LockState;
+  }; 
+  union
+  {
+    void* SessionState;
+    U32 SessionId;
+  }; 
+} KLOCK_ENTRY_LOCK_STATE, *PKLOCK_ENTRY_LOCK_STATE; 
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  struct _RTL_BALANCED_NODE* Min;
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _KLOCK_ENTRY
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE TreeNode;
+    struct _SINGLE_LIST_ENTRY FreeListEntry;
+  }; 
+  union
+  {
+    void* ThreadUnsafe;
+    struct
+    {
+      volatile U8 HeadNodeByte;
+      U8 Reserved1[2];
+      volatile U8 AcquiredByte;
+    }; 
+  }; 
+  union
+  {
+    struct _KLOCK_ENTRY_LOCK_STATE LockState;
+    void* volatile LockUnsafe;
+    struct
+    {
+      volatile U8 WaitingAndBusyByte;
+      U8 Reserved[2];
+      volatile U8 InTreeByte;
+      union
+      {
+        void* SessionState;
+        U32 SessionId;
+      }; 
+    }; 
+  }; 
+  union
+  {
+    struct
+    {
+      struct _RTL_RB_TREE OwnerTree;
+      struct _RTL_RB_TREE WaiterTree;
+    }; 
+    char CpuPriorityKey;
+  }; 
+  U32 EntryLock;
+  union
+  {
+    U16 AllBoosts;
+    struct 
+    {
+      U16 IoBoost : 1; 
+      U16 CpuBoostsBitmap : 15; 
+    }; 
+  }; 
+  struct 
+  {
+    U16 IoNormalPriorityWaiterCount : 15; 
+    U16 IoPriorityBit : 1; 
+  }; 
+} KLOCK_ENTRY, *PKLOCK_ENTRY; 
+

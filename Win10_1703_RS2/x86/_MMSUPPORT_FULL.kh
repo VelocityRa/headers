@@ -1,0 +1,91 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MMSUPPORT_FLAGS
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U8 WorkingSetType : 3; 
+        U8 Reserved0 : 3; 
+        U8 MaximumWorkingSetHard : 1; 
+        U8 MinimumWorkingSetHard : 1; 
+      }; 
+      struct 
+      {
+        U8 SessionMaster : 1; 
+        U8 TrimmerState : 2; 
+        U8 Reserved : 1; 
+        U8 PageStealers : 4; 
+      }; 
+    }; 
+    U16 u1;
+  }; 
+  U8 MemoryPriority;
+  union
+  {
+    struct 
+    {
+      U8 WsleDeleted : 1; 
+      U8 SvmEnabled : 1; 
+      U8 ForceAge : 1; 
+      U8 ForceTrim : 1; 
+      U8 UnlockInProgress : 1; 
+      U8 NewMaximum : 1; 
+      U8 CommitReleaseState : 2; 
+    }; 
+    U8 u2;
+  }; 
+} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS; 
+
+typedef struct _MMSUPPORT_INSTANCE
+{
+  U16 NextPageColor;
+  U16 LastTrimStamp;
+  U32 PageFaultCount;
+  U32 TrimmedPageCount;
+  struct _MMWSL_INSTANCE* VmWorkingSetList;
+  struct _LIST_ENTRY WorkingSetExpansionLinks;
+  U32 AgeDistribution[8];
+  struct _KGATE* ExitOutswapGate;
+  U32 MinimumWorkingSetSize;
+  U32 WorkingSetLeafSize;
+  U32 WorkingSetLeafPrivateSize;
+  U32 WorkingSetSize;
+  U32 WorkingSetPrivateSize;
+  U32 MaximumWorkingSetSize;
+  U32 PeakWorkingSetSize;
+  U32 HardFaultCount;
+  union
+  {
+    void* InstancedWorkingSet;
+  } u1;
+  U32 Reserved0;
+  struct _MMSUPPORT_FLAGS Flags;
+} MMSUPPORT_INSTANCE, *PMMSUPPORT_INSTANCE; 
+
+typedef struct _MMSUPPORT_SHARED
+{
+  volatile S32 WorkingSetLock;
+  U32 ReleasedCommitDebt;
+  U32 ResetPagesRepurposedCount;
+  void* WsSwapSupport;
+  void* CommitReleaseContext;
+  void* AccessLog;
+  volatile U32 ChargedWslePages;
+  U32 ActualWslePages;
+  S32 GoodCitizenWaiting;
+} MMSUPPORT_SHARED, *PMMSUPPORT_SHARED; 
+
+typedef struct _MMSUPPORT_FULL
+{
+  struct _MMSUPPORT_INSTANCE Instance;
+  struct _MMSUPPORT_SHARED Shared;
+} MMSUPPORT_FULL, *PMMSUPPORT_FULL; 
+

@@ -1,0 +1,10 @@
+typedef struct _EVENT_FILTER_HEADER
+{
+  U16 Id;
+  U8 Version;
+  U8 Reserved[5];
+  U64 InstanceId;
+  U32 Size;
+  U32 NextOffset;
+} EVENT_FILTER_HEADER, *PEVENT_FILTER_HEADER; 
+

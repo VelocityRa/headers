@@ -1,0 +1,13 @@
+typedef union _KE_PROCESS_CONCURRENCY_COUNT
+{
+  union
+  {
+    struct 
+    {
+      U32 Fraction : 20; 
+      U32 Count : 12; 
+    }; 
+    U32 AllFields;
+  }; 
+} KE_PROCESS_CONCURRENCY_COUNT, *PKE_PROCESS_CONCURRENCY_COUNT; 
+

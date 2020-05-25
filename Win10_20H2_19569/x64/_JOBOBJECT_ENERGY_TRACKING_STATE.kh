@@ -1,0 +1,13 @@
+typedef union _JOBOBJECT_ENERGY_TRACKING_STATE
+{
+  union
+  {
+    U64 Value;
+    struct
+    {
+      U32 UpdateMask;
+      U32 DesiredState;
+    }; 
+  }; 
+} JOBOBJECT_ENERGY_TRACKING_STATE, *PJOBOBJECT_ENERGY_TRACKING_STATE; 
+

@@ -1,0 +1,10 @@
+typedef struct _EX_FAST_REF
+{
+  union
+  {
+    void* Object;
+    U64 RefCnt : 4; 
+    U64 Value;
+  }; 
+} EX_FAST_REF, *PEX_FAST_REF; 
+

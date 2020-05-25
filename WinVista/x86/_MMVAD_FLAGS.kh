@@ -1,0 +1,14 @@
+typedef struct _MMVAD_FLAGS
+{
+  struct 
+  {
+    U32 CommitCharge : 19; 
+    U32 NoChange : 1; 
+    U32 VadType : 3; 
+    U32 MemCommit : 1; 
+    U32 Protection : 5; 
+    U32 Spare : 2; 
+    U32 PrivateMemory : 1; 
+  }; 
+} MMVAD_FLAGS, *PMMVAD_FLAGS; 
+

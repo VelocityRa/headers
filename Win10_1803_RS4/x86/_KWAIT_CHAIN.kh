@@ -1,0 +1,5 @@
+typedef struct _KWAIT_CHAIN
+{
+  void* Head;
+} KWAIT_CHAIN, *PKWAIT_CHAIN; 
+

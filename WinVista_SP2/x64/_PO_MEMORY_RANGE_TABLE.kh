@@ -1,0 +1,14 @@
+typedef struct _PO_MEMORY_RANGE
+{
+  U64 StartPage;
+  U64 EndPage;
+} PO_MEMORY_RANGE, *PPO_MEMORY_RANGE; 
+
+typedef struct _PO_MEMORY_RANGE_TABLE
+{
+  struct _PO_MEMORY_RANGE_TABLE* Next;
+  U64 NextTable;
+  U32 EntryCount;
+  struct _PO_MEMORY_RANGE Range[1];
+} PO_MEMORY_RANGE_TABLE, *PPO_MEMORY_RANGE_TABLE; 
+

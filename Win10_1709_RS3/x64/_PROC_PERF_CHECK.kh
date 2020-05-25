@@ -1,0 +1,29 @@
+typedef struct _PROC_PERF_CHECK_SNAP
+{
+  U64 Time;
+  U64 Active;
+  U64 Stall;
+  U64 FrequencyScaledActive;
+  U64 PerformanceScaledActive;
+  U64 PerformanceScaledKernelActive;
+  U64 CyclesActive;
+  U64 CyclesAffinitized;
+  U64 TaggedThreadCycles[2];
+} PROC_PERF_CHECK_SNAP, *PPROC_PERF_CHECK_SNAP; 
+
+typedef struct _PROC_PERF_CHECK
+{
+  U64 LastActive;
+  U64 LastTime;
+  U64 LastStall;
+  struct _PROC_PERF_CHECK_SNAP LastPerfCheckSnap;
+  struct _PROC_PERF_CHECK_SNAP CurrentSnap;
+  struct _PROC_PERF_CHECK_SNAP LastDeliveredSnap;
+  U32 LastDeliveredPerformance;
+  U32 LastDeliveredFrequency;
+  U8 TaggedThreadPercent[2];
+  U8 Class0FloorPerfSelection;
+  U8 Class1MinimumPerfSelection;
+  S32 __PADDING__[1];
+} PROC_PERF_CHECK, *PPROC_PERF_CHECK; 
+

@@ -1,0 +1,21 @@
+typedef struct _DIRTY_PAGE_STATISTICS
+{
+  U64 DirtyPages;
+  U64 DirtyPagesLastScan;
+  U32 DirtyPagesScheduledLastScan;
+  S32 __PADDING__[1];
+} DIRTY_PAGE_STATISTICS, *PDIRTY_PAGE_STATISTICS; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _CC_EXTERNAL_CACHE_INFO
+{
+  void* Callback;
+  struct _DIRTY_PAGE_STATISTICS DirtyPageStatistics;
+  struct _LIST_ENTRY Links;
+} CC_EXTERNAL_CACHE_INFO, *PCC_EXTERNAL_CACHE_INFO; 
+

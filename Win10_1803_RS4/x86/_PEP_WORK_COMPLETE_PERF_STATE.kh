@@ -1,0 +1,8 @@
+typedef struct _PEP_WORK_COMPLETE_PERF_STATE
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 Component;
+  U8 Succeeded;
+  char __PADDING__[3];
+} PEP_WORK_COMPLETE_PERF_STATE, *PPEP_WORK_COMPLETE_PERF_STATE; 
+

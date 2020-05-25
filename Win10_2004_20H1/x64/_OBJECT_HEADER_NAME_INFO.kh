@@ -1,0 +1,15 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _OBJECT_HEADER_NAME_INFO
+{
+  struct _OBJECT_DIRECTORY* Directory;
+  struct _UNICODE_STRING Name;
+  S32 ReferenceCount;
+  U32 Reserved;
+} OBJECT_HEADER_NAME_INFO, *POBJECT_HEADER_NAME_INFO; 
+

@@ -1,0 +1,20 @@
+typedef struct _LOADER_RESET_REASON
+{
+  U8 Supplied;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U8 Pch;
+        U8 EmbeddedController;
+        U8 Reserved[6];
+      } Component;
+      U64 AsULONG64;
+      U8 AsBytes[8];
+    }; 
+  } Basic;
+  U32 AdditionalInfo[8];
+} LOADER_RESET_REASON, *PLOADER_RESET_REASON; 
+

@@ -1,0 +1,14 @@
+typedef struct _ALPC_DISPATCH_CONTEXT
+{
+  struct _ALPC_PORT* PortObject;
+  struct _KALPC_MESSAGE* Message;
+  struct _ALPC_COMMUNICATION_INFO* CommunicationInfo;
+  struct _ETHREAD* TargetThread;
+  struct _ALPC_PORT* TargetPort;
+  U32 Flags;
+  U16 TotalLength;
+  U16 Type;
+  U16 DataInfoOffset;
+  char __PADDING__[2];
+} ALPC_DISPATCH_CONTEXT, *PALPC_DISPATCH_CONTEXT; 
+

@@ -1,0 +1,9 @@
+typedef struct _HEAP_SUBALLOCATOR_CALLBACKS
+{
+  U64 Allocate;
+  U64 Free;
+  U64 Commit;
+  U64 Decommit;
+  U64 ExtendContext;
+} HEAP_SUBALLOCATOR_CALLBACKS, *PHEAP_SUBALLOCATOR_CALLBACKS; 
+

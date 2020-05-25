@@ -1,0 +1,75 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 Sequence;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _VF_TARGET_VERIFIED_DRIVER_DATA
+{
+  struct _VF_SUSPECT_DRIVER_ENTRY* SuspectDriverEntry;
+  void* WMICallback;
+  struct _LIST_ENTRY EtwHandlesListHead;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 MissedEtwRegistration : 1; 
+          U32 Spare : 31; 
+        }; 
+      } Flags;
+      U32 Whole;
+    }; 
+  } u1;
+  U32 Signature;
+  union _SLIST_HEADER PoolPageHeaders;
+  union _SLIST_HEADER PoolTrackers;
+  volatile U32 CurrentPagedPoolAllocations;
+  volatile U32 CurrentNonPagedPoolAllocations;
+  volatile U32 PeakPagedPoolAllocations;
+  volatile U32 PeakNonPagedPoolAllocations;
+  volatile U32 PagedBytes;
+  volatile U32 NonPagedBytes;
+  volatile U32 PeakPagedBytes;
+  volatile U32 PeakNonPagedBytes;
+  U32 RaiseIrqls;
+  U32 AcquireSpinLocks;
+  U32 SynchronizeExecutions;
+  U32 AllocationsWithNoTag;
+  U32 AllocationsFailed;
+  U32 AllocationsFailedDeliberately;
+  U32 LockedBytes;
+  U32 PeakLockedBytes;
+  U32 MappedLockedBytes;
+  U32 PeakMappedLockedBytes;
+  U32 MappedIoSpaceBytes;
+  U32 PeakMappedIoSpaceBytes;
+  U32 PagesForMdlBytes;
+  U32 PeakPagesForMdlBytes;
+  U32 ContiguousMemoryBytes;
+  U32 PeakContiguousMemoryBytes;
+  struct _LIST_ENTRY ContiguousMemoryListHead;
+} VF_TARGET_VERIFIED_DRIVER_DATA, *PVF_TARGET_VERIFIED_DRIVER_DATA; 
+

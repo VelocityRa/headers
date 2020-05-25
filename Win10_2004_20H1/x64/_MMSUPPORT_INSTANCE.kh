@@ -1,0 +1,69 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MMSUPPORT_FLAGS
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U8 WorkingSetType : 3; 
+        U8 Reserved0 : 3; 
+        U8 MaximumWorkingSetHard : 1; 
+        U8 MinimumWorkingSetHard : 1; 
+      }; 
+      struct 
+      {
+        U8 SessionMaster : 1; 
+        U8 TrimmerState : 2; 
+        U8 Reserved : 1; 
+        U8 PageStealers : 4; 
+      }; 
+    }; 
+    U16 u1;
+  }; 
+  U8 MemoryPriority;
+  union
+  {
+    struct 
+    {
+      U8 WsleDeleted : 1; 
+      U8 SvmEnabled : 1; 
+      U8 ForceAge : 1; 
+      U8 ForceTrim : 1; 
+      U8 NewMaximum : 1; 
+      U8 CommitReleaseState : 2; 
+    }; 
+    U8 u2;
+  }; 
+} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS; 
+
+typedef struct _MMSUPPORT_INSTANCE
+{
+  U32 NextPageColor;
+  U32 PageFaultCount;
+  U64 TrimmedPageCount;
+  struct _MMWSL_INSTANCE* VmWorkingSetList;
+  struct _LIST_ENTRY WorkingSetExpansionLinks;
+  U64 AgeDistribution[8];
+  struct _KGATE* ExitOutswapGate;
+  U64 MinimumWorkingSetSize;
+  U64 WorkingSetLeafSize;
+  U64 WorkingSetLeafPrivateSize;
+  U64 WorkingSetSize;
+  U64 WorkingSetPrivateSize;
+  U64 MaximumWorkingSetSize;
+  U64 PeakWorkingSetSize;
+  U32 HardFaultCount;
+  U16 LastTrimStamp;
+  U16 PartitionId;
+  U64 SelfmapLock;
+  struct _MMSUPPORT_FLAGS Flags;
+  S32 __PADDING__[1];
+} MMSUPPORT_INSTANCE, *PMMSUPPORT_INSTANCE; 
+

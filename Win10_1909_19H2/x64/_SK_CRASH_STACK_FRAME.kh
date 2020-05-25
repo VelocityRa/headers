@@ -1,0 +1,13 @@
+typedef struct _SK_CRASH_STACK_FRAME
+{
+  union
+  {
+    struct
+    {
+      U32 ModuleId;
+      U32 Rva;
+    }; 
+    U64 Pc;
+  }; 
+} SK_CRASH_STACK_FRAME, *PSK_CRASH_STACK_FRAME; 
+

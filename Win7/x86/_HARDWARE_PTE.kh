@@ -1,0 +1,20 @@
+typedef struct _HARDWARE_PTE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 Write : 1; 
+    U32 Owner : 1; 
+    U32 WriteThrough : 1; 
+    U32 CacheDisable : 1; 
+    U32 Accessed : 1; 
+    U32 Dirty : 1; 
+    U32 LargePage : 1; 
+    U32 Global : 1; 
+    U32 CopyOnWrite : 1; 
+    U32 Prototype : 1; 
+    U32 reserved : 1; 
+    U32 PageFrameNumber : 20; 
+  }; 
+} HARDWARE_PTE, *PHARDWARE_PTE; 
+

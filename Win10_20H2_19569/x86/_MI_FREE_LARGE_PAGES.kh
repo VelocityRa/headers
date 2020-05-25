@@ -1,0 +1,8 @@
+typedef struct _MI_FREE_LARGE_PAGES
+{
+  U32 LargePageFreeCount[2];
+  U32 LargePageFreeCountHiLow[2][2];
+  U32 LargePagesCount[4][1][2][2];
+  struct _MI_FREE_LARGE_PAGE_LIST* LargePageEntries[4][1][2][2];
+} MI_FREE_LARGE_PAGES, *PMI_FREE_LARGE_PAGES; 
+

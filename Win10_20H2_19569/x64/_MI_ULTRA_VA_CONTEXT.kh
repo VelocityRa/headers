@@ -1,0 +1,16 @@
+typedef struct _RTL_BITMAP_EX
+{
+  U64 SizeOfBitMap;
+  U64* Buffer;
+} RTL_BITMAP_EX, *PRTL_BITMAP_EX; 
+
+typedef struct _MI_ULTRA_VA_CONTEXT
+{
+  U64 Lock;
+  void* ZeroMapping;
+  U64 AllocationHintBit;
+  struct _RTL_BITMAP_EX Bitmap[2];
+  volatile S32 ConcurrencyMaximum;
+  volatile S32 ConcurrencyCount;
+} MI_ULTRA_VA_CONTEXT, *PMI_ULTRA_VA_CONTEXT; 
+

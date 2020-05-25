@@ -1,0 +1,11 @@
+typedef struct _XSTATE_CONTEXT
+{
+  U64 Mask;
+  U32 Length;
+  U32 Reserved1;
+  struct _XSAVE_AREA* Area;
+  U32 Reserved2;
+  void* Buffer;
+  U32 Reserved3;
+} XSTATE_CONTEXT, *PXSTATE_CONTEXT; 
+

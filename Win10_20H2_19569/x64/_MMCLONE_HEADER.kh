@@ -1,0 +1,8 @@
+typedef struct _MMCLONE_HEADER
+{
+  U64 NumberOfPtes;
+  volatile U64 NumberOfProcessReferences;
+  struct _MMCLONE_BLOCK* ClonePtes;
+  struct _MI_PARTITION* Partition;
+} MMCLONE_HEADER, *PMMCLONE_HEADER; 
+

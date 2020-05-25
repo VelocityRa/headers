@@ -1,0 +1,24 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _CRITICAL_PROCESS_EXCEPTION_DATA
+{
+  struct _GUID ReportId;
+  struct _UNICODE_STRING ModuleName;
+  U32 ModuleTimestamp;
+  U32 ModuleSize;
+  U64 Offset;
+} CRITICAL_PROCESS_EXCEPTION_DATA, *PCRITICAL_PROCESS_EXCEPTION_DATA; 
+

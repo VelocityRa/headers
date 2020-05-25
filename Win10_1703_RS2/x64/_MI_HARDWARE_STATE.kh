@@ -1,0 +1,50 @@
+typedef enum _MI_PFN_CACHE_ATTRIBUTE
+{
+  MiNonCached = 0,
+  MiCached = 1,
+  MiWriteCombined = 2,
+  MiNotMapped = 3,
+} MI_PFN_CACHE_ATTRIBUTE, *PMI_PFN_CACHE_ATTRIBUTE;
+
+typedef struct _MI_ZERO_COST_COUNTS
+{
+  U64 NativeSum;
+  U64 CachedSum;
+} MI_ZERO_COST_COUNTS, *PMI_ZERO_COST_COUNTS; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MI_HARDWARE_STATE
+{
+  U32 NodeMask;
+  U32 NumaLastRangeIndex;
+  U8 NumaTableCaptured;
+  U8 NodeShift;
+  U8 ChannelShift;
+  U16* NodeGraph;
+  struct _MI_SYSTEM_NODE_INFORMATION* SystemNodeInformation;
+  struct _HAL_NODE_RANGE* NumaMemoryRanges;
+  struct _HAL_CHANNEL_MEMORY_RANGES* ChannelMemoryRanges;
+  U32 SecondLevelCacheSize;
+  U32 FirstLevelCacheSize;
+  U32 PhysicalAddressBits;
+  U64 TotalPagesAllowed;
+  U32 SecondaryColorMask;
+  U32 SecondaryColors;
+  U32 FlushTbForAttributeChange;
+  U32 FlushCacheForAttributeChange;
+  U32 FlushCacheForPageAttributeChange;
+  U32 CacheFlushPromoteThreshold;
+  U64 FlushTbThreshold;
+  enum _MI_PFN_CACHE_ATTRIBUTE OptimalZeroingAttribute[4][4];
+  U8 AttributeChangeRequiresReZero;
+  struct _MI_ZERO_COST_COUNTS ZeroCostCounts[2];
+  U64 PrimaryPfns;
+  U64 HighestPossiblePhysicalPage;
+  struct _RTL_AVL_TREE EnclaveRegions;
+  U64 VsmKernelPageCount;
+} MI_HARDWARE_STATE, *PMI_HARDWARE_STATE; 
+

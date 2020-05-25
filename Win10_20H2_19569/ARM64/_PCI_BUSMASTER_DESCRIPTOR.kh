@@ -1,0 +1,39 @@
+typedef enum _PCI_BUSMASTER_RID_TYPE
+{
+  BusmasterRidFromDeviceRid = 0,
+  BusmasterRidFromBridgeRid = 1,
+  BusmasterRidFromMultipleBridges = 2,
+} PCI_BUSMASTER_RID_TYPE, *PPCI_BUSMASTER_RID_TYPE;
+
+typedef struct _PCI_BUSMASTER_DESCRIPTOR
+{
+  enum _PCI_BUSMASTER_RID_TYPE Type;
+  U32 Segment;
+  union
+  {
+    struct
+    {
+      U8 Bus;
+      U8 Device;
+      U8 Function;
+      U8 Reserved;
+    } DeviceRid;
+    struct
+    {
+      U8 Bus;
+      U8 Device;
+      U8 Function;
+      U8 Reserved;
+    } BridgeRid;
+    struct
+    {
+      struct
+      {
+        U8 SecondaryBus;
+        U8 SubordinateBus;
+      } MultipleBridges;
+      char __PADDING__[2];
+    }; 
+  }; 
+} PCI_BUSMASTER_DESCRIPTOR, *PPCI_BUSMASTER_DESCRIPTOR; 
+

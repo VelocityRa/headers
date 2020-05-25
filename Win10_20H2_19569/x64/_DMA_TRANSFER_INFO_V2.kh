@@ -1,0 +1,8 @@
+typedef struct _DMA_TRANSFER_INFO_V2
+{
+  U32 MapRegisterCount;
+  U32 ScatterGatherElementCount;
+  U32 ScatterGatherListSize;
+  U32 LogicalPageCount;
+} DMA_TRANSFER_INFO_V2, *PDMA_TRANSFER_INFO_V2; 
+

@@ -1,0 +1,9 @@
+typedef union _FILE_SEGMENT_ELEMENT
+{
+  union
+  {
+    void* Buffer;
+    U64 Alignment;
+  }; 
+} FILE_SEGMENT_ELEMENT, *PFILE_SEGMENT_ELEMENT; 
+

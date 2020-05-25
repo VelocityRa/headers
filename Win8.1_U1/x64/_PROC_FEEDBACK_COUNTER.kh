@@ -1,0 +1,16 @@
+typedef struct _PROC_FEEDBACK_COUNTER
+{
+  union
+  {
+    void* InstantaneousRead;
+    void* DifferentialRead;
+  }; 
+  U64 LastActualCount;
+  U64 LastReferenceCount;
+  U32 CachedValue;
+  U8 Affinitized;
+  U8 Differential;
+  U8 DisableInterrupts;
+  U64 Context;
+} PROC_FEEDBACK_COUNTER, *PPROC_FEEDBACK_COUNTER; 
+

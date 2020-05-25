@@ -1,0 +1,12 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _NBQUEUE_BLOCK
+{
+  struct _SINGLE_LIST_ENTRY SListEntry;
+  U64 Next;
+  U64 Data;
+} NBQUEUE_BLOCK, *PNBQUEUE_BLOCK; 
+

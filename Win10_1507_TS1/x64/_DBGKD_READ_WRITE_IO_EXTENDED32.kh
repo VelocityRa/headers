@@ -1,0 +1,10 @@
+typedef struct _DBGKD_READ_WRITE_IO_EXTENDED32
+{
+  U32 DataSize;
+  U32 InterfaceType;
+  U32 BusNumber;
+  U32 AddressSpace;
+  U32 IoAddress;
+  U32 DataValue;
+} DBGKD_READ_WRITE_IO_EXTENDED32, *PDBGKD_READ_WRITE_IO_EXTENDED32; 
+

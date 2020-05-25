@@ -1,0 +1,32 @@
+typedef struct _MM_DRIVER_VERIFIER_DATA
+{
+  U32 Level;
+  U32 RaiseIrqls;
+  U32 AcquireSpinLocks;
+  U32 SynchronizeExecutions;
+  U32 AllocationsAttempted;
+  U32 AllocationsSucceeded;
+  volatile U32 AllocationsSucceededSpecialPool;
+  U32 AllocationsWithNoTag;
+  U32 TrimRequests;
+  U32 Trims;
+  U32 AllocationsFailed;
+  U32 AllocationsFailedDeliberately;
+  U32 Loads;
+  U32 Unloads;
+  U32 UnTrackedPool;
+  U32 UserTrims;
+  U32 CurrentPagedPoolAllocations;
+  U32 CurrentNonPagedPoolAllocations;
+  U32 PeakPagedPoolAllocations;
+  U32 PeakNonPagedPoolAllocations;
+  U32 PagedBytes;
+  U32 NonPagedBytes;
+  U32 PeakPagedBytes;
+  U32 PeakNonPagedBytes;
+  U32 BurstAllocationsFailedDeliberately;
+  U32 SessionTrims;
+  U32 OptionChanges;
+  U32 VerifyMode;
+} MM_DRIVER_VERIFIER_DATA, *PMM_DRIVER_VERIFIER_DATA; 
+

@@ -1,0 +1,8 @@
+typedef struct _RTL_CHASH_TABLE
+{
+  struct _RTL_CHASH_ENTRY* Table;
+  U32 EntrySizeShift;
+  U32 EntryMax;
+  U32 EntryCount;
+} RTL_CHASH_TABLE, *PRTL_CHASH_TABLE; 
+

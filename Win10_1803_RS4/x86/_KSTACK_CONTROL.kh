@@ -1,0 +1,21 @@
+typedef struct _KERNEL_STACK_SEGMENT
+{
+  U32 StackBase;
+  U32 StackLimit;
+  U32 KernelStack;
+  U32 InitialStack;
+} KERNEL_STACK_SEGMENT, *PKERNEL_STACK_SEGMENT; 
+
+typedef struct _KSTACK_CONTROL
+{
+  U32 StackBase;
+  union
+  {
+    U32 ActualLimit;
+    U32 StackExpansion : 1; 
+  }; 
+  struct _KTRAP_FRAME* PreviousTrapFrame;
+  void* PreviousExceptionList;
+  struct _KERNEL_STACK_SEGMENT Previous;
+} KSTACK_CONTROL, *PKSTACK_CONTROL; 
+

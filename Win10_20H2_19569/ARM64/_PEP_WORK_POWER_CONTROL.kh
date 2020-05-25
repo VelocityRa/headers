@@ -1,0 +1,11 @@
+typedef struct _PEP_WORK_POWER_CONTROL
+{
+  struct POHANDLE__* DeviceHandle;
+  const struct _GUID* PowerControlCode;
+  void* RequestContext;
+  void* InBuffer;
+  U64 InBufferSize;
+  void* OutBuffer;
+  U64 OutBufferSize;
+} PEP_WORK_POWER_CONTROL, *PPEP_WORK_POWER_CONTROL; 
+

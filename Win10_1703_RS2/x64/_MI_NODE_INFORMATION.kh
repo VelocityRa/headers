@@ -1,0 +1,77 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_REBUILD_LARGE_PAGE_TIMER
+{
+  struct _WORK_QUEUE_ITEM WorkItem;
+  U8 SecondsLeft;
+  U8 RebuildActive;
+  U8 NextPassDelta;
+  U8 LargeSubPagesActive;
+  S32 __PADDING__[1];
+} MI_REBUILD_LARGE_PAGE_TIMER, *PMI_REBUILD_LARGE_PAGE_TIMER; 
+
+typedef struct _MMPFNLIST_SHORT
+{
+  U64 Total;
+  U64 Flink;
+  U64 Blink;
+} MMPFNLIST_SHORT, *PMMPFNLIST_SHORT; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MI_NODE_INFORMATION
+{
+  U64 LargePageFreeCount[2][3];
+  struct _LIST_ENTRY LargePages[4][2][2][3];
+  U64 LargePagesCount[4][2][2][3];
+  struct _MI_REBUILD_LARGE_PAGE_TIMER LargePageRebuildTimer;
+  struct _MMPFNLIST_SHORT StandbyPageList[8][4];
+  volatile U64 FreeCount[2];
+  U64 TotalPages[4];
+  U64 TotalPagesEntireNode;
+  U32 MmShiftedColor;
+  U32 Color;
+  volatile U64 ChannelFreeCount[2][4];
+  struct
+  {
+    struct 
+    {
+      U32 ChannelsHotCold : 1; 
+      U32 Spare : 31; 
+    }; 
+  } Flags;
+  struct _EX_PUSH_LOCK NodeLock;
+  U64 ZeroThreadHugeMapLock;
+  U8 ChannelStatus;
+  U8 ChannelOrdering[4];
+  U8 LockedChannelOrdering[4];
+  U8 PowerAttribute[4];
+  U64 LargePageLock;
+} MI_NODE_INFORMATION, *PMI_NODE_INFORMATION; 
+

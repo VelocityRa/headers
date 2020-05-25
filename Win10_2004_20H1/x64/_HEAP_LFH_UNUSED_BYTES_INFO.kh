@@ -1,0 +1,14 @@
+typedef struct _HEAP_LFH_UNUSED_BYTES_INFO
+{
+  union
+  {
+    struct 
+    {
+      U16 UnusedBytes : 14; 
+      U16 ExtraPresent : 1; 
+      U16 OneByteUnused : 1; 
+    }; 
+    U8 Bytes[2];
+  }; 
+} HEAP_LFH_UNUSED_BYTES_INFO, *PHEAP_LFH_UNUSED_BYTES_INFO; 
+

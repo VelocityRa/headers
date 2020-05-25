@@ -1,0 +1,16 @@
+typedef struct _MMVAD_FLAGS
+{
+  struct 
+  {
+    U32 Lock : 1; 
+    U32 LockContended : 1; 
+    U32 DeleteInProgress : 1; 
+    U32 NoChange : 1; 
+    U32 VadType : 3; 
+    U32 Protection : 5; 
+    U32 PreferredNode : 6; 
+    U32 PageSize : 2; 
+    U32 PrivateMemory : 1; 
+  }; 
+} MMVAD_FLAGS, *PMMVAD_FLAGS; 
+

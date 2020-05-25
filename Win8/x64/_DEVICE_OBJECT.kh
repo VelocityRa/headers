@@ -1,0 +1,178 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KDEVICE_QUEUE_ENTRY
+{
+  struct _LIST_ENTRY DeviceListEntry;
+  U32 SortKey;
+  U8 Inserted;
+  char __PADDING__[3];
+} KDEVICE_QUEUE_ENTRY, *PKDEVICE_QUEUE_ENTRY; 
+
+typedef struct _WAIT_CONTEXT_BLOCK
+{
+  union
+  {
+    struct _KDEVICE_QUEUE_ENTRY WaitQueueEntry;
+    struct
+    {
+      struct _LIST_ENTRY DmaWaitEntry;
+      U32 NumberOfChannels;
+      struct 
+      {
+        U32 SyncCallback : 1; 
+        U32 DmaContext : 1; 
+        U32 Reserved : 30; 
+      }; 
+    }; 
+  }; 
+  void* DeviceRoutine;
+  void* DeviceContext;
+  U32 NumberOfMapRegisters;
+  void* DeviceObject;
+  void* CurrentIrp;
+  struct _KDPC* BufferChainingDpc;
+} WAIT_CONTEXT_BLOCK, *PWAIT_CONTEXT_BLOCK; 
+
+typedef struct _KDEVICE_QUEUE
+{
+  S16 Type;
+  S16 Size;
+  struct _LIST_ENTRY DeviceListHead;
+  U64 Lock;
+  union
+  {
+    U8 Busy;
+    struct 
+    {
+      S64 Reserved : 8; 
+      S64 HS32 : 56; 
+    }; 
+  }; 
+} KDEVICE_QUEUE, *PKDEVICE_QUEUE; 
+
+typedef struct _KDPC
+{
+  U8 Type;
+  U8 Importance;
+  volatile U16 Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 Abandoned;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved : 4; 
+            }; 
+            U8 Hand;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 6; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Reserved2 : 4; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _DEVICE_OBJECT
+{
+  S16 Type;
+  U16 Size;
+  S32 ReferenceCount;
+  struct _DRIVER_OBJECT* DriverObject;
+  struct _DEVICE_OBJECT* NextDevice;
+  struct _DEVICE_OBJECT* AttachedDevice;
+  struct _IRP* CurrentIrp;
+  struct _IO_TIMER* Timer;
+  U32 Flags;
+  U32 Characteristics;
+  struct _VPB* Vpb;
+  void* DeviceExtension;
+  U32 DeviceType;
+  char StackSize;
+  union
+  {
+    union
+    {
+      struct _LIST_ENTRY ListEntry;
+      struct _WAIT_CONTEXT_BLOCK Wcb;
+    }; 
+  } Queue;
+  U32 AlignmentRequirement;
+  struct _KDEVICE_QUEUE DeviceQueue;
+  struct _KDPC Dpc;
+  U32 ActiveThreadCount;
+  void* SecurityDescriptor;
+  struct _KEVENT DeviceLock;
+  U16 SectorSize;
+  U16 Spare1;
+  struct _DEVOBJ_EXTENSION* DeviceObjectExtension;
+  void* Reserved;
+  S32 __PADDING__[2];
+} DEVICE_OBJECT, *PDEVICE_OBJECT; 
+

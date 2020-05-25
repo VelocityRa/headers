@@ -1,0 +1,38 @@
+typedef struct _WHEA_ERROR_STATUS
+{
+  struct 
+  {
+    U64 Reserved1 : 8; 
+    U64 ErrorType : 8; 
+    U64 Address : 1; 
+    U64 Control : 1; 
+    U64 Data : 1; 
+    U64 Responder : 1; 
+    U64 Requester : 1; 
+    U64 FirstError : 1; 
+    U64 Overflow : 1; 
+    U64 Reserved2 : 41; 
+  }; 
+} WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS; 
+
+typedef struct _WHEA_MEMORY_ERROR
+{
+  U64 ValidationBits;
+  struct _WHEA_ERROR_STATUS ErrorStatus;
+  U64 PhysicalAddress;
+  U64 PhysicalAddressMask;
+  U16 Node;
+  U16 Card;
+  U16 Module;
+  U16 Bank;
+  U16 Device;
+  U16 Row;
+  U16 Column;
+  U16 BitPosition;
+  U64 RequestorId;
+  U64 ResponderId;
+  U64 TargetId;
+  U8 ErrorType;
+  char __PADDING__[7];
+} WHEA_MEMORY_ERROR, *PWHEA_MEMORY_ERROR; 
+

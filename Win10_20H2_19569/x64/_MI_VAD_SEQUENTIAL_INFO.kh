@@ -1,0 +1,9 @@
+typedef struct _MI_VAD_SEQUENTIAL_INFO
+{
+  struct 
+  {
+    U64 Length : 12; 
+    U64 Vpn : 52; 
+  }; 
+} MI_VAD_SEQUENTIAL_INFO, *PMI_VAD_SEQUENTIAL_INFO; 
+

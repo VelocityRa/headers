@@ -1,0 +1,498 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 6; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 SchedulerAssist : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          union
+          {
+            U8 DebugActive;
+            struct 
+            {
+              U8 ActiveDR7 : 1; 
+              U8 Instrumented : 1; 
+              U8 Minimal : 1; 
+              U8 Reserved4 : 3; 
+              U8 UmsScheduled : 1; 
+              U8 UmsPrimary : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _IO_STATUS_BLOCK
+{
+  union
+  {
+    S32 Status;
+    void* Pointer;
+  }; 
+  U64 Information;
+} IO_STATUS_BLOCK, *PIO_STATUS_BLOCK; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _KAPC_STATE
+{
+  struct _LIST_ENTRY ApcListHead[2];
+  struct _KPROCESS* Process;
+  union
+  {
+    U8 InProgressFlags;
+    struct 
+    {
+      U8 KernelApcInProgress : 1; 
+      U8 SpecialApcInProgress : 1; 
+    }; 
+  }; 
+  U8 KernelApcPending;
+  union
+  {
+    U8 UserApcPendingAll;
+    struct 
+    {
+      U8 SpecialUserApcPending : 1; 
+      U8 UserApcPending : 1; 
+    }; 
+  }; 
+  char __PADDING__[5];
+} KAPC_STATE, *PKAPC_STATE; 
+
+typedef struct _MI_STORE_INPAGE_COMPLETE_FLAGS
+{
+  union
+  {
+    U32 EntireFlags;
+    struct 
+    {
+      U32 StoreFault : 1; 
+      U32 LowResourceFailure : 1; 
+      U32 Spare : 14; 
+      U32 RemainingPageCount : 16; 
+    }; 
+  }; 
+} MI_STORE_INPAGE_COMPLETE_FLAGS, *PMI_STORE_INPAGE_COMPLETE_FLAGS; 
+
+typedef struct _MI_HARD_FAULT_STATE
+{
+  struct _MMPFN* SwapPfn;
+  struct _MI_STORE_INPAGE_COMPLETE_FLAGS StoreFlags;
+  S32 __PADDING__[1];
+} MI_HARD_FAULT_STATE, *PMI_HARD_FAULT_STATE; 
+
+typedef struct _MMPTE_HARDWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Dirty1 : 1; 
+    U64 Owner : 1; 
+    U64 WriteThrough : 1; 
+    U64 CacheDisable : 1; 
+    U64 Accessed : 1; 
+    U64 Dirty : 1; 
+    U64 LargePage : 1; 
+    U64 Global : 1; 
+    U64 CopyOnWrite : 1; 
+    U64 Unused : 1; 
+    U64 Write : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 ReservedForHardware : 4; 
+    U64 ReservedForSoftware : 4; 
+    U64 WsleAge : 4; 
+    U64 WsleProtection : 3; 
+    U64 NoExecute : 1; 
+  }; 
+} MMPTE_HARDWARE, *PMMPTE_HARDWARE; 
+
+typedef struct _MMPTE_PROTOTYPE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 DemandFillProto : 1; 
+    U64 HiberVerifyConverted : 1; 
+    U64 ReadOnly : 1; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Combined : 1; 
+    U64 Unused1 : 4; 
+    S64 ProtoAddress : 48; 
+  }; 
+} MMPTE_PROTOTYPE, *PMMPTE_PROTOTYPE; 
+
+typedef struct _MMPTE_SOFTWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 PageFileReserved : 1; 
+    U64 PageFileAllocated : 1; 
+    U64 ColdPage : 1; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFileLow : 4; 
+    U64 UsedPageTableEntries : 10; 
+    U64 ShadowStack : 1; 
+    U64 Unused : 5; 
+    U64 PageFileHigh : 32; 
+  }; 
+} MMPTE_SOFTWARE, *PMMPTE_SOFTWARE; 
+
+typedef struct _MMPTE_TIMESTAMP
+{
+  struct 
+  {
+    U64 MustBeZero : 1; 
+    U64 Unused : 3; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFileLow : 4; 
+    U64 Reserved : 16; 
+    U64 GlobalTimeStamp : 32; 
+  }; 
+} MMPTE_TIMESTAMP, *PMMPTE_TIMESTAMP; 
+
+typedef struct _MMPTE_TRANSITION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Write : 1; 
+    U64 Spare : 1; 
+    U64 IoTracker : 1; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 Unused : 16; 
+  }; 
+} MMPTE_TRANSITION, *PMMPTE_TRANSITION; 
+
+typedef struct _MMPTE_SUBSECTION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Unused0 : 3; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 ColdPage : 1; 
+    U64 Unused1 : 3; 
+    U64 ExecutePrivilege : 1; 
+    S64 SubsectionAddress : 48; 
+  }; 
+} MMPTE_SUBSECTION, *PMMPTE_SUBSECTION; 
+
+typedef struct _MMPTE_LIST
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 OneEntry : 1; 
+    U64 filler0 : 2; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 filler1 : 16; 
+    U64 NextEntry : 36; 
+  }; 
+} MMPTE_LIST, *PMMPTE_LIST; 
+
+typedef struct _MMPTE
+{
+  union
+  {
+    union
+    {
+      U64 Long;
+      volatile U64 VolatileLong;
+      struct _MMPTE_HARDWARE Hard;
+      struct _MMPTE_PROTOTYPE Proto;
+      struct _MMPTE_SOFTWARE Soft;
+      struct _MMPTE_TIMESTAMP TimeStamp;
+      struct _MMPTE_TRANSITION Trans;
+      struct _MMPTE_SUBSECTION Subsect;
+      struct _MMPTE_LIST List;
+    }; 
+  } u;
+} MMPTE, *PMMPTE; 
+
+typedef struct _MMINPAGE_FLAGS
+{
+  struct 
+  {
+    U32 GetExtents : 1; 
+    U32 PrefetchSystemVmType : 2; 
+    U32 VaPrefetchReadBlock : 1; 
+    U32 CollidedFlowThrough : 1; 
+    U32 ForceCollisions : 1; 
+    U32 InPageExpanded : 1; 
+    U32 IssuedAtLowPriority : 1; 
+    U32 FaultFromStore : 1; 
+    U32 PagePriority : 3; 
+    U32 ClusteredPagePriority : 3; 
+    U32 MakeClusterValid : 1; 
+    U32 PerformRelocations : 1; 
+    U32 ZeroLastPage : 1; 
+    U32 UserFault : 1; 
+    U32 StandbyProtectionNeeded : 1; 
+    U32 PteChanged : 1; 
+    U32 PageFileFault : 1; 
+    U32 PageFilePageHashActive : 1; 
+    U32 CoalescedIo : 1; 
+    U32 VmLockNotNeeded : 1; 
+    U32 Spare0 : 1; 
+    U32 Spare1 : 6; 
+  }; 
+} MMINPAGE_FLAGS, *PMMINPAGE_FLAGS; 
+
+typedef struct _MDL
+{
+  struct _MDL* Next;
+  S16 Size;
+  S16 MdlFlags;
+  U16 AllocationProcessorNumber;
+  U16 Reserved;
+  struct _EPROCESS* Process;
+  void* MappedSystemVa;
+  void* StartVa;
+  U32 ByteCount;
+  U32 ByteOffset;
+} MDL, *PMDL; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _MMINPAGE_SUPPORT_FLOW_THROUGH
+{
+  U64 Page[1];
+  struct _MMINPAGE_SUPPORT* InitialInPageSupport;
+  struct _MMPAGING_FILE* PagingFile;
+  U64 PageFileOffset;
+  struct _RTL_BALANCED_NODE Node;
+} MMINPAGE_SUPPORT_FLOW_THROUGH, *PMMINPAGE_SUPPORT_FLOW_THROUGH; 
+
+typedef struct _MMINPAGE_SUPPORT
+{
+  struct _LIST_ENTRY ListEntry;
+  struct _LIST_ENTRY ListHead;
+  struct _KEVENT Event;
+  struct _KEVENT CollidedEvent;
+  struct _IO_STATUS_BLOCK IoStatus;
+  union _LARGE_INTEGER ReadOffset;
+  union
+  {
+    union
+    {
+      struct _KAPC_STATE ApcState;
+      struct _MI_HARD_FAULT_STATE HardFaultState;
+    }; 
+  } u2;
+  struct _ETHREAD* Thread;
+  struct _MMPFN* LockedProtoPfn;
+  struct _MMPTE PteContents;
+  volatile S32 WaitCount;
+  volatile S32 InjectRetry;
+  U32 ByteCount;
+  union
+  {
+    union
+    {
+      U32 ImagePteOffset;
+      U32 TossPage;
+    }; 
+  } u3;
+  union
+  {
+    union
+    {
+      struct _MMINPAGE_FLAGS e1;
+      U32 LongFlags;
+    }; 
+  } u1;
+  struct _FILE_OBJECT* FilePointer;
+  union
+  {
+    struct _CONTROL_AREA* ControlArea;
+    struct _SUBSECTION* Subsection;
+  }; 
+  void* Autoboost;
+  void* FaultingAddress;
+  struct _MMPTE* PointerPte;
+  struct _MMPTE* BasePte;
+  struct _MMPFN* Pfn;
+  struct _MDL* PrefetchMdl;
+  volatile S64 ProbeCount;
+  struct _MDL Mdl;
+  union
+  {
+    U64 Page[16];
+    struct
+    {
+      struct _MMINPAGE_SUPPORT_FLOW_THROUGH FlowThrough;
+      S32 __PADDING__[18];
+    }; 
+  }; 
+} MMINPAGE_SUPPORT, *PMMINPAGE_SUPPORT; 
+

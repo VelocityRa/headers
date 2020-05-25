@@ -1,0 +1,27 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _ETW_PROVIDER_TRAITS
+{
+  struct _RTL_BALANCED_NODE Node;
+  U32 ReferenceCount;
+  U8 Traits[1];
+  char __PADDING__[3];
+} ETW_PROVIDER_TRAITS, *PETW_PROVIDER_TRAITS; 
+

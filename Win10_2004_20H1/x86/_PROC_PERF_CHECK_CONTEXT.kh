@@ -1,0 +1,15 @@
+typedef struct _PROC_PERF_CHECK_CONTEXT
+{
+  struct _PROC_PERF_DOMAIN* Domain;
+  struct _PROC_PERF_CONSTRAINT* Constraint;
+  struct _PROC_PERF_CHECK* PerfCheck;
+  struct _PROC_PERF_LOAD* Load;
+  struct _PROC_PERF_HISTORY* PerfHistory;
+  U32 Utility;
+  U32 AffinitizedUtility;
+  U32 MediaUtility;
+  U16 LatestAffinitizedPercent;
+  U16 AveragePerformancePercent;
+  U32 RelativePerformance;
+} PROC_PERF_CHECK_CONTEXT, *PPROC_PERF_CHECK_CONTEXT; 
+

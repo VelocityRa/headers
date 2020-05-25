@@ -1,0 +1,6 @@
+typedef struct _PEP_WORK_ACTIVE_COMPLETE
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 Component;
+} PEP_WORK_ACTIVE_COMPLETE, *PPEP_WORK_ACTIVE_COMPLETE; 
+

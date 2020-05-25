@@ -1,0 +1,6 @@
+typedef struct _PCW_DATA
+{
+  const void* Data;
+  U32 Size;
+} PCW_DATA, *PPCW_DATA; 
+

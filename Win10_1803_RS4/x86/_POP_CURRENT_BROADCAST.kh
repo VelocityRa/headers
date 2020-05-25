@@ -1,0 +1,40 @@
+typedef struct _SYSTEM_POWER_STATE_CONTEXT
+{
+  union
+  {
+    struct 
+    {
+      U32 Reserved1 : 8; 
+      U32 TargetSystemState : 4; 
+      U32 EffectiveSystemState : 4; 
+      U32 CurrentSystemState : 4; 
+      U32 IgnoreHibernationPath : 1; 
+      U32 PseudoTransition : 1; 
+      U32 KernelSoftReboot : 1; 
+      U32 Reserved2 : 9; 
+    }; 
+    U32 ContextAsUlong;
+  }; 
+} SYSTEM_POWER_STATE_CONTEXT, *PSYSTEM_POWER_STATE_CONTEXT; 
+
+enum POWER_ACTION
+{
+  PowerActionNone = 0,
+  PowerActionReserved = 1,
+  PowerActionSleep = 2,
+  PowerActionHibernate = 3,
+  PowerActionShutdown = 4,
+  PowerActionShutdownReset = 5,
+  PowerActionShutdownOff = 6,
+  PowerActionWarmEject = 7,
+  PowerActionDisplayOff = 8,
+};
+
+typedef struct _POP_CURRENT_BROADCAST
+{
+  U8 InProgress;
+  struct _SYSTEM_POWER_STATE_CONTEXT SystemContext;
+  enum POWER_ACTION PowerAction;
+  struct _POP_DEVICE_SYS_STATE* DeviceState;
+} POP_CURRENT_BROADCAST, *PPOP_CURRENT_BROADCAST; 
+

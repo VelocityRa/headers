@@ -1,0 +1,26 @@
+typedef struct _WNF_NODE_HEADER
+{
+  U16 NodeTypeCode;
+  U16 NodeByteSize;
+} WNF_NODE_HEADER, *PWNF_NODE_HEADER; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _WNF_DISPATCHER
+{
+  struct _WNF_NODE_HEADER Header;
+  struct _WORK_QUEUE_ITEM WorkItem;
+  S32 State;
+} WNF_DISPATCHER, *PWNF_DISPATCHER; 
+

@@ -1,0 +1,12 @@
+typedef struct _WHEA_PERSISTENCE_INFO
+{
+  struct 
+  {
+    U64 Identifier : 16; 
+    U64 Length : 24; 
+    U64 Reserved : 6; 
+    U64 Attributes : 2; 
+    U64 Signature : 16; 
+  }; 
+} WHEA_PERSISTENCE_INFO, *PWHEA_PERSISTENCE_INFO; 
+

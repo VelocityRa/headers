@@ -1,0 +1,15 @@
+typedef struct _XSTATE_FEATURE
+{
+  U32 Offset;
+  U32 Size;
+} XSTATE_FEATURE, *PXSTATE_FEATURE; 
+
+typedef struct _XSTATE_CONFIGURATION
+{
+  U64 EnabledFeatures;
+  U64 EnabledVolatileFeatures;
+  U32 Size;
+  U32 OptimizedSave : 1; 
+  struct _XSTATE_FEATURE Features[64];
+} XSTATE_CONFIGURATION, *PXSTATE_CONFIGURATION; 
+

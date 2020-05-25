@@ -1,0 +1,6 @@
+typedef struct _CM_KEY_REFERENCE
+{
+  U32 KeyCell;
+  struct _HHIVE* KeyHive;
+} CM_KEY_REFERENCE, *PCM_KEY_REFERENCE; 
+

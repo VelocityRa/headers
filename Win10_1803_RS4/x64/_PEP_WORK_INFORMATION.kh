@@ -1,0 +1,106 @@
+typedef enum _PEP_WORK_TYPE
+{
+  PepWorkActiveComplete = 0,
+  PepWorkRequestIdleState = 1,
+  PepWorkDevicePower = 2,
+  PepWorkRequestPowerControl = 3,
+  PepWorkDeviceIdle = 4,
+  PepWorkCompleteIdleState = 5,
+  PepWorkCompletePerfState = 6,
+  PepWorkAcpiNotify = 7,
+  PepWorkAcpiEvaluateControlMethodComplete = 8,
+  PepWorkMax = 9,
+} PEP_WORK_TYPE, *PPEP_WORK_TYPE;
+
+typedef struct _PEP_WORK_ACTIVE_COMPLETE
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 Component;
+  S32 __PADDING__[1];
+} PEP_WORK_ACTIVE_COMPLETE, *PPEP_WORK_ACTIVE_COMPLETE; 
+
+typedef struct _PEP_WORK_IDLE_STATE
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 Component;
+  U32 State;
+} PEP_WORK_IDLE_STATE, *PPEP_WORK_IDLE_STATE; 
+
+typedef struct _PEP_WORK_DEVICE_POWER
+{
+  struct POHANDLE__* DeviceHandle;
+  U8 PowerRequired;
+  char __PADDING__[7];
+} PEP_WORK_DEVICE_POWER, *PPEP_WORK_DEVICE_POWER; 
+
+typedef struct _PEP_WORK_POWER_CONTROL
+{
+  struct POHANDLE__* DeviceHandle;
+  const struct _GUID* PowerControlCode;
+  void* RequestContext;
+  void* InBuffer;
+  U64 InBufferSize;
+  void* OutBuffer;
+  U64 OutBufferSize;
+} PEP_WORK_POWER_CONTROL, *PPEP_WORK_POWER_CONTROL; 
+
+typedef struct _PEP_WORK_DEVICE_IDLE
+{
+  struct POHANDLE__* DeviceHandle;
+  U8 IgnoreIdleTimeout;
+  char __PADDING__[7];
+} PEP_WORK_DEVICE_IDLE, *PPEP_WORK_DEVICE_IDLE; 
+
+typedef struct _PEP_WORK_COMPLETE_IDLE_STATE
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 Component;
+  S32 __PADDING__[1];
+} PEP_WORK_COMPLETE_IDLE_STATE, *PPEP_WORK_COMPLETE_IDLE_STATE; 
+
+typedef struct _PEP_WORK_COMPLETE_PERF_STATE
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 Component;
+  U8 Succeeded;
+  char __PADDING__[3];
+} PEP_WORK_COMPLETE_PERF_STATE, *PPEP_WORK_COMPLETE_PERF_STATE; 
+
+typedef struct _PEP_WORK_ACPI_NOTIFY
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 NotifyCode;
+  S32 __PADDING__[1];
+} PEP_WORK_ACPI_NOTIFY, *PPEP_WORK_ACPI_NOTIFY; 
+
+typedef struct _PEP_WORK_ACPI_EVALUATE_CONTROL_METHOD_COMPLETE
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 CompletionFlags;
+  S32 MethodStatus;
+  void* CompletionContext;
+  U64 OutputArgumentSize;
+  struct _ACPI_METHOD_ARGUMENT_V1* OutputArguments;
+} PEP_WORK_ACPI_EVALUATE_CONTROL_METHOD_COMPLETE, *PPEP_WORK_ACPI_EVALUATE_CONTROL_METHOD_COMPLETE; 
+
+typedef struct _PEP_WORK_INFORMATION
+{
+  enum _PEP_WORK_TYPE WorkType;
+  union
+  {
+    struct _PEP_WORK_ACTIVE_COMPLETE ActiveComplete;
+    struct _PEP_WORK_IDLE_STATE IdleState;
+    struct _PEP_WORK_DEVICE_POWER DevicePower;
+    struct _PEP_WORK_POWER_CONTROL PowerControl;
+    struct _PEP_WORK_DEVICE_IDLE DeviceIdle;
+    struct _PEP_WORK_COMPLETE_IDLE_STATE CompleteIdleState;
+    struct _PEP_WORK_COMPLETE_PERF_STATE CompletePerfState;
+    struct _PEP_WORK_ACPI_NOTIFY AcpiNotify;
+    struct
+    {
+      struct _PEP_WORK_ACPI_EVALUATE_CONTROL_METHOD_COMPLETE ControlMethodComplete;
+      S32 __PADDING__[4];
+    }; 
+  }; 
+} PEP_WORK_INFORMATION, *PPEP_WORK_INFORMATION; 
+

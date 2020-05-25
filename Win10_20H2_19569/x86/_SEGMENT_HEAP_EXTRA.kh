@@ -1,0 +1,12 @@
+typedef struct _SEGMENT_HEAP_EXTRA
+{
+  U16 AllocationTag;
+  struct 
+  {
+    U8 InterceptorIndex : 4; 
+    U8 UserFlags : 4; 
+  }; 
+  U8 ExtraSizeInUnits;
+  void* Settable;
+} SEGMENT_HEAP_EXTRA, *PSEGMENT_HEAP_EXTRA; 
+

@@ -1,0 +1,75 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _ETW_LAST_ENABLE_INFO
+{
+  union _LARGE_INTEGER EnableFlags;
+  U16 LoggerId;
+  U8 Level;
+  struct 
+  {
+    U8 Enabled : 1; 
+    U8 InternalFlag : 7; 
+  }; 
+  S32 __PADDING__[1];
+} ETW_LAST_ENABLE_INFO, *PETW_LAST_ENABLE_INFO; 
+
+typedef struct _TRACE_ENABLE_INFO
+{
+  U32 IsEnabled;
+  U8 Level;
+  U8 Reserved1;
+  U16 LoggerId;
+  U32 EnableProperty;
+  U32 Reserved2;
+  U64 MatchAnyKeyword;
+  U64 MatchAllKeyword;
+} TRACE_ENABLE_INFO, *PTRACE_ENABLE_INFO; 
+
+typedef struct _ETW_GUID_ENTRY
+{
+  struct _LIST_ENTRY GuidList;
+  volatile S32 RefCount;
+  struct _GUID Guid;
+  struct _LIST_ENTRY RegListHead;
+  void* SecurityDescriptor;
+  union
+  {
+    struct _ETW_LAST_ENABLE_INFO LastEnable;
+    U64 MatchId;
+  }; 
+  struct _TRACE_ENABLE_INFO ProviderEnableInfo;
+  struct _TRACE_ENABLE_INFO EnableInfo[8];
+  struct _ETW_FILTER_HEADER* FilterData;
+  S32 __PADDING__[1];
+} ETW_GUID_ENTRY, *PETW_GUID_ENTRY; 
+

@@ -1,0 +1,9 @@
+typedef struct _DMA_ADAPTER_INFO_V1
+{
+  U32 ReadDmaCounterAvailable;
+  U32 ScatterGatherLimit;
+  U32 DmaAddressWidth;
+  U32 Flags;
+  U32 MinimumTransferUnit;
+} DMA_ADAPTER_INFO_V1, *PDMA_ADAPTER_INFO_V1; 
+

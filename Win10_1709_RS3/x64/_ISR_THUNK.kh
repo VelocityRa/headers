@@ -1,0 +1,9 @@
+typedef struct _ISR_THUNK
+{
+  U8 PushImm;
+  U8 Vector;
+  U8 PushRbp;
+  U8 JmpOp;
+  S32 JmpOffset;
+} ISR_THUNK, *PISR_THUNK; 
+

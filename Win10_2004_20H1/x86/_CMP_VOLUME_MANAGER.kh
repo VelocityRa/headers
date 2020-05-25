@@ -1,0 +1,17 @@
+typedef struct _CMSI_RW_LOCK
+{
+  void* Reserved;
+} CMSI_RW_LOCK, *PCMSI_RW_LOCK; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _CMP_VOLUME_MANAGER
+{
+  struct _CMSI_RW_LOCK VolumeContextListLock;
+  struct _LIST_ENTRY VolumeContextListHead;
+} CMP_VOLUME_MANAGER, *PCMP_VOLUME_MANAGER; 
+

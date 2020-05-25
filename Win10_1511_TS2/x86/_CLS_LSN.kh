@@ -1,0 +1,13 @@
+typedef union _CLS_LSN
+{
+  union
+  {
+    struct
+    {
+      U32 idxRecord;
+      U32 cidContainer;
+    } offset;
+    U64 ullOffset;
+  }; 
+} CLS_LSN, *PCLS_LSN; 
+

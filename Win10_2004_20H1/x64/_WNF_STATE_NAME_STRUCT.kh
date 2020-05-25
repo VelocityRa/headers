@@ -1,0 +1,12 @@
+typedef struct _WNF_STATE_NAME_STRUCT
+{
+  struct 
+  {
+    U64 Version : 4; 
+    U64 NameLifetime : 2; 
+    U64 DataScope : 4; 
+    U64 PermanentData : 1; 
+    U64 Sequence : 53; 
+  }; 
+} WNF_STATE_NAME_STRUCT, *PWNF_STATE_NAME_STRUCT; 
+

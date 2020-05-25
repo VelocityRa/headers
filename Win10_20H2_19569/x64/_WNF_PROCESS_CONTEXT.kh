@@ -1,0 +1,49 @@
+typedef struct _WNF_NODE_HEADER
+{
+  U16 NodeTypeCode;
+  U16 NodeByteSize;
+} WNF_NODE_HEADER, *PWNF_NODE_HEADER; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _WNF_LOCK
+{
+  struct _EX_PUSH_LOCK PushLock;
+} WNF_LOCK, *PWNF_LOCK; 
+
+typedef struct _WNF_PROCESS_CONTEXT
+{
+  struct _WNF_NODE_HEADER Header;
+  struct _EPROCESS* Process;
+  struct _LIST_ENTRY WnfProcessesListEntry;
+  void* ImplicitScopeInstances[3];
+  struct _WNF_LOCK TemporaryNamesListLock;
+  struct _LIST_ENTRY TemporaryNamesListHead;
+  struct _WNF_LOCK ProcessSubscriptionListLock;
+  struct _LIST_ENTRY ProcessSubscriptionListHead;
+  struct _WNF_LOCK DeliveryPendingListLock;
+  struct _LIST_ENTRY DeliveryPendingListHead;
+  struct _KEVENT* NotificationEvent;
+} WNF_PROCESS_CONTEXT, *PWNF_PROCESS_CONTEXT; 
+

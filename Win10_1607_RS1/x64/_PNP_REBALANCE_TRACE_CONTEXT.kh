@@ -1,0 +1,51 @@
+typedef enum _PNP_REBALANCE_REASON
+{
+  RebalanceReasonUnknown = 0,
+  RebalanceReasonRequirementsChanged = 1,
+  RebalanceReasonNewDevice = 2,
+} PNP_REBALANCE_REASON, *PPNP_REBALANCE_REASON;
+
+typedef enum _PNP_REBALANCE_FAILURE
+{
+  RebalanceFailureNone = 0,
+  RebalanceFailureDisabled = 1,
+  RebalanceFailureNoMemory = 2,
+  RebalanceFailureQueryStopUnexpectedVeto = 3,
+  RebalanceFailureNoRequirements = 4,
+  RebalanceFailureNoCandidates = 5,
+  RebalanceFailureNoConfiguration = 6,
+} PNP_REBALANCE_FAILURE, *PPNP_REBALANCE_FAILURE;
+
+typedef enum _PNP_DEVNODE_QUERY_REBALANCE_VETO_REASON
+{
+  DeviceQueryRebalanceSucceeded = 0,
+  DeviceQueryStopFailed = 1,
+  DeviceFailedGetNewResourceRequirement = 2,
+  DeviceInUnexpectedState = 3,
+  DeviceNotSupportQueryRebalance = 4,
+} PNP_DEVNODE_QUERY_REBALANCE_VETO_REASON, *PPNP_DEVNODE_QUERY_REBALANCE_VETO_REASON;
+
+typedef struct _PNP_RESOURCE_CONFLICT_TRACE_CONTEXT
+{
+  U8 ResourceType;
+  U32 AlternativeCount;
+  struct _IO_RESOURCE_DESCRIPTOR* ResourceRequests;
+  void* ArbiterInstance;
+} PNP_RESOURCE_CONFLICT_TRACE_CONTEXT, *PPNP_RESOURCE_CONFLICT_TRACE_CONTEXT; 
+
+typedef struct _PNP_REBALANCE_TRACE_CONTEXT
+{
+  U32 DeviceCount;
+  U32 RebalancePhase;
+  enum _PNP_REBALANCE_REASON Reason[2];
+  enum _PNP_REBALANCE_FAILURE Failure[2];
+  struct _DEVICE_NODE* SubtreeRoot;
+  U8 SubtreeIncludesRoot;
+  struct _DEVICE_NODE* TriggerRoot;
+  U8 RebalanceDueToDynamicPartitioning;
+  U64 BeginTime;
+  struct _DEVICE_NODE* VetoNode[2];
+  enum _PNP_DEVNODE_QUERY_REBALANCE_VETO_REASON VetoQueryRebalanceReason[2];
+  struct _PNP_RESOURCE_CONFLICT_TRACE_CONTEXT ConflictContext;
+} PNP_REBALANCE_TRACE_CONTEXT, *PPNP_REBALANCE_TRACE_CONTEXT; 
+

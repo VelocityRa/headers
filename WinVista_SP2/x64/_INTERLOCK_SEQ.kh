@@ -1,0 +1,18 @@
+typedef struct _INTERLOCK_SEQ
+{
+  union
+  {
+    struct
+    {
+      U16 Depth;
+      U16 FreeEntryOffset;
+    }; 
+    struct
+    {
+      volatile U32 OffsetAndDepth;
+      volatile U32 Sequence;
+    }; 
+    volatile S64 Exchg;
+  }; 
+} INTERLOCK_SEQ, *PINTERLOCK_SEQ; 
+

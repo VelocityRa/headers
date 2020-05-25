@@ -1,0 +1,272 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 1; 
+              U8 Processor : 5; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 SchedulerAssist : 1; 
+            U8 Instrumented : 1; 
+          }; 
+          U8 DebugActive;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KGDTENTRY
+{
+  U16 LimitLow;
+  U16 BaseLow;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U8 BaseMid;
+        U8 Flags1;
+        U8 Flags2;
+        U8 BaseHi;
+      } Bytes;
+      struct
+      {
+        struct 
+        {
+          U32 BaseMid : 8; 
+          U32 Type : 5; 
+          U32 Dpl : 2; 
+          U32 Pres : 1; 
+          U32 LimitHi : 4; 
+          U32 Sys : 1; 
+          U32 Reserved_0 : 1; 
+          U32 Default_Big : 1; 
+          U32 Granularity : 1; 
+          U32 BaseHi : 8; 
+        }; 
+      } Bits;
+    }; 
+  } HighWord;
+} KGDTENTRY, *PKGDTENTRY; 
+
+typedef struct _KIDTENTRY
+{
+  U16 Offset;
+  U16 Selector;
+  U16 Access;
+  U16 ExtendedOffset;
+} KIDTENTRY, *PKIDTENTRY; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _KEXECUTE_OPTIONS
+{
+  union
+  {
+    struct 
+    {
+      U8 ExecuteDisable : 1; 
+      U8 ExecuteEnable : 1; 
+      U8 DisableThunkEmulation : 1; 
+      U8 Permanent : 1; 
+      U8 ExecuteDispatchEnable : 1; 
+      U8 ImageDispatchEnable : 1; 
+      U8 DisableExceptionChainValidation : 1; 
+      U8 Spare : 1; 
+    }; 
+    volatile U8 ExecuteOptions;
+    U8 ExecuteOptionsNV;
+  }; 
+} KEXECUTE_OPTIONS, *PKEXECUTE_OPTIONS; 
+
+typedef union _KSTACK_COUNT
+{
+  union
+  {
+    S32 Value;
+    struct 
+    {
+      U32 State : 3; 
+      U32 StackCount : 29; 
+    }; 
+  }; 
+} KSTACK_COUNT, *PKSTACK_COUNT; 
+
+typedef struct _KPROCESS
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY ProfileListHead;
+  U32 DirectoryTableBase;
+  struct _KGDTENTRY LdtDescriptor;
+  struct _KIDTENTRY Int21Descriptor;
+  struct _LIST_ENTRY ThreadListHead;
+  U32 ProcessLock;
+  U64 DeepFreezeStartTime;
+  struct _KAFFINITY_EX Affinity;
+  struct _LIST_ENTRY ReadyListHead;
+  struct _SINGLE_LIST_ENTRY SwapListEntry;
+  volatile struct _KAFFINITY_EX ActiveProcessors;
+  union
+  {
+    struct 
+    {
+      U32 AutoAlignment : 1; 
+      U32 DisableBoost : 1; 
+      U32 DisableQuantum : 1; 
+      U32 DeepFreeze : 1; 
+      U32 TimerVirtualization : 1; 
+      U32 CheckStackExtents : 1; 
+      U32 CacheIsolationEnabled : 1; 
+      U32 PpmPolicy : 3; 
+      U32 VaSpaceDeleted : 1; 
+      U32 ReservedFlags : 21; 
+    }; 
+    volatile S32 ProcessFlags;
+  }; 
+  char BasePriority;
+  char QuantumReset;
+  char Visited;
+  union _KEXECUTE_OPTIONS Flags;
+  U16 ThreadSeed[1];
+  U16 IdealProcessor[1];
+  U16 IdealNode[1];
+  U16 IdealGlobalNode;
+  U16 Spare1;
+  U16 IopmOffset;
+  struct _KSCHEDULING_GROUP* SchedulingGroup;
+  volatile union _KSTACK_COUNT StackCount;
+  struct _LIST_ENTRY ProcessListEntry;
+  U64 CycleTime;
+  U64 ContextSwitches;
+  U32 FreezeCount;
+  U32 KernelTime;
+  U32 UserTime;
+  U32 ReadyTime;
+  void* VdmTrapcHandler;
+  U32 ProcessTimerDelay;
+  U64 KernelWaitTime;
+  U64 UserWaitTime;
+  U32 EndPadding[8];
+} KPROCESS, *PKPROCESS; 
+

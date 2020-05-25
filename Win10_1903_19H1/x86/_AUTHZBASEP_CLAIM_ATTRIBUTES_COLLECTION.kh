@@ -1,0 +1,21 @@
+typedef struct _SID_AND_ATTRIBUTES_HASH
+{
+  U32 SidCount;
+  struct _SID_AND_ATTRIBUTES* SidAttr;
+  U32 Hash[32];
+} SID_AND_ATTRIBUTES_HASH, *PSID_AND_ATTRIBUTES_HASH; 
+
+typedef struct _AUTHZBASEP_CLAIM_ATTRIBUTES_COLLECTION
+{
+  U32 DeviceGroupsCount;
+  struct _SID_AND_ATTRIBUTES* pDeviceGroups;
+  U32 RestrictedDeviceGroupsCount;
+  struct _SID_AND_ATTRIBUTES* pRestrictedDeviceGroups;
+  struct _SID_AND_ATTRIBUTES_HASH DeviceGroupsHash;
+  struct _SID_AND_ATTRIBUTES_HASH RestrictedDeviceGroupsHash;
+  struct _AUTHZBASEP_SECURITY_ATTRIBUTES_INFORMATION* pUserSecurityAttributes;
+  struct _AUTHZBASEP_SECURITY_ATTRIBUTES_INFORMATION* pDeviceSecurityAttributes;
+  struct _AUTHZBASEP_SECURITY_ATTRIBUTES_INFORMATION* pRestrictedUserSecurityAttributes;
+  struct _AUTHZBASEP_SECURITY_ATTRIBUTES_INFORMATION* pRestrictedDeviceSecurityAttributes;
+} AUTHZBASEP_CLAIM_ATTRIBUTES_COLLECTION, *PAUTHZBASEP_CLAIM_ATTRIBUTES_COLLECTION; 
+

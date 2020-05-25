@@ -1,0 +1,48 @@
+enum POWER_ACTION
+{
+  PowerActionNone = 0,
+  PowerActionReserved = 1,
+  PowerActionSleep = 2,
+  PowerActionHibernate = 3,
+  PowerActionShutdown = 4,
+  PowerActionShutdownReset = 5,
+  PowerActionShutdownOff = 6,
+  PowerActionWarmEject = 7,
+};
+
+struct POWER_ACTION_POLICY
+{
+  enum POWER_ACTION Action;
+  U32 Flags;
+  U32 EventCode;
+}; 
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+typedef struct _POP_SYSTEM_IDLE
+{
+  S32 AverageIdleness;
+  S32 LowestIdleness;
+  U32 Time;
+  U32 Timeout;
+  U32 LastUserInput;
+  struct POWER_ACTION_POLICY Action;
+  enum _SYSTEM_POWER_STATE MinState;
+  U8 SystemRequired;
+  U8 IdleWorker;
+  U8 Sampling;
+  U64 LastTick;
+  U32 LastSystemRequiredTime;
+  S32 __PADDING__[1];
+} POP_SYSTEM_IDLE, *PPOP_SYSTEM_IDLE; 
+

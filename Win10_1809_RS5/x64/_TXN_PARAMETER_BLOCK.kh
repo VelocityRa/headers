@@ -1,0 +1,7 @@
+typedef struct _TXN_PARAMETER_BLOCK
+{
+  U16 Length;
+  U16 TxFsContext;
+  void* TransactionObject;
+} TXN_PARAMETER_BLOCK, *PTXN_PARAMETER_BLOCK; 
+

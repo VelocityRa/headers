@@ -1,0 +1,36 @@
+typedef struct _GENERIC_MAPPING
+{
+  U32 GenericRead;
+  U32 GenericWrite;
+  U32 GenericExecute;
+  U32 GenericAll;
+} GENERIC_MAPPING, *PGENERIC_MAPPING; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _ACCESS_REASONS
+{
+  U32 Data[32];
+} ACCESS_REASONS, *PACCESS_REASONS; 
+
+typedef struct _AUX_ACCESS_DATA
+{
+  struct _PRIVILEGE_SET* PrivilegesUsed;
+  struct _GENERIC_MAPPING GenericMapping;
+  U32 AccessesToAudit;
+  U32 MaximumAuditMask;
+  struct _GUID TransactionId;
+  void* NewSecurityDescriptor;
+  void* ExistingSecurityDescriptor;
+  void* ParentSecurityDescriptor;
+  void* DeRefSecurityDescriptor;
+  void* SDLock;
+  struct _ACCESS_REASONS AccessReasons;
+} AUX_ACCESS_DATA, *PAUX_ACCESS_DATA; 
+

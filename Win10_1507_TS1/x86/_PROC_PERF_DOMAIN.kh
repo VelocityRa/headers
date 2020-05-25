@@ -1,0 +1,62 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _PROC_PERF_DOMAIN
+{
+  struct _LIST_ENTRY Link;
+  struct _KPRCB* Master;
+  struct _KAFFINITY_EX Members;
+  U32 ProcessorCount;
+  U8 Class;
+  U8 Spare[3];
+  struct _PROC_PERF_CONSTRAINT* Processors;
+  void* GetFFHThrottleState;
+  void* TimeWindowHandler;
+  void* BoostPolicyHandler;
+  void* BoostModeHandler;
+  void* EnergyPerfPreferenceHandler;
+  void* AutonomousActivityWindowHandler;
+  void* AutonomousModeHandler;
+  void* ReinitializeHandler;
+  void* PerfSelectionHandler;
+  void* PerfControlHandler;
+  U32 MaxFrequency;
+  U32 NominalFrequency;
+  U32 MaxPercent;
+  U32 MinPerfPercent;
+  U32 MinThrottlePercent;
+  U64 MinimumRelativePerformance;
+  U64 NominalRelativePerformance;
+  U8 Coordination;
+  U8 HardPlatformCap;
+  U8 AffinitizeControl;
+  U8 EfficientThrottle;
+  U8 AutonomousMode;
+  U32 SelectedPercent;
+  U32 SelectedFrequency;
+  U32 DesiredPercent;
+  U32 MaxPolicyPercent;
+  U32 MinPolicyPercent;
+  U32 ConstrainedMaxPercent;
+  U32 ConstrainedMinPercent;
+  U32 GuaranteedPercent;
+  U32 TolerancePercent;
+  U64 SelectedState;
+  U64 PerfChangeTime;
+  U32 PerfChangeIntervalCount;
+  U8 Force;
+  U8 ProvideGuidance;
+  char __PADDING__[2];
+} PROC_PERF_DOMAIN, *PPROC_PERF_DOMAIN; 
+

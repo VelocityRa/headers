@@ -1,0 +1,11 @@
+typedef struct _HEAP_DEBUGGING_INFORMATION
+{
+  void* InterceptorFunction;
+  U16 InterceptorValue;
+  U32 ExtendedOptions;
+  U32 StackTraceDepth;
+  U64 MinTotalBlockSize;
+  U64 MaxTotalBlockSize;
+  void* HeapLeakEnumerationRoutine;
+} HEAP_DEBUGGING_INFORMATION, *PHEAP_DEBUGGING_INFORMATION; 
+

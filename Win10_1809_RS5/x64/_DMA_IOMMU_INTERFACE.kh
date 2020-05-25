@@ -1,0 +1,18 @@
+typedef struct _DMA_IOMMU_INTERFACE
+{
+  U32 Version;
+  void* CreateDomain;
+  void* DeleteDomain;
+  void* AttachDevice;
+  void* DetachDevice;
+  void* FlushDomain;
+  void* FlushDomainByVaList;
+  void* QueryInputMappings;
+  void* MapLogicalRange;
+  void* UnmapLogicalRange;
+  void* MapIdentityRange;
+  void* UnmapIdentityRange;
+  void* SetDeviceFaultReporting;
+  void* ConfigureDomain;
+} DMA_IOMMU_INTERFACE, *PDMA_IOMMU_INTERFACE; 
+

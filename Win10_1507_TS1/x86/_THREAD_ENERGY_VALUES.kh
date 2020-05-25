@@ -1,0 +1,5 @@
+typedef struct _THREAD_ENERGY_VALUES
+{
+  U64 Cycles[2][4];
+} THREAD_ENERGY_VALUES, *PTHREAD_ENERGY_VALUES; 
+

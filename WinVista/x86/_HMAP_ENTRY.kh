@@ -1,0 +1,8 @@
+typedef struct _HMAP_ENTRY
+{
+  U32 BlockAddress;
+  U32 BinAddress;
+  struct _CM_VIEW_OF_FILE* CmView;
+  U32 MemAlloc;
+} HMAP_ENTRY, *PHMAP_ENTRY; 
+

@@ -1,0 +1,176 @@
+enum INTERRUPT_CONNECTION_TYPE
+{
+  InterruptTypeControllerInput = 0,
+  InterruptTypeXapicMessage = 1,
+  InterruptTypeHypertransport = 2,
+  InterruptTypeMessageRequest = 3,
+};
+
+typedef enum _KINTERRUPT_POLARITY
+{
+  InterruptPolarityUnknown = 0,
+  InterruptActiveHigh = 1,
+  InterruptRisingEdge = 1,
+  InterruptActiveLow = 2,
+  InterruptFallingEdge = 2,
+  InterruptActiveBoth = 3,
+  InterruptActiveBothTriggerLow = 3,
+  InterruptActiveBothTriggerHigh = 4,
+} KINTERRUPT_POLARITY, *PKINTERRUPT_POLARITY;
+
+typedef enum _KINTERRUPT_MODE
+{
+  LevelSensitive = 0,
+  Latched = 1,
+} KINTERRUPT_MODE, *PKINTERRUPT_MODE;
+
+typedef struct _GROUP_AFFINITY
+{
+  U32 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+
+typedef struct _INTERRUPT_REMAPPING_INFO
+{
+  struct 
+  {
+    U32 IrtIndex : 30; 
+    U32 FlagHalInternal : 1; 
+    U32 FlagTranslated : 1; 
+  }; 
+  union
+  {
+    struct
+    {
+      U32 MessageAddressHigh;
+      U32 MessageAddressLow;
+      U16 MessageData;
+      U16 Reserved;
+    } Msi;
+  } u;
+} INTERRUPT_REMAPPING_INFO, *PINTERRUPT_REMAPPING_INFO; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _INTERRUPT_HT_INTR_INFO
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 Mask : 1; 
+          U32 Polarity : 1; 
+          U32 MessageType : 3; 
+          U32 RequestEOI : 1; 
+          U32 DestinationMode : 1; 
+          U32 MessageType3 : 1; 
+          U32 Destination : 8; 
+          U32 Vector : 8; 
+          U32 ExtendedAddress : 8; 
+        }; 
+      } bits;
+      U32 AsULONG;
+    }; 
+  } LowPart;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 ExtendedDestination : 24; 
+          U32 Reserved : 6; 
+          U32 PassPW : 1; 
+          U32 WaitingForEOI : 1; 
+        }; 
+      } bits;
+      U32 AsULONG;
+    }; 
+  } HighPart;
+} INTERRUPT_HT_INTR_INFO, *PINTERRUPT_HT_INTR_INFO; 
+
+enum HAL_APIC_DESTINATION_MODE
+{
+  ApicDestinationModePhysical = 1,
+  ApicDestinationModeLogicalFlat = 2,
+  ApicDestinationModeLogicalClustered = 3,
+  ApicDestinationModeUnknown = 4,
+};
+
+typedef struct _INTERRUPT_VECTOR_DATA
+{
+  enum INTERRUPT_CONNECTION_TYPE Type;
+  U32 Vector;
+  U8 Irql;
+  enum _KINTERRUPT_POLARITY Polarity;
+  enum _KINTERRUPT_MODE Mode;
+  struct _GROUP_AFFINITY TargetProcessors;
+  struct _INTERRUPT_REMAPPING_INFO IntRemapInfo;
+  struct
+  {
+    U32 Gsiv;
+    struct 
+    {
+      U32 WakeInterrupt : 1; 
+      U32 ReservedFlags : 31; 
+    }; 
+  } ControllerInput;
+  U64 HvDeviceId;
+  union
+  {
+    struct
+    {
+      union _LARGE_INTEGER Address;
+      U32 DataPayload;
+      S32 __PADDING__[1];
+    } XapicMessage;
+    struct
+    {
+      struct _INTERRUPT_HT_INTR_INFO IntrInfo;
+    } Hypertransport;
+    struct
+    {
+      union _LARGE_INTEGER Address;
+      U32 DataPayload;
+      S32 __PADDING__[1];
+    } GenericMessage;
+    struct
+    {
+      struct
+      {
+        enum HAL_APIC_DESTINATION_MODE DestinationMode;
+      } MessageRequest;
+      S32 __PADDING__[3];
+    }; 
+  }; 
+} INTERRUPT_VECTOR_DATA, *PINTERRUPT_VECTOR_DATA; 
+
+typedef struct _INTERRUPT_CONNECTION_DATA
+{
+  U32 Count;
+  struct _INTERRUPT_VECTOR_DATA Vectors[1];
+} INTERRUPT_CONNECTION_DATA, *PINTERRUPT_CONNECTION_DATA; 
+

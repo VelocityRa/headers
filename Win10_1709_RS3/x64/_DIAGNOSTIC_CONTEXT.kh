@@ -1,0 +1,22 @@
+typedef enum _REQUESTER_TYPE
+{
+  KernelRequester = 0,
+  UserProcessRequester = 1,
+  UserSharedServiceRequester = 2,
+} REQUESTER_TYPE, *PREQUESTER_TYPE;
+
+typedef struct _DIAGNOSTIC_CONTEXT
+{
+  enum _REQUESTER_TYPE CallerType;
+  union
+  {
+    struct
+    {
+      struct _EPROCESS* Process;
+      U32 ServiceTag;
+    }; 
+    struct _DEVICE_OBJECT* DeviceObject;
+  }; 
+  U64 ReasonSize;
+} DIAGNOSTIC_CONTEXT, *PDIAGNOSTIC_CONTEXT; 
+

@@ -1,0 +1,17 @@
+typedef union _HEAP_VS_CHUNK_HEADER_SIZE
+{
+  union
+  {
+    struct 
+    {
+      U32 MemoryCost : 1; 
+      U32 UnsafeSize : 15; 
+      U32 UnsafePrevSize : 15; 
+      U32 Allocated : 1; 
+    }; 
+    U16 KeyUShort;
+    U32 KeyULong;
+    U32 HeaderBits;
+  }; 
+} HEAP_VS_CHUNK_HEADER_SIZE, *PHEAP_VS_CHUNK_HEADER_SIZE; 
+

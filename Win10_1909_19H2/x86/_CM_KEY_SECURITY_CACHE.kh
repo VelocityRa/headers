@@ -1,0 +1,27 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _SECURITY_DESCRIPTOR_RELATIVE
+{
+  U8 Revision;
+  U8 Sbz1;
+  U16 Control;
+  U32 Owner;
+  U32 Group;
+  U32 Sacl;
+  U32 Dacl;
+} SECURITY_DESCRIPTOR_RELATIVE, *PSECURITY_DESCRIPTOR_RELATIVE; 
+
+typedef struct _CM_KEY_SECURITY_CACHE
+{
+  U32 Cell;
+  U32 ConvKey;
+  struct _LIST_ENTRY List;
+  U32 DescriptorLength;
+  U32 RealRefCount;
+  struct _SECURITY_DESCRIPTOR_RELATIVE Descriptor;
+} CM_KEY_SECURITY_CACHE, *PCM_KEY_SECURITY_CACHE; 
+

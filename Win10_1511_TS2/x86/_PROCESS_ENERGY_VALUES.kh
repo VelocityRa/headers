@@ -1,0 +1,20 @@
+typedef struct _PROCESS_ENERGY_VALUES
+{
+  U64 Cycles[2][4];
+  U64 DiskEnergy;
+  U64 NetworkTailEnergy;
+  U64 MBBTailEnergy;
+  U64 NetworkTxRxBytes;
+  U64 MBBTxRxBytes;
+  union
+  {
+    U32 Foreground : 1; 
+    U32 WindowInformation;
+  }; 
+  U32 PixelArea;
+  S64 PixelReportTimestamp;
+  U64 PixelTime;
+  S64 ForegroundReportTimestamp;
+  U64 ForegroundTime;
+} PROCESS_ENERGY_VALUES, *PPROCESS_ENERGY_VALUES; 
+

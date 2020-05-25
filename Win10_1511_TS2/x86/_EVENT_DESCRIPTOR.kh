@@ -1,0 +1,11 @@
+typedef struct _EVENT_DESCRIPTOR
+{
+  U16 Id;
+  U8 Version;
+  U8 Channel;
+  U8 Level;
+  U8 Opcode;
+  U16 Task;
+  U64 Keyword;
+} EVENT_DESCRIPTOR, *PEVENT_DESCRIPTOR; 
+

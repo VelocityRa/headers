@@ -1,0 +1,73 @@
+typedef union _WHEA_PCIXDEVICE_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 ErrorStatus : 1; 
+      U64 IdInfo : 1; 
+      U64 MemoryNumber : 1; 
+      U64 IoNumber : 1; 
+      U64 RegisterDataPairs : 1; 
+      U64 Reserved : 59; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_PCIXDEVICE_ERROR_VALIDBITS, *PWHEA_PCIXDEVICE_ERROR_VALIDBITS; 
+
+typedef union _WHEA_ERROR_STATUS
+{
+  union
+  {
+    U64 ErrorStatus;
+    struct 
+    {
+      U64 Reserved1 : 8; 
+      U64 ErrorType : 8; 
+      U64 Address : 1; 
+      U64 Control : 1; 
+      U64 Data : 1; 
+      U64 Responder : 1; 
+      U64 Requester : 1; 
+      U64 FirstError : 1; 
+      U64 Overflow : 1; 
+      U64 Reserved2 : 41; 
+    }; 
+  }; 
+} WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS; 
+
+typedef struct _WHEA_PCIXDEVICE_ID
+{
+  U16 VendorId;
+  U16 DeviceId;
+  struct 
+  {
+    U32 ClassCode : 24; 
+    U32 FunctionNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 DeviceNumber : 8; 
+    U32 BusNumber : 8; 
+    U32 SegmentNumber : 8; 
+    U32 Reserved1 : 8; 
+  }; 
+  U32 Reserved2;
+} WHEA_PCIXDEVICE_ID, *PWHEA_PCIXDEVICE_ID; 
+
+struct WHEA_PCIXDEVICE_REGISTER_PAIR
+{
+  U64 Register;
+  U64 Data;
+}; 
+
+typedef struct _WHEA_PCIXDEVICE_ERROR
+{
+  union _WHEA_PCIXDEVICE_ERROR_VALIDBITS ValidBits;
+  union _WHEA_ERROR_STATUS ErrorStatus;
+  struct _WHEA_PCIXDEVICE_ID IdInfo;
+  U32 MemoryNumber;
+  U32 IoNumber;
+  struct WHEA_PCIXDEVICE_REGISTER_PAIR RegisterDataPairs[4];
+} WHEA_PCIXDEVICE_ERROR, *PWHEA_PCIXDEVICE_ERROR; 
+

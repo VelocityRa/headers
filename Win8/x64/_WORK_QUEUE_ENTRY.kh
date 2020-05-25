@@ -1,0 +1,35 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ENTRY
+{
+  struct _LIST_ENTRY WorkQueueLinks;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct _FILE_OBJECT* FileObject;
+      } Read;
+      struct
+      {
+        struct _SHARED_CACHE_MAP* SharedCacheMap;
+      } Write;
+      struct
+      {
+        struct _KEVENT* Event;
+      } Event;
+      struct
+      {
+        U32 Reason;
+      } Notification;
+    }; 
+  } Parameters;
+  U8 Function;
+  char __PADDING__[7];
+} WORK_QUEUE_ENTRY, *PWORK_QUEUE_ENTRY; 
+

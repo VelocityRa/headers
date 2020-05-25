@@ -1,0 +1,54 @@
+typedef struct _VF_ADDRESS_RANGE
+{
+  U8* Start;
+  U8* End;
+} VF_ADDRESS_RANGE, *PVF_ADDRESS_RANGE; 
+
+typedef enum _KERNEL_STACK_LIMITS
+{
+  BugcheckStackLimits = 0,
+  DPCStackLimits = 1,
+  ExpandedStackLimits = 2,
+  NormalStackLimits = 3,
+  Win32kStackLimits = 4,
+  SwapBusyStackLimits = 5,
+  IsrStackLimits = 6,
+  MaximumStackLimits = 7,
+} KERNEL_STACK_LIMITS, *PKERNEL_STACK_LIMITS;
+
+typedef struct _VI_DEADLOCK_GLOBALS
+{
+  S64 TimeAcquire;
+  S64 TimeRelease;
+  struct _LIST_ENTRY* ResourceDatabase;
+  U64 ResourceDatabaseCount;
+  struct _VF_ADDRESS_RANGE ResourceAddressRange[1023];
+  struct _LIST_ENTRY* ThreadDatabase;
+  U64 ThreadDatabaseCount;
+  struct _VF_ADDRESS_RANGE ThreadAddressRange[1023];
+  volatile U32 AllocationFailures;
+  U32 NodesTrimmedBasedOnAge;
+  U32 NodesTrimmedBasedOnCount;
+  U32 NodesSearched;
+  U32 MaxNodesSearched;
+  U32 SequenceNumber;
+  U32 RecursionDepthLimit;
+  U32 SearchedNodesLimit;
+  U32 DepthLimitHits;
+  U32 SearchLimitHits;
+  U32 StackLimitHits;
+  U32 ABC_ACB_Skipped;
+  U32 OutOfOrderReleases;
+  U32 NodesReleasedOutOfOrder;
+  U32 TotalReleases;
+  U32 RootNodesDeleted;
+  U32 ForgetHistoryCounter;
+  void* Instigator;
+  U32 NumberOfParticipants;
+  struct _VI_DEADLOCK_NODE* Participant[32];
+  S32 ChildrenCountWatermark;
+  enum _KERNEL_STACK_LIMITS StackType;
+  U64 StackLowLimit;
+  U64 StackHighLimit;
+} VI_DEADLOCK_GLOBALS, *PVI_DEADLOCK_GLOBALS; 
+

@@ -1,0 +1,11 @@
+typedef struct _HEAP_GLOBAL_APPCOMPAT_FLAGS
+{
+  struct 
+  {
+    U32 SafeInputValidation : 1; 
+    U32 Padding : 1; 
+    U32 CommitLFHSubsegments : 1; 
+    U32 AllocateHeapFromEnv : 1; 
+  }; 
+} HEAP_GLOBAL_APPCOMPAT_FLAGS, *PHEAP_GLOBAL_APPCOMPAT_FLAGS; 
+

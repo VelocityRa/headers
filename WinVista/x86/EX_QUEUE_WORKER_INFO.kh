@@ -1,0 +1,15 @@
+union EX_QUEUE_WORKER_INFO
+{
+  union
+  {
+    struct 
+    {
+      U32 QueueDisabled : 1; 
+      U32 MakeThreadsAsNecessary : 1; 
+      U32 WaitMode : 1; 
+      U32 WorkerCount : 29; 
+    }; 
+    S32 QueueWorkerInfo;
+  }; 
+}; 
+

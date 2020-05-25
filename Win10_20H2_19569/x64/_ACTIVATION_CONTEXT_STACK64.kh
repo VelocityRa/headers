@@ -1,0 +1,16 @@
+struct LIST_ENTRY64
+{
+  U64 Flink;
+  U64 Blink;
+}; 
+
+typedef struct _ACTIVATION_CONTEXT_STACK64
+{
+  U64 ActiveFrame;
+  struct LIST_ENTRY64 FrameListCache;
+  U32 Flags;
+  U32 NextCookieSequenceNumber;
+  U32 StackId;
+  S32 __PADDING__[1];
+} ACTIVATION_CONTEXT_STACK64, *PACTIVATION_CONTEXT_STACK64; 
+

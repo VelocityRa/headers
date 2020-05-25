@@ -1,0 +1,13 @@
+typedef union _MI_RESERVATION_CLUSTER_INFO
+{
+  union
+  {
+    struct 
+    {
+      U32 ClusterSize : 10; 
+      U32 SequenceNumber : 22; 
+    }; 
+    S32 EntireInfo;
+  }; 
+} MI_RESERVATION_CLUSTER_INFO, *PMI_RESERVATION_CLUSTER_INFO; 
+

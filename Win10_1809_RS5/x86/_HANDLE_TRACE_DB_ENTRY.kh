@@ -1,0 +1,14 @@
+typedef struct _CLIENT_ID
+{
+  void* UniqueProcess;
+  void* UniqueThread;
+} CLIENT_ID, *PCLIENT_ID; 
+
+typedef struct _HANDLE_TRACE_DB_ENTRY
+{
+  struct _CLIENT_ID ClientId;
+  void* Handle;
+  U32 Type;
+  void* StackTrace[16];
+} HANDLE_TRACE_DB_ENTRY, *PHANDLE_TRACE_DB_ENTRY; 
+

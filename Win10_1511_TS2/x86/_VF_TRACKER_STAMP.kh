@@ -1,0 +1,9 @@
+typedef struct _VF_TRACKER_STAMP
+{
+  void* Thread;
+  U8 Flags : 8; 
+  U8 OldIrql : 8; 
+  U8 NewIrql : 8; 
+  U8 Processor : 8; 
+} VF_TRACKER_STAMP, *PVF_TRACKER_STAMP; 
+

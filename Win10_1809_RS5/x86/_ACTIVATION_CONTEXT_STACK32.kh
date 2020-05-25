@@ -1,0 +1,15 @@
+struct LIST_ENTRY32
+{
+  U32 Flink;
+  U32 Blink;
+}; 
+
+typedef struct _ACTIVATION_CONTEXT_STACK32
+{
+  U32 ActiveFrame;
+  struct LIST_ENTRY32 FrameListCache;
+  U32 Flags;
+  U32 NextCookieSequenceNumber;
+  U32 StackId;
+} ACTIVATION_CONTEXT_STACK32, *PACTIVATION_CONTEXT_STACK32; 
+

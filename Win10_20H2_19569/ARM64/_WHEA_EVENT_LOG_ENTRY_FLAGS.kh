@@ -1,0 +1,19 @@
+typedef union _WHEA_EVENT_LOG_ENTRY_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 Reserved1 : 1; 
+      U32 LogInternalEtw : 1; 
+      U32 LogBlackbox : 1; 
+      U32 LogSel : 1; 
+      U32 RawSel : 1; 
+      U32 NoFormat : 1; 
+      U32 Driver : 1; 
+      U32 Reserved2 : 25; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_EVENT_LOG_ENTRY_FLAGS, *PWHEA_EVENT_LOG_ENTRY_FLAGS; 
+

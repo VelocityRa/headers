@@ -1,0 +1,25 @@
+typedef struct _MI_ACTIVE_PFN
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U32 Tradable : 1; 
+        U32 NonPagedBuddy : 28; 
+      }; 
+    } Leaf;
+    struct
+    {
+      struct 
+      {
+        U32 Tradable : 1; 
+        U32 WsleAge : 3; 
+        U32 NonPagedBuddy : 28; 
+      }; 
+    } PageTable;
+    U32 EntireActiveField;
+  }; 
+} MI_ACTIVE_PFN, *PMI_ACTIVE_PFN; 
+

@@ -1,0 +1,16 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _MI_VAD_ALLOCATION_CELL
+{
+  struct _RTL_BITMAP AllocationBitMap;
+  U32 BitMapHint;
+  U32 LastAllocationSize;
+  U32 LastAllocationSizeHint;
+  U32 LowestBottomUpVadBit;
+  void* LowestBottomUpAllocationAddress;
+} MI_VAD_ALLOCATION_CELL, *PMI_VAD_ALLOCATION_CELL; 
+

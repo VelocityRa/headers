@@ -1,0 +1,11 @@
+typedef struct _RTL_RANGE
+{
+  U64 Start;
+  U64 End;
+  void* UserData;
+  void* Owner;
+  U8 Attributes;
+  U8 Flags;
+  char __PADDING__[6];
+} RTL_RANGE, *PRTL_RANGE; 
+

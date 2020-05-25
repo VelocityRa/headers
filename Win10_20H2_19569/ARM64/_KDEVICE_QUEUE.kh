@@ -1,0 +1,16 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KDEVICE_QUEUE
+{
+  S16 Type;
+  S16 Size;
+  struct _LIST_ENTRY DeviceListHead;
+  U64 Lock;
+  U8 Busy;
+  char __PADDING__[7];
+} KDEVICE_QUEUE, *PKDEVICE_QUEUE; 
+

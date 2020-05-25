@@ -1,0 +1,49 @@
+typedef union _ARM64_ESR_ISS_ABORT_REGISTER
+{
+  union
+  {
+    U32 Value;
+    struct 
+    {
+      U32 FSC : 6; 
+      U32 WnR : 1; 
+      U32 pad0_1 : 1; 
+      U32 CM : 1; 
+    }; 
+    struct
+    {
+      struct 
+      {
+        U32 DFSC : 6; 
+        U32 WnR : 1; 
+        U32 S1PTW : 1; 
+        U32 CM : 1; 
+        U32 EA : 1; 
+        U32 FnV : 1; 
+        U32 SET : 2; 
+        U32 res0_3 : 1; 
+        U32 AR : 1; 
+        U32 SF : 1; 
+        U32 SRT : 5; 
+        U32 SSE : 1; 
+        U32 SAS : 2; 
+        U32 ISV : 1; 
+      }; 
+    } DABORT;
+    struct
+    {
+      struct 
+      {
+        U32 IFSC : 6; 
+        U32 res0_1 : 1; 
+        U32 S1PTW : 1; 
+        U32 res0_2 : 1; 
+        U32 EA : 1; 
+        U32 FnV : 1; 
+        U32 SET : 2; 
+        U32 res0_3 : 12; 
+      }; 
+    } IABORT;
+  }; 
+} ARM64_ESR_ISS_ABORT_REGISTER, *PARM64_ESR_ISS_ABORT_REGISTER; 
+

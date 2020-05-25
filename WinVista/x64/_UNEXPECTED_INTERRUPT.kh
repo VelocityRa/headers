@@ -1,0 +1,10 @@
+typedef struct _UNEXPECTED_INTERRUPT
+{
+  U8 PushImmOp;
+  U32 PushImm;
+  U8 PushRbp;
+  U8 JmpOp;
+  S32 JmpOffset;
+  char __PADDING__[5];
+} UNEXPECTED_INTERRUPT, *PUNEXPECTED_INTERRUPT; 
+

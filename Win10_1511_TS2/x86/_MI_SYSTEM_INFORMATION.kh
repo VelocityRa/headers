@@ -1,0 +1,1413 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _MI_POOL_FAILURE_REASONS
+{
+  U32 NonPagedNoPtes;
+  U32 PriorityTooLow;
+  U32 NonPagedNoPagesAvailable;
+  U32 PagedNoPtes;
+  U32 SessionPagedNoPtes;
+  U32 PagedNoPagesAvailable;
+  U32 SessionPagedNoPagesAvailable;
+  U32 PagedNoCommit;
+  U32 SessionPagedNoCommit;
+  U32 NonPagedNoResidentAvailable;
+  U32 NonPagedNoCommit;
+} MI_POOL_FAILURE_REASONS, *PMI_POOL_FAILURE_REASONS; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _MM_PAGED_POOL_INFO
+{
+  struct _EX_PUSH_LOCK Lock;
+  struct _RTL_BITMAP PagedPoolAllocationMap;
+  struct _MMPTE* FirstPteForPagedPool;
+  U32 MaximumSize;
+  U32 PagedPoolHint;
+  U32 AllocatedPagedPool;
+} MM_PAGED_POOL_INFO, *PMM_PAGED_POOL_INFO; 
+
+typedef struct _MI_POOL_STATE
+{
+  U32 MaximumNonPagedPoolThreshold;
+  U32 NonPagedPoolSListMaximum[3];
+  volatile U32 AllocatedNonPagedPool;
+  struct _SINGLE_LIST_ENTRY BadPoolHead;
+  U32 HighEventSets;
+  U8 HighEventSetsValid;
+  U32 PoolFailures[3][3];
+  struct _MI_POOL_FAILURE_REASONS PoolFailureReasons;
+  U32 LowPagedPoolThreshold;
+  U32 HighPagedPoolThreshold;
+  S32 SpecialPoolPdesMax;
+  U8 NonPagedPoolNodes[1024];
+  struct _MM_PAGED_POOL_INFO PagedProtoPoolInfo;
+  U32 PagedPoolSListMaximum;
+  U32 PreemptiveTrims[4];
+  U32 SpecialPagesInUsePeak;
+  U32 SpecialPoolRejected[9];
+  volatile U32 SpecialPagesNonPaged;
+  volatile S32 SpecialPoolPdes;
+  U32 SessionSpecialPoolPdesMax;
+  U32 TotalPagedPoolQuota;
+  U32 TotalNonPagedPoolQuota;
+} MI_POOL_STATE, *PMI_POOL_STATE; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MMSUBSECTION_FLAGS
+{
+  struct 
+  {
+    U16 SubsectionAccessed : 1; 
+    U16 Protection : 5; 
+    U16 StartingSector4132 : 10; 
+  }; 
+  struct 
+  {
+    U16 SubsectionStatic : 1; 
+    U16 GlobalMemory : 1; 
+    U16 SubsectionMappedDirect : 1; 
+    U16 OnDereferenceList : 1; 
+    U16 SectorEndOffset : 12; 
+  }; 
+} MMSUBSECTION_FLAGS, *PMMSUBSECTION_FLAGS; 
+
+typedef struct _SUBSECTION
+{
+  struct _CONTROL_AREA* ControlArea;
+  struct _MMPTE* SubsectionBase;
+  struct _SUBSECTION* NextSubsection;
+  union
+  {
+    struct _RTL_AVL_TREE GlobalPerSessionHead;
+    struct _MI_SUBSECTION_WAIT_BLOCK* CreationWaitList;
+    struct _MI_PER_SESSION_PROTOS* SessionDriverProtos;
+  }; 
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSUBSECTION_FLAGS SubsectionFlags;
+    }; 
+  } u;
+  U32 StartingSector;
+  U32 NumberOfFullSectors;
+  U32 PtesInSubsection;
+  union
+  {
+    U32 NumberOfChildViews;
+  } u1;
+  union
+  {
+    struct 
+    {
+      U32 UnusedPtes : 31; 
+      U32 DirtyPages : 1; 
+    }; 
+    struct
+    {
+      struct 
+      {
+        U32 AlignmentNoAccessPtes : 31; 
+        U32 DirtyPages : 1; 
+      }; 
+    } u2;
+  }; 
+} SUBSECTION, *PSUBSECTION; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U32 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MSUBSECTION
+{
+  struct _SUBSECTION Core;
+  struct _RTL_BALANCED_NODE SubsectionNode;
+  struct _LIST_ENTRY DereferenceList;
+  U32 NumberOfMappedViews;
+  U32 NumberOfPfnReferences;
+} MSUBSECTION, *PMSUBSECTION; 
+
+typedef struct _MMSECTION_FLAGS
+{
+  struct 
+  {
+    U32 BeingDeleted : 1; 
+    U32 BeingCreated : 1; 
+    U32 BeingPurged : 1; 
+    U32 NoModifiedWriting : 1; 
+    U32 FailAllIo : 1; 
+    U32 Image : 1; 
+    U32 Based : 1; 
+    U32 File : 1; 
+    U32 AttemptingDelete : 1; 
+    U32 PrefetchCreated : 1; 
+    U32 PhysicalMemory : 1; 
+    U32 CopyOnWrite : 1; 
+    U32 Reserve : 1; 
+    U32 Commit : 1; 
+    U32 NoChange : 1; 
+    U32 WasPurged : 1; 
+    U32 UserReference : 1; 
+    U32 GlobalMemory : 1; 
+    U32 DeleteOnClose : 1; 
+    U32 FilePointerNull : 1; 
+    U32 PreferredNode : 6; 
+    U32 GlobalOnlyPerSession : 1; 
+    U32 UserWritable : 1; 
+    U32 SystemVaAllocated : 1; 
+    U32 PreferredFsCompressionBoundary : 1; 
+    U32 UsingFileExtents : 1; 
+    U32 Spare : 1; 
+  }; 
+} MMSECTION_FLAGS, *PMMSECTION_FLAGS; 
+
+typedef struct _EX_FAST_REF
+{
+  union
+  {
+    void* Object;
+    U32 RefCnt : 3; 
+    U32 Value;
+  }; 
+} EX_FAST_REF, *PEX_FAST_REF; 
+
+typedef struct _CONTROL_AREA
+{
+  struct _SEGMENT* Segment;
+  struct _LIST_ENTRY ListHead;
+  U32 NumberOfSectionReferences;
+  U32 NumberOfPfnReferences;
+  U32 NumberOfMappedViews;
+  U32 NumberOfUserReferences;
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSECTION_FLAGS Flags;
+    }; 
+  } u;
+  struct _EX_FAST_REF FilePointer;
+  volatile S32 ControlAreaLock;
+  U32 ModifiedWriteCount;
+  struct _MI_CONTROL_AREA_WAIT_BLOCK* WaitList;
+  union
+  {
+    struct
+    {
+      union
+      {
+        U32 NumberOfSystemCacheViews;
+        U32 ImageRelocationStartBit;
+      }; 
+      union
+      {
+        volatile S32 WritableUserReferences;
+        struct 
+        {
+          U32 ImageRelocationSizeIn64k : 16; 
+          U32 Unused : 9; 
+          U32 SystemImage : 1; 
+          U32 StrongCode : 2; 
+          U32 CantMove : 1; 
+          U32 BitMap : 2; 
+          U32 ImageActive : 1; 
+        }; 
+      }; 
+      union
+      {
+        U32 FlushInProgressCount;
+        U32 NumberOfSubsections;
+        struct _MI_IMAGE_SECURITY_REFERENCE* SeImageStub;
+      }; 
+    } e2;
+  } u2;
+  volatile U64 LockedPages;
+  struct _EX_PUSH_LOCK FileObjectLock;
+  S32 __PADDING__[1];
+} CONTROL_AREA, *PCONTROL_AREA; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_SECTION_STATE
+{
+  volatile S32 SectionObjectPointersLock;
+  struct _EX_PUSH_LOCK SectionExtendLock;
+  struct _EX_PUSH_LOCK SectionExtendSetLock;
+  struct _RTL_AVL_TREE SectionBasedRoot;
+  struct _EX_PUSH_LOCK SectionBasedLock;
+  U32 UnusedSubsectionPagedPool;
+  U32 UnusedSegmentForceFree;
+  U32 DataSectionProtectionMask;
+  void* HighSectionBase;
+  struct _MSUBSECTION PhysicalSubsection;
+  struct _CONTROL_AREA PhysicalControlArea;
+  struct _MMPFN* DanglingExtentsPages;
+  volatile S32 DanglingExtentsLock;
+  struct _WORK_QUEUE_ITEM DanglingExtentsWorkItem;
+  U8 DanglingExtentsWorkerActive;
+  struct _RTL_AVL_TREE PageFileSectionHead;
+  volatile S32 PageFileSectionListSpinLock;
+  U32 ImageBias;
+  struct _EX_PUSH_LOCK RelocateBitmapsLock;
+  struct _RTL_BITMAP ImageBitMap;
+  void* ApiSetSection;
+  void* ApiSetSchema;
+  U32 ApiSetSchemaSize;
+  U32 LostDataFiles;
+  U32 LostDataPages;
+  U32 ImageFailureReason;
+  struct _SECTION* CfgBitMapSection32;
+  struct _CONTROL_AREA* CfgBitMapControlArea32;
+  U32 ImageCfgFailure;
+  volatile S32 ImageValidationFailed;
+  S32 __PADDING__[11];
+} MI_SECTION_STATE, *PMI_SECTION_STATE; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 1; 
+              U8 Processor : 5; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2Reserved1;
+          U8 Timer2Reserved2;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 Instrumented : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          U8 DebugActive;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KMUTANT
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY MutantListEntry;
+  struct _KTHREAD* OwnerThread;
+  U8 Abandoned;
+  U8 ApcDisable;
+  char __PADDING__[2];
+} KMUTANT, *PKMUTANT; 
+
+typedef struct _MM_SYSTEM_PAGE_COUNTS
+{
+  U32 SystemCodePage;
+  U32 SystemDriverPage;
+  S32 TotalSystemCodePages;
+  S32 TotalSystemDriverPages;
+} MM_SYSTEM_PAGE_COUNTS, *PMM_SYSTEM_PAGE_COUNTS; 
+
+typedef struct _MI_SYSTEM_IMAGE_STATE
+{
+  volatile S32 FixupLock;
+  struct _LIST_ENTRY FixupList;
+  struct _KMUTANT LoadLock;
+  U8 FirstLoadEver;
+  U8 LargePageAll;
+  U32 LastPage;
+  struct _LIST_ENTRY LargePageList;
+  struct _KLDR_DATA_TABLE_ENTRY* BeingDeleted;
+  struct _EX_PUSH_LOCK MappingRangesPushLock;
+  struct _MI_DRIVER_VA* MappingRanges[2];
+  U32 PageCount;
+  struct _MM_SYSTEM_PAGE_COUNTS PageCounts;
+  struct _EX_PUSH_LOCK CollidedLock;
+  struct _MMPTE* ErrataPte;
+  U32 ErrataPteMapped;
+} MI_SYSTEM_IMAGE_STATE, *PMI_SYSTEM_IMAGE_STATE; 
+
+typedef struct _MMSESSION
+{
+  struct _EX_PUSH_LOCK SystemSpaceViewLock;
+  struct _EX_PUSH_LOCK* SystemSpaceViewLockPointer;
+  struct _RTL_AVL_TREE ViewRoot;
+  U32 ViewCount;
+  U32 BitmapFailures;
+} MMSESSION, *PMMSESSION; 
+
+typedef struct _MI_SESSION_STATE
+{
+  struct _MMSESSION SystemSession;
+  U8 CodePageEdited;
+  S32 VaReferenceCount[1024];
+  U32* DynamicPtesBitBuffer;
+  struct _EX_PUSH_LOCK IdLock;
+  U32 DetachTimeStamp;
+  struct _EPROCESS* LeaderProcess;
+  struct _EX_PUSH_LOCK InitializeLock;
+  struct _MMWSL* WorkingSetList;
+  struct _MMWSLE_HASH* WsHashStart;
+  struct _MMWSLE_HASH* WsHashEnd;
+} MI_SESSION_STATE, *PMI_SESSION_STATE; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 CpuId;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _MMPTE_HIGHLOW
+{
+  U32 LowPart;
+  U32 HighPart;
+} MMPTE_HIGHLOW, *PMMPTE_HIGHLOW; 
+
+typedef struct _HARDWARE_PTE
+{
+  union
+  {
+    struct 
+    {
+      U64 Valid : 1; 
+      U64 Write : 1; 
+      U64 Owner : 1; 
+      U64 WriteThrough : 1; 
+      U64 CacheDisable : 1; 
+      U64 Accessed : 1; 
+      U64 Dirty : 1; 
+      U64 LargePage : 1; 
+      U64 Global : 1; 
+      U64 CopyOnWrite : 1; 
+      U64 Prototype : 1; 
+      U64 reserved0 : 1; 
+      U64 PageFrameNumber : 26; 
+      U64 reserved1 : 26; 
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+  }; 
+} HARDWARE_PTE, *PHARDWARE_PTE; 
+
+typedef struct _MMPTE_HARDWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Dirty1 : 1; 
+    U64 Owner : 1; 
+    U64 WriteThrough : 1; 
+    U64 CacheDisable : 1; 
+    U64 Accessed : 1; 
+    U64 Dirty : 1; 
+    U64 LargePage : 1; 
+    U64 Global : 1; 
+    U64 CopyOnWrite : 1; 
+    U64 Unused : 1; 
+    U64 Write : 1; 
+    U64 PageFrameNumber : 26; 
+    U64 reserved1 : 26; 
+  }; 
+} MMPTE_HARDWARE, *PMMPTE_HARDWARE; 
+
+typedef struct _MMPTE_PROTOTYPE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 DemandFillProto : 1; 
+    U64 HiberVerifyConverted : 1; 
+    U64 Unused1 : 5; 
+    U64 ReadOnly : 1; 
+    U64 Combined : 1; 
+    U64 Prototype : 1; 
+    U64 Protection : 5; 
+    U64 Unused : 16; 
+    U64 ProtoAddress : 32; 
+  }; 
+} MMPTE_PROTOTYPE, *PMMPTE_PROTOTYPE; 
+
+typedef struct _MMPTE_SOFTWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 PageFileLow : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFileReserved : 1; 
+    U64 PageFileAllocated : 1; 
+    U64 Unused : 18; 
+    U64 PageFileHigh : 32; 
+  }; 
+} MMPTE_SOFTWARE, *PMMPTE_SOFTWARE; 
+
+typedef struct _MMPTE_TIMESTAMP
+{
+  struct 
+  {
+    U64 MustBeZero : 1; 
+    U64 PageFileLow : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 Unused : 20; 
+    U64 GlobalTimeStamp : 32; 
+  }; 
+} MMPTE_TIMESTAMP, *PMMPTE_TIMESTAMP; 
+
+typedef struct _MMPTE_TRANSITION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Write : 1; 
+    U64 Spare : 1; 
+    U64 WriteThrough : 1; 
+    U64 CacheDisable : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFrameNumber : 26; 
+    U64 Unused : 26; 
+  }; 
+} MMPTE_TRANSITION, *PMMPTE_TRANSITION; 
+
+typedef struct _MMPTE_SUBSECTION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Unused0 : 4; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Unused1 : 21; 
+    U64 SubsectionAddress : 32; 
+  }; 
+} MMPTE_SUBSECTION, *PMMPTE_SUBSECTION; 
+
+typedef struct _MMPTE_LIST
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 OneEntry : 1; 
+    U64 filler0 : 8; 
+    U64 Prototype : 1; 
+    U64 filler1 : 21; 
+    U64 NextEntry : 32; 
+  }; 
+} MMPTE_LIST, *PMMPTE_LIST; 
+
+typedef struct _MMPTE
+{
+  union
+  {
+    union
+    {
+      U64 Long;
+      volatile U64 VolatileLong;
+      struct _MMPTE_HIGHLOW HighLow;
+      struct _HARDWARE_PTE Flush;
+      struct _MMPTE_HARDWARE Hard;
+      struct _MMPTE_PROTOTYPE Proto;
+      struct _MMPTE_SOFTWARE Soft;
+      struct _MMPTE_TIMESTAMP TimeStamp;
+      struct _MMPTE_TRANSITION Trans;
+      struct _MMPTE_SUBSECTION Subsect;
+      struct _MMPTE_LIST List;
+    }; 
+  } u;
+} MMPTE, *PMMPTE; 
+
+typedef struct _PAE_PAGEINFO
+{
+  struct _LIST_ENTRY ListHead;
+  U32 PageFrameNumber;
+  U32 EntriesInUse;
+} PAE_PAGEINFO, *PPAE_PAGEINFO; 
+
+typedef struct _PAE_ENTRY
+{
+  union
+  {
+    struct _MMPTE PteEntry[4];
+    struct _PAE_PAGEINFO PaeEntry;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY NextPae;
+      S32 __PADDING__[7];
+    }; 
+  }; 
+} PAE_ENTRY, *PPAE_ENTRY; 
+
+typedef struct _MI_PROCESS_STATE
+{
+  U32 ColorSeed;
+  struct _KEVENT CloneDereferenceEvent;
+  union _SLIST_HEADER CloneProtosSListHead;
+  void* SystemDllBase;
+  S32 RotatingUniprocessorNumber;
+  union _LARGE_INTEGER CriticalSectionTimeout;
+  struct _LIST_ENTRY ProcessList;
+  struct _MMPTE* SharedUserDataPte;
+  U32 FreePaeEntries;
+  struct _PAE_ENTRY FirstFreePae;
+  volatile S32 AllocatedPaePages;
+  U32 PaeLock;
+  union _SLIST_HEADER PaeEntrySList;
+} MI_PROCESS_STATE, *PMI_PROCESS_STATE; 
+
+typedef struct _MI_ZERO_COST_COUNTS
+{
+  U64 NativeSum;
+  U64 CachedSum;
+} MI_ZERO_COST_COUNTS, *PMI_ZERO_COST_COUNTS; 
+
+typedef struct _MI_HARDWARE_STATE
+{
+  U32 NodeMask;
+  U16* NodeGraph;
+  struct _MI_SYSTEM_NODE_INFORMATION* SystemNodeInformation;
+  U32 NumaLastRangeIndex;
+  struct _HAL_NODE_RANGE* NumaMemoryRanges;
+  U8 NumaTableCaptured;
+  U8 NodeShift;
+  struct _HAL_CHANNEL_MEMORY_RANGES* ChannelMemoryRanges;
+  U8 ChannelShift;
+  U32 SecondLevelCacheSize;
+  U32 FirstLevelCacheSize;
+  U32 PhysicalAddressBits;
+  U8 AllMainMemoryMustBeCached;
+  U32 TotalPagesAllowed;
+  U32 SecondaryColorMask;
+  U32 SecondaryColors;
+  U32 FlushTbForAttributeChange;
+  U32 FlushCacheForAttributeChange;
+  U32 FlushCacheForPageAttributeChange;
+  U32 CacheFlushPromoteThreshold;
+  U32 FlushTbThreshold;
+  struct _MI_ZERO_COST_COUNTS ZeroCostCounts[2];
+  U32 HighestPossiblePhysicalPage;
+  S32 __PADDING__[1];
+} MI_HARDWARE_STATE, *PMI_HARDWARE_STATE; 
+
+typedef struct _MI_PTE_CHAIN_HEAD
+{
+  struct _MMPTE Flink;
+  struct _MMPTE Blink;
+  struct _MMPTE* PteBase;
+  S32 __PADDING__[1];
+} MI_PTE_CHAIN_HEAD, *PMI_PTE_CHAIN_HEAD; 
+
+typedef struct _MI_SYSTEM_VA_STATE
+{
+  U32 SystemTablesLock;
+  U32 SystemVaBias;
+  U32 SystemAvailableVaLow;
+  U32 VirtualBias;
+  void* HyperSpaceEnd;
+  struct _MMPTE* HyperSpaceEndPte;
+  void* SystemRangeStart;
+  U8 SystemCachePdeCount[1024];
+  void* SystemCacheReverseMaps[1024];
+  struct _MMWSLE_HASH* WorkingSetListHashStart;
+  struct _MMWSLE_HASH* WorkingSetListHashEnd;
+  struct _MMWSLE_NONDIRECT_HASH* WorkingSetListIndirectHashStart;
+  struct _KEVENT FreeSystemCacheVa;
+  U32 SystemVaLock;
+  volatile S32 DeleteKvaLock;
+  struct _MI_PTE_CHAIN_HEAD FreeSystemCache;
+  U32 SystemCacheViewLock;
+  U32 UnusableWsles[5];
+  U32 PossibleWsles[5];
+  S32 __PADDING__[15];
+} MI_SYSTEM_VA_STATE, *PMI_SYSTEM_VA_STATE; 
+
+typedef struct _MI_COMBINE_STATE
+{
+  volatile S32 ActiveSpinLock;
+  U32 CombiningThreadCount;
+  struct _RTL_AVL_TREE ActiveThreadTree;
+  U64 ZeroPageHashValue;
+} MI_COMBINE_STATE, *PMI_COMBINE_STATE; 
+
+typedef struct _MI_PARTITION_STATE
+{
+  U32 PartitionLock;
+  struct _EX_PUSH_LOCK PartitionIdLock;
+  U64 InitialPartitionIdBits;
+  struct _LIST_ENTRY PartitionList;
+  struct _RTL_BITMAP* PartitionIdBitmap;
+  struct _RTL_BITMAP InitialPartitionIdBitmap;
+  struct _MI_PARTITION* TempPartitionPointers[1];
+  struct _MI_PARTITION** Partition;
+  U32 TotalPagesInChildPartitions;
+  U32 CrossPartitionDenials;
+  S32 __PADDING__[1];
+} MI_PARTITION_STATE, *PMI_PARTITION_STATE; 
+
+typedef struct _MI_RESUME_WORKITEM
+{
+  struct _KEVENT ResumeCompleteEvent;
+  struct _WORK_QUEUE_ITEM WorkItem;
+} MI_RESUME_WORKITEM, *PMI_RESUME_WORKITEM; 
+
+typedef struct _MI_SHUTDOWN_STATE
+{
+  U8 CrashDumpInitialized;
+  U8 ConnectedStandbyActive;
+  U32 SystemShutdown;
+  S32 ShutdownFlushInProgress;
+  struct _MI_RESUME_WORKITEM ResumeItem;
+  struct _ETHREAD* MirrorHoldsPfn;
+  U32 MirroringActive;
+  struct _RTL_BITMAP MirrorBitMaps[2];
+  struct _MMPTE* CrashDumpPte;
+} MI_SHUTDOWN_STATE, *PMI_SHUTDOWN_STATE; 
+
+typedef struct _MI_BAD_MEMORY_EVENT_ENTRY
+{
+  U32 BugCheckCode;
+  S32 Active;
+  U32 Data;
+  union _LARGE_INTEGER PhysicalAddress;
+  struct _WORK_QUEUE_ITEM WorkItem;
+} MI_BAD_MEMORY_EVENT_ENTRY, *PMI_BAD_MEMORY_EVENT_ENTRY; 
+
+typedef struct _MI_PROBE_RAISE_TRACKER
+{
+  U32 UserRangeInKernel;
+  U32 FaultFailed;
+  U32 WriteFaultFailed;
+  U32 LargePageFailed;
+  U32 UserAccessToKernelPte;
+  U32 BadPageLocation;
+  U32 InsufficientCharge;
+  U32 PageTableCharge;
+  U32 NoPhysicalMapping;
+  U32 NoIoReference;
+  U32 ProbeFailed;
+  U32 PteIsZero;
+  U32 StrongCodeWrite;
+  U32 ReducedCloneCommitChargeFailed;
+  U32 CopyOnWriteAtDispatchNoPages;
+  U32 EnclavePageFailed;
+} MI_PROBE_RAISE_TRACKER, *PMI_PROBE_RAISE_TRACKER; 
+
+typedef struct _MI_FORCED_COMMITS
+{
+  U32 Regular;
+  U32 Wrap;
+} MI_FORCED_COMMITS, *PMI_FORCED_COMMITS; 
+
+typedef struct _MI_RESAVAIL_FAILURES
+{
+  U32 Wrap;
+  U32 NoCharge;
+} MI_RESAVAIL_FAILURES, *PMI_RESAVAIL_FAILURES; 
+
+typedef struct _MI_ERROR_STATE
+{
+  struct _MI_BAD_MEMORY_EVENT_ENTRY BadMemoryEventEntry;
+  struct _MI_PROBE_RAISE_TRACKER ProbeRaises;
+  struct _MI_FORCED_COMMITS ForcedCommits;
+  U32 WsleFailures[2];
+  U32 WsLinear;
+  U32 PageHashErrors;
+  U32 CheckZeroCount;
+  volatile S32 ZeroedPageSingleBitErrorsDetected;
+  volatile S32 BadPagesDetected;
+  S32 ScrubPasses;
+  S32 ScrubBadPagesFound;
+  U32 UserViewFailures;
+  U32 UserViewCollisionFailures;
+  struct _MI_RESAVAIL_FAILURES ResavailFailures;
+  U8 PendingBadPages;
+  U8 InitFailure;
+  U8 StopBadMaps;
+  char __PADDING__[1];
+} MI_ERROR_STATE, *PMI_ERROR_STATE; 
+
+typedef struct _MI_ACCESS_LOG_STATE
+{
+  struct _MM_PAGE_ACCESS_INFO_HEADER* volatile CcAccessLog;
+  U32 Enabled;
+  struct _WORK_QUEUE_ITEM DisableAccessLogging;
+  U32 MinLoggingPriority;
+  U32 AccessLoggingLock;
+  S32 __PADDING__[15];
+} MI_ACCESS_LOG_STATE, *PMI_ACCESS_LOG_STATE; 
+
+typedef struct _MI_DEBUGGER_STATE
+{
+  U8 TransientWrite;
+  U8 CodePageEdited;
+  struct _MMPTE* DebugPte;
+  U32 PoisonedTb;
+  volatile S32 InDebugger;
+  void* volatile Pfns[32];
+} MI_DEBUGGER_STATE, *PMI_DEBUGGER_STATE; 
+
+typedef struct _KDPC
+{
+  union
+  {
+    U32 TargetInfoAsUlong;
+    struct
+    {
+      U8 Type;
+      U8 Importance;
+      volatile U16 Number;
+    }; 
+  }; 
+  struct _SINGLE_LIST_ENTRY DpcListEntry;
+  U32 ProcessorHistory;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _MI_STANDBY_STATE
+{
+  volatile U32 TransitionSharedPages;
+  U32 TransitionSharedPagesPeak[3];
+  U32 FirstDecayPage;
+  union _SLIST_HEADER PfnDecayFreeSList;
+  struct _MM_PAGE_ACCESS_INFO_HEADER* PfnRepurposeLog;
+  struct _KDPC AllocatePfnRepurposeDpc;
+  S32 __PADDING__[15];
+} MI_STANDBY_STATE, *PMI_STANDBY_STATE; 
+
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  NonPagedPoolExecute = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolBase = 0,
+  NonPagedPoolBaseMustSucceed = 2,
+  NonPagedPoolBaseCacheAligned = 4,
+  NonPagedPoolBaseCacheAlignedMustS = 6,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+  NonPagedPoolNx = 512,
+  NonPagedPoolNxCacheAligned = 516,
+  NonPagedPoolSessionNx = 544,
+} POOL_TYPE, *PPOOL_TYPE;
+
+typedef struct _GENERAL_LOOKASIDE
+{
+  union
+  {
+    union _SLIST_HEADER ListHead;
+    struct _SINGLE_LIST_ENTRY SingleListHead;
+  }; 
+  U16 Depth;
+  U16 MaximumDepth;
+  U32 TotalAllocates;
+  union
+  {
+    U32 AllocateMisses;
+    U32 AllocateHits;
+  }; 
+  U32 TotalFrees;
+  union
+  {
+    U32 FreeMisses;
+    U32 FreeHits;
+  }; 
+  enum _POOL_TYPE Type;
+  U32 Tag;
+  U32 Size;
+  union
+  {
+    void* AllocateEx;
+    void* Allocate;
+  }; 
+  union
+  {
+    void* FreeEx;
+    void* Free;
+  }; 
+  struct _LIST_ENTRY ListEntry;
+  U32 LastTotalAllocates;
+  union
+  {
+    U32 LastAllocateMisses;
+    U32 LastAllocateHits;
+  }; 
+  U32 Future[2];
+  S32 __PADDING__[14];
+} GENERAL_LOOKASIDE, *PGENERAL_LOOKASIDE; 
+
+typedef struct _NPAGED_LOOKASIDE_LIST
+{
+  struct _GENERAL_LOOKASIDE L;
+  U32 Lock__ObsoleteButDoNotDelete;
+  S32 __PADDING__[15];
+} NPAGED_LOOKASIDE_LIST, *PNPAGED_LOOKASIDE_LIST; 
+
+typedef enum _MI_SYSTEM_VA_TYPE
+{
+  MiVaUnused = 0,
+  MiVaSessionSpace = 1,
+  MiVaProcessSpace = 2,
+  MiVaBootLoaded = 3,
+  MiVaPfnDatabase = 4,
+  MiVaNonPagedPool = 5,
+  MiVaPagedPool = 6,
+  MiVaSpecialPoolPaged = 7,
+  MiVaSystemCache = 8,
+  MiVaSystemPtes = 9,
+  MiVaHal = 10,
+  MiVaSessionGlobalSpace = 11,
+  MiVaDriverImages = 12,
+  MiVaSpecialPoolNonPaged = 13,
+  MiVaPagedProtoPool = 14,
+  MiVaMaximumType = 15,
+  MiVaSystemPtesLarge = 16,
+} MI_SYSTEM_VA_TYPE, *PMI_SYSTEM_VA_TYPE;
+
+typedef struct _MI_SYSTEM_PTE_TYPE
+{
+  struct _RTL_BITMAP Bitmap;
+  struct _MMPTE* BasePte;
+  U32 Flags;
+  enum _MI_SYSTEM_VA_TYPE VaType;
+  U32* FailureCount;
+  U32 PteFailures;
+  union
+  {
+    U32 SpinLock;
+    struct _EX_PUSH_LOCK* GlobalPushLock;
+  }; 
+  struct _MMSUPPORT* Vm;
+  volatile U32 TotalSystemPtes;
+  U32 Hint;
+  volatile struct _MI_CACHED_PTES* CachedPtes;
+  volatile U32 TotalFreeSystemPtes;
+} MI_SYSTEM_PTE_TYPE, *PMI_SYSTEM_PTE_TYPE; 
+
+typedef struct _MI_QUEUED_DEADSTACK_WORKITEM
+{
+  struct _WORK_QUEUE_ITEM WorkItem;
+  volatile S32 Active;
+} MI_QUEUED_DEADSTACK_WORKITEM, *PMI_QUEUED_DEADSTACK_WORKITEM; 
+
+typedef struct _MI_SYSTEM_PTE_STATE
+{
+  union _SLIST_HEADER DeadPteTrackerSListHead;
+  U32 PteTrackerLock;
+  struct _NPAGED_LOOKASIDE_LIST MdlTrackerLookaside;
+  struct _RTL_BITMAP PteTrackingBitmap;
+  volatile struct _MI_CACHED_PTES* CachedPteHeads;
+  struct _MI_SYSTEM_PTE_TYPE SystemViewPteInfo;
+  U8 KernelStackPages;
+  union _SLIST_HEADER QueuedStacks;
+  U32 StackGrowthFailures;
+  U8 TrackPtesAborted;
+  U8 AdjustCounter;
+  struct _MI_QUEUED_DEADSTACK_WORKITEM QueuedStacksWorkItem;
+  S32 __PADDING__[5];
+} MI_SYSTEM_PTE_STATE, *PMI_SYSTEM_PTE_STATE; 
+
+typedef struct _MI_IO_CACHE_STATS
+{
+  U32 UnusedBlocks;
+  U32 ActiveCacheMatch;
+  U32 ActiveCacheOverride;
+  U32 UnmappedCacheFlush;
+  U32 UnmappedCacheMatch;
+  U32 UnmappedCacheConflict;
+} MI_IO_CACHE_STATS, *PMI_IO_CACHE_STATS; 
+
+typedef struct _MI_IO_PAGE_STATE
+{
+  U32 IoPfnLock;
+  struct _RTL_AVL_TREE IoPfnRoot[3];
+  struct _LIST_ENTRY UnusedCachedMaps;
+  U32 OldestCacheFlushTimeStamp;
+  struct _MI_IO_CACHE_STATS IoCacheStats;
+} MI_IO_PAGE_STATE, *PMI_IO_PAGE_STATE; 
+
+typedef struct _MI_PAGING_IO_STATE
+{
+  struct _RTL_AVL_TREE PageFileHead;
+  volatile S32 PageFileHeadSpinLock;
+  S32 PrefetchSeekThreshold;
+  union _SLIST_HEADER InPageSupportSListHead[2];
+  U8 InPageSupportSListMinimum[2];
+  U32 InPageSinglePages;
+  volatile S32 DelayPageFaults;
+  U32 FileCompressionBoundary;
+  U8 MdlsAdjusted;
+  char __PADDING__[7];
+} MI_PAGING_IO_STATE, *PMI_PAGING_IO_STATE; 
+
+typedef struct _MI_COMMON_PAGE_STATE
+{
+  struct _MMPFN* PageOfOnesPfn;
+  U32 PageOfOnes;
+  struct _MMPFN* DummyPagePfn;
+  U32 DummyPage;
+  U32 PageOfZeroes;
+  void* ZeroMapping;
+  void* OnesMapping;
+  U32 BitmapGapFrames[2];
+  U32 PfnGapFrames[2];
+} MI_COMMON_PAGE_STATE, *PMI_COMMON_PAGE_STATE; 
+
+typedef struct _MI_SYSTEM_TRIM_STATE
+{
+  U32 ExpansionLock;
+  volatile S32 TrimInProgressCount;
+  struct _KEVENT PeriodicWorkingSetEvent;
+  U32 TrimAllPageFaultCount[3];
+  S32 __PADDING__[7];
+} MI_SYSTEM_TRIM_STATE, *PMI_SYSTEM_TRIM_STATE; 
+
+typedef struct _MI_RESAVAIL_TRACKER
+{
+  U32 AllocateKernelStack;
+  U32 AllocateGrowKernelStack;
+  U32 FreeKernelStack;
+  U32 FreeKernelStackError;
+  U32 FreeGrowKernelStackError;
+  U32 AllocateCreateProcess;
+  U32 FreeCreateProcessError;
+  U32 FreeDeleteProcess;
+  U32 FreeCleanProcess;
+  U32 FreeCleanProcessError;
+  U32 AllocateAddProcessWsMetaPage;
+  U32 AllocateWsIncrease;
+  U32 FreeWsIncreaseError;
+  U32 FreeWsIncreaseErrorMax;
+  U32 FreeWsDecrease;
+  U32 AllocateWorkingSetPage;
+  U32 FreeWorkingSetPageError;
+  U32 FreeDeletePteRange;
+  U32 AllocatePageTablesForProcessMetadata;
+  U32 FreePageTablesForProcessMetadataError2;
+  U32 AllocatePageTablesForSystem;
+  U32 FreePageTablesExcess;
+  U32 FreeSystemVaPageTables;
+  U32 FreeSessionVaPageTables;
+  U32 AllocateCreateSession;
+  U32 FreeSessionWsDereference;
+  U32 FreeSessionDereference;
+  U32 AllocateLockedSessionImage;
+  U32 FreeLockedSessionImage;
+  U32 FreeSessionImageConversion;
+  U32 AllocateWsAdjustPageTable;
+  U32 FreeWsAdjustPageTable;
+  U32 FreeWsAdjustPageTableError;
+  U32 AllocateNoLowMemory;
+  U32 AllocatePagedPoolLockedDown;
+  U32 FreePagedPoolLockedDown;
+  U32 AllocateSystemBitmaps;
+  U32 FreeSystemBitmapsError;
+  U32 AllocateForMdl;
+  U32 FreeFromMdl;
+  U32 AllocateForMdlPartition;
+  U32 FreeFromMdlPartition;
+  U32 FreeMdlExcess;
+  U32 AllocateExpansionNonPagedPool;
+  U32 FreeExpansionNonPagedPool;
+  U32 AllocateVad;
+  U32 RemoveVad;
+  U32 FreeVad;
+  U32 AllocateContiguous;
+  U32 FreeContiguousPages;
+  U32 FreeContiguousError;
+  U32 FreeLargePageMemory;
+  U32 AllocateSystemWsles;
+  U32 FreeSystemWsles;
+  U32 AllocateSystemInitWs;
+  U32 AllocateSessionInitWs;
+  U32 FreeSessionInitWsError;
+  U32 AllocateSystemImage;
+  U32 AllocateSystemImageLoad;
+  U32 AllocateSessionSharedImage;
+  U32 FreeSystemImageInitCode;
+  U32 FreeSystemImageLargePageConversion;
+  U32 FreeSystemImageError;
+  U32 FreeSystemImageLoadExcess;
+  U32 FreeUnloadSystemImage;
+  U32 FreeReloadBootImageLarge;
+  U32 FreeIndependent;
+  U32 AllocateHotRemove;
+  U32 FreeHotAdd;
+  U32 AllocateBoot;
+  U32 FreeLoaderBlock;
+  U32 AllocateNonPagedSpecialPool;
+  U32 FreeNonPagedSpecialPoolError;
+  U32 FreeNonPagedSpecialPool;
+  U32 AllocateSharedSegmentPage;
+  U32 FreeSharedSegmentPage;
+  U32 AllocateZeroPage;
+  U32 FreeZeroPage;
+  U32 AllocateForPo;
+  U32 AllocateForPoForce;
+  U32 FreeForPo;
+  U32 AllocateThreadHardFaultBehavior;
+  U32 FreeThreadHardFaultBehavior;
+  U32 ObtainFaultCharges;
+  U32 FreeFaultCharges;
+  U32 AllocateStoreCharges;
+  U32 FreeStoreCharges;
+  U32 ObtainLockedPageCharge;
+  U32 FreeLockedPageCharge;
+  U32 AllocateStore;
+  U32 FreeStore;
+  U32 AllocateSystemImageProtos;
+  U32 FreeSystemImageProtos;
+  U32 AllocateModWriterCharge;
+  U32 FreeModWriterCharge;
+  U32 AllocateMappedWriterCharge;
+  U32 FreeMappedWriterCharge;
+  U32 AllocateRegistryCharges;
+  U32 FreeRegistryCharges;
+  S32 __PADDING__[5];
+} MI_RESAVAIL_TRACKER, *PMI_RESAVAIL_TRACKER; 
+
+typedef struct _MI_SPECIAL_POOL
+{
+  U32 Lock;
+  struct _MI_PTE_CHAIN_HEAD Paged;
+  struct _MI_PTE_CHAIN_HEAD NonPaged;
+  volatile U32 PagesInUse;
+  struct _RTL_BITMAP SpecialPoolPdes;
+  S32 __PADDING__[1];
+} MI_SPECIAL_POOL, *PMI_SPECIAL_POOL; 
+
+typedef struct _MMSUPPORT_FLAGS
+{
+  struct 
+  {
+    U8 WorkingSetType : 3; 
+    U8 Reserved0 : 3; 
+    U8 MaximumWorkingSetHard : 1; 
+    U8 MinimumWorkingSetHard : 1; 
+  }; 
+  struct 
+  {
+    U8 SessionMaster : 1; 
+    U8 TrimmerState : 2; 
+    U8 Reserved : 1; 
+    U8 PageStealers : 4; 
+  }; 
+  U8 MemoryPriority;
+  struct 
+  {
+    U8 WsleDeleted : 1; 
+    U8 VmExiting : 1; 
+    U8 ExpansionFailed : 1; 
+    U8 SvmEnabled : 1; 
+    U8 ForceAge : 1; 
+    U8 NewMaximum : 1; 
+    U8 CommitReleaseState : 2; 
+  }; 
+} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS; 
+
+typedef struct _MMSUPPORT
+{
+  volatile S32 WorkingSetLock;
+  struct _KGATE* ExitOutswapGate;
+  void* AccessLog;
+  struct _LIST_ENTRY WorkingSetExpansionLinks;
+  U32 AgeDistribution[7];
+  U32 MinimumWorkingSetSize;
+  U32 WorkingSetLeafSize;
+  U32 WorkingSetLeafPrivateSize;
+  U32 WorkingSetSize;
+  U32 WorkingSetPrivateSize;
+  U32 MaximumWorkingSetSize;
+  U32 ChargedWslePages;
+  U32 ActualWslePages;
+  U32 WorkingSetSizeOverhead;
+  U32 PeakWorkingSetSize;
+  U32 HardFaultCount;
+  struct _MMWSL* VmWorkingSetList;
+  U16 NextPageColor;
+  U16 LastTrimStamp;
+  U32 PageFaultCount;
+  U32 TrimmedPageCount;
+  U32 Reserved0;
+  struct _MMSUPPORT_FLAGS Flags;
+  U32 ReleasedCommitDebt;
+  void* WsSwapSupport;
+  void* CommitReAcquireFailSupport;
+} MMSUPPORT, *PMMSUPPORT; 
+
+typedef struct _SYSPTES_HEADER
+{
+  struct _LIST_ENTRY ListHead[16];
+  U32 Count;
+  U32 NumberOfEntries;
+  U32 NumberOfEntriesPeak;
+} SYSPTES_HEADER, *PSYSPTES_HEADER; 
+
+typedef struct _MI_VISIBLE_STATE
+{
+  struct _MI_SPECIAL_POOL SpecialPool;
+  struct _LIST_ENTRY SessionWsList;
+  struct _RTL_BITMAP* SessionIdBitmap;
+  struct _MM_PAGED_POOL_INFO PagedPoolInfo;
+  U32 MaximumNonPagedPoolInPages;
+  U32 SizeOfPagedPoolInPages;
+  struct _MI_SYSTEM_PTE_TYPE SystemPteInfo;
+  volatile U32 NonPagedPoolCommit;
+  volatile U32 BootCommit;
+  volatile U32 MdlPagesAllocated;
+  volatile U32 SystemPageTableCommit;
+  volatile U32 SpecialPagesInUse;
+  volatile U32 WsOverheadPages;
+  volatile U32 VadBitmapPages;
+  volatile U32 ProcessCommit;
+  volatile U32 SharedCommit;
+  volatile S32 DriverCommit;
+  struct _MMSUPPORT SystemWs[3];
+  U32 MapCacheFailures;
+  U32 PagefileHashPages;
+  struct _SYSPTES_HEADER PteHeader;
+  struct _MI_SPECIAL_POOL* SessionSpecialPool;
+  U32 SystemVaTypeCount[15];
+  U8 SystemVaType[1024];
+  U32 SystemVaTypeCountFailures[15];
+  U32 SystemVaTypeCountLimit[15];
+  U32 SystemVaTypeCountPeak[15];
+  U32 SystemAvailableVa;
+  S32 __PADDING__[13];
+} MI_VISIBLE_STATE, *PMI_VISIBLE_STATE; 
+
+typedef struct _MI_SYSTEM_INFORMATION
+{
+  struct _MI_POOL_STATE Pools;
+  struct _MI_SECTION_STATE Sections;
+  struct _MI_SYSTEM_IMAGE_STATE SystemImages;
+  struct _MI_SESSION_STATE Sessions;
+  struct _MI_PROCESS_STATE Processes;
+  struct _MI_HARDWARE_STATE Hardware;
+  struct _MI_SYSTEM_VA_STATE SystemVa;
+  struct _MI_COMBINE_STATE PageCombines;
+  struct _MI_PARTITION_STATE Partitions;
+  struct _MI_SHUTDOWN_STATE Shutdowns;
+  struct _MI_ERROR_STATE Errors;
+  struct _MI_ACCESS_LOG_STATE AccessLog;
+  struct _MI_DEBUGGER_STATE Debugger;
+  struct _MI_STANDBY_STATE Standby;
+  struct _MI_SYSTEM_PTE_STATE SystemPtes;
+  struct _MI_IO_PAGE_STATE IoPages;
+  struct _MI_PAGING_IO_STATE PagingIo;
+  struct _MI_COMMON_PAGE_STATE CommonPages;
+  struct _MI_SYSTEM_TRIM_STATE Trims;
+  struct _MI_RESAVAIL_TRACKER ResTrack;
+  U32 Cookie;
+  volatile S32 ZeroingDisabled;
+  void* volatile* BootRegistryRuns;
+  U8 FullyInitialized;
+  U8 SafeBooted;
+  struct _RTL_BITMAP LargePfnBitMap;
+  struct _RTL_BITMAP PfnBitMap;
+  const struct _TlgProvider_t* TraceLogging;
+  struct _MI_VISIBLE_STATE Vs;
+} MI_SYSTEM_INFORMATION, *PMI_SYSTEM_INFORMATION; 
+

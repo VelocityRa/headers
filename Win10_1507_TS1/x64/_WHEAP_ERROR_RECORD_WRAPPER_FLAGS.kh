@@ -1,0 +1,16 @@
+typedef union _WHEAP_ERROR_RECORD_WRAPPER_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 Preallocated : 1; 
+      U32 FromPersistentStore : 1; 
+      U32 PlatformPfaControl : 1; 
+      U32 PlatformDirectedOffline : 1; 
+      U32 Reserved : 28; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEAP_ERROR_RECORD_WRAPPER_FLAGS, *PWHEAP_ERROR_RECORD_WRAPPER_FLAGS; 
+

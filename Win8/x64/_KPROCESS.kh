@@ -1,0 +1,233 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 Abandoned;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved : 4; 
+            }; 
+            U8 Hand;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 6; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Reserved2 : 4; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[20];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _KEXECUTE_OPTIONS
+{
+  union
+  {
+    struct 
+    {
+      U8 ExecuteDisable : 1; 
+      U8 ExecuteEnable : 1; 
+      U8 DisableThunkEmulation : 1; 
+      U8 Permanent : 1; 
+      U8 ExecuteDispatchEnable : 1; 
+      U8 ImageDispatchEnable : 1; 
+      U8 DisableExceptionChainValidation : 1; 
+      U8 Spare : 1; 
+    }; 
+    volatile U8 ExecuteOptions;
+    U8 ExecuteOptionsNV;
+  }; 
+} KEXECUTE_OPTIONS, *PKEXECUTE_OPTIONS; 
+
+typedef union _KSTACK_COUNT
+{
+  union
+  {
+    S32 Value;
+    struct 
+    {
+      U32 State : 3; 
+      U32 StackCount : 29; 
+    }; 
+  }; 
+} KSTACK_COUNT, *PKSTACK_COUNT; 
+
+typedef union _KGDTENTRY64
+{
+  union
+  {
+    struct
+    {
+      U16 LimitLow;
+      U16 BaseLow;
+      union
+      {
+        struct
+        {
+          U8 BaseMiddle;
+          U8 Flags1;
+          U8 Flags2;
+          U8 BaseHigh;
+        } Bytes;
+        struct
+        {
+          struct
+          {
+            struct 
+            {
+              U32 BaseMiddle : 8; 
+              U32 Type : 5; 
+              U32 Dpl : 2; 
+              U32 Present : 1; 
+              U32 LimitHigh : 4; 
+              U32 System : 1; 
+              U32 LongMode : 1; 
+              U32 DefaultBig : 1; 
+              U32 Granularity : 1; 
+              U32 BaseHigh : 8; 
+            }; 
+          } Bits;
+          U32 BaseUpper;
+          U32 MustBeZero;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      S64 DataLow;
+      S64 DataHigh;
+    }; 
+  }; 
+} KGDTENTRY64, *PKGDTENTRY64; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _FAST_MUTEX
+{
+  S32 Count;
+  void* Owner;
+  U32 Contention;
+  struct _KEVENT Event;
+  U32 OldIrql;
+  S32 __PADDING__[1];
+} FAST_MUTEX, *PFAST_MUTEX; 
+
+typedef struct _KPROCESS
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY ProfileListHead;
+  U64 DirectoryTableBase;
+  struct _LIST_ENTRY ThreadListHead;
+  U32 ProcessLock;
+  U32 Spare0;
+  struct _KAFFINITY_EX Affinity;
+  struct _LIST_ENTRY ReadyListHead;
+  struct _SINGLE_LIST_ENTRY SwapListEntry;
+  volatile struct _KAFFINITY_EX ActiveProcessors;
+  union
+  {
+    struct 
+    {
+      S32 AutoAlignment : 1; 
+      S32 DisableBoost : 1; 
+      S32 DisableQuantum : 1; 
+      S32 AffinitySet : 1; 
+      U32 DeepFreeze : 1; 
+      U32 TimerVirtualization : 1; 
+      U32 ActiveGroupsMask : 20; 
+      S32 ReservedFlags : 6; 
+    }; 
+    volatile S32 ProcessFlags;
+  }; 
+  char BasePriority;
+  char QuantumReset;
+  U8 Visited;
+  union _KEXECUTE_OPTIONS Flags;
+  U32 ThreadSeed[20];
+  U16 IdealNode[20];
+  U16 IdealGlobalNode;
+  U16 Spare1;
+  volatile union _KSTACK_COUNT StackCount;
+  struct _LIST_ENTRY ProcessListEntry;
+  U64 CycleTime;
+  U64 ContextSwitches;
+  struct _KSCHEDULING_GROUP* SchedulingGroup;
+  U32 FreezeCount;
+  U32 KernelTime;
+  U32 UserTime;
+  U16 LdtFreeSelectorHint;
+  U16 LdtTableLength;
+  union _KGDTENTRY64 LdtSystemDescriptor;
+  void* LdtBaseAddress;
+  struct _FAST_MUTEX LdtProcessLock;
+  void* InstrumentationCallback;
+} KPROCESS, *PKPROCESS; 
+

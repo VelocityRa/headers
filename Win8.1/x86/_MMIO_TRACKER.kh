@@ -1,0 +1,28 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _IO_CACHE_INFO
+{
+  U8 CacheAttribute;
+} IO_CACHE_INFO, *PIO_CACHE_INFO; 
+
+typedef struct _MMIO_TRACKER
+{
+  struct _LIST_ENTRY ListEntry;
+  U32 PageFrameIndex;
+  U32 NumberOfPages;
+  union
+  {
+    void* BaseVa;
+    U32 CacheFlushTimeStamp;
+  }; 
+  struct _MDL* Mdl;
+  U32 MdlPages;
+  void* StackTrace[6];
+  struct _IO_CACHE_INFO CacheInfo[1];
+  char __PADDING__[3];
+} MMIO_TRACKER, *PMMIO_TRACKER; 
+

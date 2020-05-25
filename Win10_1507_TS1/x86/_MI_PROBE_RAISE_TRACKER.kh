@@ -1,0 +1,19 @@
+typedef struct _MI_PROBE_RAISE_TRACKER
+{
+  U32 UserRangeInKernel;
+  U32 FaultFailed;
+  U32 WriteFaultFailed;
+  U32 LargePageFailed;
+  U32 UserAccessToKernelPte;
+  U32 BadPageLocation;
+  U32 InsufficientCharge;
+  U32 PageTableCharge;
+  U32 NoPhysicalMapping;
+  U32 NoIoReference;
+  U32 ProbeFailed;
+  U32 PteIsZero;
+  U32 StrongCodeWrite;
+  U32 ReducedCloneCommitChargeFailed;
+  U32 CopyOnWriteAtDispatchNoPages;
+} MI_PROBE_RAISE_TRACKER, *PMI_PROBE_RAISE_TRACKER; 
+

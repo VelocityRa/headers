@@ -1,0 +1,53 @@
+struct wil_details_FeatureProperties
+{
+  struct 
+  {
+    U32 enabledState : 2; 
+    U32 isVariant : 1; 
+    U32 queuedForReporting : 1; 
+    U32 hasNotificationState : 2; 
+    U32 usageCount : 9; 
+    U32 usageCountRepresentsPotential : 1; 
+    U32 reportedDeviceUsage : 1; 
+    U32 reportedDevicePotential : 1; 
+    U32 reportedDeviceOpportunity : 1; 
+    U32 reportedDevicePotentialOpportunity : 1; 
+    U32 recordedDeviceUsage : 1; 
+    U32 recordedDevicePotential : 1; 
+    U32 recordedDeviceOpportunity : 1; 
+    U32 recordedDevicePotentialOpportunity : 1; 
+    U32 opportunityCount : 7; 
+    U32 opportunityCountRepresentsPotential : 1; 
+  }; 
+}; 
+
+struct wil_details_VariantProperties
+{
+  struct 
+  {
+    U32 enabledState : 2; 
+    U32 isVariant : 1; 
+    U32 queuedForReporting : 1; 
+    U32 hasNotificationState : 2; 
+    U32 recordedDeviceUsage : 1; 
+    U32 variant : 6; 
+    U32 unused : 19; 
+  }; 
+}; 
+
+union wil_details_FeaturePropertyCache
+{
+  union
+  {
+    struct wil_details_FeatureProperties cache;
+    struct wil_details_VariantProperties variant;
+    volatile S32 var;
+  }; 
+}; 
+
+struct wil_details_FeatureVariantPropertyCache
+{
+  union wil_details_FeaturePropertyCache propertyCache;
+  U32 payloadId;
+}; 
+

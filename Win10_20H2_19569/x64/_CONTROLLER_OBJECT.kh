@@ -1,0 +1,51 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KDEVICE_QUEUE
+{
+  S16 Type;
+  S16 Size;
+  struct _LIST_ENTRY DeviceListHead;
+  U64 Lock;
+  union
+  {
+    U8 Busy;
+    struct 
+    {
+      S64 Reserved : 8; 
+      S64 HS32 : 56; 
+    }; 
+  }; 
+} KDEVICE_QUEUE, *PKDEVICE_QUEUE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _CONTROLLER_OBJECT
+{
+  S16 Type;
+  S16 Size;
+  void* ControllerExtension;
+  struct _KDEVICE_QUEUE DeviceWaitQueue;
+  U32 Spare1;
+  union _LARGE_INTEGER Spare2;
+} CONTROLLER_OBJECT, *PCONTROLLER_OBJECT; 
+

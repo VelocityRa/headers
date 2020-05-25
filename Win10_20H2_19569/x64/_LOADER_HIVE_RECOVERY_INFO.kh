@@ -1,0 +1,15 @@
+typedef struct _LOADER_HIVE_RECOVERY_INFO
+{
+  struct 
+  {
+    U32 Recovered : 1; 
+    U32 LegacyRecovery : 1; 
+    U32 SoftRebootConflict : 1; 
+    U32 MostRecentLog : 3; 
+  }; 
+  U32 Spare : 27; 
+  U32 LogNextSequence;
+  U32 LogMinimumSequence;
+  U32 LogCurrentOffset;
+} LOADER_HIVE_RECOVERY_INFO, *PLOADER_HIVE_RECOVERY_INFO; 
+

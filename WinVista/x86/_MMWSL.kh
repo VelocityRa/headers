@@ -1,0 +1,24 @@
+typedef struct _MMWSL
+{
+  U32 FirstFree;
+  U32 FirstDynamic;
+  U32 LastEntry;
+  U32 NextSlot;
+  struct _MMWSLE* Wsle;
+  void* LowestPagableAddress;
+  U32 LastInitializedWsle;
+  U32 NextEstimationSlot;
+  U32 NextAgingSlot;
+  U32 EstimatedAvailable;
+  U32 GrowthSinceLastEstimate;
+  U32 NumberOfCommittedPageTables;
+  U32 VadBitMapHint;
+  U32 NonDirectCount;
+  struct _MMWSLE_NONDIRECT_HASH* NonDirectHash;
+  struct _MMWSLE_HASH* HashTableStart;
+  struct _MMWSLE_HASH* HighestPermittedHashAddress;
+  void* HighestUserAddress;
+  U16 UsedPageTableEntries[768];
+  U32 CommittedPageTables[24];
+} MMWSL, *PMMWSL; 
+

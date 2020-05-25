@@ -1,0 +1,54 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _LDRP_CSLIST
+{
+  struct _SINGLE_LIST_ENTRY* Tail;
+} LDRP_CSLIST, *PLDRP_CSLIST; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef enum _LDR_DDAG_STATE
+{
+  LdrModulesMerged = -5,
+  LdrModulesInitError = -4,
+  LdrModulesSnapError = -3,
+  LdrModulesUnloaded = -2,
+  LdrModulesUnloading = -1,
+  LdrModulesPlaceHolder = 0,
+  LdrModulesMapping = 1,
+  LdrModulesMapped = 2,
+  LdrModulesWaitingForDependencies = 3,
+  LdrModulesSnapping = 4,
+  LdrModulesSnapped = 5,
+  LdrModulesCondensed = 6,
+  LdrModulesReadyToInit = 7,
+  LdrModulesInitializing = 8,
+  LdrModulesReadyToRun = 9,
+} LDR_DDAG_STATE, *PLDR_DDAG_STATE;
+
+typedef struct _LDR_DDAG_NODE
+{
+  struct _LIST_ENTRY Modules;
+  struct _LDR_SERVICE_TAG_RECORD* ServiceTagList;
+  U32 LoadCount;
+  U32 ReferenceCount;
+  U32 DependencyCount;
+  union
+  {
+    struct _LDRP_CSLIST Dependencies;
+    struct _SINGLE_LIST_ENTRY RemovalLink;
+  }; 
+  struct _LDRP_CSLIST IncomingDependencies;
+  enum _LDR_DDAG_STATE State;
+  struct _SINGLE_LIST_ENTRY CondenseLink;
+  U32 PreorderNumber;
+  U32 LowestLink;
+} LDR_DDAG_NODE, *PLDR_DDAG_NODE; 
+

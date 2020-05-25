@@ -1,0 +1,16 @@
+typedef struct _HIVE_LIST_ENTRY
+{
+  U16* FileName;
+  U16* BaseName;
+  U16* RegRootName;
+  struct _CMHIVE* CmHive;
+  U32 HHiveFlags;
+  U32 CmHiveFlags;
+  struct _CMHIVE* CmHive2;
+  U8 ThreadFinished;
+  U8 ThreadStarted;
+  U8 Allocate;
+  U8 WinPERequired;
+  S32 __PADDING__[1];
+} HIVE_LIST_ENTRY, *PHIVE_LIST_ENTRY; 
+

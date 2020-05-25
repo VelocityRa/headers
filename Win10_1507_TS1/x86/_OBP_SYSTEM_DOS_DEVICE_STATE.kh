@@ -1,0 +1,6 @@
+typedef struct _OBP_SYSTEM_DOS_DEVICE_STATE
+{
+  U32 GlobalDeviceMap;
+  U32 LocalDeviceCount[26];
+} OBP_SYSTEM_DOS_DEVICE_STATE, *POBP_SYSTEM_DOS_DEVICE_STATE; 
+

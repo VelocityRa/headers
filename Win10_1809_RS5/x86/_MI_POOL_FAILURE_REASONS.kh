@@ -1,0 +1,15 @@
+typedef struct _MI_POOL_FAILURE_REASONS
+{
+  U32 NonPagedNoPtes;
+  U32 PriorityTooLow;
+  U32 NonPagedNoPagesAvailable;
+  U32 PagedNoPtes;
+  U32 SessionPagedNoPtes;
+  U32 PagedNoPagesAvailable;
+  U32 SessionPagedNoPagesAvailable;
+  U32 PagedNoCommit;
+  U32 SessionPagedNoCommit;
+  U32 NonPagedNoResidentAvailable;
+  U32 NonPagedNoCommit;
+} MI_POOL_FAILURE_REASONS, *PMI_POOL_FAILURE_REASONS; 
+

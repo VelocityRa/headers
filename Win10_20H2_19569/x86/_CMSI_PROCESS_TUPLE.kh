@@ -1,0 +1,6 @@
+typedef struct _CMSI_PROCESS_TUPLE
+{
+  void* ProcessHandle;
+  void* ProcessReference;
+} CMSI_PROCESS_TUPLE, *PCMSI_PROCESS_TUPLE; 
+

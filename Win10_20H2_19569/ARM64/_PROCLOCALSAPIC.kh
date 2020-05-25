@@ -1,0 +1,13 @@
+typedef struct _PROCLOCALSAPIC
+{
+  U8 Type;
+  U8 Length;
+  U8 ACPIProcessorID;
+  U8 APICID;
+  U8 APICEID;
+  U8 Reserved[3];
+  U32 Flags;
+  U32 ACPIProcessorUIDInteger;
+  char ACPIProcessorUIDString[1];
+} PROCLOCALSAPIC, *PPROCLOCALSAPIC; 
+

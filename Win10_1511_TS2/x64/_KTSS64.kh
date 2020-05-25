@@ -1,0 +1,12 @@
+typedef struct _KTSS64
+{
+  U32 Reserved0;
+  U64 Rsp0;
+  U64 Rsp1;
+  U64 Rsp2;
+  U64 Ist[8];
+  U64 Reserved1;
+  U16 Reserved2;
+  U16 IoMapBase;
+} KTSS64, *PKTSS64; 
+

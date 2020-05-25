@@ -1,0 +1,8 @@
+typedef struct _MI_IO_CACHE_STATS
+{
+  U32 UnmappedCacheFlush;
+  U32 UnmappedCacheConflict;
+  U32 PermanentIoAttributeConflict;
+  U32 PermanentIoNodeConflict;
+} MI_IO_CACHE_STATS, *PMI_IO_CACHE_STATS; 
+

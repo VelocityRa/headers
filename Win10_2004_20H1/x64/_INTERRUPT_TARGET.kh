@@ -1,0 +1,35 @@
+typedef enum _INTERRUPT_TARGET_TYPE
+{
+  InterruptTargetInvalid = 0,
+  InterruptTargetAllIncludingSelf = 1,
+  InterruptTargetAllExcludingSelf = 2,
+  InterruptTargetSelfOnly = 3,
+  InterruptTargetPhysical = 4,
+  InterruptTargetLogicalFlat = 5,
+  InterruptTargetLogicalClustered = 6,
+  InterruptTargetRemapIndex = 7,
+  InterruptTargetHypervisor = 8,
+} INTERRUPT_TARGET_TYPE, *PINTERRUPT_TARGET_TYPE;
+
+typedef struct _INTERRUPT_TARGET
+{
+  enum _INTERRUPT_TARGET_TYPE Target;
+  union
+  {
+    U32 PhysicalTarget;
+    U32 LogicalFlatTarget;
+    U32 RemapIndex;
+    struct
+    {
+      U32 ClusterId;
+      U32 ClusterMask;
+    }; 
+    struct
+    {
+      U32 Low32;
+      U32 High32;
+      U64 InterruptData;
+    } HypervisorTarget;
+  }; 
+} INTERRUPT_TARGET, *PINTERRUPT_TARGET; 
+

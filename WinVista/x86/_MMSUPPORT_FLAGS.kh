@@ -1,0 +1,27 @@
+typedef struct _MMSUPPORT_FLAGS
+{
+  struct 
+  {
+    U8 SessionSpace : 1; 
+    U8 ModwriterAttached : 1; 
+    U8 TrimHard : 1; 
+    U8 MaximumWorkingSetHard : 1; 
+    U8 ForceTrim : 1; 
+    U8 MinimumWorkingSetHard : 1; 
+    U8 SessionMaster : 1; 
+    U8 TrimmerAttached : 1; 
+  }; 
+  struct 
+  {
+    U8 TrimmerDetaching : 1; 
+    U8 Reserved : 7; 
+  }; 
+  U8 MemoryPriority : 8; 
+  struct 
+  {
+    U8 WsleDeleted : 1; 
+    U8 VmExiting : 1; 
+    U8 Available : 6; 
+  }; 
+} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS; 
+

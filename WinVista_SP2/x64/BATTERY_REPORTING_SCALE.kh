@@ -1,0 +1,6 @@
+struct BATTERY_REPORTING_SCALE
+{
+  U32 Granularity;
+  U32 Capacity;
+}; 
+

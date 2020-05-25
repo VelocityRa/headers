@@ -1,0 +1,83 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 Abandoned;
+        U8 Absolute;
+        U8 NpxIrql;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 Size;
+            struct
+            {
+              U8 Hand;
+              union
+              {
+                U8 Inserted;
+                U8 DebugActive;
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _FAST_MUTEX
+{
+  volatile S32 Count;
+  struct _KTHREAD* Owner;
+  U32 Contention;
+  struct _KEVENT Gate;
+  U32 OldIrql;
+  S32 __PADDING__[1];
+} FAST_MUTEX, *PFAST_MUTEX; 
+
+typedef struct _CLIENT_ID
+{
+  void* UniqueProcess;
+  void* UniqueThread;
+} CLIENT_ID, *PCLIENT_ID; 
+
+typedef struct _HANDLE_TRACE_DB_ENTRY
+{
+  struct _CLIENT_ID ClientId;
+  void* Handle;
+  U32 Type;
+  void* StackTrace[16];
+} HANDLE_TRACE_DB_ENTRY, *PHANDLE_TRACE_DB_ENTRY; 
+
+typedef struct _HANDLE_TRACE_DEBUG_INFO
+{
+  S32 RefCount;
+  U32 TableSize;
+  U32 BitMaskFlags;
+  struct _FAST_MUTEX CloseCompactionLock;
+  U32 CurrentStackIndex;
+  struct _HANDLE_TRACE_DB_ENTRY TraceDb[1];
+} HANDLE_TRACE_DEBUG_INFO, *PHANDLE_TRACE_DEBUG_INFO; 
+

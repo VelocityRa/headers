@@ -1,0 +1,8 @@
+struct PROCESSOR_IDLESTATE_INFO
+{
+  U32 TimeCheck;
+  U8 DemotePercent;
+  U8 PromotePercent;
+  U8 Spare[2];
+}; 
+

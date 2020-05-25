@@ -1,0 +1,18 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EFI_FIRMWARE_INFORMATION
+{
+  U32 FirmwareVersion;
+  struct _VIRTUAL_EFI_RUNTIME_SERVICES* VirtualEfiRuntimeServices;
+  S32 SetVirtualAddressMapStatus;
+  U32 MissedMappingsCount;
+  struct _LIST_ENTRY FirmwareResourceList;
+  void* EfiMemoryMap;
+  U32 EfiMemoryMapSize;
+  U32 EfiMemoryMapDescriptorSize;
+} EFI_FIRMWARE_INFORMATION, *PEFI_FIRMWARE_INFORMATION; 
+

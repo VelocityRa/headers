@@ -1,0 +1,6 @@
+typedef struct _ETW_SYSTEM_LOGGER
+{
+  U8 LoggerId;
+  U8 ClockType;
+} ETW_SYSTEM_LOGGER, *PETW_SYSTEM_LOGGER; 
+

@@ -1,0 +1,13 @@
+typedef struct _MI_COMMON_PAGE_STATE
+{
+  struct _MMPFN* PageOfOnesPfn;
+  U32 PageOfOnes;
+  struct _MMPFN* DummyPagePfn;
+  U32 DummyPage;
+  U32 PageOfZeroes;
+  void* ZeroMapping;
+  void* OnesMapping;
+  U32 BitmapGapFrames[2];
+  U32 PfnGapFrames[2];
+} MI_COMMON_PAGE_STATE, *PMI_COMMON_PAGE_STATE; 
+

@@ -1,0 +1,16 @@
+typedef struct _HEAP_EXTENDED_ENTRY
+{
+  union
+  {
+    struct
+    {
+      U16 FunctionIndex;
+      U16 ContextValue;
+    }; 
+    U32 InterceptorValue;
+  }; 
+  U16 UnusedBytesLength;
+  U8 EntryOffset;
+  U8 ExtendedBlockSignature;
+} HEAP_EXTENDED_ENTRY, *PHEAP_EXTENDED_ENTRY; 
+

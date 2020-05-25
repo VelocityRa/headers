@@ -1,0 +1,13 @@
+typedef struct _HEAP_LFH_SUBSEGMENT_ENCODED_OFFSETS
+{
+  union
+  {
+    struct
+    {
+      U16 BlockSize;
+      U16 FirstBlockOffset;
+    }; 
+    U32 EncodedData;
+  }; 
+} HEAP_LFH_SUBSEGMENT_ENCODED_OFFSETS, *PHEAP_LFH_SUBSEGMENT_ENCODED_OFFSETS; 
+

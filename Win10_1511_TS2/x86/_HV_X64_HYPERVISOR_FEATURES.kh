@@ -1,0 +1,81 @@
+typedef union _HV_PARTITION_PRIVILEGE_MASK
+{
+  union
+  {
+    U64 AsUINT64;
+    struct 
+    {
+      U64 AccessVpRunTimeReg : 1; 
+      U64 AccessPartitionReferenceCounter : 1; 
+      U64 AccessSynicRegs : 1; 
+      U64 AccessSyntheticTimerRegs : 1; 
+      U64 AccessIntrCtrlRegs : 1; 
+      U64 AccessHypercallMsrs : 1; 
+      U64 AccessVpIndex : 1; 
+      U64 AccessResetReg : 1; 
+      U64 AccessStatsReg : 1; 
+      U64 AccessPartitionReferenceTsc : 1; 
+      U64 AccessGuestIdleReg : 1; 
+      U64 AccessFrequencyRegs : 1; 
+      U64 AccessDebugRegs : 1; 
+      U64 Reserved1 : 19; 
+      U64 CreatePartitions : 1; 
+      U64 AccessPartitionId : 1; 
+      U64 AccessMemoryPool : 1; 
+      U64 AdjustMessageBuffers : 1; 
+      U64 PostMessages : 1; 
+      U64 SignalEvents : 1; 
+      U64 CreatePort : 1; 
+      U64 ConnectPort : 1; 
+      U64 AccessStats : 1; 
+      U64 Reserved2 : 2; 
+      U64 Debugging : 1; 
+      U64 CpuManagement : 1; 
+      U64 ConfigureProfiler : 1; 
+      U64 AccessVpExitTracing : 1; 
+      U64 EnableExtendedGvaRangesForFlushVirtualAddressList : 1; 
+      U64 AccessVsm : 1; 
+      U64 AccessVpRegisters : 1; 
+      U64 UnusedBit : 1; 
+      U64 FastHypercallOutput : 1; 
+      U64 EnableExtendedHypercalls : 1; 
+      U64 StartVirtualProcessor : 1; 
+      U64 Reserved3 : 10; 
+    }; 
+  }; 
+} HV_PARTITION_PRIVILEGE_MASK, *PHV_PARTITION_PRIVILEGE_MASK; 
+
+typedef struct _HV_X64_HYPERVISOR_FEATURES
+{
+  union _HV_PARTITION_PRIVILEGE_MASK PartitionPrivileges;
+  struct 
+  {
+    U32 MaxSupportedCState : 4; 
+    U32 HpetNeededForC3PowerState_Deprecated : 1; 
+    U32 Reserved : 27; 
+  }; 
+  struct 
+  {
+    U32 MwaitAvailable_Deprecated : 1; 
+    U32 GuestDebuggingAvailable : 1; 
+    U32 PerformanceMonitorsAvailable : 1; 
+    U32 CpuDynamicPartitioningAvailable : 1; 
+    U32 XmmRegistersForFastHypercallAvailable : 1; 
+    U32 GuestIdleAvailable : 1; 
+    U32 HypervisorSleepStateSupportAvailable : 1; 
+    U32 NumaDistanceQueryAvailable : 1; 
+    U32 FrequencyRegsAvailable : 1; 
+    U32 SyntheticMachineCheckAvailable : 1; 
+    U32 GuestCrashRegsAvailable : 1; 
+    U32 DebugRegsAvailable : 1; 
+    U32 Npiep1Available : 1; 
+    U32 DisableHypervisorAvailable : 1; 
+    U32 ExtendedGvaRangesForFlushVirtualAddressListAvailable : 1; 
+    U32 FastHypercallOutputAvailable : 1; 
+    U32 SvmFeaturesAvailable : 1; 
+    U32 SintPollingModeAvailable : 1; 
+    U32 HypercallMsrLockAvailable : 1; 
+    U32 Reserved1 : 13; 
+  }; 
+} HV_X64_HYPERVISOR_FEATURES, *PHV_X64_HYPERVISOR_FEATURES; 
+

@@ -1,0 +1,29 @@
+typedef struct _RTL_HEAP_MEMORY_LIMIT_DATA
+{
+  U32 CommitLimitBytes;
+  U32 CommitLimitFailureCode;
+  U32 MaxAllocationSizeBytes;
+  U32 AllocationLimitFailureCode;
+} RTL_HEAP_MEMORY_LIMIT_DATA, *PRTL_HEAP_MEMORY_LIMIT_DATA; 
+
+typedef struct _RTLP_HP_HEAP_GLOBALS
+{
+  U32 HeapKey;
+  U32 LfhKey;
+  struct _HEAP_FAILURE_INFORMATION* FailureInfo;
+  struct _RTL_HEAP_MEMORY_LIMIT_DATA CommitLimitData;
+  union
+  {
+    U32 Flags;
+    struct
+    {
+      struct 
+      {
+        U32 ErmsSupported : 1; 
+        U32 ErmsChecked : 1; 
+      }; 
+    } FlagsBits;
+  }; 
+  S32 __PADDING__[8];
+} RTLP_HP_HEAP_GLOBALS, *PRTLP_HP_HEAP_GLOBALS; 
+

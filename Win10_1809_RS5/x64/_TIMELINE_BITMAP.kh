@@ -1,0 +1,13 @@
+typedef union _TIMELINE_BITMAP
+{
+  union
+  {
+    U64 Value;
+    struct
+    {
+      U32 EndTime;
+      U32 Bitmap;
+    }; 
+  }; 
+} TIMELINE_BITMAP, *PTIMELINE_BITMAP; 
+

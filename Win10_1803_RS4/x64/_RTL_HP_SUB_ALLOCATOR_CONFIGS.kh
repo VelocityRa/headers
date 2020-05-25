@@ -1,0 +1,28 @@
+typedef struct _RTL_HP_LFH_CONFIG
+{
+  U32 MaxBlockSize;
+  U32 MaxSubsegmentSize;
+  struct
+  {
+    U32 ForceEnable : 1; 
+  } Flags;
+} RTL_HP_LFH_CONFIG, *PRTL_HP_LFH_CONFIG; 
+
+typedef struct _RTL_HP_VS_CONFIG
+{
+  struct
+  {
+    struct 
+    {
+      U32 PageAlignLargeAllocs : 1; 
+      U32 FullDecommit : 1; 
+    }; 
+  } Flags;
+} RTL_HP_VS_CONFIG, *PRTL_HP_VS_CONFIG; 
+
+typedef struct _RTL_HP_SUB_ALLOCATOR_CONFIGS
+{
+  struct _RTL_HP_LFH_CONFIG LfhConfigs;
+  struct _RTL_HP_VS_CONFIG VsConfigs;
+} RTL_HP_SUB_ALLOCATOR_CONFIGS, *PRTL_HP_SUB_ALLOCATOR_CONFIGS; 
+

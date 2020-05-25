@@ -1,0 +1,11 @@
+typedef struct _SECURITY_DESCRIPTOR
+{
+  U8 Revision;
+  U8 Sbz1;
+  U16 Control;
+  void* Owner;
+  void* Group;
+  struct _ACL* Sacl;
+  struct _ACL* Dacl;
+} SECURITY_DESCRIPTOR, *PSECURITY_DESCRIPTOR; 
+

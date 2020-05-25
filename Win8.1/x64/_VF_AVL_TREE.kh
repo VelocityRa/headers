@@ -1,0 +1,16 @@
+typedef struct _VF_AVL_TREE
+{
+  U64 NodeRangeSize;
+  volatile U64 NodeCount;
+  struct _VF_AVL_TABLE* Tables;
+  U32 TablesNo;
+  union
+  {
+    union
+    {
+      U32 NodeSize;
+      U32 UseLookaside;
+    }; 
+  } u1;
+} VF_AVL_TREE, *PVF_AVL_TREE; 
+

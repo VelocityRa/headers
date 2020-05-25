@@ -1,0 +1,67 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _PO_HIBER_PERF
+{
+  U64 IoTicks;
+  U64 InitTicks;
+  U64 CopyTicks;
+  U64 StartCount;
+  U32 ElapsedTime;
+  U32 IoTime;
+  U32 CopyTime;
+  U32 InitTime;
+  U32 PagesWritten;
+  U32 PagesProcessed;
+  U32 BytesCopied;
+  U32 DumpCount;
+  U32 FileRuns;
+  U64 ResumeAppStartTime;
+  U64 ResumeAppEndTime;
+  U64 HiberFileResumeTime;
+} PO_HIBER_PERF, *PPO_HIBER_PERF; 
+
+struct PO_MEMORY_IMAGE
+{
+  U32 Signature;
+  U32 ImageType;
+  U32 CheckSum;
+  U32 LengthSelf;
+  U64 PageSelf;
+  U32 PageSize;
+  union _LARGE_INTEGER SystemTime;
+  U64 InterruptTime;
+  U32 FeatureFlags;
+  U8 HiberFlags;
+  U8 spare[3];
+  U32 NoHiberPtes;
+  U64 HiberVa;
+  union _LARGE_INTEGER HiberPte;
+  U32 NoFreePages;
+  U32 FreeMapCheck;
+  U32 WakeCheck;
+  U64 TotalPages;
+  U64 FirstTablePage;
+  U64 LastFilePage;
+  struct _PO_HIBER_PERF PerfInfo;
+  U32 NoBootLoaderLogPages;
+  U64 BootLoaderLogPages[8];
+  U32 TotalPhysicalMemoryCount;
+  S32 __PADDING__[1];
+}; 
+

@@ -1,0 +1,13 @@
+typedef union _HEAP_LFH_SUBSEGMENT_DELAY_FREE
+{
+  union
+  {
+    struct 
+    {
+      U32 DelayFree : 1; 
+      U32 Count : 31; 
+    }; 
+    void* AllBits;
+  }; 
+} HEAP_LFH_SUBSEGMENT_DELAY_FREE, *PHEAP_LFH_SUBSEGMENT_DELAY_FREE; 
+

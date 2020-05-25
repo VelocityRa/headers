@@ -1,0 +1,32 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _CM_TRANS_PTR
+{
+  union
+  {
+    U64 LightWeight : 1; 
+    void* TransPtr;
+  }; 
+} CM_TRANS_PTR, *PCM_TRANS_PTR; 
+
+typedef struct _CM_KEY_BODY
+{
+  U32 Type;
+  struct _CM_KEY_CONTROL_BLOCK* KeyControlBlock;
+  struct _CM_NOTIFY_BLOCK* NotifyBlock;
+  void* ProcessID;
+  struct _LIST_ENTRY KeyBodyList;
+  struct 
+  {
+    U32 Flags : 16; 
+    U32 HandleTags : 16; 
+  }; 
+  union _CM_TRANS_PTR Trans;
+  struct _GUID* KtmUow;
+  struct _LIST_ENTRY ContextListHead;
+} CM_KEY_BODY, *PCM_KEY_BODY; 
+

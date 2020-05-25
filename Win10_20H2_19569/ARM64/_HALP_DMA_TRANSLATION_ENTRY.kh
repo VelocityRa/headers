@@ -1,0 +1,33 @@
+typedef struct _HALP_DMA_TRANSLATION_ENTRY
+{
+  U64 PhysicalAddress;
+  struct _HALP_DMA_TRANSLATION_ENTRY* Next;
+  U32 MappedLength;
+  U64 LogicalAddress;
+  U64 LogicalMappedLength;
+  U64 NextLogicalAddress;
+  union
+  {
+    union
+    {
+      void* VirtualAddress;
+      struct
+      {
+        struct 
+        {
+          U64 BoundToMaster : 1; 
+          U64 BoundToScatterPool : 1; 
+          U64 OwnedByMaster : 1; 
+          U64 OwnedByScatterPool : 1; 
+          U64 TemporaryMapping : 1; 
+          U64 ZeroBuffer : 1; 
+          U64 Address : 58; 
+        }; 
+      } Flags;
+    }; 
+  } u;
+  struct _HALP_DMA_TRANSLATION_ENTRY* NextMapping;
+  U8 LogicalBounceBufferPremapped;
+  char __PADDING__[7];
+} HALP_DMA_TRANSLATION_ENTRY, *PHALP_DMA_TRANSLATION_ENTRY; 
+

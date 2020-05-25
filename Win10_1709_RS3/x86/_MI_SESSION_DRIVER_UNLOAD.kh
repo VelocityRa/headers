@@ -1,0 +1,9 @@
+typedef struct _MI_SESSION_DRIVER_UNLOAD
+{
+  union
+  {
+    void* Function;
+    U32 FunctionValue;
+  }; 
+} MI_SESSION_DRIVER_UNLOAD, *PMI_SESSION_DRIVER_UNLOAD; 
+

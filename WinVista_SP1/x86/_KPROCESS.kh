@@ -1,0 +1,155 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 Abandoned;
+        U8 Absolute;
+        U8 NpxIrql;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 Size;
+            struct
+            {
+              U8 Hand;
+              union
+              {
+                U8 Inserted;
+                U8 DebugActive;
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KGDTENTRY
+{
+  U16 LimitLow;
+  U16 BaseLow;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U8 BaseMid;
+        U8 Flags1;
+        U8 Flags2;
+        U8 BaseHi;
+      } Bytes;
+      struct
+      {
+        struct 
+        {
+          U32 BaseMid : 8; 
+          U32 Type : 5; 
+          U32 Dpl : 2; 
+          U32 Pres : 1; 
+          U32 LimitHi : 4; 
+          U32 Sys : 1; 
+          U32 Reserved_0 : 1; 
+          U32 Default_Big : 1; 
+          U32 Granularity : 1; 
+          U32 BaseHi : 8; 
+        }; 
+      } Bits;
+    }; 
+  } HighWord;
+} KGDTENTRY, *PKGDTENTRY; 
+
+typedef struct _KIDTENTRY
+{
+  U16 Offset;
+  U16 Selector;
+  U16 Access;
+  U16 ExtendedOffset;
+} KIDTENTRY, *PKIDTENTRY; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _KEXECUTE_OPTIONS
+{
+  struct 
+  {
+    U8 ExecuteDisable : 1; 
+    U8 ExecuteEnable : 1; 
+    U8 DisableThunkEmulation : 1; 
+    U8 Permanent : 1; 
+    U8 ExecuteDispatchEnable : 1; 
+    U8 ImageDispatchEnable : 1; 
+    U8 DisableExceptionChainValidation : 1; 
+    U8 Spare : 1; 
+  }; 
+} KEXECUTE_OPTIONS, *PKEXECUTE_OPTIONS; 
+
+typedef struct _KPROCESS
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY ProfileListHead;
+  U32 DirectoryTableBase;
+  U32 Unused0;
+  struct _KGDTENTRY LdtDescriptor;
+  struct _KIDTENTRY Int21Descriptor;
+  U16 IopmOffset;
+  U8 Unused1;
+  U8 Unused2;
+  volatile U32 ActiveProcessors;
+  U32 KernelTime;
+  U32 UserTime;
+  struct _LIST_ENTRY ReadyListHead;
+  struct _SINGLE_LIST_ENTRY SwapListEntry;
+  void* VdmTrapcHandler;
+  struct _LIST_ENTRY ThreadListHead;
+  U32 ProcessLock;
+  U32 Affinity;
+  union
+  {
+    struct 
+    {
+      volatile S32 AutoAlignment : 1; 
+      volatile S32 DisableBoost : 1; 
+      volatile S32 DisableQuantum : 1; 
+      volatile S32 ReservedFlags : 29; 
+    }; 
+    volatile S32 ProcessFlags;
+  }; 
+  char BasePriority;
+  char QuantumReset;
+  U8 State;
+  U8 ThreadSeed;
+  U8 PowerState;
+  U8 IdealNode;
+  U8 Visited;
+  union
+  {
+    struct _KEXECUTE_OPTIONS Flags;
+    U8 ExecuteOptions;
+  }; 
+  U32 StackCount;
+  struct _LIST_ENTRY ProcessListEntry;
+  volatile U64 CycleTime;
+} KPROCESS, *PKPROCESS; 
+

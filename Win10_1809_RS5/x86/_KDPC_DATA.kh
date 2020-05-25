@@ -1,0 +1,20 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _KDPC_LIST
+{
+  struct _SINGLE_LIST_ENTRY ListHead;
+  struct _SINGLE_LIST_ENTRY* LastEntry;
+} KDPC_LIST, *PKDPC_LIST; 
+
+typedef struct _KDPC_DATA
+{
+  struct _KDPC_LIST DpcList;
+  U32 DpcLock;
+  volatile S32 DpcQueueDepth;
+  U32 DpcCount;
+  struct _KDPC* volatile ActiveDpc;
+} KDPC_DATA, *PKDPC_DATA; 
+

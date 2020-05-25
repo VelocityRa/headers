@@ -1,0 +1,19 @@
+typedef struct _IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY
+{
+  U32 BeginAddress;
+  union
+  {
+    U32 UnwindData;
+    struct 
+    {
+      U32 Flag : 2; 
+      U32 FunctionLength : 11; 
+      U32 RegF : 3; 
+      U32 RegI : 4; 
+      U32 H : 1; 
+      U32 CR : 2; 
+      U32 FrameSize : 9; 
+    }; 
+  }; 
+} IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY, *PIMAGE_ARM64_RUNTIME_FUNCTION_ENTRY; 
+

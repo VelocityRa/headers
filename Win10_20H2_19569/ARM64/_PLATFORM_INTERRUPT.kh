@@ -1,0 +1,13 @@
+typedef struct _PLATFORM_INTERRUPT
+{
+  U8 Type;
+  U8 Length;
+  U16 Flags;
+  U8 InterruptType;
+  U8 APICID;
+  U8 ACPIEID;
+  U8 IOSAPICVector;
+  U32 GlobalVector;
+  U32 Reserved;
+} PLATFORM_INTERRUPT, *PPLATFORM_INTERRUPT; 
+

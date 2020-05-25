@@ -1,0 +1,20 @@
+typedef struct _HAL_CLOCK_TIMER_CONFIGURATION
+{
+  union
+  {
+    U8 Flags;
+    struct 
+    {
+      U8 AlwaysOnTimer : 1; 
+      U8 HighLatency : 1; 
+      U8 PerCpuTimer : 1; 
+      U8 DynamicTickSupported : 1; 
+    }; 
+  }; 
+  U32 KnownType;
+  U32 Capabilities;
+  U64 MaxIncrement;
+  U32 MinIncrement;
+  S32 __PADDING__[1];
+} HAL_CLOCK_TIMER_CONFIGURATION, *PHAL_CLOCK_TIMER_CONFIGURATION; 
+

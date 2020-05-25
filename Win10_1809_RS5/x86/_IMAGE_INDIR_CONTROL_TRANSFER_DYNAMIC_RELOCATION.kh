@@ -1,0 +1,12 @@
+typedef struct _IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION
+{
+  struct 
+  {
+    U16 PageRelativeOffset : 12; 
+    U16 IndirectCall : 1; 
+    U16 RexWPrefix : 1; 
+    U16 CfgCheck : 1; 
+    U16 Reserved : 1; 
+  }; 
+} IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION, *PIMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION; 
+

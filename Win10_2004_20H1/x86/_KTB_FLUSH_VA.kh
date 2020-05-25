@@ -1,0 +1,17 @@
+typedef struct _KTB_FLUSH_VA
+{
+  union
+  {
+    union
+    {
+      struct 
+      {
+        U32 NumberOfEntries : 10; 
+        U32 PageSize : 2; 
+      }; 
+      void* Va;
+      U32 VaLong;
+    }; 
+  } u1;
+} KTB_FLUSH_VA, *PKTB_FLUSH_VA; 
+

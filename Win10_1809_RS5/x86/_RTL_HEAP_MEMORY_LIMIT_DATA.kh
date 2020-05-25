@@ -1,0 +1,8 @@
+typedef struct _RTL_HEAP_MEMORY_LIMIT_DATA
+{
+  U32 CommitLimitBytes;
+  U32 CommitLimitFailureCode;
+  U32 MaxAllocationSizeBytes;
+  U32 AllocationLimitFailureCode;
+} RTL_HEAP_MEMORY_LIMIT_DATA, *PRTL_HEAP_MEMORY_LIMIT_DATA; 
+

@@ -1,0 +1,14 @@
+typedef struct _DEVICE_FLAGS
+{
+  struct 
+  {
+    U32 Failed : 1; 
+    U32 ReadOnly : 1; 
+    U32 Removable : 1; 
+    U32 ConsoleIn : 1; 
+    U32 ConsoleOut : 1; 
+    U32 Input : 1; 
+    U32 Output : 1; 
+  }; 
+} DEVICE_FLAGS, *PDEVICE_FLAGS; 
+

@@ -1,0 +1,6 @@
+typedef struct _PHYSICAL_MEMORY_RUN
+{
+  U64 BasePage;
+  U64 PageCount;
+} PHYSICAL_MEMORY_RUN, *PPHYSICAL_MEMORY_RUN; 
+

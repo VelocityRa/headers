@@ -1,0 +1,136 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _CHILD_LIST
+{
+  U32 Count;
+  U32 List;
+} CHILD_LIST, *PCHILD_LIST; 
+
+typedef struct _CM_KEY_REFERENCE
+{
+  U32 KeyCell;
+  struct _HHIVE* KeyHive;
+} CM_KEY_REFERENCE, *PCM_KEY_REFERENCE; 
+
+typedef struct _CM_KEY_NODE
+{
+  U16 Signature;
+  U16 Flags;
+  union _LARGE_INTEGER LastWriteTime;
+  U8 AccessBits;
+  struct 
+  {
+    U8 LayerSemantics : 2; 
+    U8 Spare1 : 5; 
+    U8 InheritClass : 1; 
+  }; 
+  U16 Spare2;
+  U32 Parent;
+  U32 SubKeyCounts[2];
+  union
+  {
+    struct
+    {
+      U32 SubKeyLists[2];
+      struct _CHILD_LIST ValueList;
+    }; 
+    struct _CM_KEY_REFERENCE ChildHiveReference;
+  }; 
+  U32 Security;
+  U32 Class;
+  struct 
+  {
+    U32 MaxNameLen : 16; 
+    U32 UserFlags : 4; 
+    U32 VirtControlFlags : 4; 
+    U32 Debug : 8; 
+  }; 
+  U32 MaxClassLen;
+  U32 MaxValueNameLen;
+  U32 MaxValueDataLen;
+  U32 WorkVar;
+  U16 NameLength;
+  U16 ClassLength;
+  wchar_t Name[1];
+  char __PADDING__[2];
+} CM_KEY_NODE, *PCM_KEY_NODE; 
+
+typedef struct _CM_KEY_VALUE
+{
+  U16 Signature;
+  U16 NameLength;
+  U32 DataLength;
+  U32 Data;
+  U32 Type;
+  U16 Flags;
+  U16 Spare;
+  wchar_t Name[1];
+  char __PADDING__[2];
+} CM_KEY_VALUE, *PCM_KEY_VALUE; 
+
+typedef struct _SECURITY_DESCRIPTOR_RELATIVE
+{
+  U8 Revision;
+  U8 Sbz1;
+  U16 Control;
+  U32 Owner;
+  U32 Group;
+  U32 Sacl;
+  U32 Dacl;
+} SECURITY_DESCRIPTOR_RELATIVE, *PSECURITY_DESCRIPTOR_RELATIVE; 
+
+typedef struct _CM_KEY_SECURITY
+{
+  U16 Signature;
+  U16 Reserved;
+  U32 Flink;
+  U32 Blink;
+  U32 ReferenceCount;
+  U32 DescriptorLength;
+  struct _SECURITY_DESCRIPTOR_RELATIVE Descriptor;
+} CM_KEY_SECURITY, *PCM_KEY_SECURITY; 
+
+typedef struct _CM_KEY_INDEX
+{
+  U16 Signature;
+  U16 Count;
+  U32 List[1];
+} CM_KEY_INDEX, *PCM_KEY_INDEX; 
+
+typedef struct _CM_BIG_DATA
+{
+  U16 Signature;
+  U16 Count;
+  U32 List;
+} CM_BIG_DATA, *PCM_BIG_DATA; 
+
+typedef union _u
+{
+  union
+  {
+    struct _CM_KEY_NODE KeyNode;
+    struct _CM_KEY_VALUE KeyValue;
+    struct _CM_KEY_SECURITY KeySecurity;
+    struct _CM_KEY_INDEX KeyIndex;
+    struct _CM_BIG_DATA ValueData;
+    U32 KeyList[1];
+    wchar_t KeyString[1];
+  }; 
+} u, *Pu; 
+

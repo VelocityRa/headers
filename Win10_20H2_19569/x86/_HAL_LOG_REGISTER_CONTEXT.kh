@@ -1,0 +1,6 @@
+typedef struct _HAL_LOG_REGISTER_CONTEXT
+{
+  void* LogRoutine;
+  U32 Flag;
+} HAL_LOG_REGISTER_CONTEXT, *PHAL_LOG_REGISTER_CONTEXT; 
+

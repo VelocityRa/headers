@@ -1,0 +1,15 @@
+typedef struct _MI_STORE_INPAGE_COMPLETE_FLAGS
+{
+  union
+  {
+    U32 EntireFlags;
+    struct 
+    {
+      U32 StoreFault : 1; 
+      U32 LowResourceFailure : 1; 
+      U32 Spare : 14; 
+      U32 RemainingPageCount : 16; 
+    }; 
+  }; 
+} MI_STORE_INPAGE_COMPLETE_FLAGS, *PMI_STORE_INPAGE_COMPLETE_FLAGS; 
+

@@ -1,0 +1,6 @@
+typedef struct _XSTATE_FEATURE
+{
+  U32 Offset;
+  U32 Size;
+} XSTATE_FEATURE, *PXSTATE_FEATURE; 
+

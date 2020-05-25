@@ -1,0 +1,76 @@
+typedef struct _HEAP_ENTRY
+{
+  union
+  {
+    struct
+    {
+      void* PreviousBlockPrivateData;
+      union
+      {
+        struct
+        {
+          U16 Size;
+          U8 Flags;
+          U8 SmallTagIndex;
+        }; 
+        struct
+        {
+          U32 SubSegmentCode;
+          U16 PreviousSize;
+          union
+          {
+            U8 SegmentOffset;
+            struct
+            {
+              U8 LFHFlags;
+              U8 UnusedBytes;
+            }; 
+          }; 
+        }; 
+        U64 CompactHeader;
+      }; 
+    }; 
+    struct
+    {
+      void* Reserved;
+      union
+      {
+        struct
+        {
+          U16 FunctionIndex;
+          U16 ContextValue;
+        }; 
+        struct
+        {
+          U32 InterceptorValue;
+          U16 UnusedBytesLength;
+          U8 EntryOffset;
+          U8 ExtendedBlockSignature;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      void* ReservedForAlignment;
+      union
+      {
+        struct
+        {
+          U32 Code1;
+          union
+          {
+            struct
+            {
+              U16 Code2;
+              U8 Code3;
+              U8 Code4;
+            }; 
+            U32 Code234;
+          }; 
+        }; 
+        U64 AgregateCode;
+      }; 
+    }; 
+  }; 
+} HEAP_ENTRY, *PHEAP_ENTRY; 
+

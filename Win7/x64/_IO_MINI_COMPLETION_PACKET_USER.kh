@@ -1,0 +1,20 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _IO_MINI_COMPLETION_PACKET_USER
+{
+  struct _LIST_ENTRY ListEntry;
+  U32 PacketType;
+  void* KeyContext;
+  void* ApcContext;
+  S32 IoStatus;
+  U64 IoStatusInformation;
+  void* MiniPacketCallback;
+  void* Context;
+  U8 Allocated;
+  char __PADDING__[7];
+} IO_MINI_COMPLETION_PACKET_USER, *PIO_MINI_COMPLETION_PACKET_USER; 
+

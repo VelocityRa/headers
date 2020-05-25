@@ -1,0 +1,22 @@
+typedef struct _RTL_CSPARSE_BITMAP
+{
+  U32 CommitDirectory;
+  U32* CommitBitmap;
+  U32* UserBitmap;
+  S32 BitCount;
+  U32 BitmapLock;
+  U32 DecommitPageIndex;
+  U32 RtlpCSparseBitmapWakeLock;
+  U8 LockType;
+  U8 AddressSpace;
+  U8 MemType;
+  U8 AllocAlignment;
+} RTL_CSPARSE_BITMAP, *PRTL_CSPARSE_BITMAP; 
+
+typedef struct _RTL_SPARSE_ARRAY
+{
+  struct _RTL_CSPARSE_BITMAP Bitmap;
+  U32 ElementCount;
+  U32 ElementSizeShift;
+} RTL_SPARSE_ARRAY, *PRTL_SPARSE_ARRAY; 
+

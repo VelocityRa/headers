@@ -1,0 +1,9 @@
+typedef struct _LOADER_BUGCHECK_PARAMETERS
+{
+  U32 BugcheckCode;
+  U32 BugcheckParameter1;
+  U32 BugcheckParameter2;
+  U32 BugcheckParameter3;
+  U32 BugcheckParameter4;
+} LOADER_BUGCHECK_PARAMETERS, *PLOADER_BUGCHECK_PARAMETERS; 
+

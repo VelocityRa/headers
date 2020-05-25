@@ -1,0 +1,20 @@
+typedef struct _PROC_PERF_HISTORY_ENTRY
+{
+  U16 Utility;
+  U16 AffinitizedUtility;
+  U8 Frequency;
+  U8 TaggedPercent[2];
+  char __PADDING__[1];
+} PROC_PERF_HISTORY_ENTRY, *PPROC_PERF_HISTORY_ENTRY; 
+
+typedef struct _PROC_PERF_HISTORY
+{
+  U32 Count;
+  U32 Slot;
+  U32 UtilityTotal;
+  U32 AffinitizedUtilityTotal;
+  U32 FrequencyTotal;
+  U32 TaggedPercentTotal[2];
+  struct _PROC_PERF_HISTORY_ENTRY HistoryList[1];
+} PROC_PERF_HISTORY, *PPROC_PERF_HISTORY; 
+

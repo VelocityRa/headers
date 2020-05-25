@@ -1,0 +1,19 @@
+typedef struct _WHEA_GENERIC_PROCESSOR_ERROR
+{
+  U64 ValidBits;
+  U8 ProcessorType;
+  U8 InstructionSet;
+  U8 ErrorType;
+  U8 Operation;
+  U8 Flags;
+  U8 Level;
+  U16 Reserved;
+  U64 CPUVersion;
+  U8 CPUBrandString[128];
+  U64 ProcessorId;
+  U64 TargetAddress;
+  U64 RequestorId;
+  U64 ResponderId;
+  U64 InstructionPointer;
+} WHEA_GENERIC_PROCESSOR_ERROR, *PWHEA_GENERIC_PROCESSOR_ERROR; 
+

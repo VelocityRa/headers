@@ -1,0 +1,131 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef enum _LDR_DLL_LOAD_REASON
+{
+  LoadReasonStaticDependency = 0,
+  LoadReasonStaticForwarderDependency = 1,
+  LoadReasonDynamicForwarderDependency = 2,
+  LoadReasonDelayloadDependency = 3,
+  LoadReasonDynamicLoad = 4,
+  LoadReasonAsImageLoad = 5,
+  LoadReasonAsDataLoad = 6,
+  LoadReasonUnknown = -1,
+} LDR_DLL_LOAD_REASON, *PLDR_DLL_LOAD_REASON;
+
+typedef struct _LDR_DATA_TABLE_ENTRY
+{
+  struct _LIST_ENTRY InLoadOrderLinks;
+  struct _LIST_ENTRY InMemoryOrderLinks;
+  union
+  {
+    struct _LIST_ENTRY InInitializationOrderLinks;
+    struct _LIST_ENTRY InProgressLinks;
+  }; 
+  void* DllBase;
+  void* EntryPoint;
+  U32 SizeOfImage;
+  struct _UNICODE_STRING FullDllName;
+  struct _UNICODE_STRING BaseDllName;
+  union
+  {
+    U8 FlagGroup[4];
+    U32 Flags;
+    struct 
+    {
+      U32 PackagedBinary : 1; 
+      U32 MarkedForRemoval : 1; 
+      U32 ImageDll : 1; 
+      U32 LoadNotificationsSent : 1; 
+      U32 TelemetryEntryProcessed : 1; 
+      U32 ProcessStaticImport : 1; 
+      U32 InLegacyLists : 1; 
+      U32 InIndexes : 1; 
+      U32 ShimDll : 1; 
+      U32 InExceptionTable : 1; 
+      U32 ReservedFlags1 : 2; 
+      U32 LoadInProgress : 1; 
+      U32 ReservedFlags2 : 1; 
+      U32 EntryProcessed : 1; 
+      U32 ReservedFlags3 : 3; 
+      U32 DontCallForThreads : 1; 
+      U32 ProcessAttachCalled : 1; 
+      U32 ProcessAttachFailed : 1; 
+      U32 CorDeferredValidate : 1; 
+      U32 CorImage : 1; 
+      U32 DontRelocate : 1; 
+      U32 CorILOnly : 1; 
+      U32 ReservedFlags5 : 3; 
+      U32 Redirected : 1; 
+      U32 ReservedFlags6 : 2; 
+      U32 CompatDatabaseProcessed : 1; 
+    }; 
+  }; 
+  U16 ObsoleteLoadCount;
+  U16 TlsIndex;
+  struct _LIST_ENTRY HashLinks;
+  U32 TimeDateStamp;
+  struct _ACTIVATION_CONTEXT* EntryPointActivationContext;
+  void* Spare;
+  struct _LDR_DDAG_NODE* DdagNode;
+  struct _LIST_ENTRY NodeModuleLink;
+  struct _LDRP_DLL_SNAP_CONTEXT* SnapContext;
+  void* ParentDllBase;
+  void* SwitchBackContext;
+  struct _RTL_BALANCED_NODE BaseAddressIndexNode;
+  struct _RTL_BALANCED_NODE MappingInfoIndexNode;
+  U64 OriginalBase;
+  union _LARGE_INTEGER LoadTime;
+  U32 BaseNameHashValue;
+  enum _LDR_DLL_LOAD_REASON LoadReason;
+  U32 ImplicitPathOptions;
+  S32 __PADDING__[1];
+} LDR_DATA_TABLE_ENTRY, *PLDR_DATA_TABLE_ENTRY; 
+

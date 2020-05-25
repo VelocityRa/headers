@@ -1,0 +1,20 @@
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _TOKEN_SOURCE
+{
+  char SourceName[8];
+  struct _LUID SourceIdentifier;
+} TOKEN_SOURCE, *PTOKEN_SOURCE; 
+
+typedef struct _TOKEN_CONTROL
+{
+  struct _LUID TokenId;
+  struct _LUID AuthenticationId;
+  struct _LUID ModifiedId;
+  struct _TOKEN_SOURCE TokenSource;
+} TOKEN_CONTROL, *PTOKEN_CONTROL; 
+

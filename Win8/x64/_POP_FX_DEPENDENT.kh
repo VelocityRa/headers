@@ -1,0 +1,6 @@
+typedef struct _POP_FX_DEPENDENT
+{
+  U32 Index;
+  U32 ProviderIndex;
+} POP_FX_DEPENDENT, *PPOP_FX_DEPENDENT; 
+

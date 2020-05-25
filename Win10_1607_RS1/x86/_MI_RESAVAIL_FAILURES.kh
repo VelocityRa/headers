@@ -1,0 +1,6 @@
+typedef struct _MI_RESAVAIL_FAILURES
+{
+  U32 Wrap;
+  U32 NoCharge;
+} MI_RESAVAIL_FAILURES, *PMI_RESAVAIL_FAILURES; 
+

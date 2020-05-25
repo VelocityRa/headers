@@ -1,0 +1,105 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _HEAP_ENTRY_EXTRA
+{
+  union
+  {
+    struct
+    {
+      U16 AllocatorBackTraceIndex;
+      U16 TagIndex;
+      U64 Settable;
+    }; 
+    struct
+    {
+      U64 ZeroInit;
+      U64 ZeroInit1;
+    }; 
+  }; 
+} HEAP_ENTRY_EXTRA, *PHEAP_ENTRY_EXTRA; 
+
+typedef struct _HEAP_ENTRY
+{
+  union
+  {
+    struct
+    {
+      void* PreviousBlockPrivateData;
+      union
+      {
+        struct
+        {
+          U16 Size;
+          U8 Flags;
+          U8 SmallTagIndex;
+          U16 PreviousSize;
+          union
+          {
+            U8 SegmentOffset;
+            struct
+            {
+              U8 LFHFlags;
+              U8 UnusedBytes;
+            }; 
+          }; 
+        }; 
+        U64 CompactHeader;
+      }; 
+    }; 
+    struct
+    {
+      void* Reserved;
+      union
+      {
+        struct
+        {
+          U16 FunctionIndex;
+          U16 ContextValue;
+        }; 
+        struct
+        {
+          U32 InterceptorValue;
+          U16 UnusedBytesLength;
+          U8 EntryOffset;
+          U8 ExtendedBlockSignature;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      void* ReservedForAlignment;
+      union
+      {
+        struct
+        {
+          U32 Code1;
+          union
+          {
+            struct
+            {
+              U16 Code2;
+              U8 Code3;
+              U8 Code4;
+            }; 
+            U32 Code234;
+          }; 
+        }; 
+        U64 AgregateCode;
+      }; 
+    }; 
+  }; 
+} HEAP_ENTRY, *PHEAP_ENTRY; 
+
+typedef struct _HEAP_VIRTUAL_ALLOC_ENTRY
+{
+  struct _LIST_ENTRY Entry;
+  struct _HEAP_ENTRY_EXTRA ExtraStuff;
+  U64 CommitSize;
+  U64 ReserveSize;
+  struct _HEAP_ENTRY BusyBlock;
+} HEAP_VIRTUAL_ALLOC_ENTRY, *PHEAP_VIRTUAL_ALLOC_ENTRY; 
+

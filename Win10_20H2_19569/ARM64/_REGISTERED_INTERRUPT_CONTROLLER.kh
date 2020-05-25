@@ -1,0 +1,123 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _INTERRUPT_FUNCTION_TABLE
+{
+  void* InitializeLocalUnit;
+  void* InitializeIoUnit;
+  void* SetPriority;
+  void* GetLocalUnitError;
+  void* ClearLocalUnitError;
+  void* GetLogicalId;
+  void* SetLogicalId;
+  void* AcceptAndGetSource;
+  void* EndOfInterrupt;
+  void* FastEndOfInterrupt;
+  void* SetLineState;
+  void* RequestInterrupt;
+  void* StartProcessor;
+  void* GenerateMessage;
+  void* ConvertId;
+  void* SaveLocalInterrupts;
+  void* ReplayLocalInterrupts;
+  void* DeinitializeLocalUnit;
+  void* DeinitializeIoUnit;
+  void* QueryAndGetSource;
+  void* DeactivateInterrupt;
+  void* DirectedEndOfInterrupt;
+  void* QueryLocalUnitInfo;
+} INTERRUPT_FUNCTION_TABLE, *PINTERRUPT_FUNCTION_TABLE; 
+
+typedef enum _KNOWN_CONTROLLER_TYPE
+{
+  InterruptControllerInvalid = 0,
+  InterruptControllerPic = 1,
+  InterruptControllerApic = 2,
+  InterruptControllerGic = 3,
+  InterruptControllerGicV3 = 4,
+  InterruptControllerGicV4 = 5,
+  InterruptControllerBcm = 6,
+  InterruptControllerUnknown = 4096,
+} KNOWN_CONTROLLER_TYPE, *PKNOWN_CONTROLLER_TYPE;
+
+typedef enum _INTERRUPT_PROBLEM
+{
+  InterruptProblemNone = 0,
+  InterruptProblemMadtParsingFailure = 1,
+  InterruptProblemNoControllersFound = 2,
+  InterruptProblemFailedDiscovery = 3,
+  InterruptProblemInitializeLocalUnitFailed = 4,
+  InterruptProblemInitializeIoUnitFailed = 5,
+  InterruptProblemSetLogicalIdFailed = 6,
+  InterruptProblemSetLineStateFailed = 7,
+  InterruptProblemGenerateMessageFailed = 8,
+  InterruptProblemConvertIdFailed = 9,
+  InterruptProblemCmciSetupFailed = 10,
+  InterruptProblemQueryMaxProcessorsCalledTooEarly = 11,
+  InterruptProblemProcessorReset = 12,
+  InterruptProblemStartProcessorFailed = 13,
+  InterruptProblemProcessorNotAlive = 14,
+  InterruptProblemLowerIrqlViolation = 15,
+  InterruptProblemInvalidIrql = 16,
+  InterruptProblemNoSuchController = 17,
+  InterruptProblemNoSuchLines = 18,
+  InterruptProblemBadConnectionData = 19,
+  InterruptProblemBadRoutingData = 20,
+  InterruptProblemInvalidProcessor = 21,
+  InterruptProblemFailedToAttainTarget = 22,
+  InterruptProblemUnsupportedWiringConfiguration = 23,
+  InterruptProblemSpareAlreadyStarted = 24,
+  InterruptProblemClusterNotFullyReplaced = 25,
+  InterruptProblemNewClusterAlreadyActive = 26,
+  InterruptProblemNewClusterTooLarge = 27,
+  InterruptProblemCannotHardwareQuiesce = 28,
+  InterruptProblemIpiDestinationUpdateFailed = 29,
+  InterruptProblemNoMemory = 30,
+  InterruptProblemNoIrtEntries = 31,
+  InterruptProblemConnectionDataBaitAndSwitch = 32,
+  InterruptProblemInvalidLogicalFlatId = 33,
+  InterruptProblemDeinitializeLocalUnitFailed = 34,
+  InterruptProblemDeinitializeIoUnitFailed = 35,
+  InterruptProblemMismatchedThermalLvtIsr = 36,
+  InterruptProblemHvRetargetFailed = 37,
+  InterruptProblemDeferredErrorSetupFailed = 38,
+} INTERRUPT_PROBLEM, *PINTERRUPT_PROBLEM;
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _REGISTERED_INTERRUPT_CONTROLLER
+{
+  struct _LIST_ENTRY ListEntry;
+  void* InternalData;
+  U32 InternalDataSize;
+  struct _INTERRUPT_FUNCTION_TABLE FunctionTable;
+  enum _KNOWN_CONTROLLER_TYPE KnownType;
+  U32 Capabilities;
+  U32 Flags;
+  U32 MaxPriority;
+  U32 UnitId;
+  struct _LIST_ENTRY LinesHead;
+  struct _LIST_ENTRY OutputLinesHead;
+  S32 MinLine;
+  S32 MaxLine;
+  U32 MaxClusterSize;
+  U32 MaxClusters;
+  U32 InterruptReplayDataSize;
+  enum _INTERRUPT_PROBLEM Problem;
+  S32 ProblemStatus;
+  const char* ProblemSourceFile;
+  U32 ProblemSourceLine;
+  U32 CustomProblem;
+  S32 CustomProblemStatus;
+  struct _UNICODE_STRING ResourceId;
+  struct POHANDLE__* PowerHandle;
+} REGISTERED_INTERRUPT_CONTROLLER, *PREGISTERED_INTERRUPT_CONTROLLER; 
+

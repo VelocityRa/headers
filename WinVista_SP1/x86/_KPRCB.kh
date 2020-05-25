@@ -1,0 +1,600 @@
+typedef struct _FLOATING_SAVE_AREA
+{
+  U32 ControlWord;
+  U32 StatusWord;
+  U32 TagWord;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U8 RegisterArea[80];
+  U32 Cr0NpxState;
+} FLOATING_SAVE_AREA, *PFLOATING_SAVE_AREA; 
+
+typedef struct _CONTEXT
+{
+  U32 ContextFlags;
+  U32 Dr0;
+  U32 Dr1;
+  U32 Dr2;
+  U32 Dr3;
+  U32 Dr6;
+  U32 Dr7;
+  struct _FLOATING_SAVE_AREA FloatSave;
+  U32 SegGs;
+  U32 SegFs;
+  U32 SegEs;
+  U32 SegDs;
+  U32 Edi;
+  U32 Esi;
+  U32 Ebx;
+  U32 Edx;
+  U32 Ecx;
+  U32 Eax;
+  U32 Ebp;
+  U32 Eip;
+  U32 SegCs;
+  U32 EFlags;
+  U32 Esp;
+  U32 SegSs;
+  U8 ExtendedRegisters[512];
+} CONTEXT, *PCONTEXT; 
+
+typedef struct _DESCRIPTOR
+{
+  U16 Pad;
+  U16 Limit;
+  U32 Base;
+} DESCRIPTOR, *PDESCRIPTOR; 
+
+typedef struct _KSPECIAL_REGISTERS
+{
+  U32 Cr0;
+  U32 Cr2;
+  U32 Cr3;
+  U32 Cr4;
+  U32 KernelDr0;
+  U32 KernelDr1;
+  U32 KernelDr2;
+  U32 KernelDr3;
+  U32 KernelDr6;
+  U32 KernelDr7;
+  struct _DESCRIPTOR Gdtr;
+  struct _DESCRIPTOR Idtr;
+  U16 Tr;
+  U16 Ldtr;
+  U32 Reserved[6];
+} KSPECIAL_REGISTERS, *PKSPECIAL_REGISTERS; 
+
+typedef struct _KPROCESSOR_STATE
+{
+  struct _CONTEXT ContextFrame;
+  struct _KSPECIAL_REGISTERS SpecialRegisters;
+} KPROCESSOR_STATE, *PKPROCESSOR_STATE; 
+
+typedef struct _KSPIN_LOCK_QUEUE
+{
+  struct _KSPIN_LOCK_QUEUE* volatile Next;
+  U32* volatile Lock;
+} KSPIN_LOCK_QUEUE, *PKSPIN_LOCK_QUEUE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _PP_LOOKASIDE_LIST
+{
+  struct _GENERAL_LOOKASIDE* P;
+  struct _GENERAL_LOOKASIDE* L;
+} PP_LOOKASIDE_LIST, *PPP_LOOKASIDE_LIST; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 Sequence;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+} POOL_TYPE, *PPOOL_TYPE;
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _GENERAL_LOOKASIDE_POOL
+{
+  union
+  {
+    union _SLIST_HEADER ListHead;
+    struct _SINGLE_LIST_ENTRY SingleListHead;
+  }; 
+  U16 Depth;
+  U16 MaximumDepth;
+  U32 TotalAllocates;
+  union
+  {
+    U32 AllocateMisses;
+    U32 AllocateHits;
+  }; 
+  U32 TotalFrees;
+  union
+  {
+    U32 FreeMisses;
+    U32 FreeHits;
+  }; 
+  enum _POOL_TYPE Type;
+  U32 Tag;
+  U32 Size;
+  union
+  {
+    void* AllocateEx;
+    void* Allocate;
+  }; 
+  union
+  {
+    void* FreeEx;
+    void* Free;
+  }; 
+  struct _LIST_ENTRY ListEntry;
+  U32 LastTotalAllocates;
+  union
+  {
+    U32 LastAllocateMisses;
+    U32 LastAllocateHits;
+  }; 
+  U32 Future[2];
+} GENERAL_LOOKASIDE_POOL, *PGENERAL_LOOKASIDE_POOL; 
+
+typedef struct _KDPC_DATA
+{
+  struct _LIST_ENTRY DpcListHead;
+  U32 DpcLock;
+  volatile S32 DpcQueueDepth;
+  U32 DpcCount;
+} KDPC_DATA, *PKDPC_DATA; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 Abandoned;
+        U8 Absolute;
+        U8 NpxIrql;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 Size;
+            struct
+            {
+              U8 Hand;
+              union
+              {
+                U8 Inserted;
+                U8 DebugActive;
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _KDPC
+{
+  U8 Type;
+  U8 Importance;
+  volatile U16 Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _FNSAVE_FORMAT
+{
+  U32 ControlWord;
+  U32 StatusWord;
+  U32 TagWord;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U8 RegisterArea[80];
+} FNSAVE_FORMAT, *PFNSAVE_FORMAT; 
+
+typedef struct _FXSAVE_FORMAT
+{
+  U16 ControlWord;
+  U16 StatusWord;
+  U16 TagWord;
+  U16 ErrorOpcode;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U32 MXCsr;
+  U32 MXCsrMask;
+  U8 RegisterArea[128];
+  U8 Reserved3[128];
+  U8 Reserved4[224];
+  U8 Align16Byte[8];
+} FXSAVE_FORMAT, *PFXSAVE_FORMAT; 
+
+typedef struct _FX_SAVE_AREA
+{
+  union
+  {
+    union
+    {
+      struct _FNSAVE_FORMAT FnArea;
+      struct _FXSAVE_FORMAT FxArea;
+    }; 
+  } U;
+  U32 NpxSavedCpu;
+  U32 Cr0NpxState;
+} FX_SAVE_AREA, *PFX_SAVE_AREA; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  S32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _PROCESSOR_POWER_STATE
+{
+  struct _PPM_IDLE_STATES* IdleStates;
+  U64 LastTimeCheck;
+  U64 IdleTimeAccumulated;
+  union
+  {
+    struct
+    {
+      U64 IdleTransitionTime;
+    } Native;
+    struct
+    {
+      U64 LastIdleCheck;
+    } Hv;
+  }; 
+  struct PPM_IDLE_ACCOUNTING* IdleAccounting;
+  struct _PPM_PERF_STATES* PerfStates;
+  U32 LastKernelUserTime;
+  U32 LastIdleThreadKTime;
+  U64 LastGlobalTimeHv;
+  U64 LastProcessorTimeHv;
+  U8 ThermalConstraint;
+  U8 LastBusyPercentage;
+  union
+  {
+    union
+    {
+      U16 AsUSHORT;
+      struct 
+      {
+        U16 PStateDomain : 1; 
+        U16 PStateDomainIdleAccounting : 1; 
+        U16 Reserved : 14; 
+      }; 
+    }; 
+  } Flags;
+  struct _KTIMER PerfTimer;
+  struct _KDPC PerfDpc;
+  U32 LastSysTime;
+  struct _KPRCB* PStateMaster;
+  U32 PStateSet;
+  U32 CurrentPState;
+  U32 DesiredPState;
+  volatile U32 PStateIdleStartTime;
+  U32 PStateIdleTime;
+  U32 LastPStateIdleTime;
+  U32 PStateStartTime;
+  U32 DiaIndex;
+  U32 Reserved0;
+  U32 WmiDispatchPtr;
+  S32 WmiInterfaceEnabled;
+  S32 __PADDING__[1];
+} PROCESSOR_POWER_STATE, *PPROCESSOR_POWER_STATE; 
+
+typedef enum _PROCESSOR_CACHE_TYPE
+{
+  CacheUnified = 0,
+  CacheInstruction = 1,
+  CacheData = 2,
+  CacheTrace = 3,
+} PROCESSOR_CACHE_TYPE, *PPROCESSOR_CACHE_TYPE;
+
+typedef struct _CACHE_DESCRIPTOR
+{
+  U8 Level;
+  U8 Associativity;
+  U16 LineSize;
+  U32 Size;
+  enum _PROCESSOR_CACHE_TYPE Type;
+} CACHE_DESCRIPTOR, *PCACHE_DESCRIPTOR; 
+
+typedef struct _KPRCB
+{
+  U16 MinorVersion;
+  U16 MajorVersion;
+  struct _KTHREAD* CurrentThread;
+  struct _KTHREAD* NextThread;
+  struct _KTHREAD* IdleThread;
+  U8 Number;
+  U8 NestingLevel;
+  U16 BuildType;
+  U32 SetMember;
+  char CpuType;
+  char CpuID;
+  union
+  {
+    U16 CpuStep;
+    struct
+    {
+      U8 CpuStepping;
+      U8 CpuModel;
+    }; 
+  }; 
+  struct _KPROCESSOR_STATE ProcessorState;
+  U32 KernelReserved[16];
+  U32 HalReserved[16];
+  U32 CFlushSize;
+  U8 CoresPerPhysicalProcessor;
+  U8 LogicalProcessorsPerCore;
+  U8 PrcbPad0[2];
+  U32 MHz;
+  U8 PrcbPad1[80];
+  struct _KSPIN_LOCK_QUEUE LockQueue[49];
+  struct _KTHREAD* NpxThread;
+  U32 InterruptCount;
+  U32 KernelTime;
+  U32 UserTime;
+  U32 DpcTime;
+  U32 DpcTimeCount;
+  U32 InterruptTime;
+  U32 AdjustDpcThreshold;
+  U32 PageColor;
+  U8 SkipTick;
+  U8 DebuggerSavedIRQL;
+  U8 NodeColor;
+  U8 PollSlot;
+  U32 NodeShiftedColor;
+  struct _KNODE* ParentNode;
+  U32 MultiThreadProcessorSet;
+  struct _KPRCB* MultiThreadSetMaster;
+  U32 SecondaryColorMask;
+  U32 DpcTimeLimit;
+  U32 CcFastReadNoWait;
+  U32 CcFastReadWait;
+  U32 CcFastReadNotPossible;
+  U32 CcCopyReadNoWait;
+  U32 CcCopyReadWait;
+  U32 CcCopyReadNoWaitMiss;
+  volatile S32 MmSpinLockOrdering;
+  volatile S32 IoReadOperationCount;
+  volatile S32 IoWriteOperationCount;
+  volatile S32 IoOtherOperationCount;
+  union _LARGE_INTEGER IoReadTransferCount;
+  union _LARGE_INTEGER IoWriteTransferCount;
+  union _LARGE_INTEGER IoOtherTransferCount;
+  U32 CcFastMdlReadNoWait;
+  U32 CcFastMdlReadWait;
+  U32 CcFastMdlReadNotPossible;
+  U32 CcMapDataNoWait;
+  U32 CcMapDataWait;
+  U32 CcPinMappedDataCount;
+  U32 CcPinReadNoWait;
+  U32 CcPinReadWait;
+  U32 CcMdlReadNoWait;
+  U32 CcMdlReadWait;
+  U32 CcLazyWriteHotSpots;
+  U32 CcLazyWriteIos;
+  U32 CcLazyWritePages;
+  U32 CcDataFlushes;
+  U32 CcDataPages;
+  U32 CcLostDelayedWrites;
+  U32 CcFastReadResourceMiss;
+  U32 CcCopyReadWaitMiss;
+  U32 CcFastMdlReadResourceMiss;
+  U32 CcMapDataNoWaitMiss;
+  U32 CcMapDataWaitMiss;
+  U32 CcPinReadNoWaitMiss;
+  U32 CcPinReadWaitMiss;
+  U32 CcMdlReadNoWaitMiss;
+  U32 CcMdlReadWaitMiss;
+  U32 CcReadAheadIos;
+  U32 KeAlignmentFixupCount;
+  U32 KeExceptionDispatchCount;
+  U32 KeSystemCalls;
+  U32 PrcbPad2[3];
+  struct _PP_LOOKASIDE_LIST PPLookasideList[16];
+  struct _GENERAL_LOOKASIDE_POOL PPNPagedLookasideList[32];
+  struct _GENERAL_LOOKASIDE_POOL PPPagedLookasideList[32];
+  volatile U32 PacketBarrier;
+  volatile S32 ReverseStall;
+  void* IpiFrame;
+  U8 PrcbPad3[52];
+  void* volatile CurrentPacket[3];
+  volatile U32 TargetSet;
+  void* volatile WorkerRoutine;
+  volatile U32 IpiFrozen;
+  U8 PrcbPad4[40];
+  volatile U32 RequestSummary;
+  struct _KPRCB* volatile SignalDone;
+  U8 PrcbPad5[56];
+  struct _KDPC_DATA DpcData[2];
+  void* DpcStack;
+  S32 MaximumDpcQueueDepth;
+  U32 DpcRequestRate;
+  U32 MinimumDpcRate;
+  volatile U8 DpcInterruptRequested;
+  volatile U8 DpcThreadRequested;
+  volatile U8 DpcRoutineActive;
+  volatile U8 DpcThreadActive;
+  U32 PrcbLock;
+  U32 DpcLastCount;
+  volatile U32 TimerHand;
+  volatile U32 TimerRequest;
+  void* PrcbPad41;
+  struct _KEVENT DpcEvent;
+  U8 ThreadDpcEnable;
+  volatile U8 QuantumEnd;
+  U8 PrcbPad50;
+  volatile U8 IdleSchedule;
+  S32 DpcSetEventRequest;
+  S32 Sleeping;
+  U32 PeriodicCount;
+  U32 PeriodicBias;
+  U8 PrcbPad51[6];
+  S32 TickOffset;
+  struct _KDPC CallDpc;
+  S32 ClockKeepAlive;
+  U8 ClockCheckSlot;
+  U8 ClockPollCycle;
+  U8 PrcbPad6[2];
+  S32 DpcWatchdogPeriod;
+  S32 DpcWatchdogCount;
+  S32 ThreadWatchdogPeriod;
+  S32 ThreadWatchdogCount;
+  U32 PrcbPad70[2];
+  struct _LIST_ENTRY WaitListHead;
+  U32 WaitLock;
+  U32 ReadySummary;
+  U32 QueueIndex;
+  struct _SINGLE_LIST_ENTRY DeferredReadyListHead;
+  U64 StartCycles;
+  U64 CycleTime;
+  U64 PrcbPad71[3];
+  struct _LIST_ENTRY DispatcherReadyListHead[32];
+  void* ChainedInterruptList;
+  S32 LookasideIrpFloat;
+  volatile S32 MmPageFaultCount;
+  volatile S32 MmCopyOnWriteCount;
+  volatile S32 MmTransitionCount;
+  volatile S32 MmCacheTransitionCount;
+  volatile S32 MmDemandZeroCount;
+  volatile S32 MmPageReadCount;
+  volatile S32 MmPageReadIoCount;
+  volatile S32 MmCacheReadCount;
+  volatile S32 MmCacheIoCount;
+  volatile S32 MmDirtyPagesWriteCount;
+  volatile S32 MmDirtyWriteIoCount;
+  volatile S32 MmMappedPagesWriteCount;
+  volatile S32 MmMappedWriteIoCount;
+  volatile U32 CachedCommit;
+  volatile U32 CachedResidentAvailable;
+  void* HyperPte;
+  U8 CpuVendor;
+  U8 PrcbPad8[3];
+  U8 VendorString[13];
+  U8 InitialApicId;
+  U8 LogicalProcessorsPerPhysicalProcessor;
+  U8 PrcbPad9[5];
+  U32 FeatureBits;
+  union _LARGE_INTEGER UpdateSignature;
+  volatile U64 IsrTime;
+  U64 SpareField1;
+  struct _FX_SAVE_AREA NpxSaveArea;
+  struct _PROCESSOR_POWER_STATE PowerState;
+  struct _KDPC DpcWatchdogDpc;
+  struct _KTIMER DpcWatchdogTimer;
+  void* WheaInfo;
+  void* EtwSupport;
+  union _SLIST_HEADER InterruptObjectPool;
+  union _SLIST_HEADER HypercallPageList;
+  void* HypercallPageVirtual;
+  void* VirtualApicAssist;
+  U64* StatisticsPage;
+  void* RateControl;
+  struct _CACHE_DESCRIPTOR Cache[5];
+  U32 CacheCount;
+  U32 CacheProcessorMask[5];
+  U32 PackageProcessorSet;
+  U32 CoreProcessorSet;
+  S32 __PADDING__[1];
+} KPRCB, *PKPRCB; 
+

@@ -1,0 +1,96 @@
+typedef enum _MMLISTS
+{
+  ZeroedPageList = 0,
+  FreePageList = 1,
+  StandbyPageList = 2,
+  ModifiedPageList = 3,
+  ModifiedNoWritePageList = 4,
+  BadPageList = 5,
+  ActiveAndValid = 6,
+  TransitionPage = 7,
+} MMLISTS, *PMMLISTS;
+
+typedef struct _MMPFNLIST
+{
+  U64 Total;
+  enum _MMLISTS ListName;
+  U64 Flink;
+  U64 Blink;
+  U64 Lock;
+} MMPFNLIST, *PMMPFNLIST; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _MDL
+{
+  struct _MDL* Next;
+  S16 Size;
+  S16 MdlFlags;
+  U16 AllocationProcessorNumber;
+  U16 Reserved;
+  struct _EPROCESS* Process;
+  void* MappedSystemVa;
+  void* StartVa;
+  U32 ByteCount;
+  U32 ByteOffset;
+} MDL, *PMDL; 
+
+typedef struct _MI_PAGEFILE_TRACES
+{
+  S32 Status;
+  U16 PartitionId;
+  U8 Priority;
+  U8 IrpPriority;
+  U8 ReservationWrite;
+  union _LARGE_INTEGER CurrentTime;
+  U64 AvailablePages;
+  U64 ModifiedPagesTotal;
+  U64 ModifiedPagefilePages;
+  U64 ModifiedNoWritePages;
+  U64 ModifiedPagefileNoReservationPages;
+  struct
+  {
+    struct _MDL Mdl;
+    U64 Page[1];
+  } MdlHack;
+} MI_PAGEFILE_TRACES, *PMI_PAGEFILE_TRACES; 
+
+typedef struct _MI_VISIBLE_PARTITION
+{
+  U64 LowestPhysicalPage;
+  U64 HighestPhysicalPage;
+  U64 NumberOfPhysicalPages;
+  volatile U32 NumberOfPagingFiles;
+  struct _MMPAGING_FILE* PagingFile[16];
+  volatile U64 AvailablePages;
+  volatile U64 ResidentAvailablePages;
+  volatile U64 TotalCommittedPages;
+  struct _MMPFNLIST ModifiedPageListHead;
+  struct _MMPFNLIST ModifiedNoWritePageListHead;
+  U64 TotalCommitLimit;
+  U64 TotalPagesForPagingFile;
+  U64 VadPhysicalPages;
+  U64 ProcessLockedFilePages;
+  U32 ChargeCommitmentFailures[4];
+  volatile U64 PageTableBitmapPages;
+  volatile S32 PageFileTraceIndex;
+  struct _MI_PAGEFILE_TRACES PageFileTraces[32];
+  S32 __PADDING__[6];
+} MI_VISIBLE_PARTITION, *PMI_VISIBLE_PARTITION; 
+

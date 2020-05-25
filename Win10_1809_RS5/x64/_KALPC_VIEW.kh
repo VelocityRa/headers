@@ -1,0 +1,33 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KALPC_VIEW
+{
+  struct _LIST_ENTRY ViewListEntry;
+  struct _KALPC_REGION* Region;
+  struct _ALPC_PORT* OwnerPort;
+  struct _EPROCESS* OwnerProcess;
+  void* Address;
+  U64 Size;
+  void* SecureViewHandle;
+  void* WriteAccessHandle;
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U32 WriteAccess : 1; 
+        U32 AutoRelease : 1; 
+        U32 ForceUnlink : 1; 
+        U32 SystemSpace : 1; 
+      }; 
+    } s1;
+  } u1;
+  U32 NumberOfOwnerMessages;
+  struct _LIST_ENTRY ProcessViewListEntry;
+} KALPC_VIEW, *PKALPC_VIEW; 
+

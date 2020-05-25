@@ -1,0 +1,32 @@
+typedef struct _POOL_HEADER
+{
+  union
+  {
+    struct 
+    {
+      U32 PreviousSize : 8; 
+      U32 PoolIndex : 8; 
+      U32 BlockSize : 8; 
+      U32 PoolType : 8; 
+    }; 
+    U32 Ulong1;
+  }; 
+  U32 PoolTag;
+  union
+  {
+    struct _EPROCESS* ProcessBilled;
+    struct
+    {
+      U16 AllocatorBackTraceIndex;
+      U16 PoolTagHash;
+      S32 __PADDING__[1];
+    }; 
+  }; 
+} POOL_HEADER, *PPOOL_HEADER; 
+
+typedef struct _POOL_HACKER
+{
+  struct _POOL_HEADER Header;
+  U32 Contents[8];
+} POOL_HACKER, *PPOOL_HACKER; 
+

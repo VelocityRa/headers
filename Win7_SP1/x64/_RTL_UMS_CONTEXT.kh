@@ -1,0 +1,157 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _M128A
+{
+  U64 Low;
+  S64 High;
+} M128A, *PM128A; 
+
+typedef struct _XSAVE_FORMAT
+{
+  U16 ControlWord;
+  U16 StatusWord;
+  U8 TagWord;
+  U8 Reserved1;
+  U16 ErrorOpcode;
+  U32 ErrorOffset;
+  U16 ErrorSelector;
+  U16 Reserved2;
+  U32 DataOffset;
+  U16 DataSelector;
+  U16 Reserved3;
+  U32 MxCsr;
+  U32 MxCsr_Mask;
+  struct _M128A FloatRegisters[8];
+  struct _M128A XmmRegisters[16];
+  U8 Reserved4[96];
+} XSAVE_FORMAT, *PXSAVE_FORMAT; 
+
+typedef struct _CONTEXT
+{
+  U64 P1Home;
+  U64 P2Home;
+  U64 P3Home;
+  U64 P4Home;
+  U64 P5Home;
+  U64 P6Home;
+  U32 ContextFlags;
+  U32 MxCsr;
+  U16 SegCs;
+  U16 SegDs;
+  U16 SegEs;
+  U16 SegFs;
+  U16 SegGs;
+  U16 SegSs;
+  U32 EFlags;
+  U64 Dr0;
+  U64 Dr1;
+  U64 Dr2;
+  U64 Dr3;
+  U64 Dr6;
+  U64 Dr7;
+  U64 Rax;
+  U64 Rcx;
+  U64 Rdx;
+  U64 Rbx;
+  U64 Rsp;
+  U64 Rbp;
+  U64 Rsi;
+  U64 Rdi;
+  U64 R8;
+  U64 R9;
+  U64 R10;
+  U64 R11;
+  U64 R12;
+  U64 R13;
+  U64 R14;
+  U64 R15;
+  U64 Rip;
+  union
+  {
+    struct _XSAVE_FORMAT FltSave;
+    struct
+    {
+      struct _M128A Header[2];
+      struct _M128A Legacy[8];
+      struct _M128A Xmm0;
+      struct _M128A Xmm1;
+      struct _M128A Xmm2;
+      struct _M128A Xmm3;
+      struct _M128A Xmm4;
+      struct _M128A Xmm5;
+      struct _M128A Xmm6;
+      struct _M128A Xmm7;
+      struct _M128A Xmm8;
+      struct _M128A Xmm9;
+      struct _M128A Xmm10;
+      struct _M128A Xmm11;
+      struct _M128A Xmm12;
+      struct _M128A Xmm13;
+      struct _M128A Xmm14;
+      struct _M128A Xmm15;
+    }; 
+  }; 
+  struct _M128A VectorRegister[26];
+  U64 VectorControl;
+  U64 DebugControl;
+  U64 LastBranchToRip;
+  U64 LastBranchFromRip;
+  U64 LastExceptionToRip;
+  U64 LastExceptionFromRip;
+} CONTEXT, *PCONTEXT; 
+
+typedef struct _GROUP_AFFINITY
+{
+  U64 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+
+typedef struct _RTL_UMS_CONTEXT
+{
+  struct _SINGLE_LIST_ENTRY Link;
+  struct _CONTEXT Context;
+  void* Teb;
+  void* UserContext;
+  union
+  {
+    struct 
+    {
+      volatile U32 ScheduledThread : 1; 
+      volatile U32 HasQuantumReq : 1; 
+      volatile U32 HasAffinityReq : 1; 
+      volatile U32 HasPriorityReq : 1; 
+      volatile U32 Suspended : 1; 
+      volatile U32 VolatileContext : 1; 
+      volatile U32 Terminated : 1; 
+      volatile U32 DebugActive : 1; 
+      volatile U32 RunningOnSelfThread : 1; 
+      volatile U32 DenyRunningOnSelfThread : 1; 
+      volatile U32 ReservedFlags : 22; 
+    }; 
+    volatile S32 Flags;
+  }; 
+  union
+  {
+    struct 
+    {
+      volatile U64 KernelUpdateLock : 1; 
+      volatile U64 Reserved : 1; 
+      volatile U64 PrimaryClientID : 62; 
+    }; 
+    volatile U64 ContextLock;
+  }; 
+  U64 QuantumValue;
+  struct _GROUP_AFFINITY AffinityMask;
+  S32 Priority;
+  struct _RTL_UMS_CONTEXT* PrimaryUmsContext;
+  U32 SwitchCount;
+  U32 KernelYieldCount;
+  U32 MixedYieldCount;
+  U32 YieldCount;
+  S32 __PADDING__[2];
+} RTL_UMS_CONTEXT, *PRTL_UMS_CONTEXT; 
+

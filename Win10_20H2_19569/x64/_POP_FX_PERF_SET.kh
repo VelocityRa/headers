@@ -1,0 +1,9 @@
+typedef struct _POP_FX_PERF_SET
+{
+  struct _PO_FX_COMPONENT_PERF_SET* PerfSet;
+  U64 CurrentPerf;
+  U64 CurrentPerfStamp;
+  U8 CurrentPerfNominal;
+  char __PADDING__[7];
+} POP_FX_PERF_SET, *PPOP_FX_PERF_SET; 
+

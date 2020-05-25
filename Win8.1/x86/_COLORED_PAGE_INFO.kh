@@ -1,0 +1,8 @@
+typedef struct _COLORED_PAGE_INFO
+{
+  volatile S32 BeingZeroed;
+  U32 Processor;
+  U32 PagesQueued;
+  struct _MMPFN* PfnAllocation;
+} COLORED_PAGE_INFO, *PCOLORED_PAGE_INFO; 
+

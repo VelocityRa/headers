@@ -1,0 +1,31 @@
+typedef struct _EXT_IOMMU_DEVICE_ID_PCI
+{
+  union
+  {
+    U64 AsUINT64;
+    struct
+    {
+      U16 PciSegmentNumber;
+      struct 
+      {
+        U16 PhantomFunctionBits : 2; 
+        U16 BusRange : 1; 
+        U16 Reserved : 5; 
+        U16 StartBusNumber : 8; 
+      }; 
+      union
+      {
+        U16 Bdf;
+        struct
+        {
+          U8 SubordinateBus;
+          U8 SecondaryBus;
+        }; 
+      }; 
+      U16 DevicePathLength;
+    }; 
+  }; 
+  wchar_t* DevicePath;
+  S32 __PADDING__[1];
+} EXT_IOMMU_DEVICE_ID_PCI, *PEXT_IOMMU_DEVICE_ID_PCI; 
+

@@ -1,0 +1,65 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _MI_PROTOTYPE_PTES_NODE
+{
+  struct _RTL_BALANCED_NODE Node;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U64 AllocationType : 3; 
+          U64 Inserted : 1; 
+        }; 
+      } e1;
+      struct
+      {
+        U64 PrototypePtesFlags;
+      } e2;
+    }; 
+  } u1;
+} MI_PROTOTYPE_PTES_NODE, *PMI_PROTOTYPE_PTES_NODE; 
+
+typedef struct _IMAGE_SECURITY_CONTEXT
+{
+  union
+  {
+    void* PageHashes;
+    U64 Value;
+    struct 
+    {
+      U64 SecurityBeingCreated : 2; 
+      U64 SecurityMandatory : 1; 
+      U64 PageHashPointer : 61; 
+    }; 
+  }; 
+} IMAGE_SECURITY_CONTEXT, *PIMAGE_SECURITY_CONTEXT; 
+
+typedef struct _MI_IMAGE_SECURITY_REFERENCE
+{
+  struct _MI_PROTOTYPE_PTES_NODE ProtosNode;
+  void* DynamicRelocations;
+  struct _IMAGE_SECURITY_CONTEXT SecurityContext;
+  U64 StrongImageReference;
+} MI_IMAGE_SECURITY_REFERENCE, *PMI_IMAGE_SECURITY_REFERENCE; 
+

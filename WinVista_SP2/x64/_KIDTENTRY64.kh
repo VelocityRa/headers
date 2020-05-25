@@ -1,0 +1,24 @@
+typedef union _KIDTENTRY64
+{
+  union
+  {
+    struct
+    {
+      U16 OffsetLow;
+      U16 Selector;
+      struct 
+      {
+        U16 IstIndex : 3; 
+        U16 Reserved0 : 5; 
+        U16 Type : 5; 
+        U16 Dpl : 2; 
+        U16 Present : 1; 
+      }; 
+      U16 OffsetMiddle;
+      U32 OffsetHigh;
+      U32 Reserved1;
+    }; 
+    U64 Alignment;
+  }; 
+} KIDTENTRY64, *PKIDTENTRY64; 
+

@@ -1,0 +1,7 @@
+typedef struct _PPM_DIA_STATS
+{
+  U32 PerfLevel;
+  U32 IdleTime;
+  U32 TimeInterval;
+} PPM_DIA_STATS, *PPPM_DIA_STATS; 
+

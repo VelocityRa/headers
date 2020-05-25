@@ -1,0 +1,218 @@
+typedef struct _DMA_ADAPTER
+{
+  U16 Version;
+  U16 Size;
+  struct _DMA_OPERATIONS* DmaOperations;
+} DMA_ADAPTER, *PDMA_ADAPTER; 
+
+typedef struct _HALP_DMA_TRANSLATION_BUFFER_POSITION
+{
+  struct _HALP_DMA_TRANSLATION_BUFFER* Buffer;
+  U32 Offset;
+  S32 __PADDING__[1];
+} HALP_DMA_TRANSLATION_BUFFER_POSITION, *PHALP_DMA_TRANSLATION_BUFFER_POSITION; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _HALP_DMA_ADAPTER_OBJECT
+{
+  struct _DMA_ADAPTER DmaHeader;
+  struct _RTL_BITMAP* ContiguousMapRegisters;
+  struct _HALP_DMA_TRANSLATION_ENTRY* ScatterBufferListHead;
+  U32 NumberOfFreeScatterBuffers;
+  struct _HALP_DMA_TRANSLATION_BUFFER* ContiguousTranslations;
+  struct _HALP_DMA_TRANSLATION_BUFFER* ScatterTranslations;
+  struct _HALP_DMA_TRANSLATION_BUFFER_POSITION ContiguousTranslationEnd;
+  struct _HALP_DMA_TRANSLATION_BUFFER_POSITION ScatterTranslationEnd;
+  struct
+  {
+    struct _HALP_DMA_TRANSLATION_BUFFER_POSITION ContiguousHint;
+    struct _HALP_DMA_TRANSLATION_BUFFER_POSITION ScatterHint;
+  } CrashDump;
+  U64 SpinLock;
+  U64 GrowLock;
+  union _LARGE_INTEGER MaximumPhysicalAddress;
+  U8 IsMasterAdapter;
+  U8 DmaCanCross64K;
+  U32 LibraryVersion;
+} HALP_DMA_ADAPTER_OBJECT, *PHALP_DMA_ADAPTER_OBJECT; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KDEVICE_QUEUE
+{
+  S16 Type;
+  S16 Size;
+  struct _LIST_ENTRY DeviceListHead;
+  U64 Lock;
+  union
+  {
+    U8 Busy;
+    struct 
+    {
+      S64 Reserved : 8; 
+      S64 HS32 : 56; 
+    }; 
+  }; 
+} KDEVICE_QUEUE, *PKDEVICE_QUEUE; 
+
+typedef enum _DMA_WIDTH
+{
+  Width8Bits = 0,
+  Width16Bits = 1,
+  Width32Bits = 2,
+  Width64Bits = 3,
+  WidthNoWrap = 4,
+  MaximumDmaWidth = 5,
+} DMA_WIDTH, *PDMA_WIDTH;
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef enum _EXT_IOMMU_TRANSLATION_TYPE
+{
+  ExtTranslationTypePassThrough = 0,
+  ExtTranslationTypeBlocked = 1,
+  ExtTranslationTypeTranslate = 2,
+  ExtTranslationTypeSafePassThrough = 3,
+  ExtTranslationTypeInvalid = 4,
+} EXT_IOMMU_TRANSLATION_TYPE, *PEXT_IOMMU_TRANSLATION_TYPE;
+
+typedef enum _HALP_EMERGENCY_LA_QUEUE_TYPE
+{
+  HalpDmaLegacyLaQueueEntry = 0,
+  HalpDmaThinLaQueueEntry = 1,
+  HalpDmaLaQueueEntryMax = 2,
+} HALP_EMERGENCY_LA_QUEUE_TYPE, *PHALP_EMERGENCY_LA_QUEUE_TYPE;
+
+typedef struct _HALP_EMERGENCY_LA_QUEUE_ENTRY
+{
+  struct _LIST_ENTRY ListEntry;
+  enum _HALP_EMERGENCY_LA_QUEUE_TYPE EntryType;
+  S32 __PADDING__[1];
+} HALP_EMERGENCY_LA_QUEUE_ENTRY, *PHALP_EMERGENCY_LA_QUEUE_ENTRY; 
+
+typedef enum _HALP_DMA_ADAPTER_ALLOCATION_STATE
+{
+  HalpDmaAdapterAllocationStateNone = 0,
+  HalpDmaAdapterAllocateChannel = 1,
+  HalpDmaAdapterAllocateMapRegisters = 2,
+  HalpDmaAdapterAllocateChannelRemapResources = 3,
+  HalpDmaAdapterAllocationStateComplete = 4,
+  HalpDmaAdapterAllocationStateMax = 5,
+} HALP_DMA_ADAPTER_ALLOCATION_STATE, *PHALP_DMA_ADAPTER_ALLOCATION_STATE;
+
+typedef struct _SCATTER_GATHER_ELEMENT
+{
+  union _LARGE_INTEGER Address;
+  U32 Length;
+  U64 Reserved;
+} SCATTER_GATHER_ELEMENT, *PSCATTER_GATHER_ELEMENT; 
+
+typedef struct _SCATTER_GATHER_LIST
+{
+  U32 NumberOfElements;
+  U64 Reserved;
+  struct _SCATTER_GATHER_ELEMENT* Elements;
+} SCATTER_GATHER_LIST, *PSCATTER_GATHER_LIST; 
+
+typedef struct _ADAPTER_OBJECT
+{
+  struct _HALP_DMA_ADAPTER_OBJECT AdapterObject;
+  struct _HALP_DMA_MASTER_ADAPTER_OBJECT* MasterAdapter;
+  struct _LIST_ENTRY WaitQueueEntry;
+  union
+  {
+    struct _KDEVICE_QUEUE ChannelWaitQueue;
+    struct
+    {
+      U64 ResourceWaitLock;
+      struct _LIST_ENTRY ResourceWaitQueue;
+      struct _LIST_ENTRY ChannelResourceWaitQueue;
+    }; 
+  }; 
+  U8 ResourceQueueBusy;
+  U32 MapRegistersPerChannel;
+  void* MapRegisterBase;
+  U32 NumberOfMapRegisters;
+  U32 MaxTransferLength;
+  void* CrashDumpRegisterBase[2];
+  U32 NumberOfCrashDumpRegisters[2];
+  U32 CrashDumpRegisterRefCount[2];
+  struct _LIST_ENTRY AdapterCrashDumpList;
+  struct _MDL* MapRegisterMdl;
+  U64 MapRegisterMdlLock;
+  void* AllocationHandle;
+  void* VirtualAddress;
+  U8 IsAllocationMdlBased;
+  U8 NoLocalPool;
+  struct _WAIT_CONTEXT_BLOCK* CurrentWcb;
+  struct _DMA_TRANSFER_CONTEXT* CurrentTransferContext;
+  struct _HALP_DMA_CONTROLLER* DmaController;
+  U32 Controller;
+  U32 ChannelNumber;
+  U32 RequestLine;
+  U32 RequestedChannelCount;
+  U32 AllocatedChannelCount;
+  U32 AllocatedChannels[8];
+  void* ChannelAdapter;
+  U8 NeedsMapRegisters;
+  U8 MasterDevice;
+  U8 ScatterGather;
+  U8 AutoInitialize;
+  U8 IgnoreCount;
+  U8 CacheCoherent;
+  union
+  {
+    struct
+    {
+      U8 Dma32BitAddresses;
+      U8 Dma64BitAddresses;
+    }; 
+    U32 DmaAddressWidth;
+  }; 
+  enum _DMA_WIDTH DmaPortWidth;
+  union _LARGE_INTEGER DeviceAddress;
+  struct _LIST_ENTRY AdapterList;
+  struct _WORK_QUEUE_ITEM WorkItem;
+  struct _HALP_DMA_DOMAIN_OBJECT* DomainPointer;
+  enum _EXT_IOMMU_TRANSLATION_TYPE TranslationType;
+  U8 AdapterInUse;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _EXT_IOMMU_DEVICE_ID* DeviceId;
+  void* IommuDevice;
+  struct _MDL* ScatterGatherMdl;
+  U64 LowMemoryLogicalAddressBase;
+  U64 LowMemoryLogicalAddressQueueLock;
+  struct _LIST_ENTRY LowMemoryLogicalAddressQueue;
+  U8 LowMemoryLogicalAddressQueueInUse;
+  struct _HALP_EMERGENCY_LA_QUEUE_ENTRY LowMemoryLogicalAddressQueueEntry;
+  enum _HALP_DMA_ADAPTER_ALLOCATION_STATE AllocationState;
+  U32 ScatterGatherBufferLength;
+  struct _SCATTER_GATHER_LIST ScatterGatherBuffer;
+} ADAPTER_OBJECT, *PADAPTER_OBJECT; 
+

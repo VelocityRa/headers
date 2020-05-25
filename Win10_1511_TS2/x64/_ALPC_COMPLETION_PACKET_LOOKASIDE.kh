@@ -1,0 +1,26 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _ALPC_COMPLETION_PACKET_LOOKASIDE_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY ListEntry;
+  struct _IO_MINI_COMPLETION_PACKET_USER* Packet;
+  struct _ALPC_COMPLETION_PACKET_LOOKASIDE* Lookaside;
+} ALPC_COMPLETION_PACKET_LOOKASIDE_ENTRY, *PALPC_COMPLETION_PACKET_LOOKASIDE_ENTRY; 
+
+typedef struct _ALPC_COMPLETION_PACKET_LOOKASIDE
+{
+  U64 Lock;
+  U32 Size;
+  U32 ActiveCount;
+  U32 PendingNullCount;
+  U32 PendingCheckCompletionListCount;
+  U32 PendingDelete;
+  struct _SINGLE_LIST_ENTRY FreeListHead;
+  void* CompletionPort;
+  void* CompletionKey;
+  struct _ALPC_COMPLETION_PACKET_LOOKASIDE_ENTRY Entry[1];
+} ALPC_COMPLETION_PACKET_LOOKASIDE, *PALPC_COMPLETION_PACKET_LOOKASIDE; 
+

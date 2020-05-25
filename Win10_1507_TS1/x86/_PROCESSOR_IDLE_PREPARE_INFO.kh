@@ -1,0 +1,29 @@
+typedef struct _PROCESSOR_IDLE_CONSTRAINTS
+{
+  U64 TotalTime;
+  U64 IdleTime;
+  U64 ExpectedIdleDuration;
+  U64 MaxIdleDuration;
+  U32 OverrideState;
+  U32 TimeCheck;
+  U8 PromotePercent;
+  U8 DemotePercent;
+  U8 Parked;
+  U8 Interruptible;
+  U8 PlatformIdle;
+  U8 ExpectedWakeReason;
+  char __PADDING__[2];
+} PROCESSOR_IDLE_CONSTRAINTS, *PPROCESSOR_IDLE_CONSTRAINTS; 
+
+typedef struct _PROCESSOR_IDLE_PREPARE_INFO
+{
+  void* Context;
+  struct _PROCESSOR_IDLE_CONSTRAINTS Constraints;
+  U32 DependencyCount;
+  U32 DependencyUsed;
+  struct _PROCESSOR_IDLE_DEPENDENCY* DependencyArray;
+  U32 PlatformIdleStateIndex;
+  U32 ProcessorIdleStateIndex;
+  U32 IdleSelectFailureMask;
+} PROCESSOR_IDLE_PREPARE_INFO, *PPROCESSOR_IDLE_PREPARE_INFO; 
+

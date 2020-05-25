@@ -1,0 +1,10 @@
+typedef struct _MMWSL_INSTANCE
+{
+  struct _MMPTE* NextPteToTrim;
+  struct _MMPTE* NextPteToAge;
+  struct _MMPTE* NextPteToAccessClear;
+  U32 LastAccessClearingRemainder;
+  U32 LastAgingRemainder;
+  U32 LockedEntries;
+} MMWSL_INSTANCE, *PMMWSL_INSTANCE; 
+

@@ -1,0 +1,13 @@
+typedef union _HAL_UNMASKED_INTERRUPT_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 SecondaryInterrupt : 1; 
+      U16 Reserved : 15; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} HAL_UNMASKED_INTERRUPT_FLAGS, *PHAL_UNMASKED_INTERRUPT_FLAGS; 
+

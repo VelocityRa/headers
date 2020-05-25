@@ -1,0 +1,6 @@
+typedef struct _IOV_FORCED_PENDING_TRACE
+{
+  struct _IRP* Irp;
+  void* StackTrace[63];
+} IOV_FORCED_PENDING_TRACE, *PIOV_FORCED_PENDING_TRACE; 
+

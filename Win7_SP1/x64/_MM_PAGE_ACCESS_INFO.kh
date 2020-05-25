@@ -1,0 +1,37 @@
+typedef union _MM_PAGE_ACCESS_INFO_FLAGS
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U32 FilePointerIndex : 9; 
+        U32 HardFault : 1; 
+        U32 Image : 1; 
+        U32 Spare0 : 1; 
+      }; 
+    } File;
+    struct
+    {
+      struct 
+      {
+        U32 FilePointerIndex : 9; 
+        U32 HardFault : 1; 
+        U32 Spare1 : 2; 
+      }; 
+    } Private;
+  }; 
+} MM_PAGE_ACCESS_INFO_FLAGS, *PMM_PAGE_ACCESS_INFO_FLAGS; 
+
+typedef struct _MM_PAGE_ACCESS_INFO
+{
+  union
+  {
+    union _MM_PAGE_ACCESS_INFO_FLAGS Flags;
+    U64 FileOffset;
+    void* VirtualAddress;
+    void* PointerProtoPte;
+  }; 
+} MM_PAGE_ACCESS_INFO, *PMM_PAGE_ACCESS_INFO; 
+

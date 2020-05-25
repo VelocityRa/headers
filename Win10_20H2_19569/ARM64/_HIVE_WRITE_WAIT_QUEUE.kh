@@ -1,0 +1,6 @@
+typedef struct _HIVE_WRITE_WAIT_QUEUE
+{
+  struct _ETHREAD* ActiveThread;
+  struct _HIVE_WAIT_PACKET* WaitList;
+} HIVE_WRITE_WAIT_QUEUE, *PHIVE_WRITE_WAIT_QUEUE; 
+

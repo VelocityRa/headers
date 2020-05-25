@@ -1,0 +1,7 @@
+typedef struct _MI_RFG_PROTECTED_STACK
+{
+  void* ControlStackBase;
+  struct _MMVAD_SHORT* ControlStackVad;
+  void* OwnerThread;
+} MI_RFG_PROTECTED_STACK, *PMI_RFG_PROTECTED_STACK; 
+

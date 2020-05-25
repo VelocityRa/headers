@@ -1,0 +1,10 @@
+typedef struct _MI_DEBUGGER_STATE
+{
+  U8 TransientWrite;
+  U8 CodePageEdited;
+  struct _MMPTE* DebugPte;
+  U32 PoisonedTb;
+  volatile S32 InDebugger;
+  void* volatile Pfns[32];
+} MI_DEBUGGER_STATE, *PMI_DEBUGGER_STATE; 
+

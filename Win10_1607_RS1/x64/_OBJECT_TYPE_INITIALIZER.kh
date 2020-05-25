@@ -1,0 +1,87 @@
+typedef struct _GENERIC_MAPPING
+{
+  U32 GenericRead;
+  U32 GenericWrite;
+  U32 GenericExecute;
+  U32 GenericAll;
+} GENERIC_MAPPING, *PGENERIC_MAPPING; 
+
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  NonPagedPoolExecute = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolBase = 0,
+  NonPagedPoolBaseMustSucceed = 2,
+  NonPagedPoolBaseCacheAligned = 4,
+  NonPagedPoolBaseCacheAlignedMustS = 6,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+  NonPagedPoolNx = 512,
+  NonPagedPoolNxCacheAligned = 516,
+  NonPagedPoolSessionNx = 544,
+} POOL_TYPE, *PPOOL_TYPE;
+
+typedef struct _OBJECT_TYPE_INITIALIZER
+{
+  U16 Length;
+  union
+  {
+    U8 ObjectTypeFlags;
+    struct 
+    {
+      U8 CaseInsensitive : 1; 
+      U8 UnnamedObjectsOnly : 1; 
+      U8 UseDefaultObject : 1; 
+      U8 SecurityRequired : 1; 
+      U8 MaintainHandleCount : 1; 
+      U8 MaintainTypeList : 1; 
+      U8 SupportsObjectCallbacks : 1; 
+      U8 CacheAligned : 1; 
+    }; 
+  }; 
+  union
+  {
+    U8 ObjectTypeFlags2;
+    struct 
+    {
+      U8 UseExtendedParameters : 1; 
+      U8 Reserved : 7; 
+    }; 
+  }; 
+  U32 ObjectTypeCode;
+  U32 InvalidAttributes;
+  struct _GENERIC_MAPPING GenericMapping;
+  U32 ValidAccessMask;
+  U32 RetainAccess;
+  enum _POOL_TYPE PoolType;
+  U32 DefaultPagedPoolCharge;
+  U32 DefaultNonPagedPoolCharge;
+  void* DumpProcedure;
+  void* OpenProcedure;
+  void* CloseProcedure;
+  void* DeleteProcedure;
+  union
+  {
+    void* ParseProcedure;
+    void* ParseProcedureEx;
+  }; 
+  void* SecurityProcedure;
+  void* QueryNameProcedure;
+  void* OkayToCloseProcedure;
+  U32 WaitObjectFlagMask;
+  U16 WaitObjectFlagOffset;
+  U16 WaitObjectPointerOffset;
+} OBJECT_TYPE_INITIALIZER, *POBJECT_TYPE_INITIALIZER; 
+

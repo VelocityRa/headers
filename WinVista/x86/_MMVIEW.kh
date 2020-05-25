@@ -1,0 +1,10 @@
+typedef struct _MMVIEW
+{
+  U32 Entry;
+  union
+  {
+    U32 Writable : 1; 
+    struct _CONTROL_AREA* ControlArea;
+  }; 
+} MMVIEW, *PMMVIEW; 
+

@@ -1,0 +1,8 @@
+typedef struct _ARM64_DBGKD_CONTROL_SET
+{
+  U32 Continue;
+  U32 TraceFlag;
+  U64 CurrentSymbolStart;
+  U64 CurrentSymbolEnd;
+} ARM64_DBGKD_CONTROL_SET, *PARM64_DBGKD_CONTROL_SET; 
+

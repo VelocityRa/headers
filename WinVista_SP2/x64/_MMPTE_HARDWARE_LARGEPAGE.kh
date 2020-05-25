@@ -1,0 +1,23 @@
+typedef struct _MMPTE_HARDWARE_LARGEPAGE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Dirty1 : 1; 
+    U64 Owner : 1; 
+    U64 WriteThrough : 1; 
+    U64 CacheDisable : 1; 
+    U64 Accessed : 1; 
+    U64 Dirty : 1; 
+    U64 LargePage : 1; 
+    U64 Global : 1; 
+    U64 CopyOnWrite : 1; 
+    U64 Prototype : 1; 
+    U64 Write : 1; 
+    U64 PAT : 1; 
+    U64 reserved1 : 8; 
+    U64 PageFrameNumber : 27; 
+    U64 reserved2 : 16; 
+  }; 
+} MMPTE_HARDWARE_LARGEPAGE, *PMMPTE_HARDWARE_LARGEPAGE; 
+

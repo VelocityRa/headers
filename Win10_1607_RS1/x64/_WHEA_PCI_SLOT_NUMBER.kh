@@ -1,0 +1,20 @@
+typedef struct _WHEA_PCI_SLOT_NUMBER
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 DeviceNumber : 5; 
+          U32 FunctionNumber : 3; 
+          U32 Reserved : 24; 
+        }; 
+      } bits;
+      U32 AsULONG;
+    }; 
+  } u;
+} WHEA_PCI_SLOT_NUMBER, *PWHEA_PCI_SLOT_NUMBER; 
+

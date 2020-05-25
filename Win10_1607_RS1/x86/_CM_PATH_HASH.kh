@@ -1,0 +1,5 @@
+typedef struct _CM_PATH_HASH
+{
+  U32 Hash;
+} CM_PATH_HASH, *PCM_PATH_HASH; 
+

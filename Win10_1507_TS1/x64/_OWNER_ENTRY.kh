@@ -1,0 +1,16 @@
+typedef struct _OWNER_ENTRY
+{
+  U64 OwnerThread;
+  union
+  {
+    struct 
+    {
+      U32 IoPriorityBoosted : 1; 
+      U32 OwnerReferenced : 1; 
+      U32 OwnerCount : 30; 
+    }; 
+    U32 TableSize;
+  }; 
+  S32 __PADDING__[1];
+} OWNER_ENTRY, *POWNER_ENTRY; 
+

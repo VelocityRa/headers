@@ -1,0 +1,43 @@
+typedef struct _INTERRUPT_HT_INTR_INFO
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 Mask : 1; 
+          U32 Polarity : 1; 
+          U32 MessageType : 3; 
+          U32 RequestEOI : 1; 
+          U32 DestinationMode : 1; 
+          U32 MessageType3 : 1; 
+          U32 Destination : 8; 
+          U32 Vector : 8; 
+          U32 ExtendedAddress : 8; 
+        }; 
+      } bits;
+      U32 AsULONG;
+    }; 
+  } LowPart;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U32 ExtendedDestination : 24; 
+          U32 Reserved : 6; 
+          U32 PassPW : 1; 
+          U32 WaitingForEOI : 1; 
+        }; 
+      } bits;
+      U32 AsULONG;
+    }; 
+  } HighPart;
+} INTERRUPT_HT_INTR_INFO, *PINTERRUPT_HT_INTR_INFO; 
+

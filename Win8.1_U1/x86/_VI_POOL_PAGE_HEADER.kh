@@ -1,0 +1,7 @@
+typedef struct _VI_POOL_PAGE_HEADER
+{
+  struct _SINGLE_LIST_ENTRY* NextPage;
+  void* VerifierEntry;
+  U32 Signature;
+} VI_POOL_PAGE_HEADER, *PVI_POOL_PAGE_HEADER; 
+

@@ -1,0 +1,44 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER_TABLE_ENTRY
+{
+  U64 Lock;
+  struct _LIST_ENTRY Entry;
+  union _ULARGE_INTEGER Time;
+} KTIMER_TABLE_ENTRY, *PKTIMER_TABLE_ENTRY; 
+
+typedef struct _KTIMER_TABLE_STATE
+{
+  U64 LastTimerExpiration[2];
+  U32 LastTimerHand[2];
+} KTIMER_TABLE_STATE, *PKTIMER_TABLE_STATE; 
+
+typedef struct _KTIMER_TABLE
+{
+  struct _KTIMER* TimerExpiry[64];
+  struct _KTIMER_TABLE_ENTRY TimerEntries[256][2];
+  struct _KTIMER_TABLE_STATE TableState;
+} KTIMER_TABLE, *PKTIMER_TABLE; 
+

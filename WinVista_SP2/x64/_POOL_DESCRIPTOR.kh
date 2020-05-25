@@ -1,0 +1,43 @@
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+} POOL_TYPE, *PPOOL_TYPE;
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _POOL_DESCRIPTOR
+{
+  enum _POOL_TYPE PoolType;
+  U32 PoolIndex;
+  volatile S32 RunningAllocs;
+  volatile S32 RunningDeAllocs;
+  volatile S32 TotalPages;
+  volatile S32 TotalBigPages;
+  U32 Threshold;
+  void* LockAddress;
+  void** volatile PendingFrees;
+  volatile S32 ThreadsProcessingDeferrals;
+  volatile S32 PendingFreeDepth;
+  volatile U64 TotalBytes;
+  U64 Spare0;
+  struct _LIST_ENTRY ListHeads[256];
+} POOL_DESCRIPTOR, *PPOOL_DESCRIPTOR; 
+

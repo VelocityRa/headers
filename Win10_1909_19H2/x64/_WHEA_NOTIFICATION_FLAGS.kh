@@ -1,0 +1,17 @@
+typedef union _WHEA_NOTIFICATION_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 PollIntervalRW : 1; 
+      U16 SwitchToPollingThresholdRW : 1; 
+      U16 SwitchToPollingWindowRW : 1; 
+      U16 ErrorThresholdRW : 1; 
+      U16 ErrorThresholdWindowRW : 1; 
+      U16 Reserved : 11; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} WHEA_NOTIFICATION_FLAGS, *PWHEA_NOTIFICATION_FLAGS; 
+

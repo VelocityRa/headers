@@ -1,0 +1,35 @@
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _ETW_PRIV_HANDLE_DEMUX_TABLE
+{
+  struct _RTL_RB_TREE Tree;
+  struct _EX_PUSH_LOCK Lock;
+  U16 SequenceNumber;
+  char __PADDING__[2];
+} ETW_PRIV_HANDLE_DEMUX_TABLE, *PETW_PRIV_HANDLE_DEMUX_TABLE; 
+

@@ -1,0 +1,38 @@
+typedef struct _PERF_CONTROL_STATE_SELECTION
+{
+  U64 SelectedState;
+  U32 SelectedPercent;
+  U32 SelectedFrequency;
+  U32 MinPercent;
+  U32 MaxPercent;
+  U32 TolerancePercent;
+  U32 EppPercent;
+  U32 AutonomousActivityWindow;
+  U8 Autonomous;
+  U8 InheritFromDomain;
+  char __PADDING__[2];
+} PERF_CONTROL_STATE_SELECTION, *PPERF_CONTROL_STATE_SELECTION; 
+
+typedef struct _PROC_PERF_CONSTRAINT
+{
+  struct _KPRCB* Prcb;
+  U64 PerfContext;
+  U32 PlatformCap;
+  U32 ThermalCap;
+  U32 LimitReasons;
+  U64 PlatformCapStartTime;
+  U32 ProcCap;
+  U32 ProcFloor;
+  U32 TargetPercent;
+  U8 EngageResponsivenessOverrides;
+  U8 ResponsivenessChangeCount;
+  struct _PERF_CONTROL_STATE_SELECTION Selection;
+  U32 DomainSelectionGeneration;
+  U32 PreviousFrequency;
+  U32 PreviousPercent;
+  U32 LatestFrequencyPercent;
+  U8 Force;
+  U8 UseQosUpdateLock;
+  U64 QosUpdateLock;
+} PROC_PERF_CONSTRAINT, *PPROC_PERF_CONSTRAINT; 
+

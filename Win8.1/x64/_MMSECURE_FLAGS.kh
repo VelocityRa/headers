@@ -1,0 +1,14 @@
+typedef struct _MMSECURE_FLAGS
+{
+  struct 
+  {
+    U32 ReadOnly : 1; 
+    U32 ReadWrite : 1; 
+    U32 SecNoChange : 1; 
+    U32 NoDelete : 1; 
+    U32 RequiresPteReversal : 1; 
+    U32 ExclusiveSecure : 1; 
+    U32 Spare : 6; 
+  }; 
+} MMSECURE_FLAGS, *PMMSECURE_FLAGS; 
+

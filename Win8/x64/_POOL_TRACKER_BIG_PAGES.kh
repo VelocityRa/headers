@@ -1,0 +1,8 @@
+typedef struct _POOL_TRACKER_BIG_PAGES
+{
+  volatile U64 Va;
+  U32 Key;
+  U32 PoolType;
+  U64 NumberOfBytes;
+} POOL_TRACKER_BIG_PAGES, *PPOOL_TRACKER_BIG_PAGES; 
+

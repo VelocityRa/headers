@@ -1,0 +1,23 @@
+typedef struct _HAL_IOMMU_DISPATCH
+{
+  void* HalIommuSupportEnabled;
+  void* HalIommuGetConfiguration;
+  void* HalIommuGetLibraryContext;
+  void* HalIommuMapDevice;
+  void* HalIommuEnableDevicePasid;
+  void* HalIommuSetAddressSpace;
+  void* HalIommuDisableDevicePasid;
+  void* HalIommuUnmapDevice;
+  void* HalIommuFreeLibraryContext;
+  void* HalIommuFlushTb;
+  void* HalIommuFlushAllPasid;
+  void* HalIommuProcessPageRequestQueue;
+  void* HalIommuFaultRoutine;
+  void* HalIommuReferenceAsid;
+  void* HalIommuDereferenceAsid;
+  void* HalIommuServicePageFault;
+  void* HalIommuDevicePowerChange;
+  void* HalIommuBeginDeviceReset;
+  void* HalIommuFinalizeDeviceReset;
+} HAL_IOMMU_DISPATCH, *PHAL_IOMMU_DISPATCH; 
+

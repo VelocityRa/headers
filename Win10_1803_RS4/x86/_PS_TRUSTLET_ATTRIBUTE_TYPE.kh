@@ -1,0 +1,31 @@
+typedef union _PS_TRUSTLET_ATTRIBUTE_ACCESSRIGHTS
+{
+  union
+  {
+    struct 
+    {
+      U8 Trustlet : 1; 
+      U8 Ntos : 1; 
+      U8 WriteHandle : 1; 
+      U8 ReadHandle : 1; 
+      U8 Reserved : 4; 
+    }; 
+    U8 AccessRights;
+  }; 
+} PS_TRUSTLET_ATTRIBUTE_ACCESSRIGHTS, *PPS_TRUSTLET_ATTRIBUTE_ACCESSRIGHTS; 
+
+typedef struct _PS_TRUSTLET_ATTRIBUTE_TYPE
+{
+  union
+  {
+    struct
+    {
+      U8 Version;
+      U8 DataCount;
+      U8 SemanticType;
+      union _PS_TRUSTLET_ATTRIBUTE_ACCESSRIGHTS AccessRights;
+    }; 
+    U32 AttributeType;
+  }; 
+} PS_TRUSTLET_ATTRIBUTE_TYPE, *PPS_TRUSTLET_ATTRIBUTE_TYPE; 
+

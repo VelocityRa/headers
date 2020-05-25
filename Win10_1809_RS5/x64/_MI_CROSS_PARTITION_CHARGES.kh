@@ -1,0 +1,8 @@
+typedef struct _MI_CROSS_PARTITION_CHARGES
+{
+  U64 CurrentCharges;
+  U64 ChargeFailures;
+  U64 ChargePeak;
+  U64 ChargeMinimum;
+} MI_CROSS_PARTITION_CHARGES, *PMI_CROSS_PARTITION_CHARGES; 
+

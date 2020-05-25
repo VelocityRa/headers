@@ -1,0 +1,5 @@
+struct POHANDLE__
+{
+  S32 unused;
+}; 
+

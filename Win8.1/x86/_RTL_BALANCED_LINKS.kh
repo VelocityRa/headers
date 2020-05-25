@@ -1,0 +1,9 @@
+typedef struct _RTL_BALANCED_LINKS
+{
+  struct _RTL_BALANCED_LINKS* Parent;
+  struct _RTL_BALANCED_LINKS* LeftChild;
+  struct _RTL_BALANCED_LINKS* RightChild;
+  char Balance;
+  U8 Reserved[3];
+} RTL_BALANCED_LINKS, *PRTL_BALANCED_LINKS; 
+

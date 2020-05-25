@@ -1,0 +1,11 @@
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MI_COMBINE_PAGE_LISTHEAD
+{
+  struct _RTL_AVL_TREE Table;
+  volatile S32 Lock;
+} MI_COMBINE_PAGE_LISTHEAD, *PMI_COMBINE_PAGE_LISTHEAD; 
+

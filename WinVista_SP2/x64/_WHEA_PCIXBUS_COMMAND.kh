@@ -1,0 +1,14 @@
+typedef union _WHEA_PCIXBUS_COMMAND
+{
+  union
+  {
+    struct 
+    {
+      U64 Command : 56; 
+      U64 PCIXCommand : 1; 
+      U64 Reserved : 7; 
+    }; 
+    U64 AsULONGLONG;
+  }; 
+} WHEA_PCIXBUS_COMMAND, *PWHEA_PCIXBUS_COMMAND; 
+

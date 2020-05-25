@@ -1,0 +1,7 @@
+typedef struct _ETW_HW_TRACE_EXT_INTERFACE
+{
+  void* StartProcessorTraceOnEachCore;
+  void* StopProcessorTraceOnEachCore;
+  void* LogProcessorTraceOnCurrentCore;
+} ETW_HW_TRACE_EXT_INTERFACE, *PETW_HW_TRACE_EXT_INTERFACE; 
+

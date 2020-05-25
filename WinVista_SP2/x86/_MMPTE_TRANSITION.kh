@@ -1,0 +1,16 @@
+typedef struct _MMPTE_TRANSITION
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 Write : 1; 
+    U32 Owner : 1; 
+    U32 WriteThrough : 1; 
+    U32 CacheDisable : 1; 
+    U32 Protection : 5; 
+    U32 Prototype : 1; 
+    U32 Transition : 1; 
+    U32 PageFrameNumber : 20; 
+  }; 
+} MMPTE_TRANSITION, *PMMPTE_TRANSITION; 
+

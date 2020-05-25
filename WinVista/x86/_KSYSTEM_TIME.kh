@@ -1,0 +1,7 @@
+typedef struct _KSYSTEM_TIME
+{
+  U32 LowPart;
+  S32 High1Time;
+  S32 High2Time;
+} KSYSTEM_TIME, *PKSYSTEM_TIME; 
+

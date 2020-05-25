@@ -1,0 +1,14 @@
+typedef struct _MM_AVL_NODE
+{
+  union
+  {
+    union
+    {
+      S32 Balance : 2; 
+      struct _MM_AVL_NODE* Parent;
+    }; 
+  } u1;
+  struct _MM_AVL_NODE* LeftChild;
+  struct _MM_AVL_NODE* RightChild;
+} MM_AVL_NODE, *PMM_AVL_NODE; 
+

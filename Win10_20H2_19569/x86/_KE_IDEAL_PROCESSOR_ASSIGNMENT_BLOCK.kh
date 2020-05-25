@@ -1,0 +1,42 @@
+typedef union _KE_PROCESS_CONCURRENCY_COUNT
+{
+  union
+  {
+    struct 
+    {
+      U32 Fraction : 20; 
+      U32 Count : 12; 
+    }; 
+    U32 AllFields;
+  }; 
+} KE_PROCESS_CONCURRENCY_COUNT, *PKE_PROCESS_CONCURRENCY_COUNT; 
+
+typedef struct _KE_IDEAL_PROCESSOR_SET_BREAKPOINTS
+{
+  union _KE_PROCESS_CONCURRENCY_COUNT Low;
+  union _KE_PROCESS_CONCURRENCY_COUNT High;
+} KE_IDEAL_PROCESSOR_SET_BREAKPOINTS, *PKE_IDEAL_PROCESSOR_SET_BREAKPOINTS; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _KE_IDEAL_PROCESSOR_ASSIGNMENT_BLOCK
+{
+  union _KE_PROCESS_CONCURRENCY_COUNT ExpectedConcurrencyCount;
+  struct _KE_IDEAL_PROCESSOR_SET_BREAKPOINTS Breakpoints;
+  union
+  {
+    union
+    {
+      U32 ConcurrencyCountFixed : 1; 
+      U32 AllFlags;
+    }; 
+  } AssignmentFlags;
+  struct _KAFFINITY_EX IdealProcessorSets;
+} KE_IDEAL_PROCESSOR_ASSIGNMENT_BLOCK, *PKE_IDEAL_PROCESSOR_ASSIGNMENT_BLOCK; 
+

@@ -1,0 +1,29 @@
+typedef struct _HEAP_UNPACKED_ENTRY
+{
+  void* PreviousBlockPrivateData;
+  union
+  {
+    struct
+    {
+      U16 Size;
+      U8 Flags;
+      U8 SmallTagIndex;
+    }; 
+    struct
+    {
+      U32 SubSegmentCode;
+      U16 PreviousSize;
+      union
+      {
+        U8 SegmentOffset;
+        struct
+        {
+          U8 LFHFlags;
+          U8 UnusedBytes;
+        }; 
+      }; 
+    }; 
+    U64 CompactHeader;
+  }; 
+} HEAP_UNPACKED_ENTRY, *PHEAP_UNPACKED_ENTRY; 
+

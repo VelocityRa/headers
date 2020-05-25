@@ -1,0 +1,41 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KDEVICE_QUEUE_ENTRY
+{
+  struct _LIST_ENTRY DeviceListEntry;
+  U32 SortKey;
+  U8 Inserted;
+  char __PADDING__[3];
+} KDEVICE_QUEUE_ENTRY, *PKDEVICE_QUEUE_ENTRY; 
+
+typedef struct _WAIT_CONTEXT_BLOCK
+{
+  union
+  {
+    struct _KDEVICE_QUEUE_ENTRY WaitQueueEntry;
+    struct
+    {
+      struct _LIST_ENTRY DmaWaitEntry;
+      U32 NumberOfChannels;
+      struct 
+      {
+        U32 SyncCallback : 1; 
+        U32 DmaContext : 1; 
+        U32 ZeroMapRegisters : 1; 
+        U32 Reserved : 9; 
+        U32 NumberOfRemapPages : 20; 
+      }; 
+    }; 
+  }; 
+  void* DeviceRoutine;
+  void* DeviceContext;
+  U32 NumberOfMapRegisters;
+  void* DeviceObject;
+  void* CurrentIrp;
+  struct _KDPC* BufferChainingDpc;
+} WAIT_CONTEXT_BLOCK, *PWAIT_CONTEXT_BLOCK; 
+

@@ -1,0 +1,38 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+enum POWER_POLICY_DEVICE_TYPE
+{
+  PolicyDeviceSystemButton = 0,
+  PolicyDeviceThermalZone = 1,
+  PolicyDeviceBattery = 2,
+  PolicyDeviceMemory = 3,
+  PolicyInitiatePowerActionAPI = 4,
+  PolicySetPowerStateAPI = 5,
+  PolicyImmediateDozeS4 = 6,
+  PolicySystemIdle = 7,
+  PolicyDeviceWakeAlarm = 8,
+  PolicyDeviceFan = 9,
+  PolicyDeviceMax = 10,
+};
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _POP_POLICY_DEVICE
+{
+  struct _LIST_ENTRY Link;
+  enum POWER_POLICY_DEVICE_TYPE DeviceType;
+  void* Notification;
+  struct _UNICODE_STRING Name;
+  struct _DEVICE_OBJECT* Device;
+  struct _IRP* Irp;
+} POP_POLICY_DEVICE, *PPOP_POLICY_DEVICE; 
+

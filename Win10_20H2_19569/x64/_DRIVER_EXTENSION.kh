@@ -1,0 +1,15 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _DRIVER_EXTENSION
+{
+  struct _DRIVER_OBJECT* DriverObject;
+  void* AddDevice;
+  U32 Count;
+  struct _UNICODE_STRING ServiceKeyName;
+} DRIVER_EXTENSION, *PDRIVER_EXTENSION; 
+

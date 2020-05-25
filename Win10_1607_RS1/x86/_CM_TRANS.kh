@@ -1,0 +1,58 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _CM_TRANS_PTR
+{
+  union
+  {
+    U32 LightWeight : 1; 
+    void* TransPtr;
+  }; 
+} CM_TRANS_PTR, *PCM_TRANS_PTR; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _CM_TRANS
+{
+  struct _LIST_ENTRY TransactionListEntry;
+  struct _LIST_ENTRY KCBUoWListHead;
+  struct _LIST_ENTRY LazyCommitListEntry;
+  union
+  {
+    struct 
+    {
+      U32 Prepared : 1; 
+      U32 Aborted : 1; 
+      U32 Committed : 1; 
+      U32 Initializing : 1; 
+      U32 Invalid : 1; 
+      U32 UseReservation : 1; 
+      U32 TmCallbacksActive : 1; 
+      U32 LightWeight : 1; 
+      U32 Freed1 : 1; 
+      U32 Freed2 : 1; 
+      U32 Spare1 : 2; 
+      U32 Freed : 1; 
+      U32 Spare : 19; 
+    }; 
+    U32 TransState;
+  }; 
+  union _CM_TRANS_PTR Trans;
+  struct _CM_RM* CmRm;
+  struct _KENLISTMENT* KtmEnlistmentObject;
+  void* KtmEnlistmentHandle;
+  struct _GUID KtmUow;
+  U64 StartLsn;
+  U32 HiveCount;
+  struct _CMHIVE* HiveArray[7];
+} CM_TRANS, *PCM_TRANS; 
+

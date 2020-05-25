@@ -1,0 +1,9 @@
+typedef struct _PO_MEMORY_RANGE_ARRAY_RANGE
+{
+  U64 PageNo;
+  U64 StartPage;
+  U64 EndPage;
+  U32 CheckSum;
+  S32 __PADDING__[1];
+} PO_MEMORY_RANGE_ARRAY_RANGE, *PPO_MEMORY_RANGE_ARRAY_RANGE; 
+

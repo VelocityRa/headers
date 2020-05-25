@@ -1,0 +1,56 @@
+typedef struct _NT_TIB
+{
+  struct _EXCEPTION_REGISTRATION_RECORD* ExceptionList;
+  void* StackBase;
+  void* StackLimit;
+  void* SubSystemTib;
+  union
+  {
+    void* FiberData;
+    U32 Version;
+  }; 
+  void* ArbitraryUserPointer;
+  struct _NT_TIB* Self;
+} NT_TIB, *PNT_TIB; 
+
+typedef struct _KPCR
+{
+  union
+  {
+    struct _NT_TIB NtTib;
+    struct
+    {
+      void* TibPad0[2];
+      void* Spare1;
+      struct _KPCR* Self;
+      void* PcrReserved0;
+      struct _KSPIN_LOCK_QUEUE* LockArray;
+      void* Used_Self;
+    }; 
+  }; 
+  U8 CurrentIrql;
+  U8 SecondLevelCacheAssociativity;
+  U8 Pad1[2];
+  U16 MajorVersion;
+  U16 MinorVersion;
+  U32 StallScaleFactor;
+  U32 SecondLevelCacheSize;
+  union
+  {
+    U16 SoftwareInterruptPending;
+    struct
+    {
+      U8 ApcInterrupt;
+      U8 DispatchInterrupt;
+    }; 
+  }; 
+  U16 InterruptPad;
+  U8 BtiMitigation;
+  U8 SsbMitigation;
+  U8 Pad2[2];
+  U64 PanicStorage[6];
+  void* KdVersionBlock;
+  void* HalReserved[14];
+  void* KvaUserModeTtbr1;
+} KPCR, *PKPCR; 
+

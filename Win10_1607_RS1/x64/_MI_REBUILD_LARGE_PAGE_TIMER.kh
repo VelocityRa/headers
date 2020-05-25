@@ -1,0 +1,24 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_REBUILD_LARGE_PAGE_TIMER
+{
+  struct _WORK_QUEUE_ITEM WorkItem;
+  U8 SecondsLeft;
+  U8 RebuildActive;
+  U8 NextPassDelta;
+  U8 LargeSubPagesActive;
+  U32 SequenceNumber;
+  struct _MI_LARGE_PAGE_REBUILD_WAIT_BLOCK* WaitList;
+} MI_REBUILD_LARGE_PAGE_TIMER, *PMI_REBUILD_LARGE_PAGE_TIMER; 
+

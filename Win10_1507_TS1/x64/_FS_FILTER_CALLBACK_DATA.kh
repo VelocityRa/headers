@@ -1,0 +1,58 @@
+typedef enum _FS_FILTER_SECTION_SYNC_TYPE
+{
+  SyncTypeOther = 0,
+  SyncTypeCreateSection = 1,
+} FS_FILTER_SECTION_SYNC_TYPE, *PFS_FILTER_SECTION_SYNC_TYPE;
+
+typedef enum _FS_FILTER_STREAM_FO_NOTIFICATION_TYPE
+{
+  NotifyTypeCreate = 0,
+  NotifyTypeRetired = 1,
+} FS_FILTER_STREAM_FO_NOTIFICATION_TYPE, *PFS_FILTER_STREAM_FO_NOTIFICATION_TYPE;
+
+typedef union _FS_FILTER_PARAMETERS
+{
+  union
+  {
+    struct
+    {
+      union _LARGE_INTEGER* EndingOffset;
+      struct _ERESOURCE** ResourceToRelease;
+    } AcquireForModifiedPageWriter;
+    struct
+    {
+      struct _ERESOURCE* ResourceToRelease;
+    } ReleaseForModifiedPageWriter;
+    struct
+    {
+      enum _FS_FILTER_SECTION_SYNC_TYPE SyncType;
+      U32 PageProtection;
+      struct _FS_FILTER_SECTION_SYNC_OUTPUT* OutputInformation;
+    } AcquireForSectionSynchronization;
+    struct
+    {
+      enum _FS_FILTER_STREAM_FO_NOTIFICATION_TYPE NotificationType;
+      U8 SafeToRecurse;
+      char __PADDING__[7];
+    } NotifyStreamFileObject;
+    struct
+    {
+      void* Argument1;
+      void* Argument2;
+      void* Argument3;
+      void* Argument4;
+      void* Argument5;
+    } Others;
+  }; 
+} FS_FILTER_PARAMETERS, *PFS_FILTER_PARAMETERS; 
+
+typedef struct _FS_FILTER_CALLBACK_DATA
+{
+  U32 SizeOfFsFilterCallbackData;
+  U8 Operation;
+  U8 Reserved;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _FILE_OBJECT* FileObject;
+  union _FS_FILTER_PARAMETERS Parameters;
+} FS_FILTER_CALLBACK_DATA, *PFS_FILTER_CALLBACK_DATA; 
+

@@ -1,0 +1,7 @@
+typedef struct _DBGKD_READ_WRITE_MSR
+{
+  U32 Msr;
+  U32 DataValueLow;
+  U32 DataValueHigh;
+} DBGKD_READ_WRITE_MSR, *PDBGKD_READ_WRITE_MSR; 
+

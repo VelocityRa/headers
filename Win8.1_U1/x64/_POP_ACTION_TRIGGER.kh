@@ -1,0 +1,35 @@
+enum POWER_POLICY_DEVICE_TYPE
+{
+  PolicyDeviceSystemButton = 0,
+  PolicyDeviceThermalZone = 1,
+  PolicyDeviceBattery = 2,
+  PolicyDeviceMemory = 3,
+  PolicyInitiatePowerActionAPI = 4,
+  PolicySetPowerStateAPI = 5,
+  PolicyImmediateDozeS4 = 6,
+  PolicySystemIdle = 7,
+  PolicyDeviceWakeAlarm = 8,
+  PolicyDeviceFan = 9,
+  PolicyCsBatterySaver = 10,
+  PolicyDeviceMax = 11,
+};
+
+typedef struct _POP_ACTION_TRIGGER
+{
+  enum POWER_POLICY_DEVICE_TYPE Type;
+  U32 Flags;
+  struct _POP_TRIGGER_WAIT* Wait;
+  union
+  {
+    struct
+    {
+      U32 Level;
+    } Battery;
+    struct
+    {
+      U32 Type;
+    } Button;
+  }; 
+  S32 __PADDING__[1];
+} POP_ACTION_TRIGGER, *PPOP_ACTION_TRIGGER; 
+

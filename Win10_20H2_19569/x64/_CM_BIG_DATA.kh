@@ -1,0 +1,7 @@
+typedef struct _CM_BIG_DATA
+{
+  U16 Signature;
+  U16 Count;
+  U32 List;
+} CM_BIG_DATA, *PCM_BIG_DATA; 
+

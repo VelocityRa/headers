@@ -1,0 +1,6 @@
+typedef struct _DEVICE_DATA_SET_RANGE
+{
+  S64 StartingOffset;
+  U64 LengthInBytes;
+} DEVICE_DATA_SET_RANGE, *PDEVICE_DATA_SET_RANGE; 
+

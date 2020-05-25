@@ -1,0 +1,7 @@
+typedef struct _MI_HYPER_SPACE
+{
+  U8 VadBitmap[268435456];
+  U8 PageDirectoryCommitmentBitmap[16384];
+  U8 PageTableCommitmentBitmap[8388608];
+} MI_HYPER_SPACE, *PMI_HYPER_SPACE; 
+

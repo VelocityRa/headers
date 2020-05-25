@@ -1,0 +1,13 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _ECP_LIST
+{
+  U32 Signature;
+  U32 Flags;
+  struct _LIST_ENTRY EcpList;
+} ECP_LIST, *PECP_LIST; 
+

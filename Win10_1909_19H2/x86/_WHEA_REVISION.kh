@@ -1,0 +1,13 @@
+typedef union _WHEA_REVISION
+{
+  union
+  {
+    struct
+    {
+      U8 MinorRevision;
+      U8 MajorRevision;
+    }; 
+    U16 AsUSHORT;
+  }; 
+} WHEA_REVISION, *PWHEA_REVISION; 
+

@@ -1,0 +1,30 @@
+typedef struct _PO_MEMORY_RANGE_ARRAY_RANGE
+{
+  U64 PageNo;
+  U64 StartPage;
+  U64 EndPage;
+  U32 CheckSum;
+  S32 __PADDING__[1];
+} PO_MEMORY_RANGE_ARRAY_RANGE, *PPO_MEMORY_RANGE_ARRAY_RANGE; 
+
+typedef struct _PO_MEMORY_RANGE_ARRAY_LINK
+{
+  struct _PO_MEMORY_RANGE_ARRAY* Next;
+  U64 NextTable;
+  U32 CheckSum;
+  U32 EntryCount;
+} PO_MEMORY_RANGE_ARRAY_LINK, *PPO_MEMORY_RANGE_ARRAY_LINK; 
+
+typedef struct _PO_MEMORY_RANGE_ARRAY
+{
+  union
+  {
+    struct _PO_MEMORY_RANGE_ARRAY_RANGE Range;
+    struct
+    {
+      struct _PO_MEMORY_RANGE_ARRAY_LINK Link;
+      S32 __PADDING__[2];
+    }; 
+  }; 
+} PO_MEMORY_RANGE_ARRAY, *PPO_MEMORY_RANGE_ARRAY; 
+

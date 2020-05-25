@@ -1,0 +1,13 @@
+typedef union _KSTACK_COUNT
+{
+  union
+  {
+    S32 Value;
+    struct 
+    {
+      U32 State : 3; 
+      U32 StackCount : 29; 
+    }; 
+  }; 
+} KSTACK_COUNT, *PKSTACK_COUNT; 
+

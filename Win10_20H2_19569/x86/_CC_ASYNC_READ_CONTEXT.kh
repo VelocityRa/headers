@@ -1,0 +1,9 @@
+typedef struct _CC_ASYNC_READ_CONTEXT
+{
+  void* CompletionRoutine;
+  void* Context;
+  struct _MDL* Mdl;
+  char RequestorMode;
+  U32 NestingLevel;
+} CC_ASYNC_READ_CONTEXT, *PCC_ASYNC_READ_CONTEXT; 
+

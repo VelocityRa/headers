@@ -1,0 +1,15 @@
+typedef union _KPRCBFLAG
+{
+  union
+  {
+    volatile S32 PrcbFlags;
+    struct 
+    {
+      U32 BamQosLevel : 2; 
+      U32 PendingQosUpdate : 2; 
+      U32 CacheIsolationEnabled : 1; 
+      U32 PrcbFlagsReserved : 27; 
+    }; 
+  }; 
+} KPRCBFLAG, *PKPRCBFLAG; 
+

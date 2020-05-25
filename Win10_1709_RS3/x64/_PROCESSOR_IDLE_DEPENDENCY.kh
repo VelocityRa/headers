@@ -1,0 +1,9 @@
+typedef struct _PROCESSOR_IDLE_DEPENDENCY
+{
+  U32 ProcessorIndex;
+  U8 ExpectedState;
+  U8 AllowDeeperStates;
+  U8 LooseDependency;
+  char __PADDING__[1];
+} PROCESSOR_IDLE_DEPENDENCY, *PPROCESSOR_IDLE_DEPENDENCY; 
+

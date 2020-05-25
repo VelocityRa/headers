@@ -1,0 +1,6 @@
+typedef struct _MI_FORCED_COMMITS
+{
+  U32 Regular;
+  U32 Wrap;
+} MI_FORCED_COMMITS, *PMI_FORCED_COMMITS; 
+

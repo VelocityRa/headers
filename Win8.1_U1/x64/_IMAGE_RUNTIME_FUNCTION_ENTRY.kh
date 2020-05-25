@@ -1,0 +1,11 @@
+typedef struct _IMAGE_RUNTIME_FUNCTION_ENTRY
+{
+  U32 BeginAddress;
+  U32 EndAddress;
+  union
+  {
+    U32 UnwindInfoAddress;
+    U32 UnwindData;
+  }; 
+} IMAGE_RUNTIME_FUNCTION_ENTRY, *PIMAGE_RUNTIME_FUNCTION_ENTRY; 
+

@@ -1,0 +1,11 @@
+typedef struct _OWNER_ENTRY
+{
+  U64 OwnerThread;
+  union
+  {
+    S32 OwnerCount;
+    U32 TableSize;
+  }; 
+  S32 __PADDING__[1];
+} OWNER_ENTRY, *POWNER_ENTRY; 
+

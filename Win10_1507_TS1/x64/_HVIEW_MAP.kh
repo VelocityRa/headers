@@ -1,0 +1,43 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _HVIEW_MAP_PIN_LOG_ENTRY
+{
+  U32 ViewOffset;
+  U8 Pinned;
+  U64 PinMask;
+  struct _KTHREAD* Thread;
+  void* Stack[6];
+} HVIEW_MAP_PIN_LOG_ENTRY, *PHVIEW_MAP_PIN_LOG_ENTRY; 
+
+typedef struct _HVIEW_MAP_PIN_LOG
+{
+  U32 Next;
+  U32 Size;
+  struct _HVIEW_MAP_PIN_LOG_ENTRY Entries[16];
+} HVIEW_MAP_PIN_LOG, *PHVIEW_MAP_PIN_LOG; 
+
+typedef struct _HVIEW_MAP
+{
+  U32 MappedLength;
+  struct _EX_PUSH_LOCK Lock;
+  struct _FILE_OBJECT* FileObject;
+  struct _HVIEW_MAP_DIRECTORY* Directory;
+  U32 PagesCharged;
+  struct _HVIEW_MAP_PIN_LOG PinLog;
+} HVIEW_MAP, *PHVIEW_MAP; 
+

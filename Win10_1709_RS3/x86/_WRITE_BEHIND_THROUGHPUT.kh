@@ -1,0 +1,6 @@
+typedef struct _WRITE_BEHIND_THROUGHPUT
+{
+  U32 PagesYetToWrite;
+  U32 Throughput;
+} WRITE_BEHIND_THROUGHPUT, *PWRITE_BEHIND_THROUGHPUT; 
+

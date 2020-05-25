@@ -1,0 +1,9 @@
+typedef struct _INTERFACE
+{
+  U16 Size;
+  U16 Version;
+  void* Context;
+  void* InterfaceReference;
+  void* InterfaceDereference;
+} INTERFACE, *PINTERFACE; 
+

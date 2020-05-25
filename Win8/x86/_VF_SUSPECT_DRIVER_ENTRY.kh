@@ -1,0 +1,21 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _VF_SUSPECT_DRIVER_ENTRY
+{
+  struct _LIST_ENTRY Links;
+  U32 Loads;
+  U32 Unloads;
+  struct _UNICODE_STRING BaseName;
+} VF_SUSPECT_DRIVER_ENTRY, *PVF_SUSPECT_DRIVER_ENTRY; 
+

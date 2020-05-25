@@ -1,0 +1,6 @@
+typedef struct _VF_AVL_TREE_NODE
+{
+  void* p;
+  U32 RangeSize;
+} VF_AVL_TREE_NODE, *PVF_AVL_TREE_NODE; 
+

@@ -1,0 +1,12 @@
+typedef struct _TRACE_ENABLE_INFO
+{
+  U32 IsEnabled;
+  U8 Level;
+  U8 Reserved1;
+  U16 LoggerId;
+  U32 EnableProperty;
+  U32 Reserved2;
+  U64 MatchAnyKeyword;
+  U64 MatchAllKeyword;
+} TRACE_ENABLE_INFO, *PTRACE_ENABLE_INFO; 
+

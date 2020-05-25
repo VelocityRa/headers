@@ -1,0 +1,6 @@
+typedef struct _PROC_IDLE_SNAP
+{
+  U64 Time;
+  U64 Idle;
+} PROC_IDLE_SNAP, *PPROC_IDLE_SNAP; 
+

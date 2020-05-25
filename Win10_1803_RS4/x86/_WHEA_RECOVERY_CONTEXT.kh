@@ -1,0 +1,16 @@
+typedef struct _WHEA_RECOVERY_CONTEXT
+{
+  struct
+  {
+    U32 Address;
+    U8 Consumed;
+    U16 ErrorCode;
+    U8 ErrorIpValid;
+    U8 RestartIpValid;
+    char __PADDING__[2];
+  } MemoryError;
+  U64 PartitionId;
+  U32 VpIndex;
+  S32 __PADDING__[1];
+} WHEA_RECOVERY_CONTEXT, *PWHEA_RECOVERY_CONTEXT; 
+

@@ -1,0 +1,13 @@
+typedef struct _SID_IDENTIFIER_AUTHORITY
+{
+  U8 Value[6];
+} SID_IDENTIFIER_AUTHORITY, *PSID_IDENTIFIER_AUTHORITY; 
+
+typedef struct _SID
+{
+  U8 Revision;
+  U8 SubAuthorityCount;
+  struct _SID_IDENTIFIER_AUTHORITY IdentifierAuthority;
+  U32 SubAuthority[1];
+} SID, *PSID; 
+

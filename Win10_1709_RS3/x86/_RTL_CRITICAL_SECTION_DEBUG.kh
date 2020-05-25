@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_CRITICAL_SECTION_DEBUG
+{
+  U16 Type;
+  U16 CreatorBackTraceIndex;
+  struct _RTL_CRITICAL_SECTION* CriticalSection;
+  struct _LIST_ENTRY ProcessLocksList;
+  U32 EntryCount;
+  U32 ContentionCount;
+  U32 Flags;
+  U16 CreatorBackTraceIndexHigh;
+  U16 SpareUSHORT;
+} RTL_CRITICAL_SECTION_DEBUG, *PRTL_CRITICAL_SECTION_DEBUG; 
+

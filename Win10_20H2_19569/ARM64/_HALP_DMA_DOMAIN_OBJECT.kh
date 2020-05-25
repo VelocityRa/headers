@@ -1,0 +1,63 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef enum _EXT_IOMMU_TRANSLATION_TYPE
+{
+  ExtTranslationTypePassThrough = 0,
+  ExtTranslationTypeBlocked = 1,
+  ExtTranslationTypeTranslate = 2,
+  ExtTranslationTypeSafePassThrough = 3,
+  ExtTranslationTypeInvalid = 4,
+} EXT_IOMMU_TRANSLATION_TYPE, *PEXT_IOMMU_TRANSLATION_TYPE;
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _HALP_DMA_DOMAIN_OBJECT
+{
+  struct _LIST_ENTRY ListEntry;
+  union _LARGE_INTEGER MaximumPhysicalAddress;
+  union _LARGE_INTEGER BoundaryAddressMultiple;
+  U8 CacheCoherent;
+  U8 FirmwareReserved;
+  void* IommuDomainPointer;
+  void* LaState;
+  U64 LaStateLock;
+  enum _EXT_IOMMU_TRANSLATION_TYPE TranslationType;
+  struct _ADAPTER_OBJECT* OwningAdapter;
+  struct _RTL_RB_TREE CommonBufferRoot;
+  U64 CommonBufferTreeLock;
+  struct _LIST_ENTRY VectorCommonBufferListHead;
+  U64 VectorCommonBufferLock;
+  U32 DomainRefCount;
+  S32 __PADDING__[1];
+} HALP_DMA_DOMAIN_OBJECT, *PHALP_DMA_DOMAIN_OBJECT; 
+

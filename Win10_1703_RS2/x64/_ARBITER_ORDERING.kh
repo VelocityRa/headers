@@ -1,0 +1,6 @@
+typedef struct _ARBITER_ORDERING
+{
+  U64 Start;
+  U64 End;
+} ARBITER_ORDERING, *PARBITER_ORDERING; 
+

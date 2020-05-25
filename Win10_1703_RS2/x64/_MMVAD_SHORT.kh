@@ -1,0 +1,98 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MMVAD_FLAGS
+{
+  struct 
+  {
+    U32 VadType : 3; 
+    U32 Protection : 5; 
+    U32 PreferredNode : 6; 
+    U32 NoChange : 1; 
+    U32 PrivateMemory : 1; 
+    U32 PrivateFixup : 1; 
+    U32 ManySubsections : 1; 
+    U32 Enclave : 1; 
+    U32 DeleteInProgress : 1; 
+    U32 PageSize64K : 1; 
+    U32 RfgControlStack : 1; 
+    U32 Spare : 10; 
+  }; 
+} MMVAD_FLAGS, *PMMVAD_FLAGS; 
+
+typedef struct _MMVAD_FLAGS1
+{
+  struct 
+  {
+    U32 CommitCharge : 31; 
+    U32 MemCommit : 1; 
+  }; 
+} MMVAD_FLAGS1, *PMMVAD_FLAGS1; 
+
+typedef struct _MMVAD_SHORT
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE VadNode;
+    struct _MMVAD_SHORT* NextVad;
+  }; 
+  U32 StartingVpn;
+  U32 EndingVpn;
+  U8 StartingVpnHigh;
+  U8 EndingVpnHigh;
+  U8 CommitChargeHigh;
+  U8 SpareNT64VadUChar;
+  S32 ReferenceCount;
+  struct _EX_PUSH_LOCK PushLock;
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMVAD_FLAGS VadFlags;
+    }; 
+  } u;
+  union
+  {
+    union
+    {
+      U32 LongFlags1;
+      struct _MMVAD_FLAGS1 VadFlags1;
+    }; 
+  } u1;
+  struct _MI_VAD_EVENT_BLOCK* EventList;
+} MMVAD_SHORT, *PMMVAD_SHORT; 
+

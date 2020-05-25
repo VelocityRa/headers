@@ -1,0 +1,44 @@
+typedef enum _POP_IO_STATUS
+{
+  IoReady = 0,
+  IoPending = 1,
+  IoDone = 2,
+} POP_IO_STATUS, *PPOP_IO_STATUS;
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _POP_IO_INFO
+{
+  struct _MDL* DumpMdl;
+  enum _POP_IO_STATUS IoStatus;
+  U64 IoStartCount;
+  U64 IoBytesCompleted;
+  U64 IoBytesInProgress;
+  U64 RequestSize;
+  union _LARGE_INTEGER IoLocation;
+  U64 FileOffset;
+  void* Buffer;
+  U8 AsyncCapable;
+  U64 BytesToRead;
+  U32 Pages;
+  U64 HighestChecksumIndex;
+  U16 PreviousChecksum;
+  char __PADDING__[6];
+} POP_IO_INFO, *PPOP_IO_INFO; 
+

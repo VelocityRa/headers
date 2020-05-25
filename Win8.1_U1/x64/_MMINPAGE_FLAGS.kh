@@ -1,0 +1,37 @@
+typedef struct _MMINPAGE_FLAGS
+{
+  struct 
+  {
+    U8 InjectRetry : 1; 
+    U8 CrossThreadPadding : 7; 
+  }; 
+  struct 
+  {
+    U8 PrefetchSystemVmType : 2; 
+    U8 VaPrefetchReadBlock : 1; 
+    U8 CollidedFlowThrough : 1; 
+    U8 ForceCollisions : 1; 
+    U8 InPageExpanded : 1; 
+    U8 IssuedAtLowPriority : 1; 
+    U8 FaultFromStore : 1; 
+  }; 
+  struct 
+  {
+    U8 PagePriority : 3; 
+    U8 PerformRelocations : 1; 
+    U8 ClusteredPagePriority : 3; 
+    U8 MakeClusterValid : 1; 
+  }; 
+  struct 
+  {
+    U8 ZeroLastPage : 1; 
+    U8 UserFault : 1; 
+    U8 BoostedPriority : 1; 
+    U8 StandbyProtectionNeeded : 1; 
+    U8 PteChanged : 1; 
+    U8 PageFileFault : 1; 
+    U8 PageFilePageHashActive : 1; 
+    U8 CoalescedIo : 1; 
+  }; 
+} MMINPAGE_FLAGS, *PMMINPAGE_FLAGS; 
+

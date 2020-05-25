@@ -1,0 +1,12 @@
+typedef struct _VF_BTS_RECORD
+{
+  void* JumpedFrom;
+  void* JumpedTo;
+  struct 
+  {
+    U32 Unused1 : 3; 
+    U32 Predicted : 4; 
+    U32 Unused2 : 25; 
+  }; 
+} VF_BTS_RECORD, *PVF_BTS_RECORD; 
+

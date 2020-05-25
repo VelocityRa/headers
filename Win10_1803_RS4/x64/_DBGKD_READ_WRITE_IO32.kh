@@ -1,0 +1,7 @@
+typedef struct _DBGKD_READ_WRITE_IO32
+{
+  U32 DataSize;
+  U32 IoAddress;
+  U32 DataValue;
+} DBGKD_READ_WRITE_IO32, *PDBGKD_READ_WRITE_IO32; 
+

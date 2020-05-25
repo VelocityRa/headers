@@ -1,0 +1,30 @@
+typedef union _IOMMU_SVM_CAPABILITIES
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U32 AtsCapability : 1; 
+        U32 PriCapability : 1; 
+        U32 PasidCapability : 1; 
+      }; 
+      struct
+      {
+        struct 
+        {
+          U32 PasidMaxWidth : 5; 
+          U32 PasidExePerm : 1; 
+          U32 PasidPrivMode : 1; 
+          U32 AtsPageAlignedRequest : 1; 
+          U32 AtsGlobalInvalidate : 1; 
+          U32 AtsInvalidateQueueDepth : 5; 
+        }; 
+      } CapReg;
+      U32 Rsvd : 15; 
+    }; 
+    U32 AsULONG;
+  }; 
+} IOMMU_SVM_CAPABILITIES, *PIOMMU_SVM_CAPABILITIES; 
+

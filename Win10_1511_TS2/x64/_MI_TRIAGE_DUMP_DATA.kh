@@ -1,0 +1,45 @@
+typedef union _MI_FLAGS
+{
+  union
+  {
+    S32 EntireFlags;
+    struct 
+    {
+      U32 VerifierEnabled : 1; 
+      U32 KernelVerifierEnabled : 1; 
+      U32 LargePageKernel : 1; 
+      U32 StopOn4d : 1; 
+      U32 InitializationPhase : 2; 
+      U32 PageKernelStacks : 1; 
+      U32 CheckZeroPages : 1; 
+      U32 ProcessorPrewalks : 1; 
+      U32 ProcessorPostwalks : 1; 
+      U32 CoverageBuild : 1; 
+      U32 AccessBitReplacementDisabled : 1; 
+      U32 CheckExecute : 1; 
+      U32 ZeroNonCachedByConverting : 1; 
+      U32 ZeroWriteCombinedByConverting : 1; 
+      U32 ProtectedPagesEnabled : 1; 
+      U32 StrongCodeGuarantees : 1; 
+      U32 HardCodeGuarantees : 1; 
+      U32 ExecutePagePrivilegeRequired : 1; 
+      U32 StrongPageIdentity : 1; 
+      U32 SecureRelocations : 1; 
+    }; 
+  }; 
+} MI_FLAGS, *PMI_FLAGS; 
+
+typedef struct _MI_TRIAGE_DUMP_DATA
+{
+  U64 BadPageCount;
+  S32 BadPagesDetected;
+  S32 ZeroedPageSingleBitErrorsDetected;
+  S32 ScrubPasses;
+  S32 ScrubBadPagesFound;
+  U32 PageHashErrors;
+  U64 FeatureBits;
+  U32 TimeZoneId;
+  union _MI_FLAGS Flags;
+  void* VsmConnection;
+} MI_TRIAGE_DUMP_DATA, *PMI_TRIAGE_DUMP_DATA; 
+

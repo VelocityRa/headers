@@ -1,0 +1,12 @@
+typedef struct _GIC_MSIFRAME_ENTRY
+{
+  U8 Type;
+  U8 Length;
+  U16 Reserved1;
+  U32 Identifier;
+  U64 PhysicalAddress;
+  U32 Flags;
+  U16 SpiCount;
+  U16 SpiBase;
+} GIC_MSIFRAME_ENTRY, *PGIC_MSIFRAME_ENTRY; 
+

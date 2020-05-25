@@ -1,0 +1,12 @@
+typedef struct _TIME_FIELDS
+{
+  S16 Year;
+  S16 Month;
+  S16 Day;
+  S16 Hour;
+  S16 Minute;
+  S16 Second;
+  S16 Milliseconds;
+  S16 Weekday;
+} TIME_FIELDS, *PTIME_FIELDS; 
+

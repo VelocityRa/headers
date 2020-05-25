@@ -1,0 +1,48 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _ALPC_COMPLETION_LIST
+{
+  struct _LIST_ENTRY Entry;
+  struct _EPROCESS* OwnerProcess;
+  struct _EX_PUSH_LOCK CompletionListLock;
+  struct _MDL* Mdl;
+  void* UserVa;
+  void* UserLimit;
+  void* DataUserVa;
+  void* SystemVa;
+  U32 TotalSize;
+  struct _ALPC_COMPLETION_LIST_HEADER* Header;
+  void* List;
+  U32 ListSize;
+  void* Bitmap;
+  U32 BitmapSize;
+  void* Data;
+  U32 DataSize;
+  U32 BitmapLimit;
+  U32 BitmapNextHint;
+  U32 ConcurrencyCount;
+  U32 AttributeFlags;
+  U32 AttributeSize;
+} ALPC_COMPLETION_LIST, *PALPC_COMPLETION_LIST; 
+

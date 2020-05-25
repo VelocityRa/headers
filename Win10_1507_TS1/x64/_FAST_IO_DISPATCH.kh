@@ -1,0 +1,32 @@
+typedef struct _FAST_IO_DISPATCH
+{
+  U32 SizeOfFastIoDispatch;
+  void* FastIoCheckIfPossible;
+  void* FastIoRead;
+  void* FastIoWrite;
+  void* FastIoQueryBasicInfo;
+  void* FastIoQueryStandardInfo;
+  void* FastIoLock;
+  void* FastIoUnlockSingle;
+  void* FastIoUnlockAll;
+  void* FastIoUnlockAllByKey;
+  void* FastIoDeviceControl;
+  void* AcquireFileForNtCreateSection;
+  void* ReleaseFileForNtCreateSection;
+  void* FastIoDetachDevice;
+  void* FastIoQueryNetworkOpenInfo;
+  void* AcquireForModWrite;
+  void* MdlRead;
+  void* MdlReadComplete;
+  void* PrepareMdlWrite;
+  void* MdlWriteComplete;
+  void* FastIoReadCompressed;
+  void* FastIoWriteCompressed;
+  void* MdlReadCompleteCompressed;
+  void* MdlWriteCompleteCompressed;
+  void* FastIoQueryOpen;
+  void* ReleaseForModWrite;
+  void* AcquireForCcFlush;
+  void* ReleaseForCcFlush;
+} FAST_IO_DISPATCH, *PFAST_IO_DISPATCH; 
+

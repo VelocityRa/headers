@@ -1,0 +1,17 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _HEAP_USERDATA_HEADER
+{
+  union
+  {
+    struct _SINGLE_LIST_ENTRY SFreeListEntry;
+    struct _HEAP_SUBSEGMENT* SubSegment;
+  }; 
+  void* Reserved;
+  U32 SizeIndex;
+  U32 Signature;
+} HEAP_USERDATA_HEADER, *PHEAP_USERDATA_HEADER; 
+

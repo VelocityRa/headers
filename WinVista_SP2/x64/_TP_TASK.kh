@@ -1,0 +1,5 @@
+typedef struct _TP_TASK
+{
+  const struct _TP_TASK_CALLBACKS* Callbacks;
+} TP_TASK, *PTP_TASK; 
+

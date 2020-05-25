@@ -1,0 +1,180 @@
+typedef struct _KSYSTEM_TIME
+{
+  U32 LowPart;
+  S32 High1Time;
+  S32 High2Time;
+} KSYSTEM_TIME, *PKSYSTEM_TIME; 
+
+typedef enum _NT_PRODUCT_TYPE
+{
+  NtProductWinNt = 1,
+  NtProductLanManNt = 2,
+  NtProductServer = 3,
+} NT_PRODUCT_TYPE, *PNT_PRODUCT_TYPE;
+
+typedef enum _ALTERNATIVE_ARCHITECTURE_TYPE
+{
+  StandardDesign = 0,
+  NEC98x86 = 1,
+  EndAlternatives = 2,
+} ALTERNATIVE_ARCHITECTURE_TYPE, *PALTERNATIVE_ARCHITECTURE_TYPE;
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _XSTATE_FEATURE
+{
+  U32 Offset;
+  U32 Size;
+} XSTATE_FEATURE, *PXSTATE_FEATURE; 
+
+typedef struct _XSTATE_CONFIGURATION
+{
+  U64 EnabledFeatures;
+  U64 EnabledVolatileFeatures;
+  U32 Size;
+  struct 
+  {
+    U32 OptimizedSave : 1; 
+    U32 CompactionEnabled : 1; 
+  }; 
+  struct _XSTATE_FEATURE Features[64];
+  U64 EnabledSupervisorFeatures;
+  U64 AlignedFeatures;
+  U32 AllFeatureSize;
+  U32 AllFeatures[64];
+  S32 __PADDING__[1];
+} XSTATE_CONFIGURATION, *PXSTATE_CONFIGURATION; 
+
+typedef struct _KUSER_SHARED_DATA
+{
+  U32 TickCountLowDeprecated;
+  U32 TickCountMultiplier;
+  volatile struct _KSYSTEM_TIME InterruptTime;
+  volatile struct _KSYSTEM_TIME SystemTime;
+  volatile struct _KSYSTEM_TIME TimeZoneBias;
+  U16 ImageNumberLow;
+  U16 ImageNumberHigh;
+  wchar_t NtSystemRoot[260];
+  U32 MaxStackTraceDepth;
+  U32 CryptoExponent;
+  U32 TimeZoneId;
+  U32 LargePageMinimum;
+  U32 AitSamplingValue;
+  U32 AppCompatFlag;
+  U64 RNGSeedVersion;
+  U32 GlobalValidationRunlevel;
+  volatile S32 TimeZoneBiasStamp;
+  U32 NtBuildNumber;
+  enum _NT_PRODUCT_TYPE NtProductType;
+  U8 ProductTypeIsValid;
+  U8 Reserved0[1];
+  U16 NativeProcessorArchitecture;
+  U32 NtMajorVersion;
+  U32 NtMinorVersion;
+  U8 ProcessorFeatures[64];
+  U32 Reserved1;
+  U32 Reserved3;
+  volatile U32 TimeSlip;
+  enum _ALTERNATIVE_ARCHITECTURE_TYPE AlternativeArchitecture;
+  U32 BootId;
+  union _LARGE_INTEGER SystemExpirationDate;
+  U32 SuiteMask;
+  U8 KdDebuggerEnabled;
+  union
+  {
+    U8 MitigationPolicies;
+    struct 
+    {
+      U8 NXSupportPolicy : 2; 
+      U8 SEHValidationPolicy : 2; 
+      U8 CurDirDevicesSkippedForDlls : 2; 
+      U8 Reserved : 2; 
+    }; 
+  }; 
+  U8 Reserved6[2];
+  volatile U32 ActiveConsoleId;
+  volatile U32 DismountCount;
+  U32 ComPlusPackage;
+  U32 LastSystemRITEventTickCount;
+  U32 NumberOfPhysicalPages;
+  U8 SafeBootMode;
+  U8 Reserved12[3];
+  union
+  {
+    U32 SharedDataFlags;
+    struct 
+    {
+      U32 DbgErrorPortPresent : 1; 
+      U32 DbgElevationEnabled : 1; 
+      U32 DbgVirtEnabled : 1; 
+      U32 DbgInstallerDetectEnabled : 1; 
+      U32 DbgLkgEnabled : 1; 
+      U32 DbgDynProcessorEnabled : 1; 
+      U32 DbgConsoleBrokerEnabled : 1; 
+      U32 DbgSecureBootEnabled : 1; 
+      U32 DbgMultiSessionSku : 1; 
+      U32 SpareBits : 23; 
+    }; 
+  }; 
+  U32 DataFlagsPad[1];
+  U64 TestRetInstruction;
+  S64 QpcFrequency;
+  U64 SystemCallPad[3];
+  union
+  {
+    volatile struct _KSYSTEM_TIME TickCount;
+    volatile U64 TickCountQuad;
+    U32 ReservedTickCountOverlay[3];
+  }; 
+  U32 TickCountPad[1];
+  U32 Cookie;
+  U32 CookiePad[1];
+  S64 ConsoleSessionForegroundProcessId;
+  U64 TimeUpdateLock;
+  U64 BaselineSystemTimeQpc;
+  U64 BaselineInterruptTimeQpc;
+  U64 QpcSystemTimeIncrement;
+  U64 QpcInterruptTimeIncrement;
+  U8 QpcSystemTimeIncrementShift;
+  U8 QpcInterruptTimeIncrementShift;
+  U16 UnparkedProcessorCount;
+  U8 Reserved8[20];
+  U16 UserModeGlobalLogger[16];
+  U32 ImageFileExecutionOptions;
+  U32 LangGenerationCount;
+  U64 Reserved4;
+  volatile U64 InterruptTimeBias;
+  volatile U64 QpcBias;
+  U32 ActiveProcessorCount;
+  volatile U8 ActiveGroupCount;
+  U8 Reserved9;
+  union
+  {
+    U16 QpcData;
+    struct
+    {
+      volatile U8 QpcBypassEnabled;
+      U8 QpcShift;
+    }; 
+  }; 
+  union _LARGE_INTEGER TimeZoneBiasEffectiveStart;
+  union _LARGE_INTEGER TimeZoneBiasEffectiveEnd;
+  struct _XSTATE_CONFIGURATION XState;
+} KUSER_SHARED_DATA, *PKUSER_SHARED_DATA; 
+

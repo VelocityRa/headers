@@ -1,0 +1,360 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 1; 
+              U8 Processor : 5; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 SchedulerAssist : 1; 
+            U8 Instrumented : 1; 
+          }; 
+          U8 DebugActive;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _KMUTANT
+{
+  struct _DISPATCHER_HEADER Header;
+  struct _LIST_ENTRY MutantListEntry;
+  struct _KTHREAD* OwnerThread;
+  union
+  {
+    U8 MutantFlags;
+    struct 
+    {
+      U8 Abandoned : 1; 
+      U8 Spare1 : 7; 
+    }; 
+    struct 
+    {
+      U8 Abandoned2 : 1; 
+      U8 AbEnabled : 1; 
+      U8 Spare2 : 6; 
+    }; 
+  }; 
+  U8 ApcDisable;
+  char __PADDING__[2];
+} KMUTANT, *PKMUTANT; 
+
+typedef struct _RTL_BALANCED_LINKS
+{
+  struct _RTL_BALANCED_LINKS* Parent;
+  struct _RTL_BALANCED_LINKS* LeftChild;
+  struct _RTL_BALANCED_LINKS* RightChild;
+  char Balance;
+  U8 Reserved[3];
+} RTL_BALANCED_LINKS, *PRTL_BALANCED_LINKS; 
+
+typedef struct _KTMOBJECT_NAMESPACE_LINK
+{
+  struct _RTL_BALANCED_LINKS Links;
+  U8 Expired;
+  char __PADDING__[3];
+} KTMOBJECT_NAMESPACE_LINK, *PKTMOBJECT_NAMESPACE_LINK; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef enum _KTRANSACTION_STATE
+{
+  KTransactionUninitialized = 0,
+  KTransactionActive = 1,
+  KTransactionPreparing = 2,
+  KTransactionPrepared = 3,
+  KTransactionInDoubt = 4,
+  KTransactionCommitted = 5,
+  KTransactionAborted = 6,
+  KTransactionDelegated = 7,
+  KTransactionPrePreparing = 8,
+  KTransactionForgotten = 9,
+  KTransactionRecovering = 10,
+  KTransactionPrePrepared = 11,
+} KTRANSACTION_STATE, *PKTRANSACTION_STATE;
+
+typedef union _CLS_LSN
+{
+  union
+  {
+    struct
+    {
+      U32 idxRecord;
+      U32 cidContainer;
+    } offset;
+    U64 ullOffset;
+  }; 
+} CLS_LSN, *PCLS_LSN; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _KDPC
+{
+  union
+  {
+    U32 TargetInfoAsUlong;
+    struct
+    {
+      U8 Type;
+      U8 Importance;
+      volatile U16 Number;
+    }; 
+  }; 
+  struct _SINGLE_LIST_ENTRY DpcListEntry;
+  U32 ProcessorHistory;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef enum _KTRANSACTION_OUTCOME
+{
+  KTxOutcomeUninitialized = 0,
+  KTxOutcomeUndetermined = 1,
+  KTxOutcomeCommitted = 2,
+  KTxOutcomeAborted = 3,
+  KTxOutcomeUnavailable = 4,
+} KTRANSACTION_OUTCOME, *PKTRANSACTION_OUTCOME;
+
+typedef enum
+{
+  KTMOH_CommitTransaction_Result = 1,
+  KTMOH_RollbackTransaction_Result = 2,
+} TAG_UNNAMED_196, *PTAG_UNNAMED_196;
+
+typedef struct _KTRANSACTION_HISTORY
+{
+  enum _TAG_UNNAMED_196 RecordType;
+  U32 Payload;
+} KTRANSACTION_HISTORY, *PKTRANSACTION_HISTORY; 
+
+typedef struct _KTRANSACTION
+{
+  struct _KEVENT OutcomeEvent;
+  U32 cookie;
+  struct _KMUTANT Mutex;
+  struct _KTRANSACTION* TreeTx;
+  struct _KTMOBJECT_NAMESPACE_LINK GlobalNamespaceLink;
+  struct _KTMOBJECT_NAMESPACE_LINK TmNamespaceLink;
+  struct _GUID UOW;
+  enum _KTRANSACTION_STATE State;
+  U32 Flags;
+  struct _LIST_ENTRY EnlistmentHead;
+  U32 EnlistmentCount;
+  U32 RecoverableEnlistmentCount;
+  U32 PrePrepareRequiredEnlistmentCount;
+  U32 PrepareRequiredEnlistmentCount;
+  U32 OutcomeRequiredEnlistmentCount;
+  U32 PendingResponses;
+  struct _KENLISTMENT* SuperiorEnlistment;
+  union _CLS_LSN LastLsn;
+  struct _LIST_ENTRY PromotedEntry;
+  struct _KTRANSACTION* PromoterTransaction;
+  void* PromotePropagation;
+  U32 IsolationLevel;
+  U32 IsolationFlags;
+  union _LARGE_INTEGER Timeout;
+  struct _UNICODE_STRING Description;
+  struct _KTHREAD* RollbackThread;
+  struct _WORK_QUEUE_ITEM RollbackWorkItem;
+  struct _KDPC RollbackDpc;
+  struct _KTIMER RollbackTimer;
+  struct _LIST_ENTRY LsnOrderedEntry;
+  enum _KTRANSACTION_OUTCOME Outcome;
+  struct _KTM* Tm;
+  S64 CommitReservation;
+  struct _KTRANSACTION_HISTORY TransactionHistory[10];
+  U32 TransactionHistoryCount;
+  void* DTCPrivateInformation;
+  U32 DTCPrivateInformationLength;
+  struct _KMUTANT DTCPrivateInformationMutex;
+  void* PromotedTxSelfHandle;
+  U32 PendingPromotionCount;
+  struct _KEVENT PromotionCompletedEvent;
+  S32 __PADDING__[1];
+} KTRANSACTION, *PKTRANSACTION; 
+

@@ -1,0 +1,23 @@
+typedef struct _IMAGE_DOS_HEADER
+{
+  U16 e_magic;
+  U16 e_cblp;
+  U16 e_cp;
+  U16 e_crlc;
+  U16 e_cparhdr;
+  U16 e_minalloc;
+  U16 e_maxalloc;
+  U16 e_ss;
+  U16 e_sp;
+  U16 e_csum;
+  U16 e_ip;
+  U16 e_cs;
+  U16 e_lfarlc;
+  U16 e_ovno;
+  U16 e_res[4];
+  U16 e_oemid;
+  U16 e_oeminfo;
+  U16 e_res2[10];
+  S32 e_lfanew;
+} IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER; 
+

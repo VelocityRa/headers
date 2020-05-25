@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _POP_FX_WORK_ORDER
+{
+  struct _WORK_QUEUE_ITEM WorkItem;
+  S32 WorkCount;
+} POP_FX_WORK_ORDER, *PPOP_FX_WORK_ORDER; 
+

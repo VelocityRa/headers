@@ -1,0 +1,269 @@
+typedef struct _PROFILE_PARAMETER_BLOCK
+{
+  U16 Status;
+  U16 Reserved;
+  U16 DockingState;
+  U16 Capabilities;
+  U32 DockID;
+  U32 SerialNumber;
+} PROFILE_PARAMETER_BLOCK, *PPROFILE_PARAMETER_BLOCK; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef enum _BOOT_ENTROPY_SOURCE_ID
+{
+  BootEntropySourceNone = 0,
+  BootEntropySourceSeedfile = 1,
+  BootEntropySourceExternal = 2,
+  BootEntropySourceTpm = 3,
+  BootEntropySourceRdrand = 4,
+  BootEntropySourceTime = 5,
+  BootEntropySourceAcpiOem0 = 6,
+  BootEntropySourceUefi = 7,
+  BootEntropySourceCng = 8,
+  BootMaxEntropySources = 8,
+} BOOT_ENTROPY_SOURCE_ID, *PBOOT_ENTROPY_SOURCE_ID;
+
+typedef enum _BOOT_ENTROPY_SOURCE_RESULT_CODE
+{
+  BootEntropySourceStructureUninitialized = 0,
+  BootEntropySourceDisabledByPolicy = 1,
+  BootEntropySourceNotPresent = 2,
+  BootEntropySourceError = 3,
+  BootEntropySourceSuccess = 4,
+} BOOT_ENTROPY_SOURCE_RESULT_CODE, *PBOOT_ENTROPY_SOURCE_RESULT_CODE;
+
+typedef struct _BOOT_ENTROPY_SOURCE_LDR_RESULT
+{
+  enum _BOOT_ENTROPY_SOURCE_ID SourceId;
+  U64 Policy;
+  enum _BOOT_ENTROPY_SOURCE_RESULT_CODE ResultCode;
+  S32 ResultStatus;
+  U64 Time;
+  U32 EntropyLength;
+  U8 EntropyData[64];
+  S32 __PADDING__[1];
+} BOOT_ENTROPY_SOURCE_LDR_RESULT, *PBOOT_ENTROPY_SOURCE_LDR_RESULT; 
+
+typedef struct _BOOT_ENTROPY_LDR_RESULT
+{
+  U32 maxEntropySources;
+  struct _BOOT_ENTROPY_SOURCE_LDR_RESULT EntropySourceResult[8];
+  U8 SeedBytesForCng[48];
+  U8 RngBytesForNtoskrnl[1024];
+  U8 KdEntropy[32];
+} BOOT_ENTROPY_LDR_RESULT, *PBOOT_ENTROPY_LDR_RESULT; 
+
+typedef struct _LOADER_PARAMETER_HYPERVISOR_EXTENSION
+{
+  U32 HypervisorCrashdumpAreaPageCount;
+  U64 HypervisorCrashdumpAreaSpa;
+  U64 HypervisorLaunchStatus;
+  U64 HypervisorLaunchStatusArg1;
+  U64 HypervisorLaunchStatusArg2;
+  U64 HypervisorLaunchStatusArg3;
+  U64 HypervisorLaunchStatusArg4;
+} LOADER_PARAMETER_HYPERVISOR_EXTENSION, *PLOADER_PARAMETER_HYPERVISOR_EXTENSION; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _LOADER_BUGCHECK_PARAMETERS
+{
+  U32 BugcheckCode;
+  U64 BugcheckParameter1;
+  U64 BugcheckParameter2;
+  U64 BugcheckParameter3;
+  U64 BugcheckParameter4;
+} LOADER_BUGCHECK_PARAMETERS, *PLOADER_BUGCHECK_PARAMETERS; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _OFFLINE_CRASHDUMP_CONFIGURATION_TABLE_V2
+{
+  U32 Version;
+  U32 AbnormalResetOccurred;
+  U32 OfflineMemoryDumpCapable;
+  union _LARGE_INTEGER ResetDataAddress;
+  U32 ResetDataSize;
+  S32 __PADDING__[1];
+} OFFLINE_CRASHDUMP_CONFIGURATION_TABLE_V2, *POFFLINE_CRASHDUMP_CONFIGURATION_TABLE_V2; 
+
+typedef struct _LOADER_HIVE_RECOVERY_INFO
+{
+  struct 
+  {
+    U32 Recovered : 1; 
+    U32 LegacyRecovery : 1; 
+    U32 SoftRebootConflict : 1; 
+    U32 MostRecentLog : 3; 
+  }; 
+  U32 Spare : 27; 
+  U32 LogNextSequence;
+  U32 LogMinimumSequence;
+  U32 LogCurrentOffset;
+} LOADER_HIVE_RECOVERY_INFO, *PLOADER_HIVE_RECOVERY_INFO; 
+
+typedef struct _LOADER_RESET_REASON
+{
+  U8 Supplied;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U8 Pch;
+        U8 EmbeddedController;
+        U8 Reserved[6];
+      } Component;
+      U64 AsULONG64;
+      U8 AsBytes[8];
+    }; 
+  } Basic;
+  U32 AdditionalInfo[8];
+} LOADER_RESET_REASON, *PLOADER_RESET_REASON; 
+
+typedef struct _LOADER_PARAMETER_EXTENSION
+{
+  U32 Size;
+  struct _PROFILE_PARAMETER_BLOCK Profile;
+  void* EmInfFileImage;
+  U32 EmInfFileSize;
+  void* TriageDumpBlock;
+  struct _HEADLESS_LOADER_BLOCK* HeadlessLoaderBlock;
+  struct _SMBIOS3_TABLE_HEADER* SMBiosEPSHeader;
+  void* DrvDBImage;
+  U32 DrvDBSize;
+  struct _NETWORK_LOADER_BLOCK* NetworkLoaderBlock;
+  struct _LIST_ENTRY FirmwareDescriptorListHead;
+  void* AcpiTable;
+  U32 AcpiTableSize;
+  struct 
+  {
+    U32 LastBootSucceeded : 1; 
+    U32 LastBootShutdown : 1; 
+    U32 IoPortAccessSupported : 1; 
+    U32 BootDebuggerActive : 1; 
+    U32 StrongCodeGuarantees : 1; 
+    U32 HardStrongCodeGuarantees : 1; 
+    U32 SidSharingDisabled : 1; 
+    U32 TpmInitialized : 1; 
+    U32 VsmConfigured : 1; 
+    U32 IumEnabled : 1; 
+    U32 IsSmbboot : 1; 
+    U32 BootLogEnabled : 1; 
+    U32 FeatureSettings : 7; 
+    U32 FeatureSimulations : 6; 
+    U32 MicrocodeOptedOut : 1; 
+    U32 XhciLegacyHandoffSkip : 1; 
+    U32 Reserved : 5; 
+  }; 
+  struct _LOADER_PERFORMANCE_DATA* LoaderPerformanceData;
+  struct _LIST_ENTRY BootApplicationPersistentData;
+  void* WmdTestResult;
+  struct _GUID BootIdentifier;
+  U32 ResumePages;
+  void* DumpHeader;
+  void* BgContext;
+  void* NumaLocalityInfo;
+  void* NumaGroupAssignment;
+  struct _LIST_ENTRY AttachedHives;
+  U32 MemoryCachingRequirementsCount;
+  void* MemoryCachingRequirements;
+  struct _BOOT_ENTROPY_LDR_RESULT BootEntropyResult;
+  U64 ProcessorCounterFrequency;
+  struct _LOADER_PARAMETER_HYPERVISOR_EXTENSION HypervisorExtension;
+  struct _GUID HardwareConfigurationId;
+  struct _LIST_ENTRY HalExtensionModuleList;
+  union _LARGE_INTEGER SystemTime;
+  U64 TimeStampAtSystemTimeRead;
+  union
+  {
+    U64 BootFlags;
+    struct 
+    {
+      U64 DbgMenuOsSelection : 1; 
+      U64 DbgHiberBoot : 1; 
+      U64 DbgSoftRestart : 1; 
+    }; 
+  }; 
+  union
+  {
+    U64 InternalBootFlags;
+    struct 
+    {
+      U64 DbgUtcBootTime : 1; 
+      U64 DbgRtcBootTime : 1; 
+      U64 DbgNoLegacyServices : 1; 
+    }; 
+  }; 
+  void* WfsFPData;
+  U32 WfsFPDataSize;
+  struct _LOADER_BUGCHECK_PARAMETERS BugcheckParameters;
+  void* ApiSetSchema;
+  U32 ApiSetSchemaSize;
+  struct _LIST_ENTRY ApiSetSchemaExtensions;
+  struct _UNICODE_STRING AcpiBiosVersion;
+  struct _UNICODE_STRING SmbiosVersion;
+  struct _UNICODE_STRING EfiVersion;
+  struct _DEBUG_DEVICE_DESCRIPTOR* KdDebugDevice;
+  struct _OFFLINE_CRASHDUMP_CONFIGURATION_TABLE_V2 OfflineCrashdumpConfigurationTable;
+  struct _UNICODE_STRING ManufacturingProfile;
+  void* BbtBuffer;
+  U64 XsaveAllowedFeatures;
+  U32 XsaveFlags;
+  void* BootOptions;
+  U32 IumEnablement;
+  U32 IumPolicy;
+  S32 IumStatus;
+  U32 BootId;
+  struct _LOADER_PARAMETER_CI_EXTENSION* CodeIntegrityData;
+  U32 CodeIntegrityDataSize;
+  struct _LOADER_HIVE_RECOVERY_INFO SystemHiveRecoveryInfo;
+  U32 SoftRestartCount;
+  S64 SoftRestartTime;
+  void* HypercallCodeVa;
+  void* HalVirtualAddress;
+  U64 HalNumberOfBytes;
+  U32 MajorRelease;
+  U32 Reserved1;
+  char NtBuildLab[224];
+  char NtBuildLabEx[224];
+  struct _LOADER_RESET_REASON ResetReason;
+  U32 MaxPciBusNumber;
+  S32 __PADDING__[1];
+} LOADER_PARAMETER_EXTENSION, *PLOADER_PARAMETER_EXTENSION; 
+

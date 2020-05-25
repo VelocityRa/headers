@@ -1,0 +1,33 @@
+typedef union _TIMELINE_BITMAP
+{
+  union
+  {
+    U64 Value;
+    struct
+    {
+      U32 EndTime;
+      U32 Bitmap;
+    }; 
+  }; 
+} TIMELINE_BITMAP, *PTIMELINE_BITMAP; 
+
+typedef struct _PROCESS_ENERGY_VALUES_EXTENSION
+{
+  union
+  {
+    union _TIMELINE_BITMAP Timelines[9];
+    struct
+    {
+      union _TIMELINE_BITMAP CpuTimeline;
+      union _TIMELINE_BITMAP DiskTimeline;
+      union _TIMELINE_BITMAP NetworkTimeline;
+      union _TIMELINE_BITMAP MBBTimeline;
+      union _TIMELINE_BITMAP ForegroundTimeline;
+      union _TIMELINE_BITMAP DesktopVisibleTimeline;
+      union _TIMELINE_BITMAP CompositionRenderedTimeline;
+      union _TIMELINE_BITMAP CompositionDirtyGeneratedTimeline;
+      union _TIMELINE_BITMAP CompositionDirtyPropagatedTimeline;
+    }; 
+  }; 
+} PROCESS_ENERGY_VALUES_EXTENSION, *PPROCESS_ENERGY_VALUES_EXTENSION; 
+

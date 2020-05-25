@@ -1,0 +1,6 @@
+typedef struct _BLOB_COUNTERS
+{
+  U32 CreatedObjects;
+  U32 DeletedObjects;
+} BLOB_COUNTERS, *PBLOB_COUNTERS; 
+

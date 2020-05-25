@@ -1,0 +1,86 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _EVENT_DESCRIPTOR
+{
+  U16 Id;
+  U8 Version;
+  U8 Channel;
+  U8 Level;
+  U8 Opcode;
+  U16 Task;
+  U64 Keyword;
+} EVENT_DESCRIPTOR, *PEVENT_DESCRIPTOR; 
+
+typedef struct _EVENT_HEADER
+{
+  U16 Size;
+  U16 HeaderType;
+  U16 Flags;
+  U16 EventProperty;
+  U32 ThreadId;
+  U32 ProcessId;
+  union _LARGE_INTEGER TimeStamp;
+  struct _GUID ProviderId;
+  struct _EVENT_DESCRIPTOR EventDescriptor;
+  union
+  {
+    struct
+    {
+      U32 KernelTime;
+      U32 UserTime;
+    }; 
+    U64 ProcessorTime;
+  }; 
+  struct _GUID ActivityId;
+} EVENT_HEADER, *PEVENT_HEADER; 
+
+typedef struct _ETW_BUFFER_CONTEXT
+{
+  union
+  {
+    struct
+    {
+      U8 ProcessorNumber;
+      U8 Alignment;
+    }; 
+    U16 ProcessorIndex;
+  }; 
+  U16 LoggerId;
+} ETW_BUFFER_CONTEXT, *PETW_BUFFER_CONTEXT; 
+
+typedef struct _EVENT_RECORD
+{
+  struct _EVENT_HEADER EventHeader;
+  struct _ETW_BUFFER_CONTEXT BufferContext;
+  U16 ExtendedDataCount;
+  U16 UserDataLength;
+  struct _EVENT_HEADER_EXTENDED_DATA_ITEM* ExtendedData;
+  void* UserData;
+  void* UserContext;
+  S32 __PADDING__[1];
+} EVENT_RECORD, *PEVENT_RECORD; 
+

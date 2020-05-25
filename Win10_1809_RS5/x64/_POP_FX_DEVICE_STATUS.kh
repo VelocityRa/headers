@@ -1,0 +1,26 @@
+typedef union _POP_FX_DEVICE_STATUS
+{
+  union
+  {
+    S32 Value;
+    struct 
+    {
+      U32 SystemTransition : 1; 
+      U32 PepD0Notify : 1; 
+      U32 IdleTimerOn : 1; 
+      U32 IgnoreIdleTimeout : 1; 
+      U32 IrpInUse : 1; 
+      U32 IrpPending : 1; 
+      U32 DPNRDeviceNotified : 1; 
+      U32 DPNRReceivedFromPep : 1; 
+      U32 IrpFirstPendingIndex : 1; 
+      U32 IrpLastPendingIndex : 1; 
+      U32 SIrpBlocked : 1; 
+      U32 BlockFastResume : 1; 
+      U32 DirectedPoweredDown : 1; 
+      U32 DirectedTransitionInProgress : 1; 
+      U32 Reserved : 18; 
+    }; 
+  }; 
+} POP_FX_DEVICE_STATUS, *PPOP_FX_DEVICE_STATUS; 
+

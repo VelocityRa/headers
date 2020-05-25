@@ -1,0 +1,48 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U32 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _MI_PER_SESSION_PROTOS
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE SessionProtoNode;
+    struct _SINGLE_LIST_ENTRY FreeList;
+    void* DriverAddress;
+  }; 
+  union
+  {
+    U32 SessionId;
+    struct _SUBSECTION* Subsection;
+  }; 
+  struct _MMPTE* SubsectionBase;
+  union
+  {
+    union
+    {
+      U32 ReferenceCount;
+      U32 NumberOfPtesToFree;
+    }; 
+  } u2;
+} MI_PER_SESSION_PROTOS, *PMI_PER_SESSION_PROTOS; 
+

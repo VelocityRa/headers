@@ -1,0 +1,8 @@
+typedef struct _TP_DIRECT
+{
+  void* Callback;
+  U32 NumaNode;
+  U8 IdealProcessor;
+  char __PADDING__[3];
+} TP_DIRECT, *PTP_DIRECT; 
+

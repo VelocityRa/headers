@@ -1,0 +1,36 @@
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderArm64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _MI_ALIGNED_SLIST
+{
+  union _SLIST_HEADER SList;
+  S32 __PADDING__[28];
+} MI_ALIGNED_SLIST, *PMI_ALIGNED_SLIST; 
+
+typedef struct _MI_ULTRA_MDL_NODE
+{
+  struct _MI_ALIGNED_SLIST UltraMdlMaps[8];
+} MI_ULTRA_MDL_NODE, *PMI_ULTRA_MDL_NODE; 
+

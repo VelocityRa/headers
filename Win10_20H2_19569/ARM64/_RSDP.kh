@@ -1,0 +1,31 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _RSDP
+{
+  U64 Signature;
+  U8 Checksum;
+  U8 OEMID[6];
+  U8 Revision;
+  U32 RsdtAddress;
+  U32 Length;
+  union _LARGE_INTEGER XsdtAddress;
+  U8 XChecksum;
+  U8 Reserved[3];
+} RSDP, *PRSDP; 
+

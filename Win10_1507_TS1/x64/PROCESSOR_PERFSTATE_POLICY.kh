@@ -1,0 +1,31 @@
+struct PROCESSOR_PERFSTATE_POLICY
+{
+  U32 Revision;
+  U8 MaxThrottle;
+  U8 MinThrottle;
+  U8 BusyAdjThreshold;
+  union
+  {
+    U8 Spare;
+    union
+    {
+      union
+      {
+        U8 AsUCHAR;
+        struct 
+        {
+          U8 NoDomainAccounting : 1; 
+          U8 IncreasePolicy : 2; 
+          U8 DecreasePolicy : 2; 
+          U8 Reserved : 3; 
+        }; 
+      }; 
+    } Flags;
+  }; 
+  U32 TimeCheck;
+  U32 IncreaseTime;
+  U32 DecreaseTime;
+  U32 IncreasePercent;
+  U32 DecreasePercent;
+}; 
+

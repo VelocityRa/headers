@@ -1,0 +1,40 @@
+struct PPM_IDLE_STATE
+{
+  void* IdleHandler;
+  U64 Context;
+  U32 Latency;
+  U32 Power;
+  U32 TimeCheck;
+  U32 StateFlags;
+  U8 PromotePercent;
+  U8 DemotePercent;
+  U8 PromotePercentBase;
+  U8 DemotePercentBase;
+  U8 StateType;
+  char __PADDING__[3];
+}; 
+
+struct PPM_IDLE_STATES
+{
+  U32 Type;
+  U32 Count;
+  union
+  {
+    union
+    {
+      U32 AsULONG;
+      struct 
+      {
+        U32 AllowScaling : 1; 
+        U32 Disabled : 1; 
+        U32 Reserved : 30; 
+      }; 
+    }; 
+  } Flags;
+  U32 TargetState;
+  U32 ActualState;
+  U32 OldState;
+  U64 TargetProcessors;
+  struct PPM_IDLE_STATE State[1];
+}; 
+

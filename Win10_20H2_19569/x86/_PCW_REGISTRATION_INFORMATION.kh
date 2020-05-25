@@ -1,0 +1,17 @@
+enum PCW_REGISTRATION_FLAGS
+{
+  PcwRegistrationNone = 0,
+  PcwRegistrationSiloNeutral = 1,
+};
+
+typedef struct _PCW_REGISTRATION_INFORMATION
+{
+  U32 Version;
+  const struct _UNICODE_STRING* Name;
+  U32 CounterCount;
+  struct _PCW_COUNTER_DESCRIPTOR* Counters;
+  void* Callback;
+  void* CallbackContext;
+  enum PCW_REGISTRATION_FLAGS Flags;
+} PCW_REGISTRATION_INFORMATION, *PPCW_REGISTRATION_INFORMATION; 
+

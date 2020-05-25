@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _HEAP_VS_SUBSEGMENT
+{
+  struct _LIST_ENTRY ListEntry;
+  U64 CommitBitmap;
+  U32 CommitLock;
+  U16 Size;
+  struct 
+  {
+    U16 Signature : 15; 
+    U16 FullCommit : 1; 
+  }; 
+} HEAP_VS_SUBSEGMENT, *PHEAP_VS_SUBSEGMENT; 
+

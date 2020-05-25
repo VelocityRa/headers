@@ -1,0 +1,122 @@
+enum POWER_ACTION
+{
+  PowerActionNone = 0,
+  PowerActionReserved = 1,
+  PowerActionSleep = 2,
+  PowerActionHibernate = 3,
+  PowerActionShutdown = 4,
+  PowerActionShutdownReset = 5,
+  PowerActionShutdownOff = 6,
+  PowerActionWarmEject = 7,
+};
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+enum POWER_POLICY_DEVICE_TYPE
+{
+  PolicyDeviceSystemButton = 0,
+  PolicyDeviceThermalZone = 1,
+  PolicyDeviceBattery = 2,
+  PolicyDeviceMemory = 3,
+  PolicyInitiatePowerActionAPI = 4,
+  PolicySetPowerStateAPI = 5,
+  PolicyImmediateDozeS4 = 6,
+  PolicySystemIdle = 7,
+  PolicyDeviceWakeAlarm = 8,
+  PolicyDeviceFan = 9,
+  PolicyCsBatterySaver = 10,
+  PolicyDeviceMax = 11,
+};
+
+enum SYSTEM_POWER_CONDITION
+{
+  PoAc = 0,
+  PoDc = 1,
+  PoHot = 2,
+  PoConditionMaximum = 3,
+};
+
+struct BATTERY_REPORTING_SCALE
+{
+  U32 Granularity;
+  U32 Capacity;
+}; 
+
+struct SYSTEM_POWER_CAPABILITIES
+{
+  U8 PowerButtonPresent;
+  U8 SleepButtonPresent;
+  U8 LidPresent;
+  U8 SystemS1;
+  U8 SystemS2;
+  U8 SystemS3;
+  U8 SystemS4;
+  U8 SystemS5;
+  U8 HiberFilePresent;
+  U8 FullWake;
+  U8 VideoDimPresent;
+  U8 ApmPresent;
+  U8 UpsPresent;
+  U8 ThermalControl;
+  U8 ProcessorThrottle;
+  U8 ProcessorMinThrottle;
+  U8 ProcessorMaxThrottle;
+  U8 FastSystemS4;
+  U8 Hiberboot;
+  U8 WakeAlarmPresent;
+  U8 AoAc;
+  U8 DiskSpinDown;
+  U8 spare3[8];
+  U8 SystemBatteriesPresent;
+  U8 BatteriesAreShortTerm;
+  struct BATTERY_REPORTING_SCALE BatteryScale[3];
+  enum _SYSTEM_POWER_STATE AcOnLineWake;
+  enum _SYSTEM_POWER_STATE SoftLidWake;
+  enum _SYSTEM_POWER_STATE RtcWake;
+  enum _SYSTEM_POWER_STATE MinDeviceWakeState;
+  enum _SYSTEM_POWER_STATE DefaultLowLatencyWake;
+}; 
+
+typedef struct _POP_POWER_ACTION
+{
+  U8 Updates;
+  U8 State;
+  U8 Shutdown;
+  enum POWER_ACTION Action;
+  enum _SYSTEM_POWER_STATE LightestState;
+  U32 Flags;
+  S32 Status;
+  enum POWER_POLICY_DEVICE_TYPE DeviceType;
+  U32 DeviceTypeFlags;
+  U8 IrpMinor;
+  U8 Waking;
+  enum _SYSTEM_POWER_STATE SystemState;
+  enum _SYSTEM_POWER_STATE NextSystemState;
+  enum _SYSTEM_POWER_STATE EffectiveSystemState;
+  enum _SYSTEM_POWER_STATE CurrentSystemState;
+  struct _POP_SHUTDOWN_BUG_CHECK* ShutdownBugCode;
+  struct _POP_DEVICE_SYS_STATE* DevState;
+  struct _POP_HIBER_CONTEXT* HiberContext;
+  U64 WakeTime;
+  U64 SleepTime;
+  enum SYSTEM_POWER_CONDITION WakeAlarmSignaled;
+  struct
+  {
+    U64 ProgrammedTime;
+    struct _DIAGNOSTIC_BUFFER* TimerInfo;
+    S32 __PADDING__[1];
+  } WakeAlarm[3];
+  struct SYSTEM_POWER_CAPABILITIES FilteredCapabilities;
+  S32 __PADDING__[1];
+} POP_POWER_ACTION, *PPOP_POWER_ACTION; 
+

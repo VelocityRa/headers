@@ -1,0 +1,44 @@
+typedef union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 ProcessorType : 1; 
+      U64 InstructionSet : 1; 
+      U64 ErrorType : 1; 
+      U64 Operation : 1; 
+      U64 Flags : 1; 
+      U64 Level : 1; 
+      U64 CPUVersion : 1; 
+      U64 CPUBrandString : 1; 
+      U64 ProcessorId : 1; 
+      U64 TargetAddress : 1; 
+      U64 RequesterId : 1; 
+      U64 ResponderId : 1; 
+      U64 InstructionPointer : 1; 
+      U64 Reserved : 51; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS, *PWHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS; 
+
+typedef struct _WHEA_GENERIC_PROCESSOR_ERROR
+{
+  union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS ValidBits;
+  U8 ProcessorType;
+  U8 InstructionSet;
+  U8 ErrorType;
+  U8 Operation;
+  U8 Flags;
+  U8 Level;
+  U16 Reserved;
+  U64 CPUVersion;
+  U8 CPUBrandString[128];
+  U64 ProcessorId;
+  U64 TargetAddress;
+  U64 RequesterId;
+  U64 ResponderId;
+  U64 InstructionPointer;
+} WHEA_GENERIC_PROCESSOR_ERROR, *PWHEA_GENERIC_PROCESSOR_ERROR; 
+

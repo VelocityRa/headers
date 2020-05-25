@@ -1,0 +1,12 @@
+typedef struct _HMAP_ENTRY
+{
+  U32 BlockOffset;
+  U32 PermanentBinAddress;
+  U32 MemAlloc;
+} HMAP_ENTRY, *PHMAP_ENTRY; 
+
+typedef struct _HMAP_TABLE
+{
+  struct _HMAP_ENTRY Table[512];
+} HMAP_TABLE, *PHMAP_TABLE; 
+

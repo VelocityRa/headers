@@ -1,0 +1,8 @@
+typedef struct _HMAP_ENTRY
+{
+  U64 BlockOffset;
+  U64 PermanentBinAddress;
+  U32 MemAlloc;
+  S32 __PADDING__[1];
+} HMAP_ENTRY, *PHMAP_ENTRY; 
+

@@ -1,0 +1,6 @@
+typedef struct _OB_EXTENDED_USER_INFO
+{
+  void* Context1;
+  void* Context2;
+} OB_EXTENDED_USER_INFO, *POB_EXTENDED_USER_INFO; 
+

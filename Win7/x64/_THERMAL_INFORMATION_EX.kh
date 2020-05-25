@@ -1,0 +1,23 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[4];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _THERMAL_INFORMATION_EX
+{
+  U32 ThermalStamp;
+  U32 ThermalConstant1;
+  U32 ThermalConstant2;
+  struct _KAFFINITY_EX Processors;
+  U32 SamplingPeriod;
+  U32 CurrentTemperature;
+  U32 PassiveTripPoint;
+  U32 CriticalTripPoint;
+  U8 ActiveTripPointCount;
+  U32 ActiveTripPoint[10];
+  U32 S4TransitionTripPoint;
+} THERMAL_INFORMATION_EX, *PTHERMAL_INFORMATION_EX; 
+

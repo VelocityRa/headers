@@ -1,0 +1,30 @@
+typedef struct _EFI_FIRMWARE_INFORMATION
+{
+  U32 FirmwareVersion;
+  struct _VIRTUAL_EFI_RUNTIME_SERVICES* VirtualEfiRuntimeServices;
+  S32 SetVirtualAddressMapStatus;
+  U32 MissedMappingsCount;
+} EFI_FIRMWARE_INFORMATION, *PEFI_FIRMWARE_INFORMATION; 
+
+typedef struct _PCAT_FIRMWARE_INFORMATION
+{
+  U32 PlaceHolder;
+} PCAT_FIRMWARE_INFORMATION, *PPCAT_FIRMWARE_INFORMATION; 
+
+typedef struct _FIRMWARE_INFORMATION_LOADER_BLOCK
+{
+  struct 
+  {
+    U32 FirmwareTypeEfi : 1; 
+    U32 Reserved : 31; 
+  }; 
+  union
+  {
+    union
+    {
+      struct _EFI_FIRMWARE_INFORMATION EfiInformation;
+      struct _PCAT_FIRMWARE_INFORMATION PcatInformation;
+    }; 
+  } u;
+} FIRMWARE_INFORMATION_LOADER_BLOCK, *PFIRMWARE_INFORMATION_LOADER_BLOCK; 
+

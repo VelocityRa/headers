@@ -1,0 +1,7 @@
+typedef struct _GDI_TEB_BATCH
+{
+  U32 Offset;
+  U64 HDC;
+  U32 Buffer[310];
+} GDI_TEB_BATCH, *PGDI_TEB_BATCH; 
+

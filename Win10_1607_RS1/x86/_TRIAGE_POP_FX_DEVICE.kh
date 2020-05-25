@@ -1,0 +1,17 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _TRIAGE_POP_FX_DEVICE
+{
+  struct _LIST_ENTRY Link;
+  struct _IRP* Irp;
+  struct _TRIAGE_POP_IRP_DATA* IrpData;
+  S32 Status;
+  S32 PowerReqCall;
+  S32 PowerNotReqCall;
+  struct _TRIAGE_DEVICE_NODE* DeviceNode;
+} TRIAGE_POP_FX_DEVICE, *PTRIAGE_POP_FX_DEVICE; 
+

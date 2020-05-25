@@ -1,0 +1,44 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[4];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _PROC_PERF_DOMAIN
+{
+  struct _LIST_ENTRY Link;
+  struct _KPRCB* Master;
+  struct _KAFFINITY_EX Members;
+  void* FeedbackHandler;
+  void* GetFFHThrottleState;
+  void* BoostPolicyHandler;
+  void* PerfSelectionHandler;
+  void* PerfHandler;
+  struct _PROC_PERF_CONSTRAINT* Processors;
+  U64 PerfChangeTime;
+  U32 ProcessorCount;
+  U32 PreviousFrequencyMhz;
+  U32 CurrentFrequencyMhz;
+  U32 PreviousFrequency;
+  U32 CurrentFrequency;
+  U32 CurrentPerfContext;
+  U32 DesiredFrequency;
+  U32 MaxFrequency;
+  U32 MinPerfPercent;
+  U32 MinThrottlePercent;
+  U32 MaxPercent;
+  U32 MinPercent;
+  U32 ConstrainedMaxPercent;
+  U32 ConstrainedMinPercent;
+  U8 Coordination;
+  volatile S32 PerfChangeIntervalCount;
+} PROC_PERF_DOMAIN, *PPROC_PERF_DOMAIN; 
+

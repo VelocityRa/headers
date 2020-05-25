@@ -1,0 +1,22 @@
+typedef struct _MCI_STATUS_INTEL_BITS
+{
+  struct 
+  {
+    U64 McaErrorCode : 16; 
+    U64 ModelErrorCode : 16; 
+    U64 OtherInfo : 5; 
+    U64 FirmwareUpdateError : 1; 
+    U64 CorrectedErrorCount : 15; 
+    U64 ThresholdErrorStatus : 2; 
+    U64 ActionRequired : 1; 
+    U64 Signalling : 1; 
+    U64 ContextCorrupt : 1; 
+    U64 AddressValid : 1; 
+    U64 MiscValid : 1; 
+    U64 ErrorEnabled : 1; 
+    U64 UncorrectedError : 1; 
+    U64 StatusOverFlow : 1; 
+    U64 Valid : 1; 
+  }; 
+} MCI_STATUS_INTEL_BITS, *PMCI_STATUS_INTEL_BITS; 
+

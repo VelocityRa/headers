@@ -1,0 +1,22 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _PO_POWER_PLANE_PROFILE
+{
+  U32 ExclusivePowerMw;
+  U32 PeakPowerMw;
+} PO_POWER_PLANE_PROFILE, *PPO_POWER_PLANE_PROFILE; 
+
+typedef struct _POP_COMPONENT_POWER_PROFILE
+{
+  struct _GUID ComponentGuid;
+  struct _POP_DEVICE_POWER_PROFILE* Device;
+  U32 FxCount;
+  struct _PO_POWER_PLANE_PROFILE FxPower[1];
+} POP_COMPONENT_POWER_PROFILE, *PPOP_COMPONENT_POWER_PROFILE; 
+

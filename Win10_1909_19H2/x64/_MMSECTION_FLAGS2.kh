@@ -1,0 +1,11 @@
+typedef struct _MMSECTION_FLAGS2
+{
+  U16 PartitionId : 10; 
+  struct 
+  {
+    U8 NoCrossPartitionAccess : 1; 
+    U8 SubsectionCrossPartitionReferenceOverflow : 1; 
+  }; 
+  char __PADDING__[1];
+} MMSECTION_FLAGS2, *PMMSECTION_FLAGS2; 
+

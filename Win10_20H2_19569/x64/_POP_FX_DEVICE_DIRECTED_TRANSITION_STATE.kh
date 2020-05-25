@@ -1,0 +1,11 @@
+typedef struct _POP_FX_DEVICE_DIRECTED_TRANSITION_STATE
+{
+  void* CompletionContext;
+  S32 CompletionStatus;
+  struct 
+  {
+    U32 DIrpPending : 1; 
+    U32 DIrpCompleted : 1; 
+  }; 
+} POP_FX_DEVICE_DIRECTED_TRANSITION_STATE, *PPOP_FX_DEVICE_DIRECTED_TRANSITION_STATE; 
+

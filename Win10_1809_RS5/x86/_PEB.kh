@@ -1,0 +1,192 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PEB
+{
+  U8 InheritedAddressSpace;
+  U8 ReadImageFileExecOptions;
+  U8 BeingDebugged;
+  union
+  {
+    U8 BitField;
+    struct 
+    {
+      U8 ImageUsesLargePages : 1; 
+      U8 IsProtectedProcess : 1; 
+      U8 IsImageDynamicallyRelocated : 1; 
+      U8 SkipPatchingUser32Forwarders : 1; 
+      U8 IsPackagedProcess : 1; 
+      U8 IsAppContainer : 1; 
+      U8 IsProtectedProcessLight : 1; 
+      U8 IsLongPathAwareProcess : 1; 
+    }; 
+  }; 
+  void* Mutant;
+  void* ImageBaseAddress;
+  struct _PEB_LDR_DATA* Ldr;
+  struct _RTL_USER_PROCESS_PARAMETERS* ProcessParameters;
+  void* SubSystemData;
+  void* ProcessHeap;
+  struct _RTL_CRITICAL_SECTION* FastPebLock;
+  union _SLIST_HEADER* volatile AtlThunkSListPtr;
+  void* IFEOKey;
+  union
+  {
+    U32 CrossProcessFlags;
+    struct 
+    {
+      U32 ProcessInJob : 1; 
+      U32 ProcessInitializing : 1; 
+      U32 ProcessUsingVEH : 1; 
+      U32 ProcessUsingVCH : 1; 
+      U32 ProcessUsingFTH : 1; 
+      U32 ProcessPreviouslyThrottled : 1; 
+      U32 ProcessCurrentlyThrottled : 1; 
+      U32 ProcessImagesHotPatched : 1; 
+      U32 ReservedBits0 : 24; 
+    }; 
+  }; 
+  union
+  {
+    void* KernelCallbackTable;
+    void* UserSharedInfoPtr;
+  }; 
+  U32 SystemReserved;
+  union _SLIST_HEADER* volatile AtlThunkSListPtr32;
+  void* ApiSetMap;
+  U32 TlsExpansionCounter;
+  void* TlsBitmap;
+  U32 TlsBitmapBits[2];
+  void* ReadOnlySharedMemoryBase;
+  void* SharedData;
+  void** ReadOnlyStaticServerData;
+  void* AnsiCodePageData;
+  void* OemCodePageData;
+  void* UnicodeCaseTableData;
+  U32 NumberOfProcessors;
+  U32 NtGlobalFlag;
+  union _LARGE_INTEGER CriticalSectionTimeout;
+  U32 HeapSegmentReserve;
+  U32 HeapSegmentCommit;
+  U32 HeapDeCommitTotalFreeThreshold;
+  U32 HeapDeCommitFreeBlockThreshold;
+  U32 NumberOfHeaps;
+  U32 MaximumNumberOfHeaps;
+  void** ProcessHeaps;
+  void* GdiSharedHandleTable;
+  void* ProcessStarterHelper;
+  U32 GdiDCAttributeList;
+  struct _RTL_CRITICAL_SECTION* LoaderLock;
+  U32 OSMajorVersion;
+  U32 OSMinorVersion;
+  U16 OSBuildNumber;
+  U16 OSCSDVersion;
+  U32 OSPlatformId;
+  U32 ImageSubsystem;
+  U32 ImageSubsystemMajorVersion;
+  U32 ImageSubsystemMinorVersion;
+  U32 ActiveProcessAffinityMask;
+  U32 GdiHandleBuffer[34];
+  void* PostProcessInitRoutine;
+  void* TlsExpansionBitmap;
+  U32 TlsExpansionBitmapBits[32];
+  U32 SessionId;
+  union _ULARGE_INTEGER AppCompatFlags;
+  union _ULARGE_INTEGER AppCompatFlagsUser;
+  void* pShimData;
+  void* AppCompatInfo;
+  struct _UNICODE_STRING CSDVersion;
+  const struct _ACTIVATION_CONTEXT_DATA* ActivationContextData;
+  struct _ASSEMBLY_STORAGE_MAP* ProcessAssemblyStorageMap;
+  const struct _ACTIVATION_CONTEXT_DATA* SystemDefaultActivationContextData;
+  struct _ASSEMBLY_STORAGE_MAP* SystemAssemblyStorageMap;
+  U32 MinimumStackCommit;
+  struct _FLS_CALLBACK_INFO* FlsCallback;
+  struct _LIST_ENTRY FlsListHead;
+  void* FlsBitmap;
+  U32 FlsBitmapBits[4];
+  U32 FlsHighIndex;
+  void* WerRegistrationData;
+  void* WerShipAssertPtr;
+  void* pUnused;
+  void* pImageHeaderHash;
+  union
+  {
+    U32 TracingFlags;
+    struct 
+    {
+      U32 HeapTracingEnabled : 1; 
+      U32 CritSecTracingEnabled : 1; 
+      U32 LibLoaderTracingEnabled : 1; 
+      U32 SpareTracingBits : 29; 
+    }; 
+  }; 
+  U64 CsrServerReadOnlySharedMemoryBase;
+  U32 TppWorkerpListLock;
+  struct _LIST_ENTRY TppWorkerpList;
+  void* WaitOnAddressHashTable[128];
+  void* TelemetryCoverageHeader;
+  U32 CloudFileFlags;
+  U32 CloudFileDiagFlags;
+  char PlaceholderCompatibilityMode;
+  char PlaceholderCompatibilityModeReserved[7];
+  struct _LEAP_SECOND_DATA* LeapSecondData;
+  union
+  {
+    U32 LeapSecondFlags;
+    struct 
+    {
+      U32 SixtySecondEnabled : 1; 
+      U32 Reserved : 31; 
+    }; 
+  }; 
+  U32 NtGlobalFlag2;
+  S32 __PADDING__[1];
+} PEB, *PPEB; 
+

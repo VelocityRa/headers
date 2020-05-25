@@ -1,0 +1,17 @@
+typedef union _ENERGY_STATE_DURATION
+{
+  union
+  {
+    U64 Value;
+    struct
+    {
+      U32 LastChangeTime;
+      struct 
+      {
+        U32 Duration : 31; 
+        U32 IsInState : 1; 
+      }; 
+    }; 
+  }; 
+} ENERGY_STATE_DURATION, *PENERGY_STATE_DURATION; 
+

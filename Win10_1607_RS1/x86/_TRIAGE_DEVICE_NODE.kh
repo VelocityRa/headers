@@ -1,0 +1,20 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _TRIAGE_DEVICE_NODE
+{
+  struct _TRIAGE_DEVICE_NODE* Sibling;
+  struct _TRIAGE_DEVICE_NODE* Child;
+  struct _TRIAGE_DEVICE_NODE* Parent;
+  struct _TRIAGE_DEVICE_NODE* LastChild;
+  struct _DEVICE_OBJECT* PhysicalDeviceObject;
+  struct _UNICODE_STRING InstancePath;
+  struct _UNICODE_STRING ServiceName;
+  struct _IRP* PendingIrp;
+  struct _TRIAGE_POP_FX_DEVICE* FxDevice;
+} TRIAGE_DEVICE_NODE, *PTRIAGE_DEVICE_NODE; 
+

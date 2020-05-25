@@ -1,0 +1,24 @@
+enum wil_FeatureStore
+{
+  wil_FeatureStore_Machine = 0,
+  wil_FeatureStore_User = 1,
+  wil_FeatureStore_All = 2,
+};
+
+struct wil_details_StagingConfig
+{
+  enum wil_FeatureStore store;
+  S32 forUpdate;
+  U32 readChangeStamp;
+  U8 readVersion;
+  S32 modified;
+  struct wil_details_StagingConfigHeader* header;
+  struct wil_details_StagingConfigFeature* features;
+  struct wil_details_StagingConfigUsageTrigger* triggers;
+  S32 changedInSession;
+  void* buffer;
+  U32 bufferSize;
+  U32 bufferAlloc;
+  S32 bufferOwned;
+}; 
+

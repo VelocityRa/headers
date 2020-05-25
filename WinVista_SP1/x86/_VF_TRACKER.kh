@@ -1,0 +1,8 @@
+typedef struct _VF_TRACKER
+{
+  U32 TrackerFlags;
+  U32 TrackerSize;
+  U32 TrackerIndex;
+  U32 TraceDepth;
+} VF_TRACKER, *PVF_TRACKER; 
+

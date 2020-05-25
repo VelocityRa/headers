@@ -1,0 +1,214 @@
+typedef struct _KDESCRIPTOR
+{
+  U16 Pad[3];
+  U16 Limit;
+  void* Base;
+} KDESCRIPTOR, *PKDESCRIPTOR; 
+
+typedef struct _KSPECIAL_REGISTERS
+{
+  U64 Cr0;
+  U64 Cr2;
+  U64 Cr3;
+  U64 Cr4;
+  U64 KernelDr0;
+  U64 KernelDr1;
+  U64 KernelDr2;
+  U64 KernelDr3;
+  U64 KernelDr6;
+  U64 KernelDr7;
+  struct _KDESCRIPTOR Gdtr;
+  struct _KDESCRIPTOR Idtr;
+  U16 Tr;
+  U16 Ldtr;
+  U32 MxCsr;
+  U64 DebugControl;
+  U64 LastBranchToRip;
+  U64 LastBranchFromRip;
+  U64 LastExceptionToRip;
+  U64 LastExceptionFromRip;
+  U64 Cr8;
+  U64 MsrGsBase;
+  U64 MsrGsSwap;
+  U64 MsrStar;
+  U64 MsrLStar;
+  U64 MsrCStar;
+  U64 MsrSyscallMask;
+  U64 Xcr0;
+  U64 MsrFsBase;
+  U64 SpecialPadding0;
+} KSPECIAL_REGISTERS, *PKSPECIAL_REGISTERS; 
+
+typedef struct _M128A
+{
+  U64 Low;
+  S64 High;
+} M128A, *PM128A; 
+
+typedef struct _XSAVE_FORMAT
+{
+  U16 ControlWord;
+  U16 StatusWord;
+  U8 TagWord;
+  U8 Reserved1;
+  U16 ErrorOpcode;
+  U32 ErrorOffset;
+  U16 ErrorSelector;
+  U16 Reserved2;
+  U32 DataOffset;
+  U16 DataSelector;
+  U16 Reserved3;
+  U32 MxCsr;
+  U32 MxCsr_Mask;
+  struct _M128A FloatRegisters[8];
+  struct _M128A XmmRegisters[16];
+  U8 Reserved4[96];
+} XSAVE_FORMAT, *PXSAVE_FORMAT; 
+
+typedef struct _CONTEXT
+{
+  U64 P1Home;
+  U64 P2Home;
+  U64 P3Home;
+  U64 P4Home;
+  U64 P5Home;
+  U64 P6Home;
+  U32 ContextFlags;
+  U32 MxCsr;
+  U16 SegCs;
+  U16 SegDs;
+  U16 SegEs;
+  U16 SegFs;
+  U16 SegGs;
+  U16 SegSs;
+  U32 EFlags;
+  U64 Dr0;
+  U64 Dr1;
+  U64 Dr2;
+  U64 Dr3;
+  U64 Dr6;
+  U64 Dr7;
+  U64 Rax;
+  U64 Rcx;
+  U64 Rdx;
+  U64 Rbx;
+  U64 Rsp;
+  U64 Rbp;
+  U64 Rsi;
+  U64 Rdi;
+  U64 R8;
+  U64 R9;
+  U64 R10;
+  U64 R11;
+  U64 R12;
+  U64 R13;
+  U64 R14;
+  U64 R15;
+  U64 Rip;
+  union
+  {
+    struct _XSAVE_FORMAT FltSave;
+    struct
+    {
+      struct _M128A Header[2];
+      struct _M128A Legacy[8];
+      struct _M128A Xmm0;
+      struct _M128A Xmm1;
+      struct _M128A Xmm2;
+      struct _M128A Xmm3;
+      struct _M128A Xmm4;
+      struct _M128A Xmm5;
+      struct _M128A Xmm6;
+      struct _M128A Xmm7;
+      struct _M128A Xmm8;
+      struct _M128A Xmm9;
+      struct _M128A Xmm10;
+      struct _M128A Xmm11;
+      struct _M128A Xmm12;
+      struct _M128A Xmm13;
+      struct _M128A Xmm14;
+      struct _M128A Xmm15;
+    }; 
+  }; 
+  struct _M128A VectorRegister[26];
+  U64 VectorControl;
+  U64 DebugControl;
+  U64 LastBranchToRip;
+  U64 LastBranchFromRip;
+  U64 LastExceptionToRip;
+  U64 LastExceptionFromRip;
+} CONTEXT, *PCONTEXT; 
+
+typedef struct _KPROCESSOR_STATE
+{
+  struct _KSPECIAL_REGISTERS SpecialRegisters;
+  struct _CONTEXT ContextFrame;
+} KPROCESSOR_STATE, *PKPROCESSOR_STATE; 
+
+typedef struct _KPRCB
+{
+  U32 MxCsr;
+  U8 LegacyNumber;
+  U8 ReservedMustBeZero;
+  U8 InterruptRequest;
+  U8 IdleHalt;
+  struct _KTHREAD* CurrentThread;
+  struct _KTHREAD* NextThread;
+  struct _KTHREAD* IdleThread;
+  U8 NestingLevel;
+  U8 ClockOwner;
+  union
+  {
+    U8 PendingTickFlags;
+    struct 
+    {
+      U8 PendingTick : 1; 
+      U8 PendingBackupTick : 1; 
+    }; 
+  }; 
+  U8 IdleState;
+  U32 Number;
+  U64 RspBase;
+  U64 PrcbLock;
+  char* PriorityState;
+  char CpuType;
+  char CpuID;
+  union
+  {
+    U16 CpuStep;
+    struct
+    {
+      U8 CpuStepping;
+      U8 CpuModel;
+    }; 
+  }; 
+  U32 MHz;
+  U64 HalReserved[8];
+  U16 MinorVersion;
+  U16 MajorVersion;
+  U8 BuildType;
+  U8 CpuVendor;
+  U8 CoresPerPhysicalProcessor;
+  U8 LogicalProcessorsPerCore;
+  U64 TscFrequency;
+  U64 PrcbPad04[5];
+  struct _KNODE* ParentNode;
+  U64 GroupSetMember;
+  U8 Group;
+  U8 GroupIndex;
+  U8 PrcbPad05[2];
+  U32 InitialApicId;
+  U32 ScbOffset;
+  U32 ApicMask;
+  void* AcpiReserved;
+  U32 CFlushSize;
+  U64 PrcbPad11[2];
+  struct _KPROCESSOR_STATE ProcessorState;
+  struct _XSAVE_AREA_HEADER* ExtendedSupervisorState;
+  U32 ProcessorSignature;
+  U32 ProcessorFlags;
+  U64 PrcbPad12a;
+  U64 PrcbPad12[3];
+  S32 __PADDING__[4];
+} KPRCB, *PKPRCB; 
+

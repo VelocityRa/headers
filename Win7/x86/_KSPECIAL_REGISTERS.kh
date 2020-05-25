@@ -1,0 +1,26 @@
+typedef struct _DESCRIPTOR
+{
+  U16 Pad;
+  U16 Limit;
+  U32 Base;
+} DESCRIPTOR, *PDESCRIPTOR; 
+
+typedef struct _KSPECIAL_REGISTERS
+{
+  U32 Cr0;
+  U32 Cr2;
+  U32 Cr3;
+  U32 Cr4;
+  U32 KernelDr0;
+  U32 KernelDr1;
+  U32 KernelDr2;
+  U32 KernelDr3;
+  U32 KernelDr6;
+  U32 KernelDr7;
+  struct _DESCRIPTOR Gdtr;
+  struct _DESCRIPTOR Idtr;
+  U16 Tr;
+  U16 Ldtr;
+  U32 Reserved[6];
+} KSPECIAL_REGISTERS, *PKSPECIAL_REGISTERS; 
+

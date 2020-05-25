@@ -1,0 +1,8 @@
+typedef struct _MI_DLL_OVERFLOW_AREA
+{
+  void* RangeStart;
+  void* NextVa;
+  void* RangeStartAbove2gb;
+  void* NextVaAbove2gb;
+} MI_DLL_OVERFLOW_AREA, *PMI_DLL_OVERFLOW_AREA; 
+

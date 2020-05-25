@@ -1,0 +1,16 @@
+typedef union _PS_TRUSTLET_ATTRIBUTE_ACCESSRIGHTS
+{
+  union
+  {
+    struct 
+    {
+      U8 Trustlet : 1; 
+      U8 Ntos : 1; 
+      U8 WriteHandle : 1; 
+      U8 ReadHandle : 1; 
+      U8 Reserved : 4; 
+    }; 
+    U8 AccessRights;
+  }; 
+} PS_TRUSTLET_ATTRIBUTE_ACCESSRIGHTS, *PPS_TRUSTLET_ATTRIBUTE_ACCESSRIGHTS; 
+

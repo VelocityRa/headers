@@ -1,0 +1,9 @@
+typedef struct _KSWITCH_FRAME
+{
+  U8 ApcBypass;
+  U8 Fill[7];
+  U64 Tpidr;
+  U64 Fp;
+  U64 Return;
+} KSWITCH_FRAME, *PKSWITCH_FRAME; 
+

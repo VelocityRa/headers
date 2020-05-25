@@ -1,0 +1,14 @@
+typedef struct _SMBIOS3_TABLE_HEADER
+{
+  U8 Signature[5];
+  U8 Checksum;
+  U8 Length;
+  U8 MajorVersion;
+  U8 MinorVersion;
+  U8 Docrev;
+  U8 EntryPointRevision;
+  U8 Reserved;
+  U32 StructureTableMaximumSize;
+  U64 StructureTableAddress;
+} SMBIOS3_TABLE_HEADER, *PSMBIOS3_TABLE_HEADER; 
+

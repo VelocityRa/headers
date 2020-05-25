@@ -1,0 +1,16 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _BITMAP_RANGE
+{
+  struct _LIST_ENTRY Links;
+  S64 BasePage;
+  U32 FirstDirtyPage;
+  U32 LastDirtyPage;
+  U32 DirtyPages;
+  U32* Bitmap;
+} BITMAP_RANGE, *PBITMAP_RANGE; 
+

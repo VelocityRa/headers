@@ -1,0 +1,18 @@
+struct FEATURE_ERROR
+{
+  HRESULT hr;
+  U16 lineNumber;
+  const char* file;
+  const char* process;
+  const char* modulePath;
+  U32 callerReturnAddressOffset;
+  const char* callerModule;
+  const char* message;
+  U16 originLineNumber;
+  const char* originFile;
+  const char* originModule;
+  U32 originCallerReturnAddressOffset;
+  const char* originCallerModule;
+  const char* originName;
+}; 
+

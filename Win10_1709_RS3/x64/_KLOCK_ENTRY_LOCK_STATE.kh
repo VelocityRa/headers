@@ -1,0 +1,24 @@
+typedef struct _KLOCK_ENTRY_LOCK_STATE
+{
+  union
+  {
+    struct 
+    {
+      U64 CrossThreadReleasable : 1; 
+      U64 Busy : 1; 
+      U64 Reserved : 61; 
+      U64 InTree : 1; 
+    }; 
+    void* LockState;
+  }; 
+  union
+  {
+    void* SessionState;
+    struct
+    {
+      U32 SessionId;
+      U32 SessionPad;
+    }; 
+  }; 
+} KLOCK_ENTRY_LOCK_STATE, *PKLOCK_ENTRY_LOCK_STATE; 
+

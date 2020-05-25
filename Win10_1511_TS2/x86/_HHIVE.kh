@@ -1,0 +1,153 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _HVIEW_MAP_PIN_LOG_ENTRY
+{
+  U32 ViewOffset;
+  U8 Pinned;
+  U64 PinMask;
+  struct _KTHREAD* Thread;
+  void* Stack[6];
+  S32 __PADDING__[1];
+} HVIEW_MAP_PIN_LOG_ENTRY, *PHVIEW_MAP_PIN_LOG_ENTRY; 
+
+typedef struct _HVIEW_MAP_PIN_LOG
+{
+  U32 Next;
+  U32 Size;
+  struct _HVIEW_MAP_PIN_LOG_ENTRY Entries[16];
+} HVIEW_MAP_PIN_LOG, *PHVIEW_MAP_PIN_LOG; 
+
+typedef struct _HVIEW_MAP
+{
+  U32 MappedLength;
+  struct _EX_PUSH_LOCK Lock;
+  struct _FILE_OBJECT* FileObject;
+  struct _HVIEW_MAP_DIRECTORY* Directory;
+  U32 PagesCharged;
+  struct _HVIEW_MAP_PIN_LOG PinLog;
+} HVIEW_MAP, *PHVIEW_MAP; 
+
+typedef struct _FREE_DISPLAY
+{
+  U32 RealVectorSize;
+  U32 Hint;
+  struct _RTL_BITMAP Display;
+} FREE_DISPLAY, *PFREE_DISPLAY; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DUAL
+{
+  U32 Length;
+  struct _HMAP_DIRECTORY* Map;
+  struct _HMAP_TABLE* SmallDir;
+  U32 Guard;
+  struct _FREE_DISPLAY FreeDisplay[24];
+  struct _LIST_ENTRY FreeBins;
+  U32 FreeSummary;
+} DUAL, *PDUAL; 
+
+typedef struct _HHIVE
+{
+  U32 Signature;
+  void* GetCellRoutine;
+  void* ReleaseCellRoutine;
+  void* Allocate;
+  void* Free;
+  void* FileWrite;
+  void* FileRead;
+  void* HiveLoadFailure;
+  struct _HBASE_BLOCK* BaseBlock;
+  struct _RTL_BITMAP DirtyVector;
+  U32 DirtyCount;
+  U32 DirtyAlloc;
+  struct _RTL_BITMAP UnreconciledVector;
+  U32 UnreconciledCount;
+  U32 BaseBlockAlloc;
+  U32 Cluster;
+  struct 
+  {
+    U8 Flat : 1; 
+    U8 ReadOnly : 1; 
+    U8 SystemCacheBacked : 1; 
+    U8 Reserved : 5; 
+  }; 
+  U8 DirtyFlag;
+  U32 HvBinHeadersUse;
+  U32 HvFreeCellsUse;
+  U32 HvUsedCellsUse;
+  U32 CmUsedCellsUse;
+  U32 HiveFlags;
+  U32 CurrentLog;
+  U32 CurrentLogSequence;
+  U32 CurrentLogMinimumSequence;
+  U32 CurrentLogOffset;
+  U32 MinimumLogSequence;
+  U32 LogFileSizeCap;
+  U8 LogDataPresent[2];
+  U8 PrimaryFileValid;
+  U8 BaseBlockDirty;
+  union _LARGE_INTEGER LastLogSwapTime;
+  union
+  {
+    struct 
+    {
+      U16 FirstLogFile : 3; 
+      U16 SecondLogFile : 3; 
+      U16 HeaderRecovered : 1; 
+      U16 LegacyRecoveryIndicated : 1; 
+      U16 RecoveryInformationReserved : 8; 
+    }; 
+    U16 RecoveryInformation;
+  }; 
+  U8 LogEntriesRecovered[2];
+  U32 RefreshCount;
+  U32 StorageTypeCount;
+  U32 Version;
+  struct _HVIEW_MAP ViewMap;
+  struct _DUAL Storage[2];
+} HHIVE, *PHHIVE; 
+

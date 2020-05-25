@@ -1,0 +1,23 @@
+typedef struct _MI_WSLE
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U8 Age : 4; 
+          U8 Protection : 3; 
+          U8 Reserved : 1; 
+        }; 
+      } e1;
+      struct
+      {
+        U8 EntireWsle;
+      } e2;
+    }; 
+  } u1;
+} MI_WSLE, *PMI_WSLE; 
+

@@ -1,0 +1,30 @@
+typedef struct _OBP_SYSTEM_DOS_DEVICE_STATE
+{
+  U32 GlobalDeviceMap;
+  U32 LocalDeviceCount[26];
+} OBP_SYSTEM_DOS_DEVICE_STATE, *POBP_SYSTEM_DOS_DEVICE_STATE; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _OBP_SILODRIVERSTATE
+{
+  struct _DEVICE_MAP* SystemDeviceMap;
+  struct _OBP_SYSTEM_DOS_DEVICE_STATE SystemDosDeviceState;
+  struct _EX_PUSH_LOCK DeviceMapLock;
+} OBP_SILODRIVERSTATE, *POBP_SILODRIVERSTATE; 
+

@@ -1,0 +1,14 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _DEVPROPKEY
+{
+  struct _GUID fmtid;
+  U32 pid;
+} DEVPROPKEY, *PDEVPROPKEY; 
+

@@ -1,0 +1,6 @@
+typedef struct _DBGKD_BREAKPOINTEX
+{
+  U32 BreakPointCount;
+  S32 ContinueStatus;
+} DBGKD_BREAKPOINTEX, *PDBGKD_BREAKPOINTEX; 
+

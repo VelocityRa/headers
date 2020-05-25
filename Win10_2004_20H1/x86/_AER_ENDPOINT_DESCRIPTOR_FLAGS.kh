@@ -1,0 +1,16 @@
+typedef union _AER_ENDPOINT_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U16 UncorrectableErrorMaskRW : 1; 
+      U16 UncorrectableErrorSeverityRW : 1; 
+      U16 CorrectableErrorMaskRW : 1; 
+      U16 AdvancedCapsAndControlRW : 1; 
+      U16 Reserved : 12; 
+    }; 
+    U16 AsUSHORT;
+  }; 
+} AER_ENDPOINT_DESCRIPTOR_FLAGS, *PAER_ENDPOINT_DESCRIPTOR_FLAGS; 
+

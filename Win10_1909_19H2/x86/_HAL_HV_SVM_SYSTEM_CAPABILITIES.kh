@@ -1,0 +1,14 @@
+typedef struct _HAL_HV_SVM_SYSTEM_CAPABILITIES
+{
+  struct 
+  {
+    U32 SvmSupported : 1; 
+    U32 GpaAlwaysValid : 1; 
+  }; 
+  U32 MaxPasidSpaceCount;
+  U32 MaxPasidSpacePasidCount;
+  U32 MaxPrqSize;
+  U32 IommuCount;
+  U32 MinIommuPasidCount;
+} HAL_HV_SVM_SYSTEM_CAPABILITIES, *PHAL_HV_SVM_SYSTEM_CAPABILITIES; 
+

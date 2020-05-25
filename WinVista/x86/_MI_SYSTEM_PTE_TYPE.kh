@@ -1,0 +1,8 @@
+typedef struct _MI_SYSTEM_PTE_TYPE
+{
+  struct _MMPTE* FirstFreePte;
+  U32* FailureCount;
+  struct _KGUARDED_MUTEX* GlobalMutex;
+  volatile U32 TbFlushTimeStamp;
+} MI_SYSTEM_PTE_TYPE, *PMI_SYSTEM_PTE_TYPE; 
+

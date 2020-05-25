@@ -1,0 +1,6 @@
+typedef struct _RTLP_HP_PADDING_HEADER
+{
+  U64 PaddingSize;
+  U64 Spare;
+} RTLP_HP_PADDING_HEADER, *PRTLP_HP_PADDING_HEADER; 
+

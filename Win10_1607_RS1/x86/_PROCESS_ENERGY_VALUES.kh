@@ -1,0 +1,26 @@
+typedef struct _PROCESS_ENERGY_VALUES
+{
+  U64 Cycles[2][4];
+  U64 DiskEnergy;
+  U64 NetworkTailEnergy;
+  U64 MBBTailEnergy;
+  U64 NetworkTxRxBytes;
+  U64 MBBTxRxBytes;
+  union
+  {
+    struct 
+    {
+      U16 Foreground : 1; 
+      U16 DesktopVisible : 1; 
+    }; 
+    U16 WindowInformation;
+  }; 
+  U16 CompositorRendered;
+  U16 DirtyGenerated;
+  U16 DirtyPropagated;
+  S64 DesktopVisibilityReportTimestamp;
+  U64 DesktopVisibleTime;
+  S64 ForegroundReportTimestamp;
+  U64 ForegroundTime;
+} PROCESS_ENERGY_VALUES, *PPROCESS_ENERGY_VALUES; 
+

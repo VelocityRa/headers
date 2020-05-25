@@ -1,0 +1,9 @@
+typedef struct _IO_DRIVER_CREATE_CONTEXT
+{
+  S16 Size;
+  struct _ECP_LIST* ExtraCreateParameter;
+  void* DeviceObjectHint;
+  struct _TXN_PARAMETER_BLOCK* TxnParameters;
+  struct _EJOB* SiloContext;
+} IO_DRIVER_CREATE_CONTEXT, *PIO_DRIVER_CREATE_CONTEXT; 
+

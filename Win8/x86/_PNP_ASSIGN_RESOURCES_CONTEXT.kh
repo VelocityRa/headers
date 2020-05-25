@@ -1,0 +1,7 @@
+typedef struct _PNP_ASSIGN_RESOURCES_CONTEXT
+{
+  U32 IncludeFailedDevices;
+  U32 DeviceCount;
+  struct _DEVICE_OBJECT* DeviceList[1];
+} PNP_ASSIGN_RESOURCES_CONTEXT, *PPNP_ASSIGN_RESOURCES_CONTEXT; 
+

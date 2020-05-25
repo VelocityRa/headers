@@ -1,0 +1,5 @@
+typedef struct _WHEA_NMI_ERROR
+{
+  U8 Data[8];
+} WHEA_NMI_ERROR, *PWHEA_NMI_ERROR; 
+

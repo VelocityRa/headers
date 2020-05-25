@@ -1,0 +1,70 @@
+typedef struct _FNSAVE_FORMAT
+{
+  U32 ControlWord;
+  U32 StatusWord;
+  U32 TagWord;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U8 RegisterArea[80];
+} FNSAVE_FORMAT, *PFNSAVE_FORMAT; 
+
+typedef struct _FXSAVE_FORMAT
+{
+  U16 ControlWord;
+  U16 StatusWord;
+  U16 TagWord;
+  U16 ErrorOpcode;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U32 MXCsr;
+  U32 MXCsrMask;
+  U8 RegisterArea[128];
+  U8 Reserved3[128];
+  U8 Reserved4[192];
+} FXSAVE_FORMAT, *PFXSAVE_FORMAT; 
+
+typedef struct _KERNEL_STACK_SEGMENT
+{
+  U32 StackBase;
+  U32 StackLimit;
+  U32 KernelStack;
+  U32 InitialStack;
+  U32 ActualLimit;
+} KERNEL_STACK_SEGMENT, *PKERNEL_STACK_SEGMENT; 
+
+typedef struct _KERNEL_STACK_CONTROL
+{
+  union
+  {
+    struct _KTRAP_FRAME* PreviousTrapFrame;
+    void* PreviousExceptionList;
+  }; 
+  union
+  {
+    U32 StackControlFlags;
+    struct 
+    {
+      U32 PreviousLargeStack : 1; 
+      U32 PreviousSegmentsPresent : 1; 
+      U32 ExpandCalloutStack : 1; 
+    }; 
+  }; 
+  struct _KERNEL_STACK_SEGMENT Previous;
+} KERNEL_STACK_CONTROL, *PKERNEL_STACK_CONTROL; 
+
+typedef struct _KSTACK_AREA
+{
+  union
+  {
+    struct _FNSAVE_FORMAT FnArea;
+    struct _FXSAVE_FORMAT NpxFrame;
+  }; 
+  struct _KERNEL_STACK_CONTROL StackControl;
+  U32 Cr0NpxState;
+  U32 Padding[4];
+} KSTACK_AREA, *PKSTACK_AREA; 
+

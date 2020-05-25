@@ -1,0 +1,6 @@
+typedef struct _ALPC_MESSAGE_ATTRIBUTES
+{
+  U32 AllocatedAttributes;
+  U32 ValidAttributes;
+} ALPC_MESSAGE_ATTRIBUTES, *PALPC_MESSAGE_ATTRIBUTES; 
+

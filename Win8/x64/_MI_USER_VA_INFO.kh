@@ -1,0 +1,24 @@
+typedef struct _MI_USER_VA_INFO
+{
+  U32 NumberOfCommittedPageTables;
+  U32 PhysicalMappingCount;
+  U32 VadBitMapHint;
+  U32 LastAllocationSizeHint;
+  U32 LastAllocationSize;
+  U32 LowestBottomUpVadBit;
+  U32 VadBitMapSize;
+  U32 MaximumLastVadBit;
+  S32 VadsBeingDeleted;
+  struct _KEVENT* LastVadDeletionEvent;
+  U32* VadBitBuffer;
+  void* LowestBottomUpAllocationAddress;
+  void* HighestTopDownAllocationAddress;
+  void* FreeTebHint;
+  U64 PrivateFixupVadCount;
+  void* FreeUmsTebHint;
+  U32* CommittedPageTables;
+  U32 PageTableBitmapPages;
+  U64 CommittedPageDirectories[128];
+  U64 CommittedPageDirectoryParents[1];
+} MI_USER_VA_INFO, *PMI_USER_VA_INFO; 
+

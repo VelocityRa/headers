@@ -1,0 +1,14 @@
+typedef struct _EX_PUSH_LOCK_AUTO_EXPAND_STATE
+{
+  union
+  {
+    struct 
+    {
+      U32 Expanded : 1; 
+      U32 Transitioning : 1; 
+      U32 Pageable : 1; 
+    }; 
+    U32 Value;
+  }; 
+} EX_PUSH_LOCK_AUTO_EXPAND_STATE, *PEX_PUSH_LOCK_AUTO_EXPAND_STATE; 
+

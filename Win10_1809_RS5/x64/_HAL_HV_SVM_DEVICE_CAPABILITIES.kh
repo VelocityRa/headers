@@ -1,0 +1,14 @@
+typedef struct _HAL_HV_SVM_DEVICE_CAPABILITIES
+{
+  struct 
+  {
+    U32 SvmSupported : 1; 
+    U32 PciExecute : 1; 
+    U32 NoExecute : 1; 
+    U32 Reserved : 28; 
+    U32 OverflowPossible : 1; 
+  }; 
+  U32 PasidCount;
+  U32 IommuIndex;
+} HAL_HV_SVM_DEVICE_CAPABILITIES, *PHAL_HV_SVM_DEVICE_CAPABILITIES; 
+

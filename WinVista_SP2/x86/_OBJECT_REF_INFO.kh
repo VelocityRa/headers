@@ -1,0 +1,17 @@
+typedef struct _OBJECT_REF_STACK_INFO
+{
+  U32 Sequence;
+  U16 Index;
+  U16 NumTraces;
+} OBJECT_REF_STACK_INFO, *POBJECT_REF_STACK_INFO; 
+
+typedef struct _OBJECT_REF_INFO
+{
+  struct _OBJECT_HEADER* ObjectHeader;
+  void* NextRef;
+  U8 ImageFileName[16];
+  U16 NextPos;
+  U16 MaxStacks;
+  struct _OBJECT_REF_STACK_INFO* StackInfo;
+} OBJECT_REF_INFO, *POBJECT_REF_INFO; 
+

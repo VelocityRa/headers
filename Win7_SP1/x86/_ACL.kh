@@ -1,0 +1,9 @@
+typedef struct _ACL
+{
+  U8 AclRevision;
+  U8 Sbz1;
+  U16 AclSize;
+  U16 AceCount;
+  U16 Sbz2;
+} ACL, *PACL; 
+

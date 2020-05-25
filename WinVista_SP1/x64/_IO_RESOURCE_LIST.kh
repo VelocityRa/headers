@@ -1,0 +1,132 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef enum _IRQ_DEVICE_POLICY
+{
+  IrqPolicyMachineDefault = 0,
+  IrqPolicyAllCloseProcessors = 1,
+  IrqPolicyOneCloseProcessor = 2,
+  IrqPolicyAllProcessorsInMachine = 3,
+  IrqPolicySpecifiedProcessors = 4,
+  IrqPolicySpreadMessagesAcrossAllProcessors = 5,
+} IRQ_DEVICE_POLICY, *PIRQ_DEVICE_POLICY;
+
+typedef enum _IRQ_PRIORITY
+{
+  IrqPriorityUndefined = 0,
+  IrqPriorityLow = 1,
+  IrqPriorityNormal = 2,
+  IrqPriorityHigh = 3,
+} IRQ_PRIORITY, *PIRQ_PRIORITY;
+
+typedef struct _IO_RESOURCE_DESCRIPTOR
+{
+  U8 Option;
+  U8 Type;
+  U8 ShareDisposition;
+  U8 Spare1;
+  U16 Flags;
+  U16 Spare2;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U32 Length;
+        U32 Alignment;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Port;
+      struct
+      {
+        U32 Length;
+        U32 Alignment;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Memory;
+      struct
+      {
+        U32 MinimumVector;
+        U32 MaximumVector;
+        enum _IRQ_DEVICE_POLICY AffinityPolicy;
+        enum _IRQ_PRIORITY PriorityPolicy;
+        U64 TargetedProcessors;
+      } Interrupt;
+      struct
+      {
+        U32 MinimumChannel;
+        U32 MaximumChannel;
+      } Dma;
+      struct
+      {
+        U32 Length;
+        U32 Alignment;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Generic;
+      struct
+      {
+        U32 Data[3];
+      } DevicePrivate;
+      struct
+      {
+        U32 Length;
+        U32 MinBusNumber;
+        U32 MaxBusNumber;
+        U32 Reserved;
+      } BusNumber;
+      struct
+      {
+        U32 Priority;
+        U32 Reserved1;
+        U32 Reserved2;
+      } ConfigData;
+      struct
+      {
+        U32 Length40;
+        U32 Alignment40;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Memory40;
+      struct
+      {
+        U32 Length48;
+        U32 Alignment48;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Memory48;
+      struct
+      {
+        U32 Length64;
+        U32 Alignment64;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Memory64;
+    }; 
+  } u;
+} IO_RESOURCE_DESCRIPTOR, *PIO_RESOURCE_DESCRIPTOR; 
+
+typedef struct _IO_RESOURCE_LIST
+{
+  U16 Version;
+  U16 Revision;
+  U32 Count;
+  struct _IO_RESOURCE_DESCRIPTOR Descriptors[1];
+} IO_RESOURCE_LIST, *PIO_RESOURCE_LIST; 
+

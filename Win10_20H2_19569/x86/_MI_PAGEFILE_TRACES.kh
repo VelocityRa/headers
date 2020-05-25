@@ -1,0 +1,51 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _MDL
+{
+  struct _MDL* Next;
+  S16 Size;
+  S16 MdlFlags;
+  struct _EPROCESS* Process;
+  void* MappedSystemVa;
+  void* StartVa;
+  U32 ByteCount;
+  U32 ByteOffset;
+} MDL, *PMDL; 
+
+typedef struct _MI_PAGEFILE_TRACES
+{
+  S32 Status;
+  U16 PartitionId;
+  U8 Priority;
+  U8 IrpPriority;
+  U8 ReservationWrite;
+  union _LARGE_INTEGER CurrentTime;
+  U32 AvailablePages;
+  U32 ModifiedPagesTotal;
+  U32 ModifiedPagefilePages;
+  U32 ModifiedNoWritePages;
+  U32 ModifiedPagefileNoReservationPages;
+  struct
+  {
+    struct _MDL Mdl;
+    U32 Page[1];
+  } MdlHack;
+  S32 __PADDING__[1];
+} MI_PAGEFILE_TRACES, *PMI_PAGEFILE_TRACES; 
+

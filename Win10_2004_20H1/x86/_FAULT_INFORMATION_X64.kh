@@ -1,0 +1,32 @@
+typedef struct _FAULT_INFORMATION_X64_FLAGS
+{
+  struct 
+  {
+    U32 FaultAddressValid : 1; 
+    U32 Reserved : 31; 
+  }; 
+} FAULT_INFORMATION_X64_FLAGS, *PFAULT_INFORMATION_X64_FLAGS; 
+
+typedef enum _FAULT_INFORMATION_ARM64_TYPE
+{
+  UnsupportedUpstreamTransaction = 0,
+  AddressSizeFault = 1,
+  TlbMatchConflict = 2,
+  ExternalFault = 3,
+  PermissionFault = 4,
+  AccessFlagFault = 5,
+  TranslationFault = 6,
+  MaxFaultType = 7,
+} FAULT_INFORMATION_ARM64_TYPE, *PFAULT_INFORMATION_ARM64_TYPE;
+
+typedef struct _FAULT_INFORMATION_X64
+{
+  void* DomainHandle;
+  void* FaultAddress;
+  struct _FAULT_INFORMATION_X64_FLAGS Flags;
+  enum _FAULT_INFORMATION_ARM64_TYPE Type;
+  U64 IommuBaseAddress;
+  U32 PciSegment;
+  S32 __PADDING__[1];
+} FAULT_INFORMATION_X64, *PFAULT_INFORMATION_X64; 
+

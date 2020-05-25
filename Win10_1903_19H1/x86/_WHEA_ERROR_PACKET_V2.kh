@@ -1,0 +1,101 @@
+typedef union _WHEA_ERROR_PACKET_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 PreviousError : 1; 
+      U32 Reserved1 : 1; 
+      U32 HypervisorError : 1; 
+      U32 Simulated : 1; 
+      U32 PlatformPfaControl : 1; 
+      U32 PlatformDirectedOffline : 1; 
+      U32 Reserved2 : 26; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_ERROR_PACKET_FLAGS, *PWHEA_ERROR_PACKET_FLAGS; 
+
+typedef enum _WHEA_ERROR_TYPE
+{
+  WheaErrTypeProcessor = 0,
+  WheaErrTypeMemory = 1,
+  WheaErrTypePCIExpress = 2,
+  WheaErrTypeNMI = 3,
+  WheaErrTypePCIXBus = 4,
+  WheaErrTypePCIXDevice = 5,
+  WheaErrTypeGeneric = 6,
+  WheaErrTypePmem = 7,
+} WHEA_ERROR_TYPE, *PWHEA_ERROR_TYPE;
+
+typedef enum _WHEA_ERROR_SEVERITY
+{
+  WheaErrSevRecoverable = 0,
+  WheaErrSevFatal = 1,
+  WheaErrSevCorrected = 2,
+  WheaErrSevInformational = 3,
+} WHEA_ERROR_SEVERITY, *PWHEA_ERROR_SEVERITY;
+
+typedef enum _WHEA_ERROR_SOURCE_TYPE
+{
+  WheaErrSrcTypeMCE = 0,
+  WheaErrSrcTypeCMC = 1,
+  WheaErrSrcTypeCPE = 2,
+  WheaErrSrcTypeNMI = 3,
+  WheaErrSrcTypePCIe = 4,
+  WheaErrSrcTypeGeneric = 5,
+  WheaErrSrcTypeINIT = 6,
+  WheaErrSrcTypeBOOT = 7,
+  WheaErrSrcTypeSCIGeneric = 8,
+  WheaErrSrcTypeIPFMCA = 9,
+  WheaErrSrcTypeIPFCMC = 10,
+  WheaErrSrcTypeIPFCPE = 11,
+  WheaErrSrcTypeGenericV2 = 12,
+  WheaErrSrcTypeSCIGenericV2 = 13,
+  WheaErrSrcTypeBMC = 14,
+  WheaErrSrcTypePMEM = 15,
+  WheaErrSrcTypeDeviceDriver = 16,
+  WheaErrSrcTypeMax = 17,
+} WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef enum _WHEA_ERROR_PACKET_DATA_FORMAT
+{
+  WheaDataFormatIPFSalRecord = 0,
+  WheaDataFormatXPFMCA = 1,
+  WheaDataFormatMemory = 2,
+  WheaDataFormatPCIExpress = 3,
+  WheaDataFormatNMIPort = 4,
+  WheaDataFormatPCIXBus = 5,
+  WheaDataFormatPCIXDevice = 6,
+  WheaDataFormatGeneric = 7,
+  WheaDataFormatMax = 8,
+} WHEA_ERROR_PACKET_DATA_FORMAT, *PWHEA_ERROR_PACKET_DATA_FORMAT;
+
+typedef struct _WHEA_ERROR_PACKET_V2
+{
+  U32 Signature;
+  U32 Version;
+  U32 Length;
+  union _WHEA_ERROR_PACKET_FLAGS Flags;
+  enum _WHEA_ERROR_TYPE ErrorType;
+  enum _WHEA_ERROR_SEVERITY ErrorSeverity;
+  U32 ErrorSourceId;
+  enum _WHEA_ERROR_SOURCE_TYPE ErrorSourceType;
+  struct _GUID NotifyType;
+  U64 Context;
+  enum _WHEA_ERROR_PACKET_DATA_FORMAT DataFormat;
+  U32 Reserved1;
+  U32 DataOffset;
+  U32 DataLength;
+  U32 PshedDataOffset;
+  U32 PshedDataLength;
+} WHEA_ERROR_PACKET_V2, *PWHEA_ERROR_PACKET_V2; 
+

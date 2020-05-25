@@ -1,0 +1,26 @@
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _SEP_LOGON_SESSION_REFERENCES
+{
+  struct _SEP_LOGON_SESSION_REFERENCES* Next;
+  struct _LUID LogonId;
+  struct _LUID BuddyLogonId;
+  U32 ReferenceCount;
+  U32 Flags;
+  struct _DEVICE_MAP* pDeviceMap;
+  void* Token;
+  struct _UNICODE_STRING AccountName;
+  struct _UNICODE_STRING AuthorityName;
+} SEP_LOGON_SESSION_REFERENCES, *PSEP_LOGON_SESSION_REFERENCES; 
+

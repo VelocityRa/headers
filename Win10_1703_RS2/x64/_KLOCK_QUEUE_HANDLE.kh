@@ -1,0 +1,13 @@
+typedef struct _KSPIN_LOCK_QUEUE
+{
+  struct _KSPIN_LOCK_QUEUE* volatile Next;
+  U64* volatile Lock;
+} KSPIN_LOCK_QUEUE, *PKSPIN_LOCK_QUEUE; 
+
+typedef struct _KLOCK_QUEUE_HANDLE
+{
+  struct _KSPIN_LOCK_QUEUE LockQueue;
+  U8 OldIrql;
+  char __PADDING__[7];
+} KLOCK_QUEUE_HANDLE, *PKLOCK_QUEUE_HANDLE; 
+

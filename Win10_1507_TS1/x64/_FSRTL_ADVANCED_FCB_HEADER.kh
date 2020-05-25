@@ -1,0 +1,70 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _FSRTL_ADVANCED_FCB_HEADER
+{
+  S16 NodeTypeCode;
+  S16 NodeByteSize;
+  U8 Flags;
+  U8 IsFastIoPossible;
+  U8 Flags2;
+  struct 
+  {
+    U8 Reserved : 4; 
+    U8 Version : 4; 
+  }; 
+  struct _ERESOURCE* Resource;
+  struct _ERESOURCE* PagingIoResource;
+  union _LARGE_INTEGER AllocationSize;
+  union _LARGE_INTEGER FileSize;
+  union _LARGE_INTEGER ValidDataLength;
+  struct _FAST_MUTEX* FastMutex;
+  struct _LIST_ENTRY FilterContexts;
+  struct _EX_PUSH_LOCK PushLock;
+  void** FileContextSupportPointer;
+  union
+  {
+    void* Oplock;
+    void* ReservedForRemote;
+  }; 
+  void* ReservedContext;
+} FSRTL_ADVANCED_FCB_HEADER, *PFSRTL_ADVANCED_FCB_HEADER; 
+

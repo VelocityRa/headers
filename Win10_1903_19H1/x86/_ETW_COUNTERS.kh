@@ -1,0 +1,7 @@
+typedef struct _ETW_COUNTERS
+{
+  S32 GuidCount;
+  S32 PoolUsage[2];
+  S32 SessionCount;
+} ETW_COUNTERS, *PETW_COUNTERS; 
+

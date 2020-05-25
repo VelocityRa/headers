@@ -1,0 +1,35 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MI_PROCESS_STATE
+{
+  void* SystemDllBase;
+  U32 ColorSeed;
+  union _LARGE_INTEGER CriticalSectionTimeout;
+  struct _LIST_ENTRY ProcessList;
+  struct _MMPTE* SharedUserDataPte[2];
+  void* HypervisorSharedVa;
+  U64 VadSecureCookie;
+} MI_PROCESS_STATE, *PMI_PROCESS_STATE; 
+

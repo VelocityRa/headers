@@ -1,0 +1,13 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _OBJECT_HEADER_HANDLE_REVOCATION_INFO
+{
+  struct _LIST_ENTRY ListEntry;
+  struct _OB_HANDLE_REVOCATION_BLOCK* RevocationBlock;
+  U8 Padding1[4];
+} OBJECT_HEADER_HANDLE_REVOCATION_INFO, *POBJECT_HEADER_HANDLE_REVOCATION_INFO; 
+

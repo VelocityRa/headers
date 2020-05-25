@@ -1,0 +1,14 @@
+typedef struct _THERMAL_INFORMATION
+{
+  U32 ThermalStamp;
+  U32 ThermalConstant1;
+  U32 ThermalConstant2;
+  U32 Processors;
+  U32 SamplingPeriod;
+  U32 CurrentTemperature;
+  U32 PassiveTripPoint;
+  U32 CriticalTripPoint;
+  U8 ActiveTripPointCount;
+  U32 ActiveTripPoint[10];
+} THERMAL_INFORMATION, *PTHERMAL_INFORMATION; 
+

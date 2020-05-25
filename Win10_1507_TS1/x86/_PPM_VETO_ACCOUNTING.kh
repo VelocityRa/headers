@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PPM_VETO_ACCOUNTING
+{
+  volatile S32 VetoPresent;
+  struct _LIST_ENTRY VetoListHead;
+  U32 PreallocatedVetoCount;
+  struct _PPM_VETO_ENTRY* PreallocatedVetoList;
+} PPM_VETO_ACCOUNTING, *PPPM_VETO_ACCOUNTING; 
+

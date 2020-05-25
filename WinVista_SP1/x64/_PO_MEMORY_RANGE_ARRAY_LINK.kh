@@ -1,0 +1,8 @@
+typedef struct _PO_MEMORY_RANGE_ARRAY_LINK
+{
+  struct _PO_MEMORY_RANGE_ARRAY* Next;
+  U64 NextTable;
+  U32 CheckSum;
+  U32 EntryCount;
+} PO_MEMORY_RANGE_ARRAY_LINK, *PPO_MEMORY_RANGE_ARRAY_LINK; 
+

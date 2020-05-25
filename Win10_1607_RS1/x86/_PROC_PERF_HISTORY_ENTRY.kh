@@ -1,0 +1,9 @@
+typedef struct _PROC_PERF_HISTORY_ENTRY
+{
+  U16 Utility;
+  U16 AffinitizedUtility;
+  U8 Frequency;
+  U8 TaggedPercent[2];
+  char __PADDING__[1];
+} PROC_PERF_HISTORY_ENTRY, *PPROC_PERF_HISTORY_ENTRY; 
+

@@ -1,0 +1,21 @@
+typedef enum _NT_PRODUCT_TYPE
+{
+  NtProductWinNt = 1,
+  NtProductLanManNt = 2,
+  NtProductServer = 3,
+} NT_PRODUCT_TYPE, *PNT_PRODUCT_TYPE;
+
+typedef struct _SILO_USER_SHARED_DATA
+{
+  U32 ServiceSessionId;
+  U32 ActiveConsoleId;
+  S64 ConsoleSessionForegroundProcessId;
+  enum _NT_PRODUCT_TYPE NtProductType;
+  U32 SuiteMask;
+  U32 SharedUserSessionId;
+  U8 IsMultiSessionSku;
+  wchar_t NtSystemRoot[260];
+  U16 UserModeGlobalLogger[16];
+  char __PADDING__[2];
+} SILO_USER_SHARED_DATA, *PSILO_USER_SHARED_DATA; 
+

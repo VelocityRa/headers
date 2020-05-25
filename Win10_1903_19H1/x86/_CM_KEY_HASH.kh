@@ -1,0 +1,13 @@
+typedef struct _CM_PATH_HASH
+{
+  U32 Hash;
+} CM_PATH_HASH, *PCM_PATH_HASH; 
+
+typedef struct _CM_KEY_HASH
+{
+  struct _CM_PATH_HASH ConvKey;
+  struct _CM_KEY_HASH* NextHash;
+  struct _HHIVE* KeyHive;
+  U32 KeyCell;
+} CM_KEY_HASH, *PCM_KEY_HASH; 
+

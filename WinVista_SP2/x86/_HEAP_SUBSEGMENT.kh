@@ -1,0 +1,44 @@
+typedef struct _INTERLOCK_SEQ
+{
+  union
+  {
+    struct
+    {
+      U16 Depth;
+      U16 FreeEntryOffset;
+    }; 
+    struct
+    {
+      volatile U32 OffsetAndDepth;
+      volatile U32 Sequence;
+    }; 
+    volatile S64 Exchg;
+  }; 
+} INTERLOCK_SEQ, *PINTERLOCK_SEQ; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _HEAP_SUBSEGMENT
+{
+  struct _HEAP_LOCAL_SEGMENT_INFO* LocalInfo;
+  volatile struct _HEAP_USERDATA_HEADER* UserBlocks;
+  struct _INTERLOCK_SEQ AggregateExchg;
+  union
+  {
+    struct
+    {
+      U16 BlockSize;
+      U16 Flags;
+      U16 BlockCount;
+      U8 SizeIndex;
+      U8 AffinityIndex;
+    }; 
+    U32 Alignment[2];
+  }; 
+  struct _SINGLE_LIST_ENTRY SFreeListEntry;
+  volatile U32 Lock;
+} HEAP_SUBSEGMENT, *PHEAP_SUBSEGMENT; 
+

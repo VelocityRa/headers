@@ -1,0 +1,15 @@
+typedef struct _ACPI_METHOD_ARGUMENT_V1
+{
+  U16 Type;
+  U16 DataLength;
+  union
+  {
+    U32 Argument;
+    struct
+    {
+      U8 Data[1];
+      char __PADDING__[3];
+    }; 
+  }; 
+} ACPI_METHOD_ARGUMENT_V1, *PACPI_METHOD_ARGUMENT_V1; 
+

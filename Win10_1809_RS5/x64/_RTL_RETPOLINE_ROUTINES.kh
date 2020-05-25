@@ -1,0 +1,8 @@
+typedef struct _RTL_RETPOLINE_ROUTINES
+{
+  U32 SwitchtableJump[16];
+  U32 CfgIndirectRax;
+  U32 NonCfgIndirectRax;
+  U32 ImportR10;
+} RTL_RETPOLINE_ROUTINES, *PRTL_RETPOLINE_ROUTINES; 
+

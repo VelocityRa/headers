@@ -1,0 +1,7 @@
+typedef struct _HAL_HV_DMA_DOMAIN_INFO
+{
+  U32 DomainId;
+  U8 IsStage1;
+  char __PADDING__[3];
+} HAL_HV_DMA_DOMAIN_INFO, *PHAL_HV_DMA_DOMAIN_INFO; 
+

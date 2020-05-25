@@ -1,0 +1,21 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _MI_PAGING_FILE_SPACE_BITMAPS
+{
+  union
+  {
+    U32 RefCount;
+    struct _MI_PAGING_FILE_SPACE_BITMAPS* Anchor;
+  }; 
+  struct _RTL_BITMAP AllocationBitmap;
+  union
+  {
+    struct _RTL_BITMAP ReservationBitmap;
+    struct _RTL_BITMAP EvictedBitmap;
+  }; 
+} MI_PAGING_FILE_SPACE_BITMAPS, *PMI_PAGING_FILE_SPACE_BITMAPS; 
+

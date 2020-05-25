@@ -1,0 +1,11 @@
+typedef struct _GDI_TEB_BATCH64
+{
+  struct 
+  {
+    U32 Offset : 31; 
+    U32 HasRenderingCommand : 1; 
+  }; 
+  U64 HDC;
+  U32 Buffer[310];
+} GDI_TEB_BATCH64, *PGDI_TEB_BATCH64; 
+

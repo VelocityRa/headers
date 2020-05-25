@@ -1,0 +1,6 @@
+typedef struct _RTL_HP_LFH_CONFIG
+{
+  U16 MaxBlockSize;
+  U16 MaxSubsegmentPages;
+} RTL_HP_LFH_CONFIG, *PRTL_HP_LFH_CONFIG; 
+

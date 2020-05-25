@@ -1,0 +1,13 @@
+typedef union _WHEA_PCIXBUS_ID
+{
+  union
+  {
+    struct
+    {
+      U8 BusNumber;
+      U8 BusSegment;
+    }; 
+    U16 AsUSHORT;
+  }; 
+} WHEA_PCIXBUS_ID, *PWHEA_PCIXBUS_ID; 
+

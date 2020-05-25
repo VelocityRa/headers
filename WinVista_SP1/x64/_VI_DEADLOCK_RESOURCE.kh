@@ -1,0 +1,38 @@
+typedef enum _VI_DEADLOCK_RESOURCE_TYPE
+{
+  VfDeadlockUnknown = 0,
+  VfDeadlockMutex = 1,
+  VfDeadlockMutexAbandoned = 2,
+  VfDeadlockFastMutex = 3,
+  VfDeadlockFastMutexUnsafe = 4,
+  VfDeadlockSpinLock = 5,
+  VfDeadlockTypeMaximum = 6,
+} VI_DEADLOCK_RESOURCE_TYPE, *PVI_DEADLOCK_RESOURCE_TYPE;
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _VI_DEADLOCK_RESOURCE
+{
+  enum _VI_DEADLOCK_RESOURCE_TYPE Type;
+  struct 
+  {
+    U32 NodeCount : 16; 
+    U32 RecursionCount : 16; 
+  }; 
+  void* ResourceAddress;
+  struct _VI_DEADLOCK_THREAD* ThreadOwner;
+  struct _LIST_ENTRY ResourceList;
+  union
+  {
+    struct _LIST_ENTRY HashChainList;
+    struct _LIST_ENTRY FreeListEntry;
+  }; 
+  void* StackTrace[8];
+  void* LastAcquireTrace[8];
+  void* LastReleaseTrace[8];
+} VI_DEADLOCK_RESOURCE, *PVI_DEADLOCK_RESOURCE; 
+

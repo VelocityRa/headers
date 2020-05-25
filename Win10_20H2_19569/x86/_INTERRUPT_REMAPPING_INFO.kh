@@ -1,0 +1,20 @@
+typedef struct _INTERRUPT_REMAPPING_INFO
+{
+  struct 
+  {
+    U32 IrtIndex : 30; 
+    U32 FlagHalInternal : 1; 
+    U32 FlagTranslated : 1; 
+  }; 
+  union
+  {
+    struct
+    {
+      U32 MessageAddressHigh;
+      U32 MessageAddressLow;
+      U16 MessageData;
+      U16 Reserved;
+    } Msi;
+  } u;
+} INTERRUPT_REMAPPING_INFO, *PINTERRUPT_REMAPPING_INFO; 
+

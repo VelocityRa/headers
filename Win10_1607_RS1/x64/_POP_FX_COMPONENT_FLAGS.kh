@@ -1,0 +1,27 @@
+typedef union _POP_FX_COMPONENT_FLAGS
+{
+  union
+  {
+    struct
+    {
+      S32 Value;
+      S32 Value2;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U32 RefCount : 30; 
+        U32 Idling : 1; 
+        U32 Active : 1; 
+      }; 
+      struct 
+      {
+        U32 CriticalIdleOverride : 1; 
+        U32 ResidentOverride : 1; 
+        U32 Reserved : 30; 
+      }; 
+    }; 
+  }; 
+} POP_FX_COMPONENT_FLAGS, *PPOP_FX_COMPONENT_FLAGS; 
+

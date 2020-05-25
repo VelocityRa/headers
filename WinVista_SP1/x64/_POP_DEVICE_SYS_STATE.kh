@@ -1,0 +1,59 @@
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PO_NOTIFY_ORDER_LEVEL
+{
+  U32 DeviceCount;
+  U32 ActiveCount;
+  struct _LIST_ENTRY WaitSleep;
+  struct _LIST_ENTRY ReadySleep;
+  struct _LIST_ENTRY ReadyS0;
+  struct _LIST_ENTRY WaitS0;
+} PO_NOTIFY_ORDER_LEVEL, *PPO_NOTIFY_ORDER_LEVEL; 
+
+typedef struct _PO_DEVICE_NOTIFY_ORDER
+{
+  U8 Locked;
+  struct _DEVICE_OBJECT** WarmEjectPdoPointer;
+  struct _PO_NOTIFY_ORDER_LEVEL OrderLevel[8];
+} PO_DEVICE_NOTIFY_ORDER, *PPO_DEVICE_NOTIFY_ORDER; 
+
+typedef struct _POP_DEVICE_SYS_STATE
+{
+  U8 IrpMinor;
+  enum _SYSTEM_POWER_STATE SystemState;
+  U64 SpinLock;
+  struct _KTHREAD* Thread;
+  struct _KEVENT* AbortEvent;
+  struct _KSEMAPHORE* ReadySemaphore;
+  struct _KSEMAPHORE* FinishedSemaphore;
+  U8 GetNewDeviceList;
+  struct _PO_DEVICE_NOTIFY_ORDER Order;
+  S32 NotifyGdiLevelForPowerOn;
+  S32 NotifyGdiLevelForResumeUI;
+  struct _LIST_ENTRY Pending;
+  S32 Status;
+  struct _DEVICE_OBJECT* FailedDevice;
+  U8 Waking;
+  U8 Cancelled;
+  U8 IgnoreErrors;
+  U8 IgnoreNotImplemented;
+  U8 TimeRefreshLockAcquired;
+  char __PADDING__[3];
+} POP_DEVICE_SYS_STATE, *PPOP_DEVICE_SYS_STATE; 
+

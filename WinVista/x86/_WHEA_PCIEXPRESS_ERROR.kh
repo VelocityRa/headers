@@ -1,0 +1,51 @@
+enum PCI_EXPRESS_DEVICE_TYPE
+{
+  PciExpressEndpoS32 = 0,
+  PciExpressLegacyEndpoS32 = 1,
+  PciExpressRootPort = 4,
+  PciExpressUpstreamSwitchPort = 5,
+  PciExpressDownstreamSwitchPort = 6,
+  PciExpressToPciXBridge = 7,
+  PciXToExpressBridge = 8,
+  PciExpressRootComplexIntegratedEndpoS32 = 9,
+  PciExpressRootComplexEventCollector = 10,
+};
+
+typedef struct _PCIE_DEVICE_ID
+{
+  U16 VendorID;
+  U16 DeviceID;
+  struct 
+  {
+    U32 ClassCode : 24; 
+    U32 FunctionNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 DeviceNumber : 8; 
+    U32 Segment : 16; 
+    U32 PrimaryBusNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 SecondaryBusNumber : 8; 
+    U32 Reserved1 : 2; 
+    U32 SlotNumber : 14; 
+    U32 Reserved2 : 8; 
+  }; 
+} PCIE_DEVICE_ID, *PPCIE_DEVICE_ID; 
+
+typedef struct _WHEA_PCIEXPRESS_ERROR
+{
+  U64 ValidationBits;
+  enum PCI_EXPRESS_DEVICE_TYPE PortType;
+  U32 Version;
+  U32 CommandStatus;
+  U32 Reserved;
+  struct _PCIE_DEVICE_ID DeviceId;
+  U64 DeviceSN;
+  U32 BridgeCtrlSts;
+  U8 ExpressCapability[60];
+  U8 AerInfo[96];
+} WHEA_PCIEXPRESS_ERROR, *PWHEA_PCIEXPRESS_ERROR; 
+

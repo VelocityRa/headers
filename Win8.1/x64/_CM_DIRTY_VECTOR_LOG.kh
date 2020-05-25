@@ -1,0 +1,42 @@
+typedef enum _CM_DIRTY_VECTOR_OPERATION
+{
+  DirtyVectorModified = 0,
+  DirtyDataCaptureStart = 1,
+  DirtyDataCaptureEnd = 2,
+} CM_DIRTY_VECTOR_OPERATION, *PCM_DIRTY_VECTOR_OPERATION;
+
+typedef struct _CM_DIRTY_VECTOR_LOG_ENTRY
+{
+  struct _ETHREAD* Thread;
+  enum _CM_DIRTY_VECTOR_OPERATION Operation;
+  union
+  {
+    union
+    {
+      struct
+      {
+        U32 Start;
+        U32 Length;
+      } DirtyVectorModifiedContext;
+      struct
+      {
+        U32 RangeCount;
+        U32 SetBitCount;
+      } DirtyDataCaptureContext;
+      struct
+      {
+        U32 Context1;
+        U32 Context2;
+      } Raw;
+    }; 
+  } Data;
+  void* Stack[7];
+} CM_DIRTY_VECTOR_LOG_ENTRY, *PCM_DIRTY_VECTOR_LOG_ENTRY; 
+
+typedef struct _CM_DIRTY_VECTOR_LOG
+{
+  volatile U32 Next;
+  U32 Size;
+  struct _CM_DIRTY_VECTOR_LOG_ENTRY Log[16];
+} CM_DIRTY_VECTOR_LOG, *PCM_DIRTY_VECTOR_LOG; 
+

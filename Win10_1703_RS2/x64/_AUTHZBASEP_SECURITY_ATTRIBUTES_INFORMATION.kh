@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _AUTHZBASEP_SECURITY_ATTRIBUTES_INFORMATION
+{
+  U32 SecurityAttributeCount;
+  struct _LIST_ENTRY SecurityAttributesList;
+  U32 WorkingSecurityAttributeCount;
+  struct _LIST_ENTRY WorkingSecurityAttributesList;
+} AUTHZBASEP_SECURITY_ATTRIBUTES_INFORMATION, *PAUTHZBASEP_SECURITY_ATTRIBUTES_INFORMATION; 
+

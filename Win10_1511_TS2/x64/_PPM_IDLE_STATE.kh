@@ -1,0 +1,50 @@
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[20];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PPM_VETO_ACCOUNTING
+{
+  volatile S32 VetoPresent;
+  struct _LIST_ENTRY VetoListHead;
+  U8 CsAccountingBlocks;
+  U8 BlocksDrips;
+  U32 PreallocatedVetoCount;
+  struct _PPM_VETO_ENTRY* PreallocatedVetoList;
+} PPM_VETO_ACCOUNTING, *PPPM_VETO_ACCOUNTING; 
+
+typedef struct _PPM_IDLE_STATE
+{
+  struct _KAFFINITY_EX DomainMembers;
+  struct _UNICODE_STRING Name;
+  U32 Latency;
+  U32 BreakEvenDuration;
+  U32 Power;
+  U32 StateFlags;
+  struct _PPM_VETO_ACCOUNTING VetoAccounting;
+  U8 StateType;
+  U8 InterruptsEnabled;
+  U8 Interruptible;
+  U8 ContextRetained;
+  U8 CacheCoherent;
+  U8 WakesSpuriously;
+  U8 PlatformOnly;
+  U8 NoCState;
+} PPM_IDLE_STATE, *PPPM_IDLE_STATE; 
+

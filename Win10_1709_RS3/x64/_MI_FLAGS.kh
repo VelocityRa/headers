@@ -1,0 +1,33 @@
+typedef union _MI_FLAGS
+{
+  union
+  {
+    S32 EntireFlags;
+    struct 
+    {
+      U32 VerifierEnabled : 1; 
+      U32 KernelVerifierEnabled : 1; 
+      U32 LargePageKernel : 1; 
+      U32 StopOn4d : 1; 
+      U32 InitializationPhase : 2; 
+      U32 PageKernelStacks : 1; 
+      U32 CheckZeroPages : 1; 
+      U32 ProcessorPrewalks : 1; 
+      U32 ProcessorPostwalks : 1; 
+      U32 CoverageBuild : 1; 
+      U32 AccessBitReplacementDisabled : 1; 
+      U32 CheckExecute : 1; 
+      U32 ProtectedPagesEnabled : 1; 
+      U32 SecureRelocations : 1; 
+      U32 StrongPageIdentity : 1; 
+      U32 StrongCodeGuarantees : 1; 
+      U32 HardCodeGuarantees : 1; 
+      U32 ExecutePagePrivilegeRequired : 1; 
+      U32 SecureKernelCfgEnabled : 1; 
+      U32 FullHvci : 1; 
+      U32 SlatKernelCodeProtected : 1; 
+      U32 BootDebuggerActive : 1; 
+    }; 
+  }; 
+} MI_FLAGS, *PMI_FLAGS; 
+

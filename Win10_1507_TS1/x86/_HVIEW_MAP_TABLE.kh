@@ -1,0 +1,18 @@
+typedef struct _HVIEW_MAP_ENTRY
+{
+  union
+  {
+    void* ViewStart;
+    U32 IsPinned : 1; 
+  }; 
+  void* Bcb;
+  U64 PinnedPages;
+  U32 Size;
+  S32 __PADDING__[1];
+} HVIEW_MAP_ENTRY, *PHVIEW_MAP_ENTRY; 
+
+typedef struct _HVIEW_MAP_TABLE
+{
+  struct _HVIEW_MAP_ENTRY Entries[64];
+} HVIEW_MAP_TABLE, *PHVIEW_MAP_TABLE; 
+

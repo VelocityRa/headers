@@ -1,0 +1,48 @@
+typedef union _KGDTENTRY64
+{
+  union
+  {
+    struct
+    {
+      U16 LimitLow;
+      U16 BaseLow;
+      union
+      {
+        struct
+        {
+          U8 BaseMiddle;
+          U8 Flags1;
+          U8 Flags2;
+          U8 BaseHigh;
+        } Bytes;
+        struct
+        {
+          struct
+          {
+            struct 
+            {
+              U32 BaseMiddle : 8; 
+              U32 Type : 5; 
+              U32 Dpl : 2; 
+              U32 Present : 1; 
+              U32 LimitHigh : 4; 
+              U32 System : 1; 
+              U32 LongMode : 1; 
+              U32 DefaultBig : 1; 
+              U32 Granularity : 1; 
+              U32 BaseHigh : 8; 
+            }; 
+          } Bits;
+          U32 BaseUpper;
+          U32 MustBeZero;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      S64 DataLow;
+      S64 DataHigh;
+    }; 
+  }; 
+} KGDTENTRY64, *PKGDTENTRY64; 
+

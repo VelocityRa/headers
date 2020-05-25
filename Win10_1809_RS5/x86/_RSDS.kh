@@ -1,0 +1,17 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _RSDS
+{
+  U32 Signature;
+  struct _GUID Guid;
+  U32 Age;
+  char PdbName[1];
+  char __PADDING__[3];
+} RSDS, *PRSDS; 
+

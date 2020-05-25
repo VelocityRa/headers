@@ -1,0 +1,215 @@
+typedef struct _NT_TIB
+{
+  struct _EXCEPTION_REGISTRATION_RECORD* ExceptionList;
+  void* StackBase;
+  void* StackLimit;
+  void* SubSystemTib;
+  union
+  {
+    void* FiberData;
+    U32 Version;
+  }; 
+  void* ArbitraryUserPointer;
+  struct _NT_TIB* Self;
+} NT_TIB, *PNT_TIB; 
+
+typedef struct _CLIENT_ID
+{
+  void* UniqueProcess;
+  void* UniqueThread;
+} CLIENT_ID, *PCLIENT_ID; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _ACTIVATION_CONTEXT_STACK
+{
+  struct _RTL_ACTIVATION_CONTEXT_STACK_FRAME* ActiveFrame;
+  struct _LIST_ENTRY FrameListCache;
+  U32 Flags;
+  U32 NextCookieSequenceNumber;
+  U32 StackId;
+  S32 __PADDING__[1];
+} ACTIVATION_CONTEXT_STACK, *PACTIVATION_CONTEXT_STACK; 
+
+typedef struct _GDI_TEB_BATCH
+{
+  struct 
+  {
+    U32 Offset : 31; 
+    U32 HasRenderingCommand : 1; 
+  }; 
+  U64 HDC;
+  U32 Buffer[310];
+} GDI_TEB_BATCH, *PGDI_TEB_BATCH; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _PROCESSOR_NUMBER
+{
+  U16 Group;
+  U8 Number;
+  U8 Reserved;
+} PROCESSOR_NUMBER, *PPROCESSOR_NUMBER; 
+
+typedef struct _TEB
+{
+  struct _NT_TIB NtTib;
+  void* EnvironmentPointer;
+  struct _CLIENT_ID ClientId;
+  void* ActiveRpcHandle;
+  void* ThreadLocalStoragePointer;
+  struct _PEB* ProcessEnvironmentBlock;
+  U32 LastErrorValue;
+  U32 CountOfOwnedCriticalSections;
+  void* CsrClientThread;
+  void* Win32ThreadInfo;
+  U32 User32Reserved[26];
+  U32 UserReserved[5];
+  void* WOW32Reserved;
+  U32 CurrentLocale;
+  U32 FpSoftwareStatusRegister;
+  void* ReservedForDebuggerInstrumentation[16];
+  void* SystemReserved1[30];
+  char PlaceholderCompatibilityMode;
+  char PlaceholderReserved[11];
+  U32 ProxiedProcessId;
+  struct _ACTIVATION_CONTEXT_STACK _ActivationStack;
+  U8 WorkingOnBehalfTicket[8];
+  S32 ExceptionCode;
+  U8 Padding0[4];
+  struct _ACTIVATION_CONTEXT_STACK* ActivationContextStackPointer;
+  U64 InstrumentationCallbackSp;
+  U64 InstrumentationCallbackPreviousPc;
+  U64 InstrumentationCallbackPreviousSp;
+  U32 TxFsContext;
+  U8 InstrumentationCallbackDisabled;
+  U8 Padding1[3];
+  struct _GDI_TEB_BATCH GdiTebBatch;
+  struct _CLIENT_ID RealClientId;
+  void* GdiCachedProcessHandle;
+  U32 GdiClientPID;
+  U32 GdiClientTID;
+  void* GdiThreadLocalInfo;
+  U64 Win32ClientInfo[62];
+  void* glDispatchTable[233];
+  U64 glReserved1[29];
+  void* glReserved2;
+  void* glSectionInfo;
+  void* glSection;
+  void* glTable;
+  void* glCurrentRC;
+  void* glContext;
+  U32 LastStatusValue;
+  U8 Padding2[4];
+  struct _UNICODE_STRING StaticUnicodeString;
+  wchar_t StaticUnicodeBuffer[261];
+  U8 Padding3[6];
+  void* DeallocationStack;
+  void* TlsSlots[64];
+  struct _LIST_ENTRY TlsLinks;
+  void* Vdm;
+  void* ReservedForNtRpc;
+  void* DbgSsReserved[2];
+  U32 HardErrorMode;
+  U8 Padding4[4];
+  void* Instrumentation[11];
+  struct _GUID ActivityId;
+  void* SubProcessTag;
+  void* PerflibData;
+  void* EtwTraceData;
+  void* WinSockData;
+  U32 GdiBatchCount;
+  union
+  {
+    struct _PROCESSOR_NUMBER CurrentIdealProcessor;
+    U32 IdealProcessorValue;
+    struct
+    {
+      U8 ReservedPad0;
+      U8 ReservedPad1;
+      U8 ReservedPad2;
+      U8 IdealProcessor;
+    }; 
+  }; 
+  U32 GuaranteedStackBytes;
+  U8 Padding5[4];
+  void* ReservedForPerf;
+  void* ReservedForOle;
+  U32 WaitingOnLoaderLock;
+  U8 Padding6[4];
+  void* SavedPriorityState;
+  U64 ReservedForCodeCoverage;
+  void* ThreadPoolData;
+  void** TlsExpansionSlots;
+  void* DeallocationBStore;
+  void* BStoreLimit;
+  U32 MuiGeneration;
+  U32 IsImpersonating;
+  void* NlsCache;
+  void* pShimData;
+  U16 HeapVirtualAffinity;
+  U16 LowFragHeapDataSlot;
+  U8 Padding7[4];
+  void* CurrentTransactionHandle;
+  struct _TEB_ACTIVE_FRAME* ActiveFrame;
+  void* FlsData;
+  void* PreferredLanguages;
+  void* UserPrefLanguages;
+  void* MergedPrefLanguages;
+  U32 MuiImpersonation;
+  union
+  {
+    volatile U16 CrossTebFlags;
+    U16 SpareCrossTebBits : 16; 
+  }; 
+  union
+  {
+    U16 SameTebFlags;
+    struct 
+    {
+      U16 SafeThunkCall : 1; 
+      U16 InDebugPrS32 : 1; 
+      U16 HasFiberData : 1; 
+      U16 SkipThreadAttach : 1; 
+      U16 WerInShipAssertCode : 1; 
+      U16 RanProcessInit : 1; 
+      U16 ClonedThread : 1; 
+      U16 SuppressDebugMsg : 1; 
+      U16 DisableUserStackWalk : 1; 
+      U16 RtlExceptionAttached : 1; 
+      U16 InitialThread : 1; 
+      U16 SessionAware : 1; 
+      U16 LoadOwner : 1; 
+      U16 LoaderWorker : 1; 
+      U16 SkipLoaderInit : 1; 
+      U16 SpareSameTebBits : 1; 
+    }; 
+  }; 
+  void* TxnScopeEnterCallback;
+  void* TxnScopeExitCallback;
+  void* TxnScopeContext;
+  U32 LockCount;
+  S32 WowTebOffset;
+  void* ResourceRetValue;
+  void* ReservedForWdf;
+  U64 ReservedForCrt;
+  struct _GUID EffectiveContainerId;
+} TEB, *PTEB; 
+

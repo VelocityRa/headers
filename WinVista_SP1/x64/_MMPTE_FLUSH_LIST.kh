@@ -1,0 +1,7 @@
+typedef struct _MMPTE_FLUSH_LIST
+{
+  U32 Count;
+  U32 MaximumCount;
+  void* FlushVa[20];
+} MMPTE_FLUSH_LIST, *PMMPTE_FLUSH_LIST; 
+

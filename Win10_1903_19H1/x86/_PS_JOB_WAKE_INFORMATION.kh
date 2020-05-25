@@ -1,0 +1,7 @@
+typedef struct _PS_JOB_WAKE_INFORMATION
+{
+  U64 NotificationChannel;
+  U64 WakeCounters[7];
+  U64 NoWakeCounter;
+} PS_JOB_WAKE_INFORMATION, *PPS_JOB_WAKE_INFORMATION; 
+

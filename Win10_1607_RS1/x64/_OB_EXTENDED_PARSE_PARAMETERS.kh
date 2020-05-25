@@ -1,0 +1,7 @@
+typedef struct _OB_EXTENDED_PARSE_PARAMETERS
+{
+  U16 Length;
+  U32 RestrictedAccessMask;
+  struct _EJOB* Silo;
+} OB_EXTENDED_PARSE_PARAMETERS, *POB_EXTENDED_PARSE_PARAMETERS; 
+

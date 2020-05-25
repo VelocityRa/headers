@@ -1,0 +1,7 @@
+typedef struct _PS_WAKE_INFORMATION
+{
+  U64 NotificationChannel;
+  U64 WakeCounters[5];
+  U64 NoWakeCounter;
+} PS_WAKE_INFORMATION, *PPS_WAKE_INFORMATION; 
+

@@ -1,0 +1,14 @@
+typedef struct _PPM_PERF_STATE
+{
+  U32 Frequency;
+  U32 Power;
+  U8 PercentFrequency;
+  U8 IncreaseLevel;
+  U8 DecreaseLevel;
+  U8 Type;
+  U64 Control;
+  U64 Status;
+  U32 TotalHitCount;
+  U32 DesiredCount;
+} PPM_PERF_STATE, *PPPM_PERF_STATE; 
+

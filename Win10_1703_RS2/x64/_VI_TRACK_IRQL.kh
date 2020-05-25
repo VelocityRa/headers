@@ -1,0 +1,10 @@
+typedef struct _VI_TRACK_IRQL
+{
+  void* Thread;
+  U8 OldIrql;
+  U8 NewIrql;
+  U16 Processor;
+  U32 TickCount;
+  void* StackTrace[5];
+} VI_TRACK_IRQL, *PVI_TRACK_IRQL; 
+

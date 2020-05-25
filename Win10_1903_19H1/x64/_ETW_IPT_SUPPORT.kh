@@ -1,0 +1,10 @@
+typedef struct _ETW_IPT_SUPPORT
+{
+  void* IptHandle;
+  U64 IptOption;
+  struct _ETW_HW_TRACE_EXT_INTERFACE* EtwHwTraceExtInterface;
+  volatile U32 HookIdCount;
+  U16 HookId[4];
+  S32 __PADDING__[1];
+} ETW_IPT_SUPPORT, *PETW_IPT_SUPPORT; 
+

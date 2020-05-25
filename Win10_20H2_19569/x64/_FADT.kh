@@ -1,0 +1,99 @@
+typedef struct _DESCRIPTION_HEADER
+{
+  U32 Signature;
+  U32 Length;
+  U8 Revision;
+  U8 Checksum;
+  char OEMID[6];
+  char OEMTableID[8];
+  U32 OEMRevision;
+  char CreatorID[4];
+  U32 CreatorRev;
+} DESCRIPTION_HEADER, *PDESCRIPTION_HEADER; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _GEN_ADDR
+{
+  U8 AddressSpaceID;
+  U8 BitWidth;
+  U8 BitOffset;
+  U8 AccessSize;
+  union _LARGE_INTEGER Address;
+} GEN_ADDR, *PGEN_ADDR; 
+
+typedef struct _FADT
+{
+  struct _DESCRIPTION_HEADER Header;
+  U32 facs;
+  U32 dsdt;
+  U8 int_model;
+  U8 pm_profile;
+  U16 sci_int_vector;
+  U32 smi_cmd_io_port;
+  U8 acpi_on_value;
+  U8 acpi_off_value;
+  U8 s4bios_req;
+  U8 pstate_control;
+  U32 pm1a_evt_blk_io_port;
+  U32 pm1b_evt_blk_io_port;
+  U32 pm1a_ctrl_blk_io_port;
+  U32 pm1b_ctrl_blk_io_port;
+  U32 pm2_ctrl_blk_io_port;
+  U32 pm_tmr_blk_io_port;
+  U32 gp0_blk_io_port;
+  U32 gp1_blk_io_port;
+  U8 pm1_evt_len;
+  U8 pm1_ctrl_len;
+  U8 pm2_ctrl_len;
+  U8 pm_tmr_len;
+  U8 gp0_blk_len;
+  U8 gp1_blk_len;
+  U8 gp1_base;
+  U8 cstate_control;
+  U16 lvl2_latency;
+  U16 lvl3_latency;
+  U16 flush_size;
+  U16 flush_stride;
+  U8 duty_offset;
+  U8 duty_width;
+  U8 day_alarm_index;
+  U8 month_alarm_index;
+  U8 century_alarm_index;
+  U16 boot_arch;
+  U8 reserved3[1];
+  U32 flags;
+  struct _GEN_ADDR reset_reg;
+  U8 reset_val;
+  U16 arm_boot_arch;
+  U8 minor_version_number;
+  union _LARGE_INTEGER x_firmware_ctrl;
+  union _LARGE_INTEGER x_dsdt;
+  struct _GEN_ADDR x_pm1a_evt_blk;
+  struct _GEN_ADDR x_pm1b_evt_blk;
+  struct _GEN_ADDR x_pm1a_ctrl_blk;
+  struct _GEN_ADDR x_pm1b_ctrl_blk;
+  struct _GEN_ADDR x_pm2_ctrl_blk;
+  struct _GEN_ADDR x_pm_tmr_blk;
+  struct _GEN_ADDR x_gp0_blk;
+  struct _GEN_ADDR x_gp1_blk;
+  struct _GEN_ADDR sleep_control_reg;
+  struct _GEN_ADDR sleep_status_reg;
+} FADT, *PFADT; 
+

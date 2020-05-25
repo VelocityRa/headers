@@ -1,0 +1,8 @@
+typedef struct _CPU_INFO
+{
+  U32 Eax;
+  U32 Ebx;
+  U32 Ecx;
+  U32 Edx;
+} CPU_INFO, *PCPU_INFO; 
+

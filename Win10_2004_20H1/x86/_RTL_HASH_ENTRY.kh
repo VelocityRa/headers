@@ -1,0 +1,11 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _RTL_HASH_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY BucketLink;
+  U32 Key;
+} RTL_HASH_ENTRY, *PRTL_HASH_ENTRY; 
+

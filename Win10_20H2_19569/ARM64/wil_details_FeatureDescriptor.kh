@@ -1,0 +1,11 @@
+struct wil_details_FeatureDescriptor
+{
+  union wil_details_FeatureStateCache* featureStateCache;
+  U32 featureId;
+  U8 changeTime;
+  U8 isAlwaysDisabled;
+  U8 isAlwaysEnabled;
+  U8 isEnabledByDefault;
+  const struct wil_details_FeatureDescriptor* const* requiresFeatures;
+}; 
+

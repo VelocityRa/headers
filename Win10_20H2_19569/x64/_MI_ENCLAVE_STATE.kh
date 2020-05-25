@@ -1,0 +1,49 @@
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    U64 Count;
+    void* Ptr;
+  }; 
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF; 
+
+typedef struct _MI_ENCLAVE_STATE
+{
+  struct _RTL_AVL_TREE EnclaveRegions;
+  void* EnclaveMetadataPage;
+  struct _RTL_BITMAP* EnclaveMetadataBitMap;
+  struct _EX_PUSH_LOCK EnclaveMetadataEntryLock;
+  volatile S32 EnclaveMetadataPageLock;
+  struct _LIST_ENTRY EnclaveList;
+  struct _EX_PUSH_LOCK EnclaveListLock;
+  struct _EX_RUNDOWN_REF ShutdownRundown;
+} MI_ENCLAVE_STATE, *PMI_ENCLAVE_STATE; 
+

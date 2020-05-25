@@ -1,0 +1,25 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _LEAP_SECOND_DATA
+{
+  U8 Enabled;
+  U32 Count;
+  union _LARGE_INTEGER Data[1];
+} LEAP_SECOND_DATA, *PLEAP_SECOND_DATA; 
+

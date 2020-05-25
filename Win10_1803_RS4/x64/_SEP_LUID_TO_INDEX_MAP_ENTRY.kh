@@ -1,0 +1,22 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_DYNAMIC_HASH_TABLE_ENTRY
+{
+  struct _LIST_ENTRY Linkage;
+  U64 Signature;
+} RTL_DYNAMIC_HASH_TABLE_ENTRY, *PRTL_DYNAMIC_HASH_TABLE_ENTRY; 
+
+typedef struct _SEP_LUID_TO_INDEX_MAP_ENTRY
+{
+  struct _RTL_DYNAMIC_HASH_TABLE_ENTRY HashEntry;
+  S64 ReferenceCount;
+  U64 Luid;
+  U64 IndexIntoGlobalSingletonTable;
+  U8 MarkedForDeletion;
+  char __PADDING__[7];
+} SEP_LUID_TO_INDEX_MAP_ENTRY, *PSEP_LUID_TO_INDEX_MAP_ENTRY; 
+

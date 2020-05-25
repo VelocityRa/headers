@@ -1,0 +1,42 @@
+typedef struct _PPM_SELECTION_STATISTICS
+{
+  U64 SelectedCount;
+  U64 VetoCount;
+  U64 PreVetoCount;
+  U64 WrongProcessorCount;
+  U64 LatencyCount;
+  U64 IdleDurationCount;
+  U64 DeviceDependencyCount;
+  U64 ProcessorDependencyCount;
+  U64 PlatformOnlyCount;
+  U64 InterruptibleCount;
+  U64 LegacyOverrideCount;
+  U64 CstateCheckCount;
+  U64 NoCStateCount;
+  U64 CoordinatedDependencyCount;
+  struct _PPM_VETO_ACCOUNTING* PreVetoAccounting;
+  S32 __PADDING__[1];
+} PPM_SELECTION_STATISTICS, *PPPM_SELECTION_STATISTICS; 
+
+typedef struct _PROC_IDLE_STATE_BUCKET
+{
+  U64 TotalTime;
+  U64 MinTime;
+  U64 MaxTime;
+  U32 Count;
+  S32 __PADDING__[1];
+} PROC_IDLE_STATE_BUCKET, *PPROC_IDLE_STATE_BUCKET; 
+
+typedef struct _PLATFORM_IDLE_STATE_ACCOUNTING
+{
+  U32 CancelCount;
+  U32 FailureCount;
+  U32 SuccessCount;
+  U64 MaxTime;
+  U64 MinTime;
+  U64 TotalTime;
+  U32 InvalidBucketIndex;
+  struct _PPM_SELECTION_STATISTICS SelectionStatistics;
+  struct _PROC_IDLE_STATE_BUCKET IdleTimeBuckets[26];
+} PLATFORM_IDLE_STATE_ACCOUNTING, *PPLATFORM_IDLE_STATE_ACCOUNTING; 
+

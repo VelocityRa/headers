@@ -1,0 +1,15 @@
+typedef struct _MMPTE_TRANSITION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Protection : 5; 
+    U64 Spare : 3; 
+    U64 IoTracker : 1; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFrameNumber : 40; 
+    U64 Unused : 12; 
+  }; 
+} MMPTE_TRANSITION, *PMMPTE_TRANSITION; 
+

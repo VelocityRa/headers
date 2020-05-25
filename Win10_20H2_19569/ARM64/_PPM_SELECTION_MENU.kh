@@ -1,0 +1,6 @@
+typedef struct _PPM_SELECTION_MENU
+{
+  U32 Count;
+  struct _PPM_SELECTION_MENU_ENTRY* Entries;
+} PPM_SELECTION_MENU, *PPPM_SELECTION_MENU; 
+

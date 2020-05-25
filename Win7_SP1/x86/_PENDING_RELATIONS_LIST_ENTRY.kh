@@ -1,0 +1,49 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+enum IRPLOCK
+{
+  IRPLOCK_CANCELABLE = 0,
+  IRPLOCK_CANCEL_STARTED = 1,
+  IRPLOCK_CANCEL_COMPLETE = 2,
+  IRPLOCK_COMPLETED = 3,
+};
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+typedef struct _PENDING_RELATIONS_LIST_ENTRY
+{
+  struct _LIST_ENTRY Link;
+  struct _WORK_QUEUE_ITEM WorkItem;
+  struct _PNP_DEVICE_EVENT_ENTRY* DeviceEvent;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _RELATION_LIST* RelationsList;
+  struct _IRP* EjectIrp;
+  enum IRPLOCK Lock;
+  U32 Problem;
+  U8 ProfileChangingEject;
+  U8 DisplaySafeRemovalDialog;
+  enum _SYSTEM_POWER_STATE LightestSleepState;
+  struct DOCK_INTERFACE* DockInterface;
+} PENDING_RELATIONS_LIST_ENTRY, *PPENDING_RELATIONS_LIST_ENTRY; 
+

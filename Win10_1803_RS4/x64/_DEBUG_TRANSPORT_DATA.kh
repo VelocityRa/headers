@@ -1,0 +1,7 @@
+typedef struct _DEBUG_TRANSPORT_DATA
+{
+  U32 HwContextSize;
+  U8 UseSerialFraming;
+  char __PADDING__[3];
+} DEBUG_TRANSPORT_DATA, *PDEBUG_TRANSPORT_DATA; 
+

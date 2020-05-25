@@ -1,0 +1,1063 @@
+typedef struct _MI_PARTITION_FLAGS
+{
+  struct 
+  {
+    U32 BeingDeleted : 1; 
+    U32 PageListsInitialized : 1; 
+    U32 StoreReservedPagesCharged : 1; 
+    U32 UseSlabAllocators : 1; 
+    U32 PureHoldingPartition : 1; 
+    U32 ZeroPagesOptional : 1; 
+  }; 
+} MI_PARTITION_FLAGS, *PMI_PARTITION_FLAGS; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 6; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 SchedulerAssist : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          union
+          {
+            U8 DebugActive;
+            struct 
+            {
+              U8 ActiveDR7 : 1; 
+              U8 Instrumented : 1; 
+              U8 Minimal : 1; 
+              U8 Reserved4 : 3; 
+              U8 UmsScheduled : 1; 
+              U8 UmsPrimary : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MI_PARTITION_CORE
+{
+  U16 PartitionId;
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MI_PARTITION_FLAGS Flags;
+    }; 
+  } u;
+  U32 Signature;
+  U8 MemoryConfigurationChanged;
+  struct _MI_NODE_INFORMATION* NodeInformation;
+  struct _RTL_AVL_TREE PageRoot;
+  struct _PHYSICAL_MEMORY_DESCRIPTOR* MemoryNodeRuns;
+  U64 MemoryBlockReferences;
+  struct _WORK_QUEUE_ITEM PfnUnmapWorkItem;
+  U64 PfnUnmapCount;
+  void* PfnUnmapWaitList;
+  struct _PHYSICAL_MEMORY_DESCRIPTOR* MemoryRuns;
+  struct _KEVENT ExitEvent;
+  void* SystemThreadHandles[5];
+  struct _EPARTITION* PartitionObject;
+  struct _EX_PUSH_LOCK PartitionSystemThreadsLock;
+  struct _EX_PUSH_LOCK DynamicMemoryPushLock;
+  volatile S32 DynamicMemoryLock;
+  U8 PfnUnmapActive;
+  struct _KEVENT TemporaryMemoryEvent;
+  void* RootDirectory;
+  void* KernelObjectsDirectory;
+  struct _KEVENT* MemoryEvents[11];
+  void* MemoryEventHandles[11];
+  U64 NonChargedSecurePages;
+} MI_PARTITION_CORE, *PMI_PARTITION_CORE; 
+
+typedef struct _MMPAGE_FILE_EXPANSION_FLAGS
+{
+  U8 PageFileNumber : 8; 
+  U8 Spare1 : 8; 
+  U8 Spare2 : 8; 
+  struct 
+  {
+    U8 IgnoreCurrentCommit : 1; 
+    U8 IncreaseMinimumSize : 1; 
+    U8 AttemptForCantExtend : 1; 
+    U8 UnusedSegmentDeletion : 1; 
+    U8 PageFileContract : 1; 
+    U8 Spare3 : 3; 
+  }; 
+} MMPAGE_FILE_EXPANSION_FLAGS, *PMMPAGE_FILE_EXPANSION_FLAGS; 
+
+typedef struct _MMPAGE_FILE_EXPANSION
+{
+  struct _SEGMENT* Segment;
+  struct _LIST_ENTRY DereferenceList;
+  struct _MI_PARTITION* Partition;
+  U64 RequestedExpansionSize;
+  U64 ActualExpansion;
+  struct _KEVENT Event;
+  volatile S32 InProgress;
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMPAGE_FILE_EXPANSION_FLAGS Flags;
+    }; 
+  } u1;
+  void** volatile ActiveEntry;
+} MMPAGE_FILE_EXPANSION, *PMMPAGE_FILE_EXPANSION; 
+
+typedef struct _KGATE
+{
+  struct _DISPATCHER_HEADER Header;
+} KGATE, *PKGATE; 
+
+typedef struct _MMMOD_WRITER_LISTHEAD
+{
+  struct _LIST_ENTRY ListHead;
+  union
+  {
+    struct _KGATE Gate;
+    struct _KEVENT Event;
+  }; 
+} MMMOD_WRITER_LISTHEAD, *PMMMOD_WRITER_LISTHEAD; 
+
+typedef union _MI_RESERVATION_CLUSTER_INFO
+{
+  union
+  {
+    struct 
+    {
+      U32 ClusterSize : 10; 
+      U32 SequenceNumber : 22; 
+    }; 
+    S32 EntireInfo;
+  }; 
+} MI_RESERVATION_CLUSTER_INFO, *PMI_RESERVATION_CLUSTER_INFO; 
+
+typedef struct _MI_MODWRITE_DATA
+{
+  S64 PagesLoad;
+  U64 PagesAverage;
+  U64 AverageAvailablePages;
+  U64 PagesWritten;
+  U32 WritesIssued;
+  U32 IgnoredReservationsCount;
+  U32 FreedReservationsCount;
+  U32 WriteBurstCount;
+  U64 IgnoreReservationsStartTime;
+  volatile union _MI_RESERVATION_CLUSTER_INFO ReservationClusterInfo;
+  struct 
+  {
+    U16 IgnoreReservations : 1; 
+    U16 Spare : 15; 
+  }; 
+  U16 Spare1;
+} MI_MODWRITE_DATA, *PMI_MODWRITE_DATA; 
+
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    U64 Count;
+    void* Ptr;
+  }; 
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF; 
+
+typedef struct _MI_RESTRICTED_MODWRITES
+{
+  U8 MaximumClusterPages;
+  U8 ReducedClusterWrites;
+  U8 ImposeDelay;
+} MI_RESTRICTED_MODWRITES, *PMI_RESTRICTED_MODWRITES; 
+
+typedef struct _MI_PARTITION_MODWRITES
+{
+  struct _MMPAGE_FILE_EXPANSION AttemptForCantExtend;
+  struct _MMPAGE_FILE_EXPANSION PageFileContract;
+  U64 NumberOfMappedMdls;
+  volatile S32 NumberOfMappedMdlsInUse;
+  U32 NumberOfMappedMdlsInUsePeak;
+  struct _MMMOD_WRITER_LISTHEAD MappedFileHeader;
+  U8 NeedMappedMdl;
+  U8 NeedPageFileMdl;
+  U8 ModwriterActive;
+  U8 TransitionInserted;
+  S32 LastModifiedWriteError;
+  S32 LastMappedWriteError;
+  volatile U32 MappedFileWriteSucceeded;
+  U32 MappedWriteBurstCount;
+  U32 LowPriorityModWritesOutstanding;
+  struct _KEVENT BoostModWriteIoPriorityEvent;
+  S32 ModifiedWriterThreadPriority;
+  U64 ModifiedPagesLowPriorityGoal;
+  struct _KEVENT ModifiedPageWriterEvent;
+  struct _KEVENT ModifiedWriterExitedEvent;
+  volatile S32 WriteAllPagefilePages;
+  volatile S32 WriteAllMappedPages;
+  struct _KEVENT MappedPageWriterEvent;
+  struct _MI_MODWRITE_DATA ModWriteData;
+  struct _KEVENT RescanPageFilesEvent;
+  struct _MMMOD_WRITER_LISTHEAD PagingFileHeader;
+  struct _ETHREAD* ModifiedPageWriterThread;
+  struct _EX_RUNDOWN_REF ModifiedPageWriterRundown;
+  struct _WORK_QUEUE_ITEM PagefileScanWorkItem;
+  U32 PagefileScanCount;
+  volatile S32 ClusterRestrictionLock;
+  struct _MI_RESTRICTED_MODWRITES ClusterRestrictions[2];
+  struct _KEVENT NotifyStoreMemoryConditions;
+  volatile U8 DelayMappedWrite;
+  volatile U32 PagefileReservationsEnabled;
+  struct _EX_PUSH_LOCK PageFileCreationLock;
+  struct _WORK_QUEUE_ITEM TrimPagefileWorkItem;
+  U64 LastTrimPagefileTime;
+  struct _WORK_QUEUE_ITEM WsSwapPagefileContractWorkItem;
+  volatile S32 WsSwapPageFileContractionInProgress;
+  struct _EX_PUSH_LOCK WorkingSetSwapLock;
+  volatile S32 WorkingSetInswapLock;
+  S32 __PADDING__[1];
+} MI_PARTITION_MODWRITES, *PMI_PARTITION_MODWRITES; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _MI_PARTITION_STORES
+{
+  union
+  {
+    union
+    {
+      struct 
+      {
+        S32 FlushCompleting : 1; 
+        S32 FlushInProgress : 31; 
+      }; 
+      volatile S32 Long;
+    }; 
+  } WriteAllStoreHintedPages;
+  U32 VirtualPageFileNumber;
+  U32 Registered;
+  U32 ReadClusterSizeMax;
+  U32 EvictFlushRequestCount;
+  U32 ModifiedWriteDisableCount;
+  U32 WriteIssueFailures;
+  U32 WritesOutstanding;
+  volatile S32 EvictFlushLock;
+  struct _ETHREAD* EvictionThread;
+  struct _KEVENT EvictEvent;
+  union _SLIST_HEADER WriteSupportSListHead;
+  struct _KEVENT EvictFlushCompleteEvent;
+  struct _RTL_BITMAP* ModifiedWriteFailedBitmap;
+  struct _EPROCESS* StoreProcess;
+  U32 DeleteStoredPages;
+  S32 __PADDING__[1];
+} MI_PARTITION_STORES, *PMI_PARTITION_STORES; 
+
+typedef struct _KSEMAPHORE
+{
+  struct _DISPATCHER_HEADER Header;
+  S32 Limit;
+  S32 __PADDING__[1];
+} KSEMAPHORE, *PKSEMAPHORE; 
+
+typedef struct _MMDEREFERENCE_SEGMENT_HEADER
+{
+  struct _KSEMAPHORE Semaphore;
+  struct _LIST_ENTRY ControlAreaDeleteListHead;
+  struct _LIST_ENTRY UnusedSegmentDeleteListHead;
+  struct _LIST_ENTRY PagefileExtensionListHead;
+} MMDEREFERENCE_SEGMENT_HEADER, *PMMDEREFERENCE_SEGMENT_HEADER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Processor;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _MMPTE_HARDWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Dirty1 : 1; 
+    U64 Owner : 1; 
+    U64 WriteThrough : 1; 
+    U64 CacheDisable : 1; 
+    U64 Accessed : 1; 
+    U64 Dirty : 1; 
+    U64 LargePage : 1; 
+    U64 Global : 1; 
+    U64 CopyOnWrite : 1; 
+    U64 Unused : 1; 
+    U64 Write : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 ReservedForHardware : 4; 
+    U64 ReservedForSoftware : 4; 
+    U64 WsleAge : 4; 
+    U64 WsleProtection : 3; 
+    U64 NoExecute : 1; 
+  }; 
+} MMPTE_HARDWARE, *PMMPTE_HARDWARE; 
+
+typedef struct _MMPTE_PROTOTYPE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 DemandFillProto : 1; 
+    U64 HiberVerifyConverted : 1; 
+    U64 ReadOnly : 1; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Combined : 1; 
+    U64 Unused1 : 4; 
+    S64 ProtoAddress : 48; 
+  }; 
+} MMPTE_PROTOTYPE, *PMMPTE_PROTOTYPE; 
+
+typedef struct _MMPTE_SOFTWARE
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 PageFileReserved : 1; 
+    U64 PageFileAllocated : 1; 
+    U64 ColdPage : 1; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFileLow : 4; 
+    U64 UsedPageTableEntries : 10; 
+    U64 ShadowStack : 1; 
+    U64 Unused : 5; 
+    U64 PageFileHigh : 32; 
+  }; 
+} MMPTE_SOFTWARE, *PMMPTE_SOFTWARE; 
+
+typedef struct _MMPTE_TIMESTAMP
+{
+  struct 
+  {
+    U64 MustBeZero : 1; 
+    U64 Unused : 3; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFileLow : 4; 
+    U64 Reserved : 16; 
+    U64 GlobalTimeStamp : 32; 
+  }; 
+} MMPTE_TIMESTAMP, *PMMPTE_TIMESTAMP; 
+
+typedef struct _MMPTE_TRANSITION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Write : 1; 
+    U64 Spare : 1; 
+    U64 IoTracker : 1; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 PageFrameNumber : 36; 
+    U64 Unused : 16; 
+  }; 
+} MMPTE_TRANSITION, *PMMPTE_TRANSITION; 
+
+typedef struct _MMPTE_SUBSECTION
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 Unused0 : 3; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 ColdPage : 1; 
+    U64 Unused1 : 3; 
+    U64 ExecutePrivilege : 1; 
+    S64 SubsectionAddress : 48; 
+  }; 
+} MMPTE_SUBSECTION, *PMMPTE_SUBSECTION; 
+
+typedef struct _MMPTE_LIST
+{
+  struct 
+  {
+    U64 Valid : 1; 
+    U64 OneEntry : 1; 
+    U64 filler0 : 2; 
+    U64 SwizzleBit : 1; 
+    U64 Protection : 5; 
+    U64 Prototype : 1; 
+    U64 Transition : 1; 
+    U64 filler1 : 16; 
+    U64 NextEntry : 36; 
+  }; 
+} MMPTE_LIST, *PMMPTE_LIST; 
+
+typedef struct _MMPTE
+{
+  union
+  {
+    union
+    {
+      U64 Long;
+      volatile U64 VolatileLong;
+      struct _MMPTE_HARDWARE Hard;
+      struct _MMPTE_PROTOTYPE Proto;
+      struct _MMPTE_SOFTWARE Soft;
+      struct _MMPTE_TIMESTAMP TimeStamp;
+      struct _MMPTE_TRANSITION Trans;
+      struct _MMPTE_SUBSECTION Subsect;
+      struct _MMPTE_LIST List;
+    }; 
+  } u;
+} MMPTE, *PMMPTE; 
+
+typedef struct _MI_PTE_CHAIN_HEAD
+{
+  struct _MMPTE Flink;
+  struct _MMPTE Blink;
+  struct _MMPTE* PteBase;
+} MI_PTE_CHAIN_HEAD, *PMI_PTE_CHAIN_HEAD; 
+
+typedef struct _MI_CROSS_PARTITION_CHARGES
+{
+  U64 CurrentCharges;
+  U64 ChargeFailures;
+  U64 ChargePeak;
+  U64 ChargeMinimum;
+} MI_CROSS_PARTITION_CHARGES, *PMI_CROSS_PARTITION_CHARGES; 
+
+typedef struct _MI_PARTITION_SEGMENTS
+{
+  volatile S32 SegmentListLock;
+  U32 DeleteOnCloseCount;
+  volatile S64 FsControlAreaCount;
+  volatile S64 PfControlAreaCount;
+  volatile S64 CloneHeaderCount;
+  struct _KEVENT DeleteSubsectionCleanup;
+  struct _KEVENT UnusedSegmentCleanup;
+  U64 SubsectionDeletePtes;
+  struct _MMPAGE_FILE_EXPANSION AttemptForCantExtend;
+  struct _MMDEREFERENCE_SEGMENT_HEADER DereferenceSegmentHeader;
+  struct _LIST_ENTRY DeleteOnCloseList;
+  struct _KTIMER DeleteOnCloseTimer;
+  U8 DeleteOnCloseTimerActive;
+  U8 SegmentDereferenceThreadExists;
+  void* SegmentDereferenceActiveControlArea;
+  U64 UnusedSegmentPagedPool;
+  struct _LIST_ENTRY UnusedSegmentList;
+  struct _LIST_ENTRY UnusedSubsectionList;
+  struct _LIST_ENTRY DeleteSubsectionList;
+  struct _KEVENT ControlAreaDeleteEvent;
+  struct _SINGLE_LIST_ENTRY ControlAreaDeleteList;
+  struct _MI_PTE_CHAIN_HEAD FreeSystemCache;
+  struct _KEVENT CloneDereferenceEvent;
+  union _SLIST_HEADER CloneProtosSListHead;
+  struct _EX_PUSH_LOCK SystemCacheInitLock;
+  U32 PagefileExtensionWaiters;
+  U32 PagefileExtensionRequests;
+  struct _KEVENT PagefileExtensionWaitEvent;
+  struct _MI_CROSS_PARTITION_CHARGES SharedCharges[7];
+  struct _KEVENT* SharedChargesDrainEvent;
+  struct _KEVENT* ControlAreasDrainEvent;
+  struct _KEVENT* CloneHeaderDrainEvent;
+  struct _EX_RUNDOWN_REF_CACHE_AWARE* ProbeRundownReference;
+  S32 __PADDING__[6];
+} MI_PARTITION_SEGMENTS, *PMI_PARTITION_SEGMENTS; 
+
+typedef enum _MMLISTS
+{
+  ZeroedPageList = 0,
+  FreePageList = 1,
+  StandbyPageList = 2,
+  ModifiedPageList = 3,
+  ModifiedNoWritePageList = 4,
+  BadPageList = 5,
+  ActiveAndValid = 6,
+  TransitionPage = 7,
+} MMLISTS, *PMMLISTS;
+
+typedef struct _MMPFNLIST
+{
+  U64 Total;
+  enum _MMLISTS ListName;
+  U64 Flink;
+  U64 Blink;
+  U64 Lock;
+} MMPFNLIST, *PMMPFNLIST; 
+
+typedef struct _MI_DECAY_TIMER_LINKAGE
+{
+  struct 
+  {
+    U64 Spare0 : 1; 
+    U64 PreviousDecayPfn : 31; 
+    U64 Spare1 : 1; 
+    U64 NextDecayPfn : 31; 
+  }; 
+} MI_DECAY_TIMER_LINKAGE, *PMI_DECAY_TIMER_LINKAGE; 
+
+typedef struct _MI_DECAY_TIMER_LINK
+{
+  union
+  {
+    union
+    {
+      U64 Long;
+      struct _MI_DECAY_TIMER_LINKAGE e1;
+    }; 
+  } u1;
+} MI_DECAY_TIMER_LINK, *PMI_DECAY_TIMER_LINK; 
+
+typedef struct _MI_LDW_WORK_CONTEXT
+{
+  struct _WORK_QUEUE_ITEM WorkItem;
+  struct _FILE_OBJECT* FileObject;
+  S32 ErrorStatus;
+  volatile S32 Active;
+  U8 FreeWhenDone;
+  char __PADDING__[7];
+} MI_LDW_WORK_CONTEXT, *PMI_LDW_WORK_CONTEXT; 
+
+typedef struct _MI_AVAILABLE_PAGE_WAIT_STATES
+{
+  struct _KEVENT Event;
+  U32 EventSets;
+  S32 __PADDING__[1];
+} MI_AVAILABLE_PAGE_WAIT_STATES, *PMI_AVAILABLE_PAGE_WAIT_STATES; 
+
+typedef struct _RTL_BITMAP_EX
+{
+  U64 SizeOfBitMap;
+  U64* Buffer;
+} RTL_BITMAP_EX, *PRTL_BITMAP_EX; 
+
+typedef struct _MI_LARGE_PAGE_CANDIDATES
+{
+  U16 Hand;
+  U16 ActiveEntryCount;
+  U8 Overflowed;
+  U64 PageFrames[64];
+} MI_LARGE_PAGE_CANDIDATES, *PMI_LARGE_PAGE_CANDIDATES; 
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef enum _MI_SLAB_ALLOCATOR_PROTECTION
+{
+  MiSlabAllocatorProtectionReadExecute = 0,
+  MiSlabAllocatorProtectionReadOnly = 1,
+  MiSlabAllocatorProtectionNoAccess = 2,
+  MiSlabAllocatorProtectionMax = 3,
+} MI_SLAB_ALLOCATOR_PROTECTION, *PMI_SLAB_ALLOCATOR_PROTECTION;
+
+typedef struct _MI_SLAB_ALLOCATOR_CONTEXT
+{
+  struct _RTL_RB_TREE AllocationsTree;
+  volatile S32 Lock;
+  struct _MI_SLAB_ALLOCATOR_ENTRY* SlabEntryHint;
+  U64 FreePageCount;
+  U64 SlabEntryCount;
+  enum _MI_SLAB_ALLOCATOR_PROTECTION Protection;
+  union
+  {
+    union
+    {
+      struct 
+      {
+        U32 EntryBecameEmpty : 1; 
+        U32 Spare : 31; 
+      }; 
+      U32 AllFlags;
+    }; 
+  } Flags;
+  U64 LastReplenishTime;
+  U64 LastFailureTime;
+} MI_SLAB_ALLOCATOR_CONTEXT, *PMI_SLAB_ALLOCATOR_CONTEXT; 
+
+typedef struct _MI_PARTITION_PAGE_LISTS
+{
+  struct _MMPFNLIST* FreePagesByColor[2];
+  struct _MMPFNLIST ZeroedPageListHead;
+  struct _MMPFNLIST FreePageListHead;
+  struct _MMPFNLIST StandbyPageListHead;
+  struct _MMPFNLIST StandbyPageListByPriority[8];
+  struct _MMPFNLIST ModifiedPageListNoReservation;
+  struct _MMPFNLIST ModifiedPageListByReservation[16];
+  struct _MMPFNLIST MappedPageListHead[16];
+  struct _MMPFNLIST BadPageListHead;
+  struct _MMPFNLIST EnclavePageListHead;
+  union _SLIST_HEADER* FreePageSlist[2];
+  struct _MMPFNLIST* PageLocationList[8];
+  volatile U32 StandbyRepurposedByPriority[8];
+  volatile U64 TransitionSharedPages;
+  U64 TransitionSharedPagesPeak[6];
+  struct _KEVENT MappedPageListHeadEvent[16];
+  struct _MI_DECAY_TIMER_LINK DecayClusterTimerHeads[4];
+  U32 DecayHand;
+  U8 StandbyListDiscard;
+  U8 FreeListDiscard;
+  U8 PfnBitMapsReady;
+  U64 LastDecayHandUpdateTime;
+  struct _MI_LDW_WORK_CONTEXT LastChanceLdwContext;
+  U64 AvailableEventsLock;
+  struct _MI_AVAILABLE_PAGE_WAIT_STATES AvailablePageWaitStates[3];
+  void* MirrorListLocks;
+  volatile U64 TransitionPrivatePages;
+  struct _RTL_BITMAP_EX LargePfnBitMap[2];
+  struct _MI_FREE_LARGE_PAGE_LIST* LargePageListHeads;
+  struct _MI_LARGE_PAGE_CANDIDATES LargePageCandidates[2];
+  struct _WORK_QUEUE_ITEM RebuildLargePageWorkItem;
+  U8 RebuildLargePageActive;
+  volatile S32 LargePageRebuildLock;
+  U64 LowMemoryThreshold;
+  U64 HighMemoryThreshold;
+  struct _MI_SLAB_ALLOCATOR_CONTEXT SlabContexts[3];
+  struct _RTL_BITMAP_EX SlabPfnBitMap;
+  S32 __PADDING__[8];
+} MI_PARTITION_PAGE_LISTS, *PMI_PARTITION_PAGE_LISTS; 
+
+typedef struct _MI_PARTITION_COMMIT
+{
+  U64 PeakCommitment;
+  U64 TotalCommitLimitMaximum;
+  volatile S32 Popups[2];
+  U64 LowCommitThreshold;
+  U64 HighCommitThreshold;
+  U64 EventLock;
+  U64 SystemCommitReserve;
+  volatile U64 OverCommit;
+  S32 __PADDING__[14];
+} MI_PARTITION_COMMIT, *PMI_PARTITION_COMMIT; 
+
+typedef struct _MI_PARTITION_ZEROING
+{
+  struct _KEVENT PageEvent;
+  U8 ThreadActive;
+  U8 ThreadPriorityStatic;
+  S32 ZeroFreePageSlistMinimum;
+  struct _WORK_QUEUE_ITEM RebalanceZeroFreeWorkItem;
+  volatile S32 ThreadCount;
+  struct _KGATE Gate;
+  struct _MI_ZERO_THREAD_CONTEXT* ThreadContext;
+} MI_PARTITION_ZEROING, *PMI_PARTITION_ZEROING; 
+
+typedef struct _MI_COMBINE_WORKITEM
+{
+  void* NextEntry;
+  struct _WORK_QUEUE_ITEM WorkItem;
+} MI_COMBINE_WORKITEM, *PMI_COMBINE_WORKITEM; 
+
+typedef struct _MI_COMBINE_PAGE_LISTHEAD
+{
+  struct _RTL_AVL_TREE Table;
+  volatile S32 Lock;
+  S32 __PADDING__[1];
+} MI_COMBINE_PAGE_LISTHEAD, *PMI_COMBINE_PAGE_LISTHEAD; 
+
+typedef struct _MI_PAGE_COMBINE_STATISTICS
+{
+  U64 PagesScannedActive;
+  U64 PagesScannedStandby;
+  U64 PagesCombined;
+  U32 CombineScanCount;
+  S32 CombinedBlocksInUse;
+  S32 SumCombinedBlocksReferenceCount;
+  S32 __PADDING__[1];
+} MI_PAGE_COMBINE_STATISTICS, *PMI_PAGE_COMBINE_STATISTICS; 
+
+typedef struct _MI_PAGE_COMBINING_SUPPORT
+{
+  struct _MI_PARTITION* Partition;
+  struct _LIST_ENTRY ArbitraryPfnMapList;
+  struct _MI_COMBINE_WORKITEM FreeCombinePoolItem;
+  U32 CombiningThreadCount;
+  struct _LIST_ENTRY CombinePageFreeList;
+  U64 CombineFreeListLock;
+  struct _MI_COMBINE_PAGE_LISTHEAD CombinePageListHeads[16];
+  struct _MI_PAGE_COMBINE_STATISTICS PageCombineStats;
+} MI_PAGE_COMBINING_SUPPORT, *PMI_PAGE_COMBINING_SUPPORT; 
+
+typedef struct _MMWORKING_SET_EXPANSION_HEAD
+{
+  struct _LIST_ENTRY ListHead;
+} MMWORKING_SET_EXPANSION_HEAD, *PMMWORKING_SET_EXPANSION_HEAD; 
+
+typedef struct _MMSUPPORT_FLAGS
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U8 WorkingSetType : 3; 
+        U8 Reserved0 : 3; 
+        U8 MaximumWorkingSetHard : 1; 
+        U8 MinimumWorkingSetHard : 1; 
+      }; 
+      struct 
+      {
+        U8 SessionMaster : 1; 
+        U8 TrimmerState : 2; 
+        U8 Reserved : 1; 
+        U8 PageStealers : 4; 
+      }; 
+    }; 
+    U16 u1;
+  }; 
+  U8 MemoryPriority;
+  union
+  {
+    struct 
+    {
+      U8 WsleDeleted : 1; 
+      U8 SvmEnabled : 1; 
+      U8 ForceAge : 1; 
+      U8 ForceTrim : 1; 
+      U8 NewMaximum : 1; 
+      U8 CommitReleaseState : 2; 
+    }; 
+    U8 u2;
+  }; 
+} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS; 
+
+typedef struct _MMSUPPORT_INSTANCE
+{
+  U32 NextPageColor;
+  U32 PageFaultCount;
+  U64 TrimmedPageCount;
+  struct _MMWSL_INSTANCE* VmWorkingSetList;
+  struct _LIST_ENTRY WorkingSetExpansionLinks;
+  U64 AgeDistribution[8];
+  struct _KGATE* ExitOutswapGate;
+  U64 MinimumWorkingSetSize;
+  U64 WorkingSetLeafSize;
+  U64 WorkingSetLeafPrivateSize;
+  U64 WorkingSetSize;
+  U64 WorkingSetPrivateSize;
+  U64 MaximumWorkingSetSize;
+  U64 PeakWorkingSetSize;
+  U32 HardFaultCount;
+  U16 LastTrimStamp;
+  U16 PartitionId;
+  U64 SelfmapLock;
+  struct _MMSUPPORT_FLAGS Flags;
+  S32 __PADDING__[1];
+} MMSUPPORT_INSTANCE, *PMMSUPPORT_INSTANCE; 
+
+typedef struct _MMWSL_INSTANCE
+{
+  struct _MMPTE* NextPteToTrim;
+  struct _MMPTE* NextPteToAge;
+  struct _MMPTE* NextPteToAccessClear;
+  U32 LastAccessClearingRemainder;
+  U32 LastAgingRemainder;
+  U64 LockedEntries;
+} MMWSL_INSTANCE, *PMMWSL_INSTANCE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _MDL
+{
+  struct _MDL* Next;
+  S16 Size;
+  S16 MdlFlags;
+  U16 AllocationProcessorNumber;
+  U16 Reserved;
+  struct _EPROCESS* Process;
+  void* MappedSystemVa;
+  void* StartVa;
+  U32 ByteCount;
+  U32 ByteOffset;
+} MDL, *PMDL; 
+
+typedef struct _MI_PAGEFILE_TRACES
+{
+  S32 Status;
+  U16 PartitionId;
+  U8 Priority;
+  U8 IrpPriority;
+  U8 ReservationWrite;
+  union _LARGE_INTEGER CurrentTime;
+  U64 AvailablePages;
+  U64 ModifiedPagesTotal;
+  U64 ModifiedPagefilePages;
+  U64 ModifiedNoWritePages;
+  U64 ModifiedPagefileNoReservationPages;
+  struct
+  {
+    struct _MDL Mdl;
+    U64 Page[1];
+  } MdlHack;
+} MI_PAGEFILE_TRACES, *PMI_PAGEFILE_TRACES; 
+
+typedef struct _MI_VISIBLE_PARTITION
+{
+  U64 LowestPhysicalPage;
+  U64 HighestPhysicalPage;
+  U64 NumberOfPhysicalPages;
+  volatile U32 NumberOfPagingFiles;
+  U8 SystemCacheInitialized;
+  struct _MMPAGING_FILE* PagingFile[16];
+  volatile U64 AvailablePages;
+  volatile U64 ResidentAvailablePages;
+  struct _MMSUPPORT_INSTANCE PartitionWs[1];
+  struct _MMWSL_INSTANCE PartitionWorkingSetLists[1];
+  volatile U64 TotalCommittedPages;
+  struct _MMPFNLIST ModifiedPageListHead;
+  struct _MMPFNLIST ModifiedNoWritePageListHead;
+  U64 TotalCommitLimit;
+  U64 TotalPagesForPagingFile;
+  U64 VadPhysicalPages;
+  U64 ProcessLockedFilePages;
+  volatile U64 SharedCommit;
+  U64 SlabAllocatorPages;
+  U32 ChargeCommitmentFailures[4];
+  volatile S32 PageFileTraceIndex;
+  struct _MI_PAGEFILE_TRACES PageFileTraces[32];
+  S32 __PADDING__[4];
+} MI_VISIBLE_PARTITION, *PMI_VISIBLE_PARTITION; 
+
+typedef struct _MI_PARTITION
+{
+  struct _MI_PARTITION_CORE Core;
+  struct _MI_PARTITION_MODWRITES Modwriter;
+  struct _MI_PARTITION_STORES Store;
+  struct _MI_PARTITION_SEGMENTS Segments;
+  struct _MI_PARTITION_PAGE_LISTS PageLists;
+  struct _MI_PARTITION_COMMIT Commit;
+  struct _MI_PARTITION_ZEROING Zeroing;
+  struct _MI_PAGE_COMBINING_SUPPORT PageCombine;
+  void* WorkingSetControl;
+  struct _MMWORKING_SET_EXPANSION_HEAD WorkingSetExpansionHead;
+  struct _MI_VISIBLE_PARTITION Vp;
+} MI_PARTITION, *PMI_PARTITION; 
+

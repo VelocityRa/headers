@@ -1,0 +1,48 @@
+typedef struct _WNF_NODE_HEADER
+{
+  U16 NodeTypeCode;
+  U16 NodeByteSize;
+} WNF_NODE_HEADER, *PWNF_NODE_HEADER; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _WNF_LOCK
+{
+  struct _EX_PUSH_LOCK PushLock;
+} WNF_LOCK, *PWNF_LOCK; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WNF_SCOPE_MAP_ENTRY
+{
+  struct _WNF_LOCK MapEntryLock;
+  struct _LIST_ENTRY MapEntryHead;
+} WNF_SCOPE_MAP_ENTRY, *PWNF_SCOPE_MAP_ENTRY; 
+
+typedef struct _WNF_SCOPE_MAP
+{
+  struct _WNF_NODE_HEADER Header;
+  struct _WNF_SCOPE_INSTANCE* SystemScopeInstance;
+  struct _WNF_SCOPE_INSTANCE* MachineScopeInstance;
+  struct _WNF_SCOPE_MAP_ENTRY ByDataScope[5];
+} WNF_SCOPE_MAP, *PWNF_SCOPE_MAP; 
+

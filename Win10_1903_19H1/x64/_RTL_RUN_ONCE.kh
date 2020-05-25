@@ -1,0 +1,10 @@
+typedef union _RTL_RUN_ONCE
+{
+  union
+  {
+    void* Ptr;
+    U64 Value;
+    U64 State : 2; 
+  }; 
+} RTL_RUN_ONCE, *PRTL_RUN_ONCE; 
+

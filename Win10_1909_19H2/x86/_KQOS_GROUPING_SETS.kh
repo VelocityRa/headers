@@ -1,0 +1,13 @@
+typedef union _KQOS_GROUPING_SETS
+{
+  union
+  {
+    struct
+    {
+      U32 SingleCoreSet;
+      U32 SmtSet;
+    }; 
+    S64 QosGroupingMasks;
+  }; 
+} KQOS_GROUPING_SETS, *PKQOS_GROUPING_SETS; 
+

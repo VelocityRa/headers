@@ -1,0 +1,11 @@
+typedef struct _SECURITY_DESCRIPTOR_RELATIVE
+{
+  U8 Revision;
+  U8 Sbz1;
+  U16 Control;
+  U32 Owner;
+  U32 Group;
+  U32 Sacl;
+  U32 Dacl;
+} SECURITY_DESCRIPTOR_RELATIVE, *PSECURITY_DESCRIPTOR_RELATIVE; 
+

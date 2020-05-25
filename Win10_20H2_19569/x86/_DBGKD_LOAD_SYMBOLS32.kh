@@ -1,0 +1,11 @@
+typedef struct _DBGKD_LOAD_SYMBOLS32
+{
+  U32 PathNameLength;
+  U32 BaseOfDll;
+  U32 ProcessId;
+  U32 CheckSum;
+  U32 SizeOfImage;
+  U8 UnloadSymbols;
+  char __PADDING__[3];
+} DBGKD_LOAD_SYMBOLS32, *PDBGKD_LOAD_SYMBOLS32; 
+

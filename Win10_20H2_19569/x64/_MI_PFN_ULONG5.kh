@@ -1,0 +1,30 @@
+typedef struct _MI_PFN_ULONG5
+{
+  union
+  {
+    U32 EntireField;
+    struct
+    {
+      struct 
+      {
+        U32 NodeBlinkHigh : 21; 
+        U32 NodeFlinkMiddle : 11; 
+      }; 
+    } StandbyList;
+    struct
+    {
+      U8 ModifiedListBucketIndex : 4; 
+    } MappedPageList;
+    struct
+    {
+      struct 
+      {
+        U8 AnchorLargePageSize : 2; 
+        U8 Spare1 : 6; 
+      }; 
+      U8 ViewCount;
+      U16 Spare2;
+    } Active;
+  }; 
+} MI_PFN_ULONG5, *PMI_PFN_ULONG5; 
+

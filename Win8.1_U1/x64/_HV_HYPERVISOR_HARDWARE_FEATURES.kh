@@ -1,0 +1,18 @@
+typedef struct _HV_HYPERVISOR_HARDWARE_FEATURES
+{
+  struct 
+  {
+    U32 ApicOverlayAssistInUse : 1; 
+    U32 MsrBitmapsInUse : 1; 
+    U32 ArchitecturalPerformanceCountersInUse : 1; 
+    U32 SecondLevelAddressTranslationInUse : 1; 
+    U32 DmaRemappingInUse : 1; 
+    U32 InterruptRemappingInUse : 1; 
+    U32 MemoryPatrolScrubberPresent : 1; 
+    U32 Reserved : 25; 
+  }; 
+  U32 ReservedEbx;
+  U32 ReservedEcx;
+  U32 ReservedEdx;
+} HV_HYPERVISOR_HARDWARE_FEATURES, *PHV_HYPERVISOR_HARDWARE_FEATURES; 
+

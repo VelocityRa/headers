@@ -1,0 +1,16 @@
+typedef struct _MMVAD_FLAGS2
+{
+  struct 
+  {
+    U32 FileOffset : 24; 
+    U32 SecNoChange : 1; 
+    U32 OneSecured : 1; 
+    U32 MultipleSecured : 1; 
+    U32 Spare : 1; 
+    U32 LongVad : 1; 
+    U32 ExtendableFile : 1; 
+    U32 Inherit : 1; 
+    U32 CopyOnWrite : 1; 
+  }; 
+} MMVAD_FLAGS2, *PMMVAD_FLAGS2; 
+

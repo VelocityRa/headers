@@ -1,0 +1,24 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MI_REVERSE_VIEW_MAP
+{
+  struct _LIST_ENTRY ViewLinks;
+  union
+  {
+    void* SystemCacheVa;
+    void* SessionViewVa;
+    struct _EPROCESS* VadsProcess;
+    U64 Type : 2; 
+  }; 
+  union
+  {
+    struct _SUBSECTION* Subsection;
+    U64 SubsectionType : 1; 
+  }; 
+  U64 SectionOffset;
+} MI_REVERSE_VIEW_MAP, *PMI_REVERSE_VIEW_MAP; 
+

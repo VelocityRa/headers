@@ -1,0 +1,240 @@
+typedef enum _WHEA_ERROR_TYPE
+{
+  WheaErrTypeProcessor = 0,
+  WheaErrTypeMemory = 1,
+  WheaErrTypePCIExpress = 2,
+  WheaErrTypeNMI = 3,
+  WheaErrTypePCIXBus = 4,
+  WheaErrTypePCIXDevice = 5,
+} WHEA_ERROR_TYPE, *PWHEA_ERROR_TYPE;
+
+typedef enum _WHEA_ERROR_SEVERITY
+{
+  WheaErrSevRecoverable = 0,
+  WheaErrSevFatal = 1,
+  WheaErrSevCorrected = 2,
+  WheaErrSevNone = 3,
+} WHEA_ERROR_SEVERITY, *PWHEA_ERROR_SEVERITY;
+
+typedef enum _WHEA_ERROR_SOURCE_TYPE
+{
+  WheaErrSrcTypeMCE = 0,
+  WheaErrSrcTypeCMC = 1,
+  WheaErrSrcTypeCPE = 2,
+  WheaErrSrcTypeNMI = 3,
+  WheaErrSrcTypePCIe = 4,
+  WheaErrSrcTypeOther = 5,
+  WheaErrSrcTypeMax = 6,
+} WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
+
+typedef struct _WHEA_GENERIC_PROCESSOR_ERROR
+{
+  U64 ValidBits;
+  U8 ProcessorType;
+  U8 InstructionSet;
+  U8 ErrorType;
+  U8 Operation;
+  U8 Flags;
+  U8 Level;
+  U16 Reserved;
+  U64 CPUVersion;
+  U8 CPUBrandString[128];
+  U64 ProcessorId;
+  U64 TargetAddress;
+  U64 RequestorId;
+  U64 ResponderId;
+  U64 InstructionPointer;
+} WHEA_GENERIC_PROCESSOR_ERROR, *PWHEA_GENERIC_PROCESSOR_ERROR; 
+
+typedef struct _WHEA_ERROR_STATUS
+{
+  struct 
+  {
+    U64 Reserved1 : 8; 
+    U64 ErrorType : 8; 
+    U64 Address : 1; 
+    U64 Control : 1; 
+    U64 Data : 1; 
+    U64 Responder : 1; 
+    U64 Requester : 1; 
+    U64 FirstError : 1; 
+    U64 Overflow : 1; 
+    U64 Reserved2 : 41; 
+  }; 
+} WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS; 
+
+typedef struct _WHEA_MEMORY_ERROR
+{
+  U64 ValidationBits;
+  struct _WHEA_ERROR_STATUS ErrorStatus;
+  U64 PhysicalAddress;
+  U64 PhysicalAddressMask;
+  U16 Node;
+  U16 Card;
+  U16 Module;
+  U16 Bank;
+  U16 Device;
+  U16 Row;
+  U16 Column;
+  U16 BitPosition;
+  U64 RequestorId;
+  U64 ResponderId;
+  U64 TargetId;
+  U8 ErrorType;
+  char __PADDING__[7];
+} WHEA_MEMORY_ERROR, *PWHEA_MEMORY_ERROR; 
+
+typedef struct _WHEA_NMI_ERROR
+{
+  U8 Data[8];
+} WHEA_NMI_ERROR, *PWHEA_NMI_ERROR; 
+
+enum PCI_EXPRESS_DEVICE_TYPE
+{
+  PciExpressEndpoS32 = 0,
+  PciExpressLegacyEndpoS32 = 1,
+  PciExpressRootPort = 4,
+  PciExpressUpstreamSwitchPort = 5,
+  PciExpressDownstreamSwitchPort = 6,
+  PciExpressToPciXBridge = 7,
+  PciXToExpressBridge = 8,
+  PciExpressRootComplexIntegratedEndpoS32 = 9,
+  PciExpressRootComplexEventCollector = 10,
+};
+
+typedef struct _PCIE_DEVICE_ID
+{
+  U16 VendorID;
+  U16 DeviceID;
+  struct 
+  {
+    U32 ClassCode : 24; 
+    U32 FunctionNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 DeviceNumber : 8; 
+    U32 Segment : 16; 
+    U32 PrimaryBusNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 SecondaryBusNumber : 8; 
+    U32 Reserved1 : 2; 
+    U32 SlotNumber : 14; 
+    U32 Reserved2 : 8; 
+  }; 
+} PCIE_DEVICE_ID, *PPCIE_DEVICE_ID; 
+
+typedef struct _WHEA_PCIEXPRESS_ERROR
+{
+  U64 ValidationBits;
+  enum PCI_EXPRESS_DEVICE_TYPE PortType;
+  U32 Version;
+  U32 CommandStatus;
+  U32 Reserved;
+  struct _PCIE_DEVICE_ID DeviceId;
+  U64 DeviceSN;
+  U32 BridgeCtrlSts;
+  U8 ExpressCapability[60];
+  U8 AerInfo[96];
+} WHEA_PCIEXPRESS_ERROR, *PWHEA_PCIEXPRESS_ERROR; 
+
+typedef struct _WHEA_PCIX_BUS_VALIDATION_BITS
+{
+  struct 
+  {
+    U64 ErrorStatusValid : 1; 
+    U64 ErrorTypeValid : 1; 
+    U64 BusIdValid : 1; 
+    U64 BusAddressValid : 1; 
+    U64 BusDataValid : 1; 
+    U64 CommandValid : 1; 
+    U64 RequestorIdValid : 1; 
+    U64 CompleterIdValid : 1; 
+    U64 TargetIdValid : 1; 
+    U64 Reserved : 55; 
+  }; 
+} WHEA_PCIX_BUS_VALIDATION_BITS, *PWHEA_PCIX_BUS_VALIDATION_BITS; 
+
+typedef struct _WHEA_PCIX_BUS_ERROR
+{
+  struct _WHEA_PCIX_BUS_VALIDATION_BITS ValidationBits;
+  struct _WHEA_ERROR_STATUS ErrorStatus;
+  U16 ErrorType;
+  U16 BusId;
+  U32 Reserved;
+  U64 BusAddress;
+  U64 BusData;
+  U64 BusCommand;
+  U64 BusRequestorId;
+  U64 BusCompleterId;
+  U64 TargetId;
+} WHEA_PCIX_BUS_ERROR, *PWHEA_PCIX_BUS_ERROR; 
+
+typedef struct _WHEA_PCIX_DEV_VALIDATION_BITS
+{
+  struct 
+  {
+    U64 ErrorStatusValid : 1; 
+    U64 IdInfoValid : 1; 
+    U64 MemoryNumberValid : 1; 
+    U64 IoNumberValid : 1; 
+    U64 RegisterDataPairValid : 1; 
+    U64 Reserved : 59; 
+  }; 
+} WHEA_PCIX_DEV_VALIDATION_BITS, *PWHEA_PCIX_DEV_VALIDATION_BITS; 
+
+typedef struct _WHEA_PCIX_DEVICE_ERROR
+{
+  struct _WHEA_PCIX_DEV_VALIDATION_BITS ValidationBits;
+  struct _WHEA_ERROR_STATUS ErrorStatus;
+  U8 IdInfo[16];
+  U32 MemoryNumber;
+  U32 IoNumber;
+  U8 RegisterDataPairs[64];
+} WHEA_PCIX_DEVICE_ERROR, *PWHEA_PCIX_DEVICE_ERROR; 
+
+typedef enum _WHEA_ERROR_STATUS_FORMAT
+{
+  WheaErrorStatusFormatIPFSalRecord = 0,
+  WheaErrorStatusFormatIA32MCA = 1,
+  WheaErrorStatusFormatEM64TMCA = 2,
+  WheaErrorStatusFormatAMD64MCA = 3,
+  WheaErrorStatusFormatPCIExpress = 4,
+  WheaErrorStatusFormatNMIPort = 5,
+  WheaErrorStatusFormatOther = 6,
+  WheaErrorStatusFormatMax = 7,
+} WHEA_ERROR_STATUS_FORMAT, *PWHEA_ERROR_STATUS_FORMAT;
+
+typedef struct _WHEA_ERROR_PACKET
+{
+  U32 Signature;
+  U32 Flags;
+  U64 Size;
+  U64 RawDataLength;
+  U64 Context;
+  enum _WHEA_ERROR_TYPE ErrorType;
+  enum _WHEA_ERROR_SEVERITY ErrorSeverity;
+  U32 ErrorSourceId;
+  enum _WHEA_ERROR_SOURCE_TYPE ErrorSourceType;
+  U32 Reserved1;
+  U32 Version;
+  U64 Cpu;
+  union
+  {
+    union
+    {
+      struct _WHEA_GENERIC_PROCESSOR_ERROR ProcessorError;
+      struct _WHEA_MEMORY_ERROR MemoryError;
+      struct _WHEA_NMI_ERROR NmiError;
+      struct _WHEA_PCIEXPRESS_ERROR PciExpressError;
+      struct _WHEA_PCIX_BUS_ERROR PciXBusError;
+      struct _WHEA_PCIX_DEVICE_ERROR PciXDeviceError;
+    }; 
+  } u;
+  enum _WHEA_ERROR_STATUS_FORMAT RawDataFormat;
+  U32 Reserved2;
+  U8 RawData[1];
+} WHEA_ERROR_PACKET, *PWHEA_ERROR_PACKET; 
+

@@ -1,0 +1,27 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _MAILSLOT_CREATE_PARAMETERS
+{
+  U32 MailslotQuota;
+  U32 MaximumMessageSize;
+  union _LARGE_INTEGER ReadTimeout;
+  U8 TimeoutSpecified;
+  char __PADDING__[7];
+} MAILSLOT_CREATE_PARAMETERS, *PMAILSLOT_CREATE_PARAMETERS; 
+

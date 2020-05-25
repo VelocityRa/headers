@@ -1,0 +1,42 @@
+typedef struct _FLOATING_SAVE_AREA
+{
+  U32 ControlWord;
+  U32 StatusWord;
+  U32 TagWord;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U8 RegisterArea[80];
+  U32 Spare0;
+} FLOATING_SAVE_AREA, *PFLOATING_SAVE_AREA; 
+
+typedef struct _CONTEXT
+{
+  U32 ContextFlags;
+  U32 Dr0;
+  U32 Dr1;
+  U32 Dr2;
+  U32 Dr3;
+  U32 Dr6;
+  U32 Dr7;
+  struct _FLOATING_SAVE_AREA FloatSave;
+  U32 SegGs;
+  U32 SegFs;
+  U32 SegEs;
+  U32 SegDs;
+  U32 Edi;
+  U32 Esi;
+  U32 Ebx;
+  U32 Edx;
+  U32 Ecx;
+  U32 Eax;
+  U32 Ebp;
+  U32 Eip;
+  U32 SegCs;
+  U32 EFlags;
+  U32 Esp;
+  U32 SegSs;
+  U8 ExtendedRegisters[512];
+} CONTEXT, *PCONTEXT; 
+

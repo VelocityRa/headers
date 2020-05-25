@@ -1,0 +1,12 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DELAY_ACK_FO
+{
+  struct _LIST_ENTRY Links;
+  struct _FILE_OBJECT* OriginalFileObject;
+} DELAY_ACK_FO, *PDELAY_ACK_FO; 
+

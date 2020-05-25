@@ -1,0 +1,8 @@
+typedef struct _RTL_HP_SEG_ALLOC_POLICY
+{
+  U32 MinLargePages;
+  U32 MaxLargePages;
+  U8 MinUtilization;
+  char __PADDING__[3];
+} RTL_HP_SEG_ALLOC_POLICY, *PRTL_HP_SEG_ALLOC_POLICY; 
+

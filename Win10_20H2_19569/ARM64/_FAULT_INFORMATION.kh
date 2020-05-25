@@ -1,0 +1,77 @@
+typedef enum _FAULT_INFORMATION_ARCH
+{
+  FaultInformationInvalid = 0,
+  FaultInformationArm64 = 1,
+  FaultInformationX64 = 2,
+} FAULT_INFORMATION_ARCH, *PFAULT_INFORMATION_ARCH;
+
+typedef struct _FAULT_INFORMATION_ARM64_FLAGS
+{
+  struct 
+  {
+    U32 WriteNotRead : 1; 
+    U32 InstructionNotData : 1; 
+    U32 Privileged : 1; 
+    U32 FaultAddressValid : 1; 
+    U32 Reserved : 28; 
+  }; 
+} FAULT_INFORMATION_ARM64_FLAGS, *PFAULT_INFORMATION_ARM64_FLAGS; 
+
+typedef enum _FAULT_INFORMATION_ARM64_TYPE
+{
+  UnsupportedUpstreamTransaction = 0,
+  AddressSizeFault = 1,
+  TlbMatchConflict = 2,
+  ExternalFault = 3,
+  PermissionFault = 4,
+  AccessFlagFault = 5,
+  TranslationFault = 6,
+  MaxFaultType = 7,
+} FAULT_INFORMATION_ARM64_TYPE, *PFAULT_INFORMATION_ARM64_TYPE;
+
+typedef struct _FAULT_INFORMATION_ARM64
+{
+  void* DomainHandle;
+  void* FaultAddress;
+  struct _DEVICE_OBJECT* PhysicalDeviceObject;
+  U32 InputMappingId;
+  struct _FAULT_INFORMATION_ARM64_FLAGS Flags;
+  enum _FAULT_INFORMATION_ARM64_TYPE Type;
+  U64 IommuBaseAddress;
+} FAULT_INFORMATION_ARM64, *PFAULT_INFORMATION_ARM64; 
+
+typedef struct _FAULT_INFORMATION_X64_FLAGS
+{
+  struct 
+  {
+    U32 FaultAddressValid : 1; 
+    U32 Reserved : 31; 
+  }; 
+} FAULT_INFORMATION_X64_FLAGS, *PFAULT_INFORMATION_X64_FLAGS; 
+
+typedef struct _FAULT_INFORMATION_X64
+{
+  void* DomainHandle;
+  void* FaultAddress;
+  struct _FAULT_INFORMATION_X64_FLAGS Flags;
+  enum _FAULT_INFORMATION_ARM64_TYPE Type;
+  U64 IommuBaseAddress;
+  U32 PciSegment;
+  S32 __PADDING__[1];
+} FAULT_INFORMATION_X64, *PFAULT_INFORMATION_X64; 
+
+typedef struct _FAULT_INFORMATION
+{
+  enum _FAULT_INFORMATION_ARCH Type;
+  U8 IsStage1;
+  union
+  {
+    struct _FAULT_INFORMATION_ARM64 Arm64;
+    struct
+    {
+      struct _FAULT_INFORMATION_X64 X64;
+      S32 __PADDING__[2];
+    }; 
+  }; 
+} FAULT_INFORMATION, *PFAULT_INFORMATION; 
+

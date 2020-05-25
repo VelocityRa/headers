@@ -1,0 +1,18 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+struct tagSWITCH_CONTEXT_DATA
+{
+  struct _GUID guPlatform;
+  struct _GUID guMinPlatform;
+  U32 ulElementCount;
+  U16 ulContextMinimum;
+  U64 ullOsMaxVersionTested;
+  struct _GUID guElements[1];
+}; 
+

@@ -1,0 +1,10 @@
+typedef struct _PROFILE_PARAMETER_BLOCK
+{
+  U16 Status;
+  U16 Reserved;
+  U16 DockingState;
+  U16 Capabilities;
+  U32 DockID;
+  U32 SerialNumber;
+} PROFILE_PARAMETER_BLOCK, *PPROFILE_PARAMETER_BLOCK; 
+

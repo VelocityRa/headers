@@ -1,0 +1,9 @@
+struct PPM_IDLE_STATE_ACCOUNTING
+{
+  U32 IdleTransitions;
+  U32 FailedTransitions;
+  U32 InvalidBucketIndex;
+  U64 TotalTime;
+  U32 IdleTimeBuckets[6];
+}; 
+

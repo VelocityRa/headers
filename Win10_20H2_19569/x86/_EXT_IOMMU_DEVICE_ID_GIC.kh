@@ -1,0 +1,5 @@
+typedef struct _EXT_IOMMU_DEVICE_ID_GIC
+{
+  U32 LineNumber;
+} EXT_IOMMU_DEVICE_ID_GIC, *PEXT_IOMMU_DEVICE_ID_GIC; 
+

@@ -1,0 +1,13 @@
+typedef struct _MMPFNENTRY3
+{
+  struct 
+  {
+    U8 Priority : 3; 
+    U8 OnProtectedStandby : 1; 
+    U8 InPageError : 1; 
+    U8 SystemChargedPage : 1; 
+    U8 RemovalRequested : 1; 
+    U8 ParityError : 1; 
+  }; 
+} MMPFNENTRY3, *PMMPFNENTRY3; 
+

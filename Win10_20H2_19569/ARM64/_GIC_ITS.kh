@@ -1,0 +1,10 @@
+typedef struct _GIC_ITS
+{
+  U8 Type;
+  U8 Length;
+  U16 Reserved1;
+  U32 Identifier;
+  U64 PhysicalAddress;
+  U32 Reserved2;
+} GIC_ITS, *PGIC_ITS; 
+

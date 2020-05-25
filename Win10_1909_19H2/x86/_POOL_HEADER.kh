@@ -1,0 +1,30 @@
+typedef struct _POOL_HEADER
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U16 PreviousSize : 9; 
+        U16 PoolIndex : 7; 
+      }; 
+      struct 
+      {
+        U16 BlockSize : 9; 
+        U16 PoolType : 7; 
+      }; 
+    }; 
+    U32 Ulong1;
+  }; 
+  union
+  {
+    U32 PoolTag;
+    struct
+    {
+      U16 AllocatorBackTraceIndex;
+      U16 PoolTagHash;
+    }; 
+  }; 
+} POOL_HEADER, *PPOOL_HEADER; 
+

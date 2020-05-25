@@ -1,0 +1,60 @@
+typedef enum _DEVICE_POWER_STATE
+{
+  PowerDeviceUnspecified = 0,
+  PowerDeviceD0 = 1,
+  PowerDeviceD1 = 2,
+  PowerDeviceD2 = 3,
+  PowerDeviceD3 = 4,
+  PowerDeviceMaximum = 5,
+} DEVICE_POWER_STATE, *PDEVICE_POWER_STATE;
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+typedef struct _DEVICE_CAPABILITIES
+{
+  U16 Size;
+  U16 Version;
+  struct 
+  {
+    U32 DeviceD1 : 1; 
+    U32 DeviceD2 : 1; 
+    U32 LockSupported : 1; 
+    U32 EjectSupported : 1; 
+    U32 Removable : 1; 
+    U32 DockDevice : 1; 
+    U32 UniqueID : 1; 
+    U32 SilentInstall : 1; 
+    U32 RawDeviceOK : 1; 
+    U32 SurpriseRemovalOK : 1; 
+    U32 WakeFromD0 : 1; 
+    U32 WakeFromD1 : 1; 
+    U32 WakeFromD2 : 1; 
+    U32 WakeFromD3 : 1; 
+    U32 HardwareDisabled : 1; 
+    U32 NonDynamic : 1; 
+    U32 WarmEjectSupported : 1; 
+    U32 NoDisplayInUI : 1; 
+    U32 Reserved1 : 1; 
+    U32 WakeFromInterrupt : 1; 
+    U32 Reserved : 12; 
+  }; 
+  U32 Address;
+  U32 UINumber;
+  enum _DEVICE_POWER_STATE DeviceState[7];
+  enum _SYSTEM_POWER_STATE SystemWake;
+  enum _DEVICE_POWER_STATE DeviceWake;
+  U32 D1Latency;
+  U32 D2Latency;
+  U32 D3Latency;
+} DEVICE_CAPABILITIES, *PDEVICE_CAPABILITIES; 
+

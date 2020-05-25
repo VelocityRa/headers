@@ -1,0 +1,9 @@
+typedef struct _ISRDPCSTATS_SEQUENCE
+{
+  U32 SequenceNumber;
+  U64 IsrTime;
+  U64 IsrCount;
+  U64 DpcTime;
+  U64 DpcCount;
+} ISRDPCSTATS_SEQUENCE, *PISRDPCSTATS_SEQUENCE; 
+

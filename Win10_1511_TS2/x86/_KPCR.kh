@@ -1,0 +1,994 @@
+typedef struct _NT_TIB
+{
+  struct _EXCEPTION_REGISTRATION_RECORD* ExceptionList;
+  void* StackBase;
+  void* StackLimit;
+  void* SubSystemTib;
+  union
+  {
+    void* FiberData;
+    U32 Version;
+  }; 
+  void* ArbitraryUserPointer;
+  struct _NT_TIB* Self;
+} NT_TIB, *PNT_TIB; 
+
+typedef struct _FLOATING_SAVE_AREA
+{
+  U32 ControlWord;
+  U32 StatusWord;
+  U32 TagWord;
+  U32 ErrorOffset;
+  U32 ErrorSelector;
+  U32 DataOffset;
+  U32 DataSelector;
+  U8 RegisterArea[80];
+  U32 Spare0;
+} FLOATING_SAVE_AREA, *PFLOATING_SAVE_AREA; 
+
+typedef struct _CONTEXT
+{
+  U32 ContextFlags;
+  U32 Dr0;
+  U32 Dr1;
+  U32 Dr2;
+  U32 Dr3;
+  U32 Dr6;
+  U32 Dr7;
+  struct _FLOATING_SAVE_AREA FloatSave;
+  U32 SegGs;
+  U32 SegFs;
+  U32 SegEs;
+  U32 SegDs;
+  U32 Edi;
+  U32 Esi;
+  U32 Ebx;
+  U32 Edx;
+  U32 Ecx;
+  U32 Eax;
+  U32 Ebp;
+  U32 Eip;
+  U32 SegCs;
+  U32 EFlags;
+  U32 Esp;
+  U32 SegSs;
+  U8 ExtendedRegisters[512];
+} CONTEXT, *PCONTEXT; 
+
+typedef struct _DESCRIPTOR
+{
+  U16 Pad;
+  U16 Limit;
+  U32 Base;
+} DESCRIPTOR, *PDESCRIPTOR; 
+
+typedef struct _KSPECIAL_REGISTERS
+{
+  U32 Cr0;
+  U32 Cr2;
+  U32 Cr3;
+  U32 Cr4;
+  U32 KernelDr0;
+  U32 KernelDr1;
+  U32 KernelDr2;
+  U32 KernelDr3;
+  U32 KernelDr6;
+  U32 KernelDr7;
+  struct _DESCRIPTOR Gdtr;
+  struct _DESCRIPTOR Idtr;
+  U16 Tr;
+  U16 Ldtr;
+  U64 Xcr0;
+  U32 ExceptionList;
+  U32 Reserved[3];
+} KSPECIAL_REGISTERS, *PKSPECIAL_REGISTERS; 
+
+typedef struct _KPROCESSOR_STATE
+{
+  struct _CONTEXT ContextFrame;
+  struct _KSPECIAL_REGISTERS SpecialRegisters;
+} KPROCESSOR_STATE, *PKPROCESSOR_STATE; 
+
+typedef struct _KSPIN_LOCK_QUEUE
+{
+  struct _KSPIN_LOCK_QUEUE* volatile Next;
+  U32* volatile Lock;
+} KSPIN_LOCK_QUEUE, *PKSPIN_LOCK_QUEUE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _PP_LOOKASIDE_LIST
+{
+  struct _GENERAL_LOOKASIDE* P;
+  struct _GENERAL_LOOKASIDE* L;
+} PP_LOOKASIDE_LIST, *PPP_LOOKASIDE_LIST; 
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    U64 Alignment;
+    struct
+    {
+      struct _SINGLE_LIST_ENTRY Next;
+      U16 Depth;
+      U16 CpuId;
+    }; 
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  NonPagedPoolExecute = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolBase = 0,
+  NonPagedPoolBaseMustSucceed = 2,
+  NonPagedPoolBaseCacheAligned = 4,
+  NonPagedPoolBaseCacheAlignedMustS = 6,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+  NonPagedPoolNx = 512,
+  NonPagedPoolNxCacheAligned = 516,
+  NonPagedPoolSessionNx = 544,
+} POOL_TYPE, *PPOOL_TYPE;
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _GENERAL_LOOKASIDE_POOL
+{
+  union
+  {
+    union _SLIST_HEADER ListHead;
+    struct _SINGLE_LIST_ENTRY SingleListHead;
+  }; 
+  U16 Depth;
+  U16 MaximumDepth;
+  U32 TotalAllocates;
+  union
+  {
+    U32 AllocateMisses;
+    U32 AllocateHits;
+  }; 
+  U32 TotalFrees;
+  union
+  {
+    U32 FreeMisses;
+    U32 FreeHits;
+  }; 
+  enum _POOL_TYPE Type;
+  U32 Tag;
+  U32 Size;
+  union
+  {
+    void* AllocateEx;
+    void* Allocate;
+  }; 
+  union
+  {
+    void* FreeEx;
+    void* Free;
+  }; 
+  struct _LIST_ENTRY ListEntry;
+  U32 LastTotalAllocates;
+  union
+  {
+    U32 LastAllocateMisses;
+    U32 LastAllocateHits;
+  }; 
+  U32 Future[2];
+} GENERAL_LOOKASIDE_POOL, *PGENERAL_LOOKASIDE_POOL; 
+
+typedef struct _KDPC_LIST
+{
+  struct _SINGLE_LIST_ENTRY ListHead;
+  struct _SINGLE_LIST_ENTRY* LastEntry;
+} KDPC_LIST, *PKDPC_LIST; 
+
+typedef struct _KDPC_DATA
+{
+  struct _KDPC_LIST DpcList;
+  U32 DpcLock;
+  volatile S32 DpcQueueDepth;
+  U32 DpcCount;
+  struct _KDPC* volatile ActiveDpc;
+} KDPC_DATA, *PKDPC_DATA; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 1; 
+              U8 Processor : 5; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2Reserved1;
+          U8 Timer2Reserved2;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 Instrumented : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          U8 DebugActive;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KGATE
+{
+  struct _DISPATCHER_HEADER Header;
+} KGATE, *PKGATE; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER_TABLE_ENTRY
+{
+  U32 Lock;
+  struct _LIST_ENTRY Entry;
+  union _ULARGE_INTEGER Time;
+} KTIMER_TABLE_ENTRY, *PKTIMER_TABLE_ENTRY; 
+
+typedef struct _KTIMER_TABLE
+{
+  struct _KTIMER* TimerExpiry[16];
+  struct _KTIMER_TABLE_ENTRY TimerEntries[256];
+} KTIMER_TABLE, *PKTIMER_TABLE; 
+
+typedef struct _KDPC
+{
+  union
+  {
+    U32 TargetInfoAsUlong;
+    struct
+    {
+      U8 Type;
+      U8 Importance;
+      volatile U16 Number;
+    }; 
+  }; 
+  struct _SINGLE_LIST_ENTRY DpcListEntry;
+  U32 ProcessorHistory;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  struct _RTL_BALANCED_NODE* Min;
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _PROC_IDLE_POLICY
+{
+  U8 PromotePercent;
+  U8 DemotePercent;
+  U8 PromotePercentBase;
+  U8 DemotePercentBase;
+  U8 AllowScaling;
+  U8 ForceLightIdle;
+} PROC_IDLE_POLICY, *PPROC_IDLE_POLICY; 
+
+typedef union _PPM_IDLE_SYNCHRONIZATION_STATE
+{
+  union
+  {
+    S32 AsLong;
+    struct 
+    {
+      S32 RefCount : 24; 
+      U32 State : 8; 
+    }; 
+  }; 
+} PPM_IDLE_SYNCHRONIZATION_STATE, *PPPM_IDLE_SYNCHRONIZATION_STATE; 
+
+typedef struct _PROC_FEEDBACK
+{
+  U32 Lock;
+  U64 CyclesLast;
+  U64 CyclesActive;
+  struct _PROC_FEEDBACK_COUNTER* Counters[2];
+  U64 LastUpdateTime;
+  U64 UnscaledTime;
+  volatile S64 UnaccountedTime;
+  U64 ScaledTime[2];
+  U64 UnaccountedKernelTime;
+  U64 PerformanceScaledKernelTime;
+  U32 UserTimeLast;
+  U32 KernelTimeLast;
+  U64 IdleGenerationNumberLast;
+  U64 HvActiveTimeLast;
+  U64 StallCyclesLast;
+  U64 StallTime;
+  U8 KernelTimesIndex;
+  char __PADDING__[7];
+} PROC_FEEDBACK, *PPROC_FEEDBACK; 
+
+typedef enum _PROC_HYPERVISOR_STATE
+{
+  ProcHypervisorNone = 0,
+  ProcHypervisorPresent = 1,
+  ProcHypervisorPower = 2,
+  ProcHypervisorHvCounters = 3,
+} PROC_HYPERVISOR_STATE, *PPROC_HYPERVISOR_STATE;
+
+typedef struct _PPM_FFH_THROTTLE_STATE_INFO
+{
+  U8 EnableLogging;
+  U32 MismatchCount;
+  U8 Initialized;
+  U64 LastValue;
+  union _LARGE_INTEGER LastLogTickCount;
+} PPM_FFH_THROTTLE_STATE_INFO, *PPPM_FFH_THROTTLE_STATE_INFO; 
+
+typedef struct _PROC_IDLE_SNAP
+{
+  U64 Time;
+  U64 Idle;
+} PROC_IDLE_SNAP, *PPROC_IDLE_SNAP; 
+
+typedef struct _PROCESSOR_POWER_STATE
+{
+  struct _PPM_IDLE_STATES* IdleStates;
+  struct _PROC_IDLE_ACCOUNTING* IdleAccounting;
+  U64 IdleTimeLast;
+  U64 IdleTimeTotal;
+  volatile U64 IdleTimeEntry;
+  U64 IdleTimeExpiration;
+  U8 NonInterruptibleTransition;
+  U8 PepWokenTransition;
+  U8 Class;
+  U32 TargetIdleState;
+  struct _PROC_IDLE_POLICY IdlePolicy;
+  volatile union _PPM_IDLE_SYNCHRONIZATION_STATE Synchronization;
+  struct _PROC_FEEDBACK PerfFeedback;
+  enum _PROC_HYPERVISOR_STATE Hypervisor;
+  U32 LastSysTime;
+  U32 WmiDispatchPtr;
+  S32 WmiInterfaceEnabled;
+  struct _PPM_FFH_THROTTLE_STATE_INFO FFHThrottleStateInfo;
+  struct _KDPC PerfActionDpc;
+  volatile S32 PerfActionMask;
+  struct _PROC_IDLE_SNAP HvIdleCheck;
+  struct _PROC_PERF_CHECK* PerfCheck;
+  struct _PROC_PERF_DOMAIN* Domain;
+  struct _PROC_PERF_CONSTRAINT* PerfConstraint;
+  struct _PPM_CONCURRENCY_ACCOUNTING* Concurrency;
+  struct _PROC_PERF_LOAD* Load;
+  struct _PROC_PERF_HISTORY* PerfHistory;
+  U8 GuaranteedPerformancePercent;
+  U8 HvTargetState;
+  U8 Parked;
+  U32 LatestPerformancePercent;
+  U32 AveragePerformancePercent;
+  U32 LatestAffinitizedPercent;
+  U32 RelativePerformance;
+  U32 Utility;
+  U32 AffinitizedUtility;
+  union
+  {
+    U64 SnapTimeLast;
+    U64 EnergyConsumed;
+  }; 
+  U64 ActiveTime;
+  U64 TotalTime;
+} PROCESSOR_POWER_STATE, *PPROCESSOR_POWER_STATE; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef enum _PROCESSOR_CACHE_TYPE
+{
+  CacheUnified = 0,
+  CacheInstruction = 1,
+  CacheData = 2,
+  CacheTrace = 3,
+} PROCESSOR_CACHE_TYPE, *PPROCESSOR_CACHE_TYPE;
+
+typedef struct _CACHE_DESCRIPTOR
+{
+  U8 Level;
+  U8 Associativity;
+  U16 LineSize;
+  U32 Size;
+  enum _PROCESSOR_CACHE_TYPE Type;
+} CACHE_DESCRIPTOR, *PCACHE_DESCRIPTOR; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U32 Bitmap[1];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _SYNCH_COUNTERS
+{
+  U32 SpinLockAcquireCount;
+  U32 SpinLockContentionCount;
+  U32 SpinLockSpinCount;
+  U32 IpiSendRequestBroadcastCount;
+  U32 IpiSendRequestRoutineCount;
+  U32 IpiSendSoftwareInterruptCount;
+  U32 ExInitializeResourceCount;
+  U32 ExReInitializeResourceCount;
+  U32 ExDeleteResourceCount;
+  U32 ExecutiveResourceAcquiresCount;
+  U32 ExecutiveResourceContentionsCount;
+  U32 ExecutiveResourceReleaseExclusiveCount;
+  U32 ExecutiveResourceReleaseSharedCount;
+  U32 ExecutiveResourceConvertsCount;
+  U32 ExAcqResExclusiveAttempts;
+  U32 ExAcqResExclusiveAcquiresExclusive;
+  U32 ExAcqResExclusiveAcquiresExclusiveRecursive;
+  U32 ExAcqResExclusiveWaits;
+  U32 ExAcqResExclusiveNotAcquires;
+  U32 ExAcqResSharedAttempts;
+  U32 ExAcqResSharedAcquiresExclusive;
+  U32 ExAcqResSharedAcquiresShared;
+  U32 ExAcqResSharedAcquiresSharedRecursive;
+  U32 ExAcqResSharedWaits;
+  U32 ExAcqResSharedNotAcquires;
+  U32 ExAcqResSharedStarveExclusiveAttempts;
+  U32 ExAcqResSharedStarveExclusiveAcquiresExclusive;
+  U32 ExAcqResSharedStarveExclusiveAcquiresShared;
+  U32 ExAcqResSharedStarveExclusiveAcquiresSharedRecursive;
+  U32 ExAcqResSharedStarveExclusiveWaits;
+  U32 ExAcqResSharedStarveExclusiveNotAcquires;
+  U32 ExAcqResSharedWaitForExclusiveAttempts;
+  U32 ExAcqResSharedWaitForExclusiveAcquiresExclusive;
+  U32 ExAcqResSharedWaitForExclusiveAcquiresShared;
+  U32 ExAcqResSharedWaitForExclusiveAcquiresSharedRecursive;
+  U32 ExAcqResSharedWaitForExclusiveWaits;
+  U32 ExAcqResSharedWaitForExclusiveNotAcquires;
+  U32 ExSetResOwnerPointerExclusive;
+  U32 ExSetResOwnerPointerSharedNew;
+  U32 ExSetResOwnerPointerSharedOld;
+  U32 ExTryToAcqExclusiveAttempts;
+  U32 ExTryToAcqExclusiveAcquires;
+  U32 ExBoostExclusiveOwner;
+  U32 ExBoostSharedOwners;
+  U32 ExEtwSynchTrackingNotificationsCount;
+  U32 ExEtwSynchTrackingNotificationsAccountedCount;
+} SYNCH_COUNTERS, *PSYNCH_COUNTERS; 
+
+typedef struct _FILESYSTEM_DISK_COUNTERS
+{
+  U64 FsBytesRead;
+  U64 FsBytesWritten;
+} FILESYSTEM_DISK_COUNTERS, *PFILESYSTEM_DISK_COUNTERS; 
+
+typedef struct _KENTROPY_TIMING_STATE
+{
+  U32 EntropyCount;
+  U32 Buffer[64];
+  struct _KDPC Dpc;
+  U32 LastDeliveredBuffer;
+} KENTROPY_TIMING_STATE, *PKENTROPY_TIMING_STATE; 
+
+typedef struct _IOP_IRP_STACK_PROFILER
+{
+  U32 Profile[20];
+  U32 TotalIrps;
+} IOP_IRP_STACK_PROFILER, *PIOP_IRP_STACK_PROFILER; 
+
+typedef struct _KTIMER_EXPIRATION_TRACE
+{
+  U64 InterruptTime;
+  union _LARGE_INTEGER PerformanceCounter;
+} KTIMER_EXPIRATION_TRACE, *PKTIMER_EXPIRATION_TRACE; 
+
+typedef struct _KSHARED_READY_QUEUE
+{
+  U32 Lock;
+  U32 ReadySummary;
+  struct _LIST_ENTRY ReadyListHead[32];
+  char RunningSummary[32];
+  U8 Span;
+  U8 LowProcIndex;
+  U8 QueueIndex;
+  U8 ProcCount;
+  U8 ScanOwner;
+  U8 Spare[3];
+  U32 Affinity;
+} KSHARED_READY_QUEUE, *PKSHARED_READY_QUEUE; 
+
+typedef struct _KREQUEST_PACKET
+{
+  void* CurrentPacket[3];
+  void* WorkerRoutine;
+} KREQUEST_PACKET, *PKREQUEST_PACKET; 
+
+typedef struct _REQUEST_MAILBOX
+{
+  struct _REQUEST_MAILBOX* Next;
+  U32 RequestSummary;
+  struct _KREQUEST_PACKET RequestPacket;
+  volatile S32* NodeTargetCountAddr;
+  volatile S32 NodeTargetCount;
+} REQUEST_MAILBOX, *PREQUEST_MAILBOX; 
+
+typedef struct _KPRCB
+{
+  U16 MinorVersion;
+  U16 MajorVersion;
+  struct _KTHREAD* CurrentThread;
+  struct _KTHREAD* NextThread;
+  struct _KTHREAD* IdleThread;
+  U8 LegacyNumber;
+  U8 NestingLevel;
+  U16 BuildType;
+  char CpuType;
+  char CpuID;
+  union
+  {
+    U16 CpuStep;
+    struct
+    {
+      U8 CpuStepping;
+      U8 CpuModel;
+    }; 
+  }; 
+  struct _KPROCESSOR_STATE ProcessorState;
+  struct _KNODE* ParentNode;
+  char* PriorityState;
+  U32 KernelReserved[14];
+  U32 HalReserved[16];
+  U32 CFlushSize;
+  U8 CoresPerPhysicalProcessor;
+  U8 LogicalProcessorsPerCore;
+  U8 CpuVendor;
+  U8 PrcbPad0[1];
+  U32 MHz;
+  U8 GroupIndex;
+  U8 Group;
+  U8 PrcbPad05[2];
+  U32 GroupSetMember;
+  U32 Number;
+  U8 ClockOwner;
+  union
+  {
+    U8 PendingTickFlags;
+    struct 
+    {
+      U8 PendingTick : 1; 
+      U8 PendingBackupTick : 1; 
+    }; 
+  }; 
+  U8 PrcbPad10[70];
+  struct _KSPIN_LOCK_QUEUE LockQueue[17];
+  U32 InterruptCount;
+  U32 KernelTime;
+  U32 UserTime;
+  U32 DpcTime;
+  U32 DpcTimeCount;
+  U32 InterruptTime;
+  U32 AdjustDpcThreshold;
+  U32 PageColor;
+  U8 DebuggerSavedIRQL;
+  U8 NodeColor;
+  U8 DeepSleep;
+  U8 PrcbPad20[5];
+  U32 NodeShiftedColor;
+  U32 SecondaryColorMask;
+  U32 DpcTimeLimit;
+  U32 PrcbPad21[3];
+  U32 CcFastReadNoWait;
+  U32 CcFastReadWait;
+  U32 CcFastReadNotPossible;
+  U32 CcCopyReadNoWait;
+  U32 CcCopyReadWait;
+  U32 CcCopyReadNoWaitMiss;
+  volatile S32 MmSpinLockOrdering;
+  volatile S32 IoReadOperationCount;
+  volatile S32 IoWriteOperationCount;
+  volatile S32 IoOtherOperationCount;
+  union _LARGE_INTEGER IoReadTransferCount;
+  union _LARGE_INTEGER IoWriteTransferCount;
+  union _LARGE_INTEGER IoOtherTransferCount;
+  U32 CcFastMdlReadNoWait;
+  U32 CcFastMdlReadWait;
+  U32 CcFastMdlReadNotPossible;
+  U32 CcMapDataNoWait;
+  U32 CcMapDataWait;
+  U32 CcPinMappedDataCount;
+  U32 CcPinReadNoWait;
+  U32 CcPinReadWait;
+  U32 CcMdlReadNoWait;
+  U32 CcMdlReadWait;
+  U32 CcLazyWriteHotSpots;
+  U32 CcLazyWriteIos;
+  U32 CcLazyWritePages;
+  U32 CcDataFlushes;
+  U32 CcDataPages;
+  U32 CcLostDelayedWrites;
+  U32 CcFastReadResourceMiss;
+  U32 CcCopyReadWaitMiss;
+  U32 CcFastMdlReadResourceMiss;
+  U32 CcMapDataNoWaitMiss;
+  U32 CcMapDataWaitMiss;
+  U32 CcPinReadNoWaitMiss;
+  U32 CcPinReadWaitMiss;
+  U32 CcMdlReadNoWaitMiss;
+  U32 CcMdlReadWaitMiss;
+  U32 CcReadAheadIos;
+  U32 KeAlignmentFixupCount;
+  U32 KeExceptionDispatchCount;
+  U32 KeSystemCalls;
+  U32 AvailableTime;
+  U32 PrcbPad22[2];
+  struct _PP_LOOKASIDE_LIST PPLookasideList[16];
+  struct _GENERAL_LOOKASIDE_POOL PPNxPagedLookasideList[32];
+  struct _GENERAL_LOOKASIDE_POOL PPNPagedLookasideList[32];
+  struct _GENERAL_LOOKASIDE_POOL PPPagedLookasideList[32];
+  volatile S32 PacketBarrier;
+  volatile S32 ReverseStall;
+  void* IpiFrame;
+  U8 PrcbPad3[52];
+  void* volatile CurrentPacket[3];
+  volatile U32 TargetSet;
+  void* volatile WorkerRoutine;
+  volatile U32 IpiFrozen;
+  U8 PrcbPad4[40];
+  volatile U32 RequestSummary;
+  volatile S32 TargetCount;
+  U8 PrcbPad50[40];
+  U32 InterruptLastCount;
+  U32 InterruptRate;
+  U32 DeviceInterrupts;
+  void* IsrDpcStats;
+  struct _KDPC_DATA DpcData[2];
+  void* DpcStack;
+  S32 MaximumDpcQueueDepth;
+  U32 DpcRequestRate;
+  U32 MinimumDpcRate;
+  U32 DpcLastCount;
+  U32 PrcbLock;
+  struct _KGATE DpcGate;
+  U8 IdleState;
+  volatile U8 QuantumEnd;
+  volatile U8 DpcRoutineActive;
+  volatile U8 IdleSchedule;
+  union
+  {
+    volatile S32 DpcRequestSummary;
+    S16 DpcRequestSlot[2];
+    struct
+    {
+      S16 NormalDpcState;
+      S16 ThreadDpcState;
+    }; 
+    struct 
+    {
+      U32 DpcNormalProcessingActive : 1; 
+      U32 DpcNormalProcessingRequested : 1; 
+      U32 DpcNormalThreadSignal : 1; 
+      U32 DpcNormalTimerExpiration : 1; 
+      U32 DpcNormalDpcPresent : 1; 
+      U32 DpcNormalLocalInterrupt : 1; 
+      U32 DpcNormalSpare : 10; 
+      U32 DpcThreadActive : 1; 
+      U32 DpcThreadRequested : 1; 
+      U32 DpcThreadSpare : 14; 
+    }; 
+  }; 
+  U32 LastTimerHand;
+  U32 LastTick;
+  U32 PeriodicCount;
+  U32 PeriodicBias;
+  U32 ClockInterrupts;
+  U32 ReadyScanTick;
+  U8 GroupSchedulingOverQuota;
+  U8 ThreadDpcEnable;
+  U8 PrcbPad41[2];
+  struct _KTIMER_TABLE TimerTable;
+  struct _KDPC CallDpc;
+  S32 ClockKeepAlive;
+  U8 PrcbPad6[4];
+  S32 DpcWatchdogPeriod;
+  S32 DpcWatchdogCount;
+  volatile S32 KeSpinLockOrdering;
+  U32 PrcbPad70[1];
+  U32 QueueIndex;
+  struct _SINGLE_LIST_ENTRY DeferredReadyListHead;
+  U32 ReadySummary;
+  S32 AffinitizedSelectionMask;
+  U32 WaitLock;
+  struct _LIST_ENTRY WaitListHead;
+  U32 ScbOffset;
+  U64 StartCycles;
+  U64 TaggedCyclesStart;
+  U64 TaggedCycles[2];
+  U64 GenerationTarget;
+  volatile U64 CycleTime;
+  U64 AffinitizedCycles;
+  volatile U32 HighCycleTime;
+  U64 Cycles[2][4];
+  U32 PrcbPad71[10];
+  struct _LIST_ENTRY DispatcherReadyListHead[32];
+  void* ChainedInterruptList;
+  S32 LookasideIrpFloat;
+  struct _RTL_RB_TREE ScbQueue;
+  struct _LIST_ENTRY ScbList;
+  volatile S32 MmPageFaultCount;
+  volatile S32 MmCopyOnWriteCount;
+  volatile S32 MmTransitionCount;
+  volatile S32 MmCacheTransitionCount;
+  volatile S32 MmDemandZeroCount;
+  volatile S32 MmPageReadCount;
+  volatile S32 MmPageReadIoCount;
+  volatile S32 MmCacheReadCount;
+  volatile S32 MmCacheIoCount;
+  volatile S32 MmDirtyPagesWriteCount;
+  volatile S32 MmDirtyWriteIoCount;
+  volatile S32 MmMappedPagesWriteCount;
+  volatile S32 MmMappedWriteIoCount;
+  volatile U32 CachedCommit;
+  volatile U32 CachedResidentAvailable;
+  void* HyperPte;
+  U8 PrcbPad8[4];
+  U8 VendorString[13];
+  U8 InitialApicId;
+  U8 LogicalProcessorsPerPhysicalProcessor;
+  U8 PrcbPad9[1];
+  U64 FeatureBits;
+  union _LARGE_INTEGER UpdateSignature;
+  volatile U64 IsrTime;
+  U32 PrcbPad90[2];
+  struct _PROCESSOR_POWER_STATE PowerState;
+  U32 PrcbPad91[17];
+  struct _KDPC DpcWatchdogDpc;
+  struct _KTIMER DpcWatchdogTimer;
+  union _SLIST_HEADER HypercallPageList;
+  void* HypercallCachedPages;
+  void* VirtualApicAssist;
+  U64* StatisticsPage;
+  struct _CACHE_DESCRIPTOR Cache[5];
+  U32 CacheCount;
+  struct _KAFFINITY_EX PackageProcessorSet;
+  U32 SharedReadyQueueMask;
+  struct _KSHARED_READY_QUEUE* SharedReadyQueue;
+  U32 SharedQueueScanOwner;
+  U32 CoreProcessorSet;
+  U32 ScanSiblingMask;
+  U32 LLCMask;
+  U32 CacheProcessorMask[5];
+  U32 ScanSiblingIndex;
+  void* WheaInfo;
+  void* EtwSupport;
+  union _SLIST_HEADER InterruptObjectPool;
+  U32 PrcbPad92[3];
+  U32 PteBitCache;
+  U32 PteBitOffset;
+  U32 PrcbPad93;
+  struct _PROCESSOR_PROFILE_CONTROL_AREA* ProcessorProfileControlArea;
+  void* ProfileEventIndexAddress;
+  struct _KDPC TimerExpirationDpc;
+  struct _SYNCH_COUNTERS SynchCounters;
+  struct _FILESYSTEM_DISK_COUNTERS FsCounters;
+  struct _CONTEXT* Context;
+  U32 ContextFlagsInit;
+  struct _XSAVE_AREA* ExtendedState;
+  struct _KENTROPY_TIMING_STATE EntropyTimingState;
+  void* IsrStack;
+  struct _KINTERRUPT* VectorToInterruptObject[208];
+  struct _SINGLE_LIST_ENTRY AbSelfIoBoostsList;
+  struct _SINGLE_LIST_ENTRY AbPropagateBoostsList;
+  struct _KDPC AbDpc;
+  struct _IOP_IRP_STACK_PROFILER IoIrpStackProfilerCurrent;
+  struct _IOP_IRP_STACK_PROFILER IoIrpStackProfilerPrevious;
+  struct _KTIMER_EXPIRATION_TRACE TimerExpirationTrace[16];
+  U32 TimerExpirationTraceCount;
+  void* ExSaPageArray;
+  U32 PrcbPad100[10];
+  struct _KSHARED_READY_QUEUE LocalSharedReadyQueue;
+  U8 PrcbPad95[12];
+  struct _REQUEST_MAILBOX* Mailbox;
+  U8 PrcbPad[60];
+  struct _REQUEST_MAILBOX RequestMailbox[1];
+} KPRCB, *PKPRCB; 
+
+typedef struct _KPCR
+{
+  union
+  {
+    struct _NT_TIB NtTib;
+    struct
+    {
+      struct _EXCEPTION_REGISTRATION_RECORD* Used_ExceptionList;
+      void* Used_StackBase;
+      U32 MxCsr;
+      void* TssCopy;
+      U32 ContextSwitches;
+      U32 SetMemberCopy;
+      void* Used_Self;
+    }; 
+  }; 
+  struct _KPCR* SelfPcr;
+  struct _KPRCB* Prcb;
+  U8 Irql;
+  U32 IRR;
+  U32 IrrActive;
+  U32 IDR;
+  void* KdVersionBlock;
+  struct _KIDTENTRY* IDT;
+  struct _KGDTENTRY* GDT;
+  struct _KTSS* TSS;
+  U16 MajorVersion;
+  U16 MinorVersion;
+  U32 SetMember;
+  U32 StallScaleFactor;
+  U8 SpareUnused;
+  U8 Number;
+  U8 Spare0;
+  U8 SecondLevelCacheAssociativity;
+  U32 VdmAlert;
+  U32 KernelReserved[14];
+  U32 SecondLevelCacheSize;
+  U32 HalReserved[16];
+  U32 InterruptMode;
+  U8 Spare1;
+  U32 KernelReserved2[17];
+  struct _KPRCB PrcbData;
+} KPCR, *PKPCR; 
+

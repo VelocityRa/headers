@@ -1,0 +1,229 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _LPCP_PORT_QUEUE
+{
+  struct _LPCP_NONPAGED_PORT_QUEUE* NonPagedPortQueue;
+  struct _KSEMAPHORE* Semaphore;
+  struct _LIST_ENTRY ReceiveHead;
+} LPCP_PORT_QUEUE, *PLPCP_PORT_QUEUE; 
+
+typedef struct _CLIENT_ID
+{
+  void* UniqueProcess;
+  void* UniqueThread;
+} CLIENT_ID, *PCLIENT_ID; 
+
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SECURITY_QUALITY_OF_SERVICE
+{
+  U32 Length;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  U8 ContextTrackingMode;
+  U8 EffectiveOnly;
+  char __PADDING__[2];
+} SECURITY_QUALITY_OF_SERVICE, *PSECURITY_QUALITY_OF_SERVICE; 
+
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _TOKEN_SOURCE
+{
+  char SourceName[8];
+  struct _LUID SourceIdentifier;
+} TOKEN_SOURCE, *PTOKEN_SOURCE; 
+
+typedef struct _TOKEN_CONTROL
+{
+  struct _LUID TokenId;
+  struct _LUID AuthenticationId;
+  struct _LUID ModifiedId;
+  struct _TOKEN_SOURCE TokenSource;
+} TOKEN_CONTROL, *PTOKEN_CONTROL; 
+
+typedef struct _SECURITY_CLIENT_CONTEXT
+{
+  struct _SECURITY_QUALITY_OF_SERVICE SecurityQos;
+  void* ClientToken;
+  U8 DirectlyAccessClientToken;
+  U8 DirectAccessEffectiveOnly;
+  U8 ServerIsRemote;
+  struct _TOKEN_CONTROL ClientTokenControl;
+  S32 __PADDING__[1];
+} SECURITY_CLIENT_CONTEXT, *PSECURITY_CLIENT_CONTEXT; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 6; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 SchedulerAssist : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          union
+          {
+            U8 DebugActive;
+            struct 
+            {
+              U8 ActiveDR7 : 1; 
+              U8 Instrumented : 1; 
+              U8 Minimal : 1; 
+              U8 Reserved4 : 2; 
+              U8 AltSyscall : 1; 
+              U8 UmsScheduled : 1; 
+              U8 UmsPrimary : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _LPCP_PORT_OBJECT
+{
+  struct _LPCP_PORT_OBJECT* ConnectionPort;
+  struct _LPCP_PORT_OBJECT* ConnectedPort;
+  struct _LPCP_PORT_QUEUE MsgQueue;
+  struct _CLIENT_ID Creator;
+  void* ClientSectionBase;
+  void* ServerSectionBase;
+  void* PortContext;
+  struct _ETHREAD* ClientThread;
+  struct _SECURITY_QUALITY_OF_SERVICE SecurityQos;
+  struct _SECURITY_CLIENT_CONTEXT StaticSecurity;
+  struct _LIST_ENTRY LpcReplyChainHead;
+  struct _LIST_ENTRY LpcDataInfoChainHead;
+  union
+  {
+    struct _EPROCESS* ServerProcess;
+    struct _EPROCESS* MappingProcess;
+  }; 
+  U16 MaxMessageLength;
+  U16 MaxConnectionInfoLength;
+  U32 Flags;
+  struct _KEVENT WaitEvent;
+} LPCP_PORT_OBJECT, *PLPCP_PORT_OBJECT; 
+

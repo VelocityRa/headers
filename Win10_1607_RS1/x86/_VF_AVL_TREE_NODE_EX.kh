@@ -1,0 +1,12 @@
+typedef struct _VF_AVL_TREE_NODE
+{
+  void* p;
+  U32 RangeSize;
+} VF_AVL_TREE_NODE, *PVF_AVL_TREE_NODE; 
+
+typedef struct _VF_AVL_TREE_NODE_EX
+{
+  struct _VF_AVL_TREE_NODE Base;
+  U32 SessionId;
+} VF_AVL_TREE_NODE_EX, *PVF_AVL_TREE_NODE_EX; 
+

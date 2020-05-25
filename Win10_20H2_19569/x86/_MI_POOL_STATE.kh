@@ -1,0 +1,52 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U32 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _MI_ACCESS_VIOLATION_RANGE
+{
+  struct _RTL_BALANCED_NODE Node;
+  void* Va;
+  void* EndVaInclusive;
+} MI_ACCESS_VIOLATION_RANGE, *PMI_ACCESS_VIOLATION_RANGE; 
+
+typedef struct _MI_POOL_STATE
+{
+  U32 MaximumNonPagedPoolThreshold;
+  volatile U32 AllocatedNonPagedPool;
+  struct _SINGLE_LIST_ENTRY BadPoolHead;
+  U32 HighEventSets;
+  U8 HighEventSetsValid;
+  U32 LowPagedPoolThreshold;
+  U32 HighPagedPoolThreshold;
+  volatile S32 PermittedFaultsLock;
+  struct _RTL_AVL_TREE PermittedFaultsTree;
+  struct _MI_ACCESS_VIOLATION_RANGE PermittedFaultsInitialNode[2];
+  U32 TotalPagedPoolQuota;
+  U32 TotalNonPagedPoolQuota;
+} MI_POOL_STATE, *PMI_POOL_STATE; 
+

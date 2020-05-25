@@ -1,0 +1,142 @@
+typedef struct _MI_FREE_LARGE_PAGES
+{
+  U64 LargePageFreeCount[2];
+  U64 LargePageFreeCountHiLow[2][2];
+  U64 LargePagesCount[4][2][2];
+  struct _MI_FREE_LARGE_PAGE_LIST* LargePageEntries[4][2][2];
+} MI_FREE_LARGE_PAGES, *PMI_FREE_LARGE_PAGES; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_REBUILD_LARGE_PAGE_TIMER
+{
+  struct _WORK_QUEUE_ITEM WorkItem;
+  U8 SecondsLeft;
+  U8 RebuildActive;
+  U8 NextPassDelta;
+  U8 LargeSubPagesActive;
+  S32 __PADDING__[1];
+} MI_REBUILD_LARGE_PAGE_TIMER, *PMI_REBUILD_LARGE_PAGE_TIMER; 
+
+typedef struct _MMPFNLIST_SHORT
+{
+  U64 Total;
+  U64 Flink;
+  U64 Blink;
+} MMPFNLIST_SHORT, *PMMPFNLIST_SHORT; 
+
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MI_PAGE_COLORS
+{
+  U32 PageSize[4];
+} MI_PAGE_COLORS, *PMI_PAGE_COLORS; 
+
+typedef enum _MI_WRITE_TYPES
+{
+  WriteTypeCached = 0,
+  WriteTypeNonTemporal = 1,
+  WriteTypeMaximum = 2,
+} MI_WRITE_TYPES, *PMI_WRITE_TYPES;
+
+typedef struct _MI_WRITE_CALIBRATION
+{
+  U32 MaximumNumberProcessors;
+  enum _MI_WRITE_TYPES OptimalWriteType;
+  U64 PerProcessorNumberOfBytes;
+  U32 OptimalWriteProcessors[2];
+  struct _MI_WRITE_MODES* RawTimeStamps;
+} MI_WRITE_CALIBRATION, *PMI_WRITE_CALIBRATION; 
+
+typedef struct _GROUP_AFFINITY
+{
+  U64 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+
+typedef struct _MI_NODE_INFORMATION
+{
+  struct _MI_FREE_LARGE_PAGES FreeLargePages[3];
+  struct _MI_REBUILD_LARGE_PAGE_TIMER LargePageRebuildTimer;
+  struct _MMPFNLIST_SHORT StandbyPageList[8][4];
+  struct _RTL_BITMAP FreePageListHeadsBitmap[2];
+  U32 FreePageListHeadsBitmapBuffer[16];
+  volatile U64 FreeCount[2];
+  U64 TotalPages[4];
+  U64 TotalPagesEntireNode;
+  U32 CurrentHugeRangeColor;
+  U64 HugeIoRangeFreeCount[2];
+  U32 MmShiftedColor;
+  U32 Color;
+  volatile U64 ChannelFreeCount[2][4];
+  struct
+  {
+    struct 
+    {
+      U32 ChannelsHotCold : 1; 
+      U32 Spare : 31; 
+    }; 
+  } Flags;
+  U32 LargeListMoveInProgress;
+  struct _MI_LARGE_PAGE_LISTS_CHANGING* LargeListWaiters;
+  struct _EX_PUSH_LOCK NodeLock;
+  U64 ZeroThreadHugeMapLock;
+  U8 ChannelStatus;
+  U8 ChannelOrdering[4];
+  U8 LockedChannelOrdering[4];
+  U8 PowerAttribute[4];
+  U64 LargePageLock;
+  struct _MI_PAGE_COLORS PageColorTable;
+  U64 NumberOfPagesGoingBad;
+  struct _MI_WRITE_CALIBRATION WriteCalibration;
+  void* BootZeroContext;
+  void* BootZeroPageTimesPerProcessor;
+  void* ZeroingVaBase;
+  U64 TotalBytesToZero;
+  U64 PerProcessorNumberOfBytesToZero;
+  void* ZeroingContext;
+  volatile U32 ZeroingProcessorCount;
+  volatile S32 ZeroHand;
+  volatile S32 FinishedProcessors;
+  U64 CyclesToZeroOneLargePage;
+  U64* ScaledCyclesToZeroOneLargePage;
+  struct _GROUP_AFFINITY GroupAffinity;
+  U16 ProcessorCount;
+  U8 BackgroundZeroingActive;
+  struct _PHYSICAL_MEMORY_DESCRIPTOR* ZeroingPhysicalMemoryBlock;
+  S32 __PADDING__[10];
+} MI_NODE_INFORMATION, *PMI_NODE_INFORMATION; 
+

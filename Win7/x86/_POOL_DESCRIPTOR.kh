@@ -1,0 +1,134 @@
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+} POOL_TYPE, *PPOOL_TYPE;
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Coalescable : 1; 
+          U8 KeepShifting : 1; 
+          U8 EncodedTolerableDelay : 5; 
+        }; 
+        U8 Abandoned;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CpuThrottled : 1; 
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 Reserved : 5; 
+            }; 
+            U8 Hand;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 1; 
+                  U8 Processor : 5; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Reserved2 : 4; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KGATE
+{
+  struct _DISPATCHER_HEADER Header;
+} KGATE, *PKGATE; 
+
+typedef struct _KGUARDED_MUTEX
+{
+  volatile S32 Count;
+  struct _KTHREAD* Owner;
+  U32 Contention;
+  struct _KGATE Gate;
+  union
+  {
+    struct
+    {
+      S16 KernelApcDisable;
+      S16 SpecialApcDisable;
+    }; 
+    U32 CombinedApcDisable;
+  }; 
+} KGUARDED_MUTEX, *PKGUARDED_MUTEX; 
+
+typedef struct _POOL_DESCRIPTOR
+{
+  enum _POOL_TYPE PoolType;
+  union
+  {
+    struct _KGUARDED_MUTEX PagedLock;
+    U32 NonPagedLock;
+  }; 
+  volatile S32 RunningAllocs;
+  volatile S32 RunningDeAllocs;
+  volatile S32 TotalBigPages;
+  volatile S32 ThreadsProcessingDeferrals;
+  volatile U32 TotalBytes;
+  U32 PoolIndex;
+  volatile S32 TotalPages;
+  void** volatile PendingFrees;
+  volatile S32 PendingFreeDepth;
+  struct _LIST_ENTRY ListHeads[512];
+} POOL_DESCRIPTOR, *PPOOL_DESCRIPTOR; 
+

@@ -1,0 +1,7 @@
+typedef struct _DMA_ADAPTER
+{
+  U16 Version;
+  U16 Size;
+  struct _DMA_OPERATIONS* DmaOperations;
+} DMA_ADAPTER, *PDMA_ADAPTER; 
+

@@ -1,0 +1,14 @@
+typedef struct _HEAP_DESCRIPTOR_KEY
+{
+  union
+  {
+    U32 Key;
+    struct 
+    {
+      U32 EncodedCommittedPageCount : 16; 
+      U32 LargePageCost : 8; 
+      U32 UnitCount : 8; 
+    }; 
+  }; 
+} HEAP_DESCRIPTOR_KEY, *PHEAP_DESCRIPTOR_KEY; 
+

@@ -1,0 +1,7 @@
+typedef struct _RTLP_HP_HEAP_GLOBALS
+{
+  U32 HeapKey;
+  U32 LfhKey;
+  struct _HEAP_FAILURE_INFORMATION* FailureInfo;
+} RTLP_HP_HEAP_GLOBALS, *PRTLP_HP_HEAP_GLOBALS; 
+

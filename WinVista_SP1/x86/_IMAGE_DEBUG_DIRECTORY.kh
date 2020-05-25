@@ -1,0 +1,12 @@
+typedef struct _IMAGE_DEBUG_DIRECTORY
+{
+  U32 Characteristics;
+  U32 TimeDateStamp;
+  U16 MajorVersion;
+  U16 MinorVersion;
+  U32 Type;
+  U32 SizeOfData;
+  U32 AddressOfRawData;
+  U32 PointerToRawData;
+} IMAGE_DEBUG_DIRECTORY, *PIMAGE_DEBUG_DIRECTORY; 
+

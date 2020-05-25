@@ -1,0 +1,17 @@
+typedef union _POP_FX_PERF_FLAGS
+{
+  union
+  {
+    S32 Value;
+    struct 
+    {
+      U32 Progress : 3; 
+      U32 Reserved : 24; 
+      U32 Synchronicity : 2; 
+      U32 RequestPepCompleted : 1; 
+      U32 RequestSucceeded : 1; 
+      U32 NestedCallback : 1; 
+    }; 
+  }; 
+} POP_FX_PERF_FLAGS, *PPOP_FX_PERF_FLAGS; 
+

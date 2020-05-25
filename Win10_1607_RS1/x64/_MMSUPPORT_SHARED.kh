@@ -1,0 +1,13 @@
+typedef struct _MMSUPPORT_SHARED
+{
+  volatile S32 WorkingSetLock;
+  U64 ReleasedCommitDebt;
+  U64 ResetPagesRepurposedCount;
+  void* WsSwapSupport;
+  void* CommitReleaseContext;
+  void* AccessLog;
+  U64 ChargedWslePages;
+  U64 ActualWslePages;
+  U64 WorkingSetSizeOverhead;
+} MMSUPPORT_SHARED, *PMMSUPPORT_SHARED; 
+

@@ -1,0 +1,117 @@
+typedef struct _KSCHEDULING_GROUP_POLICY
+{
+  union
+  {
+    U32 Value;
+    U16 Weight;
+    struct
+    {
+      U16 MinRate;
+      U16 MaxRate;
+    }; 
+  }; 
+  union
+  {
+    U32 AllFlags;
+    struct 
+    {
+      U32 Type : 1; 
+      U32 Disabled : 1; 
+      U32 RankBias : 1; 
+      U32 Spare1 : 29; 
+    }; 
+  }; 
+} KSCHEDULING_GROUP_POLICY, *PKSCHEDULING_GROUP_POLICY; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _KSCB
+{
+  U64 GenerationCycles;
+  U64 MinQuotaCycleTarget;
+  U64 MaxQuotaCycleTarget;
+  U64 RankCycleTarget;
+  U64 LongTermCycles;
+  U64 LastReportedCycles;
+  volatile U64 OverQuotaHistory;
+  U64 ReadyTime;
+  U64 InsertTime;
+  struct _LIST_ENTRY PerProcessorList;
+  struct _RTL_BALANCED_NODE QueueNode;
+  struct 
+  {
+    U8 Inserted : 1; 
+    U8 MaxOverQuota : 1; 
+    U8 MinOverQuota : 1; 
+    U8 RankBias : 1; 
+    U8 SoftCap : 1; 
+    U8 ShareRankOwner : 1; 
+    U8 Spare1 : 2; 
+  }; 
+  U8 Depth;
+  U16 ReadySummary;
+  U32 Rank;
+  volatile U32* ShareRank;
+  volatile U32 OwnerShareRank;
+  struct _LIST_ENTRY ReadyListHead[16];
+  struct _RTL_RB_TREE ChildScbQueue;
+  struct _KSCB* Parent;
+  struct _KSCB* Root;
+} KSCB, *PKSCB; 
+
+typedef struct _KSCHEDULING_GROUP
+{
+  struct _KSCHEDULING_GROUP_POLICY Policy;
+  U32 RelativeWeight;
+  U32 ChildMinRate;
+  U32 ChildMinWeight;
+  U32 ChildTotalWeight;
+  U64 QueryHistoryTimeStamp;
+  S64 NotificationCycles;
+  S64 MaxQuotaLimitCycles;
+  volatile S64 MaxQuotaCyclesRemaining;
+  union
+  {
+    struct _LIST_ENTRY SchedulingGroupList;
+    struct _LIST_ENTRY Sibling;
+  }; 
+  struct _KDPC* NotificationDpc;
+  struct _LIST_ENTRY ChildList;
+  struct _KSCHEDULING_GROUP* Parent;
+  struct _KSCB PerProcessor[1];
+  S32 __PADDING__[6];
+} KSCHEDULING_GROUP, *PKSCHEDULING_GROUP; 
+

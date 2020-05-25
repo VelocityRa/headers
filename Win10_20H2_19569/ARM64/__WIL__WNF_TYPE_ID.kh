@@ -1,0 +1,13 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct __WIL__WNF_TYPE_ID
+{
+  struct _GUID TypeId;
+} _WIL__WNF_TYPE_ID, *P_WIL__WNF_TYPE_ID; 
+

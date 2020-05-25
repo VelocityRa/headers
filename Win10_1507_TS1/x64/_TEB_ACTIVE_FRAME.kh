@@ -1,0 +1,7 @@
+typedef struct _TEB_ACTIVE_FRAME
+{
+  U32 Flags;
+  struct _TEB_ACTIVE_FRAME* Previous;
+  const struct _TEB_ACTIVE_FRAME_CONTEXT* Context;
+} TEB_ACTIVE_FRAME, *PTEB_ACTIVE_FRAME; 
+

@@ -1,0 +1,26 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KALPC_REGION
+{
+  union
+  {
+    struct
+    {
+      U32 Secure : 1; 
+    } s1;
+  } u1;
+  struct _LIST_ENTRY RegionListEntry;
+  struct _KALPC_SECTION* Section;
+  U64 Offset;
+  U64 Size;
+  U64 ViewSize;
+  struct _KALPC_VIEW* ReadOnlyView;
+  struct _KALPC_VIEW* ReadWriteView;
+  U32 NumberOfViews;
+  struct _LIST_ENTRY ViewListHead;
+} KALPC_REGION, *PKALPC_REGION; 
+

@@ -1,0 +1,40 @@
+typedef union _HV_PARTITION_PRIVILEGE_MASK
+{
+  union
+  {
+    U64 AsUINT64;
+    struct 
+    {
+      U64 AccessVpRunTimeMsr : 1; 
+      U64 AccessPartitionReferenceCounter : 1; 
+      U64 AccessSynicMsrs : 1; 
+      U64 AccessSyntheticTimerMsrs : 1; 
+      U64 AccessApicMsrs : 1; 
+      U64 AccessHypercallMsrs : 1; 
+      U64 AccessVpIndex : 1; 
+      U64 AccessResetMsr : 1; 
+      U64 AccessStatsMsr : 1; 
+      U64 AccessPartitionReferenceTsc : 1; 
+      U64 AccessGuestIdleMsr : 1; 
+      U64 AccessFrequencyMsrs : 1; 
+      U64 AccessDebugMsrs : 1; 
+      U64 Reserved1 : 19; 
+      U64 CreatePartitions : 1; 
+      U64 AccessPartitionId : 1; 
+      U64 AccessMemoryPool : 1; 
+      U64 AdjustMessageBuffers : 1; 
+      U64 PostMessages : 1; 
+      U64 SignalEvents : 1; 
+      U64 CreatePort : 1; 
+      U64 ConnectPort : 1; 
+      U64 AccessStats : 1; 
+      U64 Reserved2 : 2; 
+      U64 Debugging : 1; 
+      U64 CpuManagement : 1; 
+      U64 ConfigureProfiler : 1; 
+      U64 EnableExpandedStackwalking : 1; 
+      U64 Reserved3 : 17; 
+    }; 
+  }; 
+} HV_PARTITION_PRIVILEGE_MASK, *PHV_PARTITION_PRIVILEGE_MASK; 
+

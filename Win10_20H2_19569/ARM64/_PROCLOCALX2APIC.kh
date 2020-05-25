@@ -1,0 +1,10 @@
+typedef struct _PROCLOCALX2APIC
+{
+  U8 Type;
+  U8 Length;
+  U16 Reserved;
+  U32 APICID;
+  U32 Flags;
+  U32 ACPIProcessorID;
+} PROCLOCALX2APIC, *PPROCLOCALX2APIC; 
+

@@ -1,0 +1,45 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _MI_PARTITION_STATE
+{
+  U64 PartitionLock;
+  struct _EX_PUSH_LOCK PartitionIdLock;
+  U64 InitialPartitionIdBits;
+  struct _LIST_ENTRY PartitionList;
+  struct _RTL_BITMAP* PartitionIdBitmap;
+  struct _RTL_BITMAP InitialPartitionIdBitmap;
+  struct _MI_PARTITION* TempPartitionPointers[1];
+  struct _MI_PARTITION** Partition;
+  U64 TotalPagesInChildPartitions;
+  U32 CrossPartitionDenials;
+  U8 MultiplePartitionsExist;
+  char __PADDING__[3];
+} MI_PARTITION_STATE, *PMI_PARTITION_STATE; 
+

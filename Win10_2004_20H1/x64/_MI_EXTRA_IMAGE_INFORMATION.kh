@@ -1,0 +1,7 @@
+typedef struct _MI_EXTRA_IMAGE_INFORMATION
+{
+  U32 SizeOfHeaders;
+  U32 SizeOfImage;
+  U32 TimeDateStamp;
+} MI_EXTRA_IMAGE_INFORMATION, *PMI_EXTRA_IMAGE_INFORMATION; 
+

@@ -1,0 +1,8 @@
+typedef struct _ARBITER_QUERY_CONFLICT_PARAMETERS
+{
+  struct _DEVICE_OBJECT* PhysicalDeviceObject;
+  struct _IO_RESOURCE_DESCRIPTOR* ConflictingResource;
+  U32* ConflictCount;
+  struct _ARBITER_CONFLICT_INFO** Conflicts;
+} ARBITER_QUERY_CONFLICT_PARAMETERS, *PARBITER_QUERY_CONFLICT_PARAMETERS; 
+

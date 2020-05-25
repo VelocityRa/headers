@@ -1,0 +1,16 @@
+typedef union _ARM64_NT_NEON128
+{
+  union
+  {
+    struct
+    {
+      U64 Low;
+      S64 High;
+    }; 
+    double D[2];
+    float S[4];
+    U16 H[8];
+    U8 B[16];
+  }; 
+} ARM64_NT_NEON128, *PARM64_NT_NEON128; 
+

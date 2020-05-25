@@ -1,0 +1,30 @@
+typedef struct _SK_CRASH_MODULE
+{
+  wchar_t ImageName[32];
+  U32 SizeOfImage;
+  U32 TimeDateStamp;
+} SK_CRASH_MODULE, *PSK_CRASH_MODULE; 
+
+typedef struct _SK_CRASH_STACK_FRAME
+{
+  union
+  {
+    struct
+    {
+      U32 ModuleId;
+      U32 Rva;
+    }; 
+    U64 Pc;
+  }; 
+} SK_CRASH_STACK_FRAME, *PSK_CRASH_STACK_FRAME; 
+
+typedef struct _SK_CRASH_MINIDUMP
+{
+  U32 Size;
+  U32 Version;
+  U32 ModuleCount;
+  U32 FrameCount;
+  struct _SK_CRASH_MODULE Modules[16];
+  struct _SK_CRASH_STACK_FRAME StackFrames[366];
+} SK_CRASH_MINIDUMP, *PSK_CRASH_MINIDUMP; 
+

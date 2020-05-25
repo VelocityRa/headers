@@ -1,0 +1,21 @@
+typedef struct _IMAGE_SECTION_HEADER
+{
+  U8 Name[8];
+  union
+  {
+    union
+    {
+      U32 PhysicalAddress;
+      U32 VirtualSize;
+    }; 
+  } Misc;
+  U32 VirtualAddress;
+  U32 SizeOfRawData;
+  U32 PointerToRawData;
+  U32 PointerToRelocations;
+  U32 PointerToLinenumbers;
+  U16 NumberOfRelocations;
+  U16 NumberOfLinenumbers;
+  U32 Characteristics;
+} IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER; 
+

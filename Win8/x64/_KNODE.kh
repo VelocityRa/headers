@@ -1,0 +1,40 @@
+typedef struct _flags
+{
+  struct 
+  {
+    U8 Removable : 1; 
+    U8 GroupAssigned : 1; 
+    U8 GroupCommitted : 1; 
+    U8 GroupAssignmentFixed : 1; 
+    U8 Fill : 4; 
+  }; 
+} flags, *Pflags; 
+
+typedef struct _GROUP_AFFINITY
+{
+  U64 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+
+typedef struct _KNODE
+{
+  U64 DeepIdleSet;
+  U32 ProximityId;
+  U16 NodeNumber;
+  U16 PrimaryNodeNumber;
+  U8 MaximumProcessors;
+  struct _flags Flags;
+  U8 Stride;
+  U8 NodePad0;
+  struct _GROUP_AFFINITY Affinity;
+  U64 IdleCpuSet;
+  U64 IdleSmtSet;
+  U32 Seed;
+  U32 Lowest;
+  U32 Highest;
+  S32 ParkLock;
+  U64 NonParkedSet;
+  S32 __PADDING__[10];
+} KNODE, *PKNODE; 
+

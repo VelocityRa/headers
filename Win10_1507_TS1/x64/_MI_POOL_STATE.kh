@@ -1,0 +1,26 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _MI_POOL_STATE
+{
+  U64 MaximumNonPagedPoolThreshold;
+  U32 NonPagedPoolSListMaximum[3];
+  volatile U64 AllocatedNonPagedPool;
+  struct _SINGLE_LIST_ENTRY BadPoolHead;
+  U32 PoolFailures[3][3];
+  U32 PoolFailureReasons[11];
+  U64 LowPagedPoolThreshold;
+  U64 HighPagedPoolThreshold;
+  U32 PagedPoolSListMaximum;
+  U32 PreemptiveTrims[4];
+  U64 SpecialPagesInUsePeak;
+  U32 SpecialPoolRejected[9];
+  volatile U64 SpecialPagesNonPaged;
+  volatile S32 SpecialPoolPdes;
+  U32 SessionSpecialPoolPdesMax;
+  U64 TotalPagedPoolQuota;
+  U64 TotalNonPagedPoolQuota;
+} MI_POOL_STATE, *PMI_POOL_STATE; 
+

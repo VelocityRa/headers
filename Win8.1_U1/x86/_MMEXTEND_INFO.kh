@@ -1,0 +1,7 @@
+typedef struct _MMEXTEND_INFO
+{
+  U64 CommittedSize;
+  U32 ReferenceCount;
+  S32 __PADDING__[1];
+} MMEXTEND_INFO, *PMMEXTEND_INFO; 
+

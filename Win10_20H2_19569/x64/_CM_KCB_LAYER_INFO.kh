@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _CM_KCB_LAYER_INFO
+{
+  struct _LIST_ENTRY LayerListEntry;
+  struct _CM_KEY_CONTROL_BLOCK* Kcb;
+  struct _CM_KCB_LAYER_INFO* LowerLayer;
+  struct _LIST_ENTRY UpperLayerListHead;
+} CM_KCB_LAYER_INFO, *PCM_KCB_LAYER_INFO; 
+

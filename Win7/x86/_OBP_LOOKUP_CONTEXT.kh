@@ -1,0 +1,11 @@
+typedef struct _OBP_LOOKUP_CONTEXT
+{
+  struct _OBJECT_DIRECTORY* Directory;
+  void* Object;
+  U32 HashValue;
+  U16 HashIndex;
+  U8 DirectoryLocked;
+  U8 LockedExclusive;
+  volatile U32 LockStateSignature;
+} OBP_LOOKUP_CONTEXT, *POBP_LOOKUP_CONTEXT; 
+

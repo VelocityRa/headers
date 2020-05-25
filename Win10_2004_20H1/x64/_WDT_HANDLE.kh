@@ -1,0 +1,5 @@
+typedef struct _WDT_HANDLE
+{
+  char Reserved;
+} WDT_HANDLE, *PWDT_HANDLE; 
+

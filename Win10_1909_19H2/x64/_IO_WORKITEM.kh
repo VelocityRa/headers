@@ -1,0 +1,33 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _IO_WORKITEM
+{
+  struct _WORK_QUEUE_ITEM WorkItem;
+  void* Routine;
+  void* IoObject;
+  void* Context;
+  struct _ETHREAD* WorkOnBehalfThread;
+  U32 Type;
+  struct _GUID ActivityId;
+  S32 __PADDING__[1];
+} IO_WORKITEM, *PIO_WORKITEM; 
+

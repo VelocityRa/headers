@@ -1,0 +1,24 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _PO_POWER_PLANE_PROFILE
+{
+  U32 ExclusivePowerMw;
+  U32 PeakPowerMw;
+} PO_POWER_PLANE_PROFILE, *PPO_POWER_PLANE_PROFILE; 
+
+typedef struct _POP_DEVICE_POWER_PROFILE
+{
+  struct _UNICODE_STRING DeviceId;
+  struct _POP_POWER_PLANE* PowerPlane;
+  struct _POP_FX_DEVICE* FxDevice;
+  S32 PowerDrawMw;
+  struct _PO_POWER_PLANE_PROFILE DxPower[4];
+  U32 ComponentCount;
+  struct _POP_COMPONENT_POWER_PROFILE** Components;
+} POP_DEVICE_POWER_PROFILE, *PPOP_DEVICE_POWER_PROFILE; 
+

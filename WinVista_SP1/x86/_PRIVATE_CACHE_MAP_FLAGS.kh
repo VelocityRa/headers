@@ -1,0 +1,12 @@
+typedef struct _PRIVATE_CACHE_MAP_FLAGS
+{
+  struct 
+  {
+    U32 DontUse : 16; 
+    U32 ReadAheadActive : 1; 
+    U32 ReadAheadEnabled : 1; 
+    U32 PagePriority : 3; 
+    U32 Available : 11; 
+  }; 
+} PRIVATE_CACHE_MAP_FLAGS, *PPRIVATE_CACHE_MAP_FLAGS; 
+

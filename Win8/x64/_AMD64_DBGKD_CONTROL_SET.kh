@@ -1,0 +1,8 @@
+typedef struct _AMD64_DBGKD_CONTROL_SET
+{
+  U32 TraceFlag;
+  U64 Dr7;
+  U64 CurrentSymbolStart;
+  U64 CurrentSymbolEnd;
+} AMD64_DBGKD_CONTROL_SET, *PAMD64_DBGKD_CONTROL_SET; 
+

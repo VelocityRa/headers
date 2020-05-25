@@ -1,0 +1,79 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef enum _PNP_DEVICE_ACTION_REQUEST
+{
+  AssignResources = 0,
+  ClearDeviceProblem = 1,
+  ClearProblem = 2,
+  ClearEjectProblem = 3,
+  HaltDevice = 4,
+  QueryPowerRelations = 5,
+  Rebalance = 6,
+  ReenumerateBootDevices = 7,
+  ReenumerateDeviceOnly = 8,
+  ReenumerateDeviceTree = 9,
+  ReenumerateRootDevices = 10,
+  RequeryDeviceState = 11,
+  ResetDevice = 12,
+  ResourceRequirementsChanged = 13,
+  RestartEnumeration = 14,
+  SetDeviceProblem = 15,
+  StartDevice = 16,
+  StartSystemDevicesPass0 = 17,
+  StartSystemDevicesPass1 = 18,
+  NotifyTransportRelationsChange = 19,
+  NotifyEjectionRelationsChange = 20,
+  ConfigureDevice = 21,
+  ConfigureDeviceClass = 22,
+  ConfigureDeviceExtensions = 23,
+  ConfigureDeviceReset = 24,
+  ClearDmaGuardProblem = 25,
+  PnpDeviceActionRequestMax = 26,
+} PNP_DEVICE_ACTION_REQUEST, *PPNP_DEVICE_ACTION_REQUEST;
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _PNP_DEVICE_ACTION_ENTRY
+{
+  struct _LIST_ENTRY ListEntry;
+  struct _DEVICE_OBJECT* DeviceObject;
+  enum _PNP_DEVICE_ACTION_REQUEST RequestType;
+  U8 ReorderingBarrier;
+  U64 RequestArgument;
+  struct _KEVENT* CompletionEvent;
+  S32* CompletionStatus;
+  struct _GUID ActivityId;
+  S32 RefCount;
+  U8 Dequeued;
+  struct _EX_PUSH_LOCK CancelLock;
+  U8 CancelRequested;
+  char __PADDING__[7];
+} PNP_DEVICE_ACTION_ENTRY, *PPNP_DEVICE_ACTION_ENTRY; 
+

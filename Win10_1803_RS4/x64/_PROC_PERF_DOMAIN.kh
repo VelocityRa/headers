@@ -1,0 +1,97 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[20];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _PROC_PERF_QOS_CLASS_POLICY
+{
+  U32 MaxPolicyPercent;
+  U32 MaxEquivalentFrequencyPercent;
+  U32 MinPolicyPercent;
+  U32 AutonomousActivityWindow;
+  U32 EnergyPerfPreference;
+  U8 ProvideGuidance;
+  U8 AllowThrottling;
+  U8 PerfBoostMode;
+  U8 LatencyHintPerf;
+  U8 TrackDesiredCrossClass;
+  char __PADDING__[3];
+} PROC_PERF_QOS_CLASS_POLICY, *PPROC_PERF_QOS_CLASS_POLICY; 
+
+typedef struct _PERF_CONTROL_STATE_SELECTION
+{
+  U64 SelectedState;
+  U32 SelectedPercent;
+  U32 SelectedFrequency;
+  U32 MinPercent;
+  U32 MaxPercent;
+  U32 TolerancePercent;
+  U32 EppPercent;
+  U32 AutonomousActivityWindow;
+  U8 Autonomous;
+  U8 InheritFromDomain;
+  char __PADDING__[2];
+} PERF_CONTROL_STATE_SELECTION, *PPERF_CONTROL_STATE_SELECTION; 
+
+typedef struct _PROC_PERF_DOMAIN
+{
+  struct _LIST_ENTRY Link;
+  struct _KPRCB* Master;
+  struct _KAFFINITY_EX Members;
+  U64 DomainContext;
+  U32 ProcessorCount;
+  U8 EfficiencyClass;
+  U8 NominalPerformanceClass;
+  U8 HighestPerformanceClass;
+  U8 Spare;
+  struct _PROC_PERF_CONSTRAINT* Processors;
+  void* GetFFHThrottleState;
+  void* TimeWindowHandler;
+  void* BoostPolicyHandler;
+  void* BoostModeHandler;
+  void* EnergyPerfPreferenceHandler;
+  void* AutonomousActivityWindowHandler;
+  void* AutonomousModeHandler;
+  void* ReinitializeHandler;
+  void* PerfSelectionHandler;
+  void* PerfControlHandler;
+  void* DomainPerfControlHandler;
+  U32 MaxFrequency;
+  U32 NominalFrequency;
+  U32 MaxPercent;
+  U32 MinPerfPercent;
+  U32 MinThrottlePercent;
+  U64 MinimumRelativePerformance;
+  U64 NominalRelativePerformance;
+  U8 NominalRelativePerformancePercent;
+  U8 Coordination;
+  U8 HardPlatformCap;
+  U8 AffinitizeControl;
+  U8 EfficientThrottle;
+  U8 AllowSchedulerDirectedPerfStates;
+  U8 InitiateAllProcessors;
+  U8 AutonomousMode;
+  U8 ProvideGuidance;
+  U32 DesiredPercent;
+  U32 GuaranteedPercent;
+  struct _PROC_PERF_QOS_CLASS_POLICY QosPolicies[4];
+  U32 QosDisableReasons[4];
+  U32 QosEquivalencyMasks[4];
+  U8 QosSupported;
+  volatile U32 SelectionGeneration;
+  struct _PERF_CONTROL_STATE_SELECTION QosSelection[4];
+  U64 PerfChangeTime;
+  U32 PerfChangeIntervalCount;
+  U8 Force;
+  char __PADDING__[3];
+} PROC_PERF_DOMAIN, *PPROC_PERF_DOMAIN; 
+

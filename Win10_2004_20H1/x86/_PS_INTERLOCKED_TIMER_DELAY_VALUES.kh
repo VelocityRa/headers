@@ -1,0 +1,17 @@
+typedef union _PS_INTERLOCKED_TIMER_DELAY_VALUES
+{
+  union
+  {
+    struct 
+    {
+      U64 DelayMs : 30; 
+      U64 CoalescingWindowMs : 30; 
+      U64 Reserved : 1; 
+      U64 NewTimerWheel : 1; 
+      U64 Retry : 1; 
+      U64 Locked : 1; 
+    }; 
+    U64 All;
+  }; 
+} PS_INTERLOCKED_TIMER_DELAY_VALUES, *PPS_INTERLOCKED_TIMER_DELAY_VALUES; 
+

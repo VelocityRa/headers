@@ -1,0 +1,16 @@
+typedef struct _IMAGE_SECURITY_CONTEXT
+{
+  union
+  {
+    void* PageHashes;
+    U64 Value;
+    struct 
+    {
+      U64 SecurityBeingCreated : 1; 
+      U64 SecurityMandatory : 1; 
+      U64 Unused : 1; 
+      U64 PageHashPointer : 61; 
+    }; 
+  }; 
+} IMAGE_SECURITY_CONTEXT, *PIMAGE_SECURITY_CONTEXT; 
+

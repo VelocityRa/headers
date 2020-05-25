@@ -1,0 +1,16 @@
+typedef struct _HV_HYPERVISOR_VERSION_INFO
+{
+  U32 BuildNumber;
+  struct 
+  {
+    U32 MinorVersion : 16; 
+    U32 MajorVersion : 16; 
+  }; 
+  U32 ServicePack;
+  struct 
+  {
+    U32 ServiceNumber : 24; 
+    U32 ServiceBranch : 8; 
+  }; 
+} HV_HYPERVISOR_VERSION_INFO, *PHV_HYPERVISOR_VERSION_INFO; 
+

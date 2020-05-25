@@ -1,0 +1,50 @@
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _MI_PAGING_IO_STATE
+{
+  struct _RTL_AVL_TREE PageFileHead;
+  volatile S32 PageFileHeadSpinLock;
+  S32 PrefetchSeekThreshold;
+  U32 InPageSinglePages;
+  union _SLIST_HEADER InPageSupportSListHead[2];
+  union _SLIST_HEADER ReservedInPageSupportSListHead[2];
+  U8 InPageSupportSListMinimum[2];
+  struct _MMINPAGE_SUPPORT* FirstReservedInPageBlock[2];
+  struct _MMINPAGE_SUPPORT* LastReservedInPageBlock[2];
+  struct _MMPTE* ReservedPtes;
+  U64 ReservedPtesLock;
+  U32 ReservedPtesBitBuffer;
+  volatile S32 DelayPageFaults;
+  U32 FileCompressionBoundary;
+  U8 MdlsAdjusted;
+  char __PADDING__[11];
+} MI_PAGING_IO_STATE, *PMI_PAGING_IO_STATE; 
+

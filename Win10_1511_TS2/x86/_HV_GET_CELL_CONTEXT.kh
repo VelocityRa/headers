@@ -1,0 +1,13 @@
+typedef struct _HV_GET_CELL_CONTEXT
+{
+  union
+  {
+    U32 Cell;
+    struct 
+    {
+      U32 IsInTempBin : 1; 
+      U32 Reserved : 31; 
+    }; 
+  }; 
+} HV_GET_CELL_CONTEXT, *PHV_GET_CELL_CONTEXT; 
+

@@ -1,0 +1,7 @@
+typedef struct _PROCESSOR_NUMBER
+{
+  U16 Group;
+  U8 Number;
+  U8 Reserved;
+} PROCESSOR_NUMBER, *PPROCESSOR_NUMBER; 
+

@@ -1,0 +1,6 @@
+typedef struct _LOGGED_STREAM_CALLBACK_V1
+{
+  void* LogHandle;
+  void* FlushToLsnRoutine;
+} LOGGED_STREAM_CALLBACK_V1, *PLOGGED_STREAM_CALLBACK_V1; 
+

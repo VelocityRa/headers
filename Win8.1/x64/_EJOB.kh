@@ -1,0 +1,352 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 QueueControlFlags;
+        struct 
+        {
+          U8 Abandoned : 1; 
+          U8 DisableIncrement : 1; 
+        }; 
+        U8 Signalling;
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Reserved1 : 2; 
+          }; 
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved2 : 4; 
+            }; 
+            U8 Hand;
+            U8 Reserved3;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 6; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Minimal : 1; 
+                  U8 Reserved4 : 3; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+                U8 DpcActive;
+                U8 Reserved5;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _OWNER_ENTRY
+{
+  U64 OwnerThread;
+  union
+  {
+    struct 
+    {
+      U32 IoPriorityBoosted : 1; 
+      U32 OwnerReferenced : 1; 
+      U32 OwnerCount : 30; 
+    }; 
+    U32 TableSize;
+  }; 
+  S32 __PADDING__[1];
+} OWNER_ENTRY, *POWNER_ENTRY; 
+
+typedef struct _ERESOURCE
+{
+  struct _LIST_ENTRY SystemResourcesList;
+  struct _OWNER_ENTRY* OwnerTable;
+  S16 ActiveCount;
+  union
+  {
+    U16 Flag;
+    struct
+    {
+      U8 ReservedLowFlags;
+      U8 WaiterPriority;
+    }; 
+  }; 
+  struct _KSEMAPHORE* SharedWaiters;
+  struct _KEVENT* ExclusiveWaiters;
+  struct _OWNER_ENTRY OwnerEntry;
+  U32 ActiveEntries;
+  U32 ContentionCount;
+  U32 NumberOfSharedWaiters;
+  U32 NumberOfExclusiveWaiters;
+  void* Reserved2;
+  union
+  {
+    void* Address;
+    U64 CreatorBackTraceIndex;
+  }; 
+  U64 SpinLock;
+} ERESOURCE, *PERESOURCE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _KAFFINITY_EX
+{
+  U16 Count;
+  U16 Size;
+  U32 Reserved;
+  U64 Bitmap[20];
+} KAFFINITY_EX, *PKAFFINITY_EX; 
+
+typedef struct _PROCESS_DISK_COUNTERS
+{
+  U64 BytesRead;
+  U64 BytesWritten;
+  U64 ReadOperationCount;
+  U64 WriteOperationCount;
+  U64 FlushOperationCount;
+} PROCESS_DISK_COUNTERS, *PPROCESS_DISK_COUNTERS; 
+
+typedef struct _WNF_STATE_NAME
+{
+  U32 Data[2];
+} WNF_STATE_NAME, *PWNF_STATE_NAME; 
+
+typedef struct _PS_WAKE_INFORMATION
+{
+  U64 NotificationChannel;
+  U64 WakeCounters[5];
+  U64 NoWakeCounter;
+} PS_WAKE_INFORMATION, *PPS_WAKE_INFORMATION; 
+
+typedef struct _JOBOBJECT_WAKE_FILTER
+{
+  U32 HighEdgeFilter;
+  U32 LowEdgeFilter;
+} JOBOBJECT_WAKE_FILTER, *PJOBOBJECT_WAKE_FILTER; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _EPROCESS_VALUES
+{
+  U64 KernelTime;
+  U64 UserTime;
+  U64 CycleTime;
+  U64 ContextSwitches;
+  S64 ReadOperationCount;
+  S64 WriteOperationCount;
+  S64 OtherOperationCount;
+  S64 ReadTransferCount;
+  S64 WriteTransferCount;
+  S64 OtherTransferCount;
+} EPROCESS_VALUES, *PEPROCESS_VALUES; 
+
+typedef struct _EJOB
+{
+  struct _KEVENT Event;
+  struct _LIST_ENTRY JobLinks;
+  struct _LIST_ENTRY ProcessListHead;
+  struct _ERESOURCE JobLock;
+  union _LARGE_INTEGER TotalUserTime;
+  union _LARGE_INTEGER TotalKernelTime;
+  union _LARGE_INTEGER TotalCycleTime;
+  union _LARGE_INTEGER ThisPeriodTotalUserTime;
+  union _LARGE_INTEGER ThisPeriodTotalKernelTime;
+  U64 TotalContextSwitches;
+  U32 TotalPageFaultCount;
+  U32 TotalProcesses;
+  U32 ActiveProcesses;
+  U32 TotalTerminatedProcesses;
+  union _LARGE_INTEGER PerProcessUserTimeLimit;
+  union _LARGE_INTEGER PerJobUserTimeLimit;
+  U64 MinimumWorkingSetSize;
+  U64 MaximumWorkingSetSize;
+  U32 LimitFlags;
+  U32 ActiveProcessLimit;
+  struct _KAFFINITY_EX Affinity;
+  struct _JOB_ACCESS_STATE* AccessState;
+  void* AccessStateQuotaReference;
+  U32 UIRestrictionsClass;
+  U32 EndOfJobTimeAction;
+  void* CompletionPort;
+  void* CompletionKey;
+  U64 CompletionCount;
+  U32 SessionId;
+  U32 SchedulingClass;
+  U64 ReadOperationCount;
+  U64 WriteOperationCount;
+  U64 OtherOperationCount;
+  U64 ReadTransferCount;
+  U64 WriteTransferCount;
+  U64 OtherTransferCount;
+  struct _PROCESS_DISK_COUNTERS DiskIoInfo;
+  U64 ProcessMemoryLimit;
+  U64 JobMemoryLimit;
+  U64 PeakProcessMemoryUsed;
+  U64 PeakJobMemoryUsed;
+  struct _KAFFINITY_EX EffectiveAffinity;
+  union _LARGE_INTEGER EffectivePerProcessUserTimeLimit;
+  U64 EffectiveMinimumWorkingSetSize;
+  U64 EffectiveMaximumWorkingSetSize;
+  U64 EffectiveProcessMemoryLimit;
+  struct _EJOB* EffectiveProcessMemoryLimitJob;
+  struct _EJOB* EffectivePerProcessUserTimeLimitJob;
+  U32 EffectiveLimitFlags;
+  U32 EffectiveSchedulingClass;
+  U32 EffectiveFreezeCount;
+  U32 EffectiveBackgroundCount;
+  U32 EffectiveSwapCount;
+  U32 EffectiveNotificationLimitCount;
+  U8 EffectivePriorityClass;
+  U8 PriorityClass;
+  U8 Reserved1[2];
+  U32 CompletionFilter;
+  union
+  {
+    struct _WNF_STATE_NAME WakeChannel;
+    struct _PS_WAKE_INFORMATION WakeInfo;
+  }; 
+  struct _JOBOBJECT_WAKE_FILTER WakeFilter;
+  U32 LowEdgeLatchFilter;
+  U32 OwnedHighEdgeFilters;
+  struct _EJOB* NotificationLink;
+  U64 CurrentJobMemoryUsed;
+  struct _JOB_NOTIFICATION_INFORMATION* NotificationInfo;
+  void* NotificationInfoQuotaReference;
+  struct _IO_MINI_COMPLETION_PACKET_USER* NotificationPacket;
+  struct _JOB_CPU_RATE_CONTROL* CpuRateControl;
+  void* EffectiveSchedulingGroup;
+  U64 ReadyTime;
+  struct _EX_PUSH_LOCK MemoryLimitsLock;
+  struct _LIST_ENTRY SiblingJobLinks;
+  struct _LIST_ENTRY ChildJobListHead;
+  struct _EJOB* ParentJob;
+  struct _EJOB* volatile RootJob;
+  struct _LIST_ENTRY IteratorListHead;
+  U64 AncestorCount;
+  struct _EJOB** Ancestors;
+  struct _EPROCESS_VALUES Accounting;
+  U32 ShadowActiveProcessCount;
+  U32 SequenceNumber;
+  U64 TimerListLock;
+  struct _LIST_ENTRY TimerListHead;
+  union
+  {
+    U32 JobFlags;
+    struct 
+    {
+      U32 CloseDone : 1; 
+      U32 MultiGroup : 1; 
+      U32 OutstandingNotification : 1; 
+      U32 NotificationInProgress : 1; 
+      U32 UILimits : 1; 
+      U32 CpuRateControlActive : 1; 
+      U32 OwnCpuRateControl : 1; 
+      U32 Terminating : 1; 
+      U32 WorkingSetLock : 1; 
+      U32 JobFrozen : 1; 
+      U32 Background : 1; 
+      U32 WakeNotificationAllocated : 1; 
+      U32 WakeNotificationEnabled : 1; 
+      U32 WakeNotificationPending : 1; 
+      U32 LimitNotificationRequired : 1; 
+      U32 ZeroCountNotificationRequired : 1; 
+      U32 CycleTimeNotificationRequired : 1; 
+      U32 CycleTimeNotificationPending : 1; 
+      U32 TimersVirtualized : 1; 
+      U32 JobSwapped : 1; 
+      U32 ViolationDetected : 1; 
+      U32 EmptyJobNotified : 1; 
+      U32 NoSystemCharge : 1; 
+      U32 DropNoWakeCharges : 1; 
+      U32 NoWakeChargePolicyDecided : 1; 
+      U32 SpareJobFlags : 7; 
+    }; 
+  }; 
+  U32 EffectiveHighEdgeFilters;
+} EJOB, *PEJOB; 
+

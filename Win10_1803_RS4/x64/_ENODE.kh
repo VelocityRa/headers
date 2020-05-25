@@ -1,0 +1,82 @@
+typedef struct _GROUP_AFFINITY
+{
+  U64 Mask;
+  U16 Group;
+  U16 Reserved[3];
+} GROUP_AFFINITY, *PGROUP_AFFINITY; 
+
+typedef struct _flags
+{
+  struct 
+  {
+    U8 Removable : 1; 
+    U8 GroupAssigned : 1; 
+    U8 GroupCommitted : 1; 
+    U8 GroupAssignmentFixed : 1; 
+    U8 Fill : 4; 
+  }; 
+} flags, *Pflags; 
+
+typedef struct _KHETERO_PROCESSOR_SET
+{
+  U64 IdealMask;
+  U64 PreferredMask;
+  U64 AvailableMask;
+} KHETERO_PROCESSOR_SET, *PKHETERO_PROCESSOR_SET; 
+
+typedef struct _KNODE
+{
+  U64 IdleNonParkedCpuSet;
+  U64 IdleSmtSet;
+  U64 IdleCpuSet;
+  U64 DeepIdleSet;
+  U64 IdleConstrainedSet;
+  U64 NonParkedSet;
+  U64 NonIsrTargetedSet;
+  S32 ParkLock;
+  U32 Seed;
+  U32 SiblingMask;
+  union
+  {
+    struct _GROUP_AFFINITY Affinity;
+    struct
+    {
+      U8 AffinityFill[10];
+      U16 NodeNumber;
+      U16 PrimaryNodeNumber;
+      U8 Stride;
+      U8 Spare0;
+    }; 
+  }; 
+  U64 SharedReadyQueueLeaders;
+  U32 ProximityId;
+  U32 Lowest;
+  U32 Highest;
+  U8 MaximumProcessors;
+  struct _flags Flags;
+  U8 Spare10;
+  struct _KHETERO_PROCESSOR_SET HeteroSets[5];
+  U64 PpmConfiguredQosSets[4];
+  S32 __PADDING__[14];
+} KNODE, *PKNODE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _ENODE
+{
+  struct _KNODE Ncb;
+  struct _WORK_QUEUE_ITEM HotAddProcessorWorkItem;
+  S32 __PADDING__[8];
+} ENODE, *PENODE; 
+

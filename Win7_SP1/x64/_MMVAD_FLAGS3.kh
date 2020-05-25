@@ -1,0 +1,15 @@
+typedef struct _MMVAD_FLAGS3
+{
+  struct 
+  {
+    U64 PreferredNode : 6; 
+    U64 Teb : 1; 
+    U64 Spare : 1; 
+    U64 SequentialAccess : 1; 
+    U64 LastSequentialTrim : 15; 
+    U64 Spare2 : 8; 
+    U64 LargePageCreating : 1; 
+    U64 Spare3 : 31; 
+  }; 
+} MMVAD_FLAGS3, *PMMVAD_FLAGS3; 
+

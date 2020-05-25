@@ -1,0 +1,19 @@
+typedef struct _SYSTEM_POWER_STATE_CONTEXT
+{
+  union
+  {
+    struct 
+    {
+      U32 Reserved1 : 8; 
+      U32 TargetSystemState : 4; 
+      U32 EffectiveSystemState : 4; 
+      U32 CurrentSystemState : 4; 
+      U32 IgnoreHibernationPath : 1; 
+      U32 PseudoTransition : 1; 
+      U32 KernelSoftReboot : 1; 
+      U32 Reserved2 : 9; 
+    }; 
+    U32 ContextAsUlong;
+  }; 
+} SYSTEM_POWER_STATE_CONTEXT, *PSYSTEM_POWER_STATE_CONTEXT; 
+

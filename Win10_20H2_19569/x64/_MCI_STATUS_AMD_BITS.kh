@@ -1,0 +1,20 @@
+typedef struct _MCI_STATUS_AMD_BITS
+{
+  struct 
+  {
+    U64 McaErrorCode : 16; 
+    U64 ModelErrorCode : 16; 
+    U64 ImplementationSpecific2 : 11; 
+    U64 Poison : 1; 
+    U64 Deferred : 1; 
+    U64 ImplementationSpecific1 : 12; 
+    U64 ContextCorrupt : 1; 
+    U64 AddressValid : 1; 
+    U64 MiscValid : 1; 
+    U64 ErrorEnabled : 1; 
+    U64 UncorrectedError : 1; 
+    U64 StatusOverFlow : 1; 
+    U64 Valid : 1; 
+  }; 
+} MCI_STATUS_AMD_BITS, *PMCI_STATUS_AMD_BITS; 
+

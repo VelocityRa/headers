@@ -1,0 +1,15 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _MI_DRIVER_VA
+{
+  struct _MI_DRIVER_VA* Next;
+  struct _MMPTE* PointerPte;
+  struct _RTL_BITMAP BitMap;
+  U32 Hint;
+  S32 __PADDING__[1];
+} MI_DRIVER_VA, *PMI_DRIVER_VA; 
+

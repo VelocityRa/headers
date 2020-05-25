@@ -1,0 +1,7 @@
+typedef struct _HAL_DP_REPLACE_PARAMETERS
+{
+  U32 Flags;
+  struct _PNP_REPLACE_PROCESSOR_LIST* TargetProcessors;
+  struct _PNP_REPLACE_PROCESSOR_LIST* SpareProcessors;
+} HAL_DP_REPLACE_PARAMETERS, *PHAL_DP_REPLACE_PARAMETERS; 
+

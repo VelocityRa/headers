@@ -1,0 +1,11 @@
+typedef struct _KALPC_MESSAGE_ATTRIBUTES
+{
+  void* ClientContext;
+  void* ServerContext;
+  void* PortContext;
+  void* CancelPortContext;
+  struct _KALPC_SECURITY_DATA* SecurityData;
+  struct _KALPC_VIEW* View;
+  struct _KALPC_HANDLE_DATA* HandleData;
+} KALPC_MESSAGE_ATTRIBUTES, *PKALPC_MESSAGE_ATTRIBUTES; 
+

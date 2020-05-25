@@ -1,0 +1,15 @@
+typedef struct _KREQUEST_PACKET
+{
+  void* CurrentPacket[3];
+  void* WorkerRoutine;
+} KREQUEST_PACKET, *PKREQUEST_PACKET; 
+
+typedef struct _REQUEST_MAILBOX
+{
+  struct _REQUEST_MAILBOX* Next;
+  U32 RequestSummary;
+  struct _KREQUEST_PACKET RequestPacket;
+  volatile S32* NodeTargetCountAddr;
+  volatile S32 NodeTargetCount;
+} REQUEST_MAILBOX, *PREQUEST_MAILBOX; 
+

@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KDPC_DATA
+{
+  struct _LIST_ENTRY DpcListHead;
+  U64 DpcLock;
+  volatile S32 DpcQueueDepth;
+  U32 DpcCount;
+} KDPC_DATA, *PKDPC_DATA; 
+

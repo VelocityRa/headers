@@ -1,0 +1,10 @@
+typedef struct _MI_SYSTEM_NODE_NONPAGED_POOL
+{
+  U32 CachedNonPagedPoolCount;
+  U32 NonPagedPoolSpinLock;
+  struct _MMPFN* CachedNonPagedPool;
+  void* NonPagedPoolFirstVa;
+  void* NonPagedPoolLastVa;
+  struct _MI_SYSTEM_NODE_INFORMATION* SystemNodeInformation;
+} MI_SYSTEM_NODE_NONPAGED_POOL, *PMI_SYSTEM_NODE_NONPAGED_POOL; 
+

@@ -1,0 +1,21 @@
+typedef struct _PROCLOCALGIC
+{
+  U8 Type;
+  U8 Length;
+  U16 Reserved;
+  U32 Identifier;
+  U32 AcpiProcessorId;
+  U32 Flags;
+  U32 ParkingProtocolVersion;
+  U32 PerformanceInterruptGsi;
+  U64 ParkedPhysicalAddress;
+  U64 ControllerPhysicalAddress;
+  U64 Gicv;
+  U64 Gich;
+  U32 VgicMaintenanceInterrupt;
+  U64 GicrBaseAddress;
+  U64 Mpidr;
+  U8 ProcessorPowerEfficiencyClass;
+  U8 Reserved2[3];
+} PROCLOCALGIC, *PPROCLOCALGIC; 
+

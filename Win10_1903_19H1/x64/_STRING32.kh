@@ -1,0 +1,7 @@
+typedef struct _STRING32
+{
+  U16 Length;
+  U16 MaximumLength;
+  U32 Buffer;
+} STRING32, *PSTRING32; 
+

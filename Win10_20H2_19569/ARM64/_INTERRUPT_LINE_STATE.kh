@@ -1,0 +1,71 @@
+typedef enum _KINTERRUPT_POLARITY
+{
+  InterruptPolarityUnknown = 0,
+  InterruptActiveHigh = 1,
+  InterruptRisingEdge = 1,
+  InterruptActiveLow = 2,
+  InterruptFallingEdge = 2,
+  InterruptActiveBoth = 3,
+  InterruptActiveBothTriggerLow = 3,
+  InterruptActiveBothTriggerHigh = 4,
+} KINTERRUPT_POLARITY, *PKINTERRUPT_POLARITY;
+
+typedef enum _KINTERRUPT_MODE
+{
+  LevelSensitive = 0,
+  Latched = 1,
+} KINTERRUPT_MODE, *PKINTERRUPT_MODE;
+
+typedef struct _INTERRUPT_LINE
+{
+  U32 UnitId;
+  S32 Line;
+} INTERRUPT_LINE, *PINTERRUPT_LINE; 
+
+typedef enum _INTERRUPT_TARGET_TYPE
+{
+  InterruptTargetInvalid = 0,
+  InterruptTargetAllIncludingSelf = 1,
+  InterruptTargetAllExcludingSelf = 2,
+  InterruptTargetSelfOnly = 3,
+  InterruptTargetPhysical = 4,
+  InterruptTargetLogicalFlat = 5,
+  InterruptTargetLogicalClustered = 6,
+  InterruptTargetRemapIndex = 7,
+  InterruptTargetHypervisor = 8,
+} INTERRUPT_TARGET_TYPE, *PINTERRUPT_TARGET_TYPE;
+
+typedef struct _INTERRUPT_TARGET
+{
+  enum _INTERRUPT_TARGET_TYPE Target;
+  union
+  {
+    U32 PhysicalTarget;
+    U32 LogicalFlatTarget;
+    U32 RemapIndex;
+    struct
+    {
+      U32 ClusterId;
+      U32 ClusterMask;
+    }; 
+    struct
+    {
+      U32 Low32;
+      U32 High32;
+      U64 InterruptData;
+    } HypervisorTarget;
+  }; 
+} INTERRUPT_TARGET, *PINTERRUPT_TARGET; 
+
+typedef struct _INTERRUPT_LINE_STATE
+{
+  enum _KINTERRUPT_POLARITY Polarity;
+  U8 EmulateActiveBoth;
+  enum _KINTERRUPT_MODE TriggerMode;
+  U32 Flags;
+  struct _INTERRUPT_LINE Routing;
+  struct _INTERRUPT_TARGET ProcessorTarget;
+  U32 Vector;
+  U32 Priority;
+} INTERRUPT_LINE_STATE, *PINTERRUPT_LINE_STATE; 
+

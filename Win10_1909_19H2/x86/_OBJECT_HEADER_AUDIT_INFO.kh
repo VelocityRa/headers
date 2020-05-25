@@ -1,0 +1,6 @@
+typedef struct _OBJECT_HEADER_AUDIT_INFO
+{
+  void* SecurityDescriptor;
+  U32 Reserved;
+} OBJECT_HEADER_AUDIT_INFO, *POBJECT_HEADER_AUDIT_INFO; 
+

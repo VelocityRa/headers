@@ -1,0 +1,29 @@
+typedef union _KALPC_DIRECT_EVENT
+{
+  union
+  {
+    U32 Event;
+    struct 
+    {
+      U32 Referenced : 1; 
+      U32 Reserved : 31; 
+    }; 
+  }; 
+} KALPC_DIRECT_EVENT, *PKALPC_DIRECT_EVENT; 
+
+typedef struct _ALPC_DISPATCH_CONTEXT
+{
+  struct _ALPC_PORT* PortObject;
+  struct _KALPC_MESSAGE* Message;
+  struct _ALPC_COMMUNICATION_INFO* CommunicationInfo;
+  struct _ETHREAD* TargetThread;
+  struct _ALPC_PORT* TargetPort;
+  union _KALPC_DIRECT_EVENT DirectEvent;
+  U32 Flags;
+  U16 TotalLength;
+  U16 Type;
+  U16 DataInfoOffset;
+  U8 SignalCompletion;
+  U8 PostedToCompletionList;
+} ALPC_DISPATCH_CONTEXT, *PALPC_DISPATCH_CONTEXT; 
+

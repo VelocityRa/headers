@@ -1,0 +1,14 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KRESOURCEMANAGER_COMPLETION_BINDING
+{
+  struct _LIST_ENTRY NotificationListHead;
+  void* Port;
+  U32 Key;
+  struct _EPROCESS* BindingProcess;
+} KRESOURCEMANAGER_COMPLETION_BINDING, *PKRESOURCEMANAGER_COMPLETION_BINDING; 
+

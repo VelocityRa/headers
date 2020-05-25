@@ -1,0 +1,6 @@
+typedef struct _PEB_FREE_BLOCK
+{
+  struct _PEB_FREE_BLOCK* Next;
+  U32 Size;
+} PEB_FREE_BLOCK, *PPEB_FREE_BLOCK; 
+

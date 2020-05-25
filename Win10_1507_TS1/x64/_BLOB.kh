@@ -1,0 +1,60 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _SLIST_ENTRY
+{
+  struct _SLIST_ENTRY* Next;
+  S32 __PADDING__[2];
+} SLIST_ENTRY, *PSLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _BLOB
+{
+  union
+  {
+    struct _LIST_ENTRY ResourceList;
+    struct _SLIST_ENTRY FreeListEntry;
+  }; 
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct 
+        {
+          U8 ReferenceCache : 1; 
+          U8 Lookaside : 1; 
+          U8 Initializing : 1; 
+          U8 Deleted : 1; 
+        }; 
+      } s1;
+      U8 Flags;
+    }; 
+  } u1;
+  U8 ResourceId;
+  S16 CachedReferences;
+  S64 ReferenceCount;
+  struct _EX_PUSH_LOCK Lock;
+  S32 __PADDING__[2];
+} BLOB, *PBLOB; 
+

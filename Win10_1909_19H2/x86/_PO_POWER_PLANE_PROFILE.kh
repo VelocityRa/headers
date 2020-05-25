@@ -1,0 +1,6 @@
+typedef struct _PO_POWER_PLANE_PROFILE
+{
+  U32 ExclusivePowerMw;
+  U32 PeakPowerMw;
+} PO_POWER_PLANE_PROFILE, *PPO_POWER_PLANE_PROFILE; 
+

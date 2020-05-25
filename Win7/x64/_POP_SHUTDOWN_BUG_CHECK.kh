@@ -1,0 +1,12 @@
+typedef struct _POP_SHUTDOWN_BUG_CHECK
+{
+  void* ThreadHandle;
+  void* ThreadId;
+  void* ProcessId;
+  U32 Code;
+  U64 Parameter1;
+  U64 Parameter2;
+  U64 Parameter3;
+  U64 Parameter4;
+} POP_SHUTDOWN_BUG_CHECK, *PPOP_SHUTDOWN_BUG_CHECK; 
+

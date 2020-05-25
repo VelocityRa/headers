@@ -1,0 +1,36 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _VI_DEADLOCK_NODE
+{
+  struct _VI_DEADLOCK_NODE* Parent;
+  struct _LIST_ENTRY ChildrenList;
+  struct _LIST_ENTRY SiblingsList;
+  union
+  {
+    struct _LIST_ENTRY ResourceList;
+    struct _LIST_ENTRY FreeListEntry;
+  }; 
+  struct _VI_DEADLOCK_RESOURCE* Root;
+  struct _VI_DEADLOCK_THREAD* ThreadEntry;
+  union
+  {
+    union
+    {
+      struct 
+      {
+        U32 Active : 1; 
+        U32 OnlyTryAcquireUsed : 1; 
+        U32 ReleasedOutOfOrder : 1; 
+        U32 SequenceNumber : 29; 
+      }; 
+      U32 Whole;
+    }; 
+  } u1;
+  void* StackTrace[8];
+  void* ParentStackTrace[8];
+} VI_DEADLOCK_NODE, *PVI_DEADLOCK_NODE; 
+

@@ -1,0 +1,21 @@
+typedef struct _DESCRIPTION_HEADER
+{
+  U32 Signature;
+  U32 Length;
+  U8 Revision;
+  U8 Checksum;
+  char OEMID[6];
+  char OEMTableID[8];
+  U32 OEMRevision;
+  char CreatorID[4];
+  U32 CreatorRev;
+} DESCRIPTION_HEADER, *PDESCRIPTION_HEADER; 
+
+typedef struct _MAPIC
+{
+  struct _DESCRIPTION_HEADER Header;
+  U32 LocalAPICAddress;
+  U32 Flags;
+  U32 APICTables[1];
+} MAPIC, *PMAPIC; 
+

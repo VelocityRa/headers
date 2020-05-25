@@ -1,0 +1,7 @@
+struct wil_details_SetPropertyFlagContext
+{
+  struct wil_details_RecordUsageResult* result;
+  U32 flags;
+  S32 ignoreReporting;
+}; 
+

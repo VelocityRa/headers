@@ -1,0 +1,19 @@
+typedef struct _RTL_BITMAP_EX
+{
+  U64 SizeOfBitMap;
+  U64* Buffer;
+} RTL_BITMAP_EX, *PRTL_BITMAP_EX; 
+
+typedef struct _MI_DYNAMIC_BITMAP
+{
+  struct _RTL_BITMAP_EX Bitmap;
+  U64 MaximumSize;
+  U64 Hint;
+  void* BaseVa;
+  U64 SizeTopDown;
+  U64 HintTopDown;
+  void* BaseVaTopDown;
+  U64 SpinLock;
+  struct _MMSUPPORT* Vm;
+} MI_DYNAMIC_BITMAP, *PMI_DYNAMIC_BITMAP; 
+

@@ -1,0 +1,19 @@
+typedef struct _POP_FX_ACTIVE_TIME_ACCOUNTING
+{
+  U64 Total;
+  U64 Unattributed;
+  U64 Buckets[5];
+  U64 PerBucket[5];
+} POP_FX_ACTIVE_TIME_ACCOUNTING, *PPOP_FX_ACTIVE_TIME_ACCOUNTING; 
+
+typedef struct _POP_FX_ACCOUNTING
+{
+  U64 Lock;
+  U8 Active;
+  U32 DripsRequiredState;
+  S32 Level;
+  S64 ActiveStamp;
+  struct _POP_FX_ACTIVE_TIME_ACCOUNTING CsActiveTimeAccounting;
+  struct _POP_FX_ACTIVE_TIME_ACCOUNTING CsCriticalActiveTimeAccounting;
+} POP_FX_ACCOUNTING, *PPOP_FX_ACCOUNTING; 
+

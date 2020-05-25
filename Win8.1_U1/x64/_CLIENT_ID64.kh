@@ -1,0 +1,6 @@
+typedef struct _CLIENT_ID64
+{
+  U64 UniqueProcess;
+  U64 UniqueThread;
+} CLIENT_ID64, *PCLIENT_ID64; 
+

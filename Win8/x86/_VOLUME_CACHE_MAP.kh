@@ -1,0 +1,71 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DIRTY_PAGE_STATISTICS
+{
+  U32 DirtyPages;
+  U32 DirtyPagesLastScan;
+  U32 DirtyPagesScheduledLastScan;
+} DIRTY_PAGE_STATISTICS, *PDIRTY_PAGE_STATISTICS; 
+
+typedef struct _DIRTY_PAGE_THRESHOLDS
+{
+  U32 DirtyPageThreshold;
+  U32 DirtyPageThresholdTop;
+  U32 DirtyPageThresholdBottom;
+  U32 DirtyPageTarget;
+} DIRTY_PAGE_THRESHOLDS, *PDIRTY_PAGE_THRESHOLDS; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _LOG_HANDLE_CONTEXT
+{
+  void* LogHandle;
+  void* FlushToLsnRoutine;
+  void* QueryLogHandleInfoRoutine;
+  struct _DIRTY_PAGE_STATISTICS DirtyPageStatistics;
+  struct _DIRTY_PAGE_THRESHOLDS DirtyPageThresholds;
+  U32 AdditionalPagesToWrite;
+  U32 CcLWScanDPThreshold;
+  union _LARGE_INTEGER LargestLsnForCurrentLWScan;
+  struct _FILE_OBJECT* RelatedFileObject;
+  U32 LargestLsnFileObjectKey;
+  union _LARGE_INTEGER LastLWTimeStamp;
+  U32 Flags;
+  S32 __PADDING__[1];
+} LOG_HANDLE_CONTEXT, *PLOG_HANDLE_CONTEXT; 
+
+typedef struct _VOLUME_CACHE_MAP
+{
+  S16 NodeTypeCode;
+  S16 NodeByteCode;
+  U32 UseCount;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _LIST_ENTRY VolumeCacheMapLinks;
+  U32 DirtyPages;
+  struct _LOG_HANDLE_CONTEXT LogHandleContext;
+  U32 Flags;
+  U32 PagesQueuedToDisk;
+  U32 LoggedPagesQueuedToDisk;
+  S32 __PADDING__[1];
+} VOLUME_CACHE_MAP, *PVOLUME_CACHE_MAP; 
+

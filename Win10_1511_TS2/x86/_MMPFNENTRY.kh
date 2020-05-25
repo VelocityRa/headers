@@ -1,0 +1,21 @@
+typedef struct _MMPFNENTRY
+{
+  struct 
+  {
+    U8 PageLocation : 3; 
+    U8 WriteInProgress : 1; 
+    U8 Modified : 1; 
+    U8 ReadInProgress : 1; 
+    U8 CacheAttribute : 2; 
+  }; 
+  struct 
+  {
+    U8 Priority : 3; 
+    U8 OnProtectedStandby : 1; 
+    U8 InPageError : 1; 
+    U8 SystemChargedPage : 1; 
+    U8 RemovalRequested : 1; 
+    U8 ParityError : 1; 
+  }; 
+} MMPFNENTRY, *PMMPFNENTRY; 
+

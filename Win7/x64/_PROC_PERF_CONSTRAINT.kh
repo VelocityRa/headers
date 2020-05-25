@@ -1,0 +1,14 @@
+typedef struct _PROC_PERF_CONSTRAINT
+{
+  struct _KPRCB* Prcb;
+  U64 PerfContext;
+  U32 PercentageCap;
+  U32 ThermalCap;
+  U32 TargetFrequency;
+  U32 AcumulatedFullFrequency;
+  U32 AcumulatedZeroFrequency;
+  U32 FrequencyHistoryTotal;
+  U32 AverageFrequency;
+  S32 __PADDING__[1];
+} PROC_PERF_CONSTRAINT, *PPROC_PERF_CONSTRAINT; 
+

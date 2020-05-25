@@ -1,0 +1,47 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _LOADER_PARAMETER_CI_EXTENSION
+{
+  U32 CodeIntegrityOptions;
+  struct 
+  {
+    U32 UpgradeInProgress : 1; 
+    U32 IsWinPE : 1; 
+    U32 CustomKernelSignersAllowed : 1; 
+    U32 Reserved : 29; 
+  }; 
+  union _LARGE_INTEGER WhqlEnforcementDate;
+  U32 RevocationListOffset;
+  U32 RevocationListSize;
+  U32 CodeIntegrityPolicyOffset;
+  U32 CodeIntegrityPolicySize;
+  U32 CodeIntegrityPolicyHashOffset;
+  U32 CodeIntegrityPolicyHashSize;
+  U32 CodeIntegrityPolicyOriginalHashOffset;
+  U32 CodeIntegrityPolicyOriginalHashSize;
+  S32 WeakCryptoPolicyLoadStatus;
+  U32 WeakCryptoPolicyOffset;
+  U32 WeakCryptoPolicySize;
+  U32 SecureBootPolicyOffset;
+  U32 SecureBootPolicySize;
+  U32 Reserved2;
+  U8 SerializedData[1];
+  char __PADDING__[7];
+} LOADER_PARAMETER_CI_EXTENSION, *PLOADER_PARAMETER_CI_EXTENSION; 
+

@@ -1,0 +1,39 @@
+typedef struct _RTL_HASH_TABLE
+{
+  U32 EntryCount;
+  struct 
+  {
+    U32 MaskBitCount : 5; 
+    U32 BucketCount : 27; 
+  }; 
+  struct _SINGLE_LIST_ENTRY* Buckets;
+} RTL_HASH_TABLE, *PRTL_HASH_TABLE; 
+
+typedef struct _RTL_SRWLOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} RTL_SRWLOCK, *PRTL_SRWLOCK; 
+
+typedef struct _RTL_STACKDB_CONTEXT
+{
+  struct _RTL_HASH_TABLE StackSegmentTable;
+  struct _RTL_HASH_TABLE StackEntryTable;
+  struct _RTL_SRWLOCK StackEntryTableLock;
+  struct _RTL_SRWLOCK SegmentTableLock;
+  void* Allocate;
+  void* Free;
+  void* AllocatorContext;
+} RTL_STACKDB_CONTEXT, *PRTL_STACKDB_CONTEXT; 
+

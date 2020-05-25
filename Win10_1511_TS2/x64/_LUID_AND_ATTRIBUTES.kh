@@ -1,0 +1,12 @@
+typedef struct _LUID
+{
+  U32 LowPart;
+  S32 HighPart;
+} LUID, *PLUID; 
+
+typedef struct _LUID_AND_ATTRIBUTES
+{
+  struct _LUID Luid;
+  U32 Attributes;
+} LUID_AND_ATTRIBUTES, *PLUID_AND_ATTRIBUTES; 
+

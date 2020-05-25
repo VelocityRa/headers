@@ -1,0 +1,7 @@
+typedef struct _MI_RESTRICTED_MODWRITES
+{
+  U8 MaximumClusterPages;
+  U8 ReducedClusterWrites;
+  U8 ImposeDelay;
+} MI_RESTRICTED_MODWRITES, *PMI_RESTRICTED_MODWRITES; 
+

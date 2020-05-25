@@ -1,0 +1,25 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _MI_SYSTEM_PTE_TYPE
+{
+  struct _RTL_BITMAP Bitmap;
+  U32 Flags;
+  U32 Hint;
+  struct _MMPTE* BasePte;
+  U32* FailureCount;
+  struct _MMSUPPORT* Vm;
+  volatile S32 TotalSystemPtes;
+  volatile S32 TotalFreeSystemPtes;
+  volatile S32 CachedPteCount;
+  U32 PteFailures;
+  union
+  {
+    U64 SpinLock;
+    struct _KGUARDED_MUTEX* GlobalMutex;
+  }; 
+} MI_SYSTEM_PTE_TYPE, *PMI_SYSTEM_PTE_TYPE; 
+

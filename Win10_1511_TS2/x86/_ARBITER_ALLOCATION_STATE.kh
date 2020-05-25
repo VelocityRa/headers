@@ -1,0 +1,16 @@
+typedef struct _ARBITER_ALLOCATION_STATE
+{
+  U64 Start;
+  U64 End;
+  U64 CurrentMinimum;
+  U64 CurrentMaximum;
+  struct _ARBITER_LIST_ENTRY* Entry;
+  struct _ARBITER_ALTERNATIVE* CurrentAlternative;
+  U32 AlternativeCount;
+  struct _ARBITER_ALTERNATIVE* Alternatives;
+  U16 Flags;
+  U8 RangeAttributes;
+  U8 RangeAvailableAttributes;
+  U32 WorkSpace;
+} ARBITER_ALLOCATION_STATE, *PARBITER_ALLOCATION_STATE; 
+

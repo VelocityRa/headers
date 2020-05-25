@@ -1,0 +1,18 @@
+struct DEBUG_DEVICE_ADDRESS
+{
+  U8 Type;
+  U8 Valid;
+  union
+  {
+    U8 Reserved[2];
+    struct
+    {
+      U8 BitWidth;
+      U8 AccessSize;
+    }; 
+  }; 
+  U8* TranslatedAddress;
+  U32 Length;
+  S32 __PADDING__[1];
+}; 
+

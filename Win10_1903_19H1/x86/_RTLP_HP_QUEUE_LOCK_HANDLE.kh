@@ -1,0 +1,7 @@
+typedef struct _RTLP_HP_QUEUE_LOCK_HANDLE
+{
+  U32 Reserved1;
+  U32 LockPtr;
+  U32 HandleData;
+} RTLP_HP_QUEUE_LOCK_HANDLE, *PRTLP_HP_QUEUE_LOCK_HANDLE; 
+

@@ -1,0 +1,8 @@
+struct tagSWITCH_CONTEXT_ATTRIBUTE
+{
+  U64 ulContextUpdateCounter;
+  S32 fAllowContextUpdate;
+  S32 fEnableTrace;
+  U64 EtwHandle;
+}; 
+

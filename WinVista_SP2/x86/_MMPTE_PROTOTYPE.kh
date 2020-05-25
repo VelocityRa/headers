@@ -1,0 +1,12 @@
+typedef struct _MMPTE_PROTOTYPE
+{
+  struct 
+  {
+    U32 Valid : 1; 
+    U32 ProtoAddressLow : 8; 
+    U32 ReadOnly : 1; 
+    U32 Prototype : 1; 
+    U32 ProtoAddressHigh : 21; 
+  }; 
+} MMPTE_PROTOTYPE, *PMMPTE_PROTOTYPE; 
+

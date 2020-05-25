@@ -1,0 +1,262 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 Abandoned;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved : 4; 
+            }; 
+            U8 Hand;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 6; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Reserved2 : 4; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Processor;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _KDPC
+{
+  U8 Type;
+  U8 Importance;
+  volatile U16 Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+enum POWER_POLICY_DEVICE_TYPE
+{
+  PolicyDeviceSystemButton = 0,
+  PolicyDeviceThermalZone = 1,
+  PolicyDeviceBattery = 2,
+  PolicyDeviceMemory = 3,
+  PolicyInitiatePowerActionAPI = 4,
+  PolicySetPowerStateAPI = 5,
+  PolicyImmediateDozeS4 = 6,
+  PolicySystemIdle = 7,
+  PolicyDeviceWakeAlarm = 8,
+  PolicyDeviceMax = 9,
+};
+
+typedef struct _POP_ACTION_TRIGGER
+{
+  enum POWER_POLICY_DEVICE_TYPE Type;
+  U32 Flags;
+  struct _POP_TRIGGER_WAIT* Wait;
+  union
+  {
+    struct
+    {
+      U32 Level;
+    } Battery;
+    struct
+    {
+      U32 Type;
+    } Button;
+  }; 
+  S32 __PADDING__[1];
+} POP_ACTION_TRIGGER, *PPOP_ACTION_TRIGGER; 
+
+typedef struct _THERMAL_INFORMATION_EX
+{
+  U32 ThermalStamp;
+  U32 ThermalConstant1;
+  U32 ThermalConstant2;
+  U32 SamplingPeriod;
+  U32 CurrentTemperature;
+  U32 PassiveTripPoint;
+  U32 CriticalTripPoint;
+  U8 ActiveTripPointCount;
+  U32 ActiveTripPoint[10];
+  U32 S4TransitionTripPoint;
+} THERMAL_INFORMATION_EX, *PTHERMAL_INFORMATION_EX; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _OWNER_ENTRY
+{
+  U64 OwnerThread;
+  union
+  {
+    struct 
+    {
+      U32 IoPriorityBoosted : 1; 
+      U32 OwnerReferenced : 1; 
+      U32 OwnerCount : 30; 
+    }; 
+    U32 TableSize;
+  }; 
+  S32 __PADDING__[1];
+} OWNER_ENTRY, *POWNER_ENTRY; 
+
+typedef struct _ERESOURCE
+{
+  struct _LIST_ENTRY SystemResourcesList;
+  struct _OWNER_ENTRY* OwnerTable;
+  S16 ActiveCount;
+  union
+  {
+    U16 Flag;
+    struct
+    {
+      U8 ReservedLowFlags;
+      U8 WaiterPriority;
+    }; 
+  }; 
+  struct _KSEMAPHORE* SharedWaiters;
+  struct _KEVENT* ExclusiveWaiters;
+  struct _OWNER_ENTRY OwnerEntry;
+  U32 ActiveEntries;
+  U32 ContentionCount;
+  U32 NumberOfSharedWaiters;
+  U32 NumberOfExclusiveWaiters;
+  void* Reserved2;
+  union
+  {
+    void* Address;
+    U64 CreatorBackTraceIndex;
+  }; 
+  U64 SpinLock;
+} ERESOURCE, *PERESOURCE; 
+
+typedef struct _POP_THERMAL_ZONE_METRICS
+{
+  struct _ERESOURCE MetricsResource;
+  U32 ActiveCount;
+  U32 PassiveCount;
+  union _LARGE_INTEGER LastActiveStartTick;
+  union _LARGE_INTEGER AverageActiveTime;
+  union _LARGE_INTEGER LastPassiveStartTick;
+  union _LARGE_INTEGER AveragePassiveTime;
+  union _LARGE_INTEGER StartTickSinceLastReset;
+} POP_THERMAL_ZONE_METRICS, *PPOP_THERMAL_ZONE_METRICS; 
+
+typedef struct _POP_THERMAL_ZONE
+{
+  struct _LIST_ENTRY Link;
+  U8 State;
+  U8 Flags;
+  U8 Mode;
+  U8 PendingMode;
+  U8 ActivePoint;
+  U8 PendingActivePoint;
+  S32 HighPrecisionThrottle;
+  S32 Throttle;
+  S32 PendingThrottle;
+  U64 ThrottleStartTime;
+  U64 LastTime;
+  U32 SampleRate;
+  U32 LastTemp;
+  struct _KTIMER PassiveTimer;
+  struct _KDPC PassiveDpc;
+  struct _POP_ACTION_TRIGGER OverThrottled;
+  struct _IRP* Irp;
+  struct _THERMAL_INFORMATION_EX Info;
+  union _LARGE_INTEGER InfoLastUpdateTime;
+  struct _POP_THERMAL_ZONE_METRICS Metrics;
+} POP_THERMAL_ZONE, *PPOP_THERMAL_ZONE; 
+

@@ -1,0 +1,74 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MMSUPPORT_FLAGS
+{
+  struct 
+  {
+    U8 SessionSpace : 1; 
+    U8 ModwriterAttached : 1; 
+    U8 TrimHard : 1; 
+    U8 MaximumWorkingSetHard : 1; 
+    U8 ForceTrim : 1; 
+    U8 MinimumWorkingSetHard : 1; 
+    U8 SessionMaster : 1; 
+    U8 TrimmerAttached : 1; 
+  }; 
+  struct 
+  {
+    U8 TrimmerDetaching : 1; 
+    U8 Reserved : 3; 
+    U8 PageStealers : 4; 
+  }; 
+  U8 MemoryPriority : 8; 
+  struct 
+  {
+    U8 WsleDeleted : 1; 
+    U8 VmExiting : 1; 
+    U8 ExpansionFailed : 1; 
+    U8 Available : 5; 
+  }; 
+} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MMSUPPORT
+{
+  struct _LIST_ENTRY WorkingSetExpansionLinks;
+  U16 LastTrimStamp;
+  U16 NextPageColor;
+  struct _MMSUPPORT_FLAGS Flags;
+  U32 PageFaultCount;
+  U32 PeakWorkingSetSize;
+  U32 ChargedWslePages;
+  U32 MinimumWorkingSetSize;
+  U32 MaximumWorkingSetSize;
+  struct _MMWSL* VmWorkingSetList;
+  U32 Claim;
+  U32 ActualWslePages;
+  U32 WorkingSetPrivateSize;
+  U32 WorkingSetSizeOverhead;
+  U32 WorkingSetSize;
+  struct _KGATE* ExitGate;
+  struct _EX_PUSH_LOCK WorkingSetMutex;
+  void* AccessLog;
+} MMSUPPORT, *PMMSUPPORT; 
+

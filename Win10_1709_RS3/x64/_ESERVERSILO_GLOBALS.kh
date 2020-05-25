@@ -1,0 +1,164 @@
+typedef struct _OBP_SYSTEM_DOS_DEVICE_STATE
+{
+  U32 GlobalDeviceMap;
+  U32 LocalDeviceCount[26];
+} OBP_SYSTEM_DOS_DEVICE_STATE, *POBP_SYSTEM_DOS_DEVICE_STATE; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _OBJECT_NAMESPACE_LOOKUPTABLE
+{
+  struct _LIST_ENTRY HashBuckets[37];
+  struct _EX_PUSH_LOCK Lock;
+  U32 NumberOfPrivateSpaces;
+  S32 __PADDING__[1];
+} OBJECT_NAMESPACE_LOOKUPTABLE, *POBJECT_NAMESPACE_LOOKUPTABLE; 
+
+typedef struct _OBP_SILODRIVERSTATE
+{
+  struct _DEVICE_MAP* SystemDeviceMap;
+  struct _OBP_SYSTEM_DOS_DEVICE_STATE SystemDosDeviceState;
+  struct _EX_PUSH_LOCK DeviceMapLock;
+  struct _OBJECT_NAMESPACE_LOOKUPTABLE PrivateNamespaceLookupTable;
+} OBP_SILODRIVERSTATE, *POBP_SILODRIVERSTATE; 
+
+typedef struct _SEP_SILOSTATE
+{
+  struct _SEP_LOGON_SESSION_REFERENCES* SystemLogonSession;
+  struct _SEP_LOGON_SESSION_REFERENCES* AnonymousLogonSession;
+  void* AnonymousLogonToken;
+  void* AnonymousLogonTokenNoEveryone;
+  struct _UNICODE_STRING* UncSystemPaths;
+  struct _CI_NGEN_PATHS* NgenPaths;
+} SEP_SILOSTATE, *PSEP_SILOSTATE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _SEP_RM_LSA_CONNECTION_STATE
+{
+  void* LsaProcessHandle;
+  void* LsaCommandPortHandle;
+  void* SepRmThreadHandle;
+  void* RmCommandPortHandle;
+  void* RmCommandServerPortHandle;
+  void* LsaCommandPortSectionHandle;
+  union _LARGE_INTEGER LsaCommandPortSectionSize;
+  void* LsaViewPortMemory;
+  void* RmViewPortMemory;
+  S32 LsaCommandPortMemoryDelta;
+  U8 LsaCommandPortActive;
+  char __PADDING__[3];
+} SEP_RM_LSA_CONNECTION_STATE, *PSEP_RM_LSA_CONNECTION_STATE; 
+
+typedef struct _WNF_LOCK
+{
+  struct _EX_PUSH_LOCK PushLock;
+} WNF_LOCK, *PWNF_LOCK; 
+
+typedef struct _WNF_SILODRIVERSTATE
+{
+  struct _WNF_SCOPE_MAP* ScopeMap;
+  void* volatile PermanentNameStoreRootKey;
+  void* volatile PersistentNameStoreRootKey;
+  volatile S64 PermanentNameSequenceNumber;
+  struct _WNF_LOCK PermanentNameSequenceNumberLock;
+  volatile S64 PermanentNameSequenceNumberPool;
+  volatile S64 RuntimeNameSequenceNumber;
+} WNF_SILODRIVERSTATE, *PWNF_SILODRIVERSTATE; 
+
+typedef struct _DBGK_SILOSTATE
+{
+  struct _EX_PUSH_LOCK ErrorPortLock;
+  struct _DBGKP_ERROR_PORT* ErrorPort;
+  struct _EPROCESS* ErrorProcess;
+  struct _KEVENT* ErrorPortRegisteredEvent;
+} DBGK_SILOSTATE, *PDBGK_SILOSTATE; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef enum _SERVERSILO_STATE
+{
+  SERVERSILO_INITING = 0,
+  SERVERSILO_STARTED = 1,
+  SERVERSILO_SHUTTING_DOWN = 2,
+  SERVERSILO_TERMINATING = 3,
+  SERVERSILO_TERMINATED = 4,
+} SERVERSILO_STATE, *PSERVERSILO_STATE;
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _ESERVERSILO_GLOBALS
+{
+  struct _OBP_SILODRIVERSTATE ObSiloState;
+  struct _SEP_SILOSTATE SeSiloState;
+  struct _SEP_RM_LSA_CONNECTION_STATE SeRmSiloState;
+  struct _ETW_SILODRIVERSTATE* EtwSiloState;
+  struct _EPROCESS* MiSessionLeaderProcess;
+  struct _EPROCESS* ExpDefaultErrorPortProcess;
+  void* ExpDefaultErrorPort;
+  U32 HardErrorState;
+  struct _WNF_SILODRIVERSTATE WnfSiloState;
+  struct _DBGK_SILOSTATE DbgkSiloState;
+  struct _UNICODE_STRING PsProtectedCurrentDirectory;
+  struct _UNICODE_STRING PsProtectedEnvironment;
+  void* ApiSetSection;
+  void* ApiSetSchema;
+  U8 OneCoreForwardersEnabled;
+  struct _UNICODE_STRING NtSystemRoot;
+  struct _UNICODE_STRING SiloRootDirectoryName;
+  struct _PSP_STORAGE* Storage;
+  enum _SERVERSILO_STATE State;
+  S32 ExitStatus;
+  struct _KEVENT* DeleteEvent;
+  struct _SILO_USER_SHARED_DATA* UserSharedData;
+  void* UserSharedSection;
+  struct _WORK_QUEUE_ITEM TerminateWorkItem;
+} ESERVERSILO_GLOBALS, *PESERVERSILO_GLOBALS; 
+

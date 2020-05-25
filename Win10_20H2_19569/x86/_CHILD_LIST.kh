@@ -1,0 +1,6 @@
+typedef struct _CHILD_LIST
+{
+  U32 Count;
+  U32 List;
+} CHILD_LIST, *PCHILD_LIST; 
+

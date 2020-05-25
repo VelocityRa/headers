@@ -1,0 +1,211 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _MM_PAGED_POOL_INFO
+{
+  struct _EX_PUSH_LOCK Lock;
+  U64 MaximumSize;
+  U64 AllocatedPagedPool;
+} MM_PAGED_POOL_INFO, *PMM_PAGED_POOL_INFO; 
+
+typedef struct _RTL_BITMAP_EX
+{
+  U64 SizeOfBitMap;
+  U64* Buffer;
+} RTL_BITMAP_EX, *PRTL_BITMAP_EX; 
+
+typedef enum _MI_SYSTEM_VA_TYPE
+{
+  MiVaUnused = 0,
+  MiVaSessionSpace = 1,
+  MiVaProcessSpace = 2,
+  MiVaBootLoaded = 3,
+  MiVaPfnDatabase = 4,
+  MiVaNonPagedPool = 5,
+  MiVaPagedPool = 6,
+  MiVaSpecialPoolPaged = 7,
+  MiVaSystemCache = 8,
+  MiVaSystemPtes = 9,
+  MiVaHal = 10,
+  MiVaSessionGlobalSpace = 11,
+  MiVaDriverImages = 12,
+  MiVaSystemPtesLarge = 13,
+  MiVaKernelStacks = 14,
+  MiVaMaximumType = 15,
+} MI_SYSTEM_VA_TYPE, *PMI_SYSTEM_VA_TYPE;
+
+typedef struct _MI_SYSTEM_PTE_TYPE
+{
+  struct _RTL_BITMAP_EX Bitmap;
+  struct _MMPTE* BasePte;
+  U32 Flags;
+  enum _MI_SYSTEM_VA_TYPE VaType;
+  U32* FailureCount;
+  U32 PteFailures;
+  union
+  {
+    U64 SpinLock;
+    struct _EX_PUSH_LOCK* GlobalPushLock;
+  }; 
+  volatile U64 TotalSystemPtes;
+  U64 Hint;
+  U64 LowestBitEverAllocated;
+  volatile struct _MI_CACHED_PTES* CachedPtes;
+  volatile U64 TotalFreeSystemPtes;
+} MI_SYSTEM_PTE_TYPE, *PMI_SYSTEM_PTE_TYPE; 
+
+typedef struct _MMSUPPORT_FLAGS
+{
+  union
+  {
+    struct
+    {
+      struct 
+      {
+        U8 WorkingSetType : 3; 
+        U8 Reserved0 : 3; 
+        U8 MaximumWorkingSetHard : 1; 
+        U8 MinimumWorkingSetHard : 1; 
+      }; 
+      struct 
+      {
+        U8 SessionMaster : 1; 
+        U8 TrimmerState : 2; 
+        U8 Reserved : 1; 
+        U8 PageStealers : 4; 
+      }; 
+    }; 
+    U16 u1;
+  }; 
+  U8 MemoryPriority;
+  union
+  {
+    struct 
+    {
+      U8 WsleDeleted : 1; 
+      U8 SvmEnabled : 1; 
+      U8 ForceAge : 1; 
+      U8 ForceTrim : 1; 
+      U8 NewMaximum : 1; 
+      U8 CommitReleaseState : 2; 
+    }; 
+    U8 u2;
+  }; 
+} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS; 
+
+typedef struct _MMSUPPORT_INSTANCE
+{
+  U32 NextPageColor;
+  U32 PageFaultCount;
+  U64 TrimmedPageCount;
+  struct _MMWSL_INSTANCE* VmWorkingSetList;
+  struct _LIST_ENTRY WorkingSetExpansionLinks;
+  U64 AgeDistribution[8];
+  struct _KGATE* ExitOutswapGate;
+  U64 MinimumWorkingSetSize;
+  U64 WorkingSetLeafSize;
+  U64 WorkingSetLeafPrivateSize;
+  U64 WorkingSetSize;
+  U64 WorkingSetPrivateSize;
+  U64 MaximumWorkingSetSize;
+  U64 PeakWorkingSetSize;
+  U32 HardFaultCount;
+  U16 LastTrimStamp;
+  U16 PartitionId;
+  U64 SelfmapLock;
+  struct _MMSUPPORT_FLAGS Flags;
+  S32 __PADDING__[1];
+} MMSUPPORT_INSTANCE, *PMMSUPPORT_INSTANCE; 
+
+typedef struct _MMSUPPORT_SHARED
+{
+  volatile S32 WorkingSetLock;
+  S32 GoodCitizenWaiting;
+  U64 ReleasedCommitDebt;
+  U64 ResetPagesRepurposedCount;
+  void* WsSwapSupport;
+  void* CommitReleaseContext;
+  void* AccessLog;
+  volatile U64 ChargedWslePages;
+  U64 ActualWslePages;
+  U64 WorkingSetCoreLock;
+  void* ShadowMapping;
+  S32 __PADDING__[12];
+} MMSUPPORT_SHARED, *PMMSUPPORT_SHARED; 
+
+typedef struct _MMSUPPORT_FULL
+{
+  struct _MMSUPPORT_INSTANCE Instance;
+  struct _MMSUPPORT_SHARED Shared;
+} MMSUPPORT_FULL, *PMMSUPPORT_FULL; 
+
+typedef struct _MMSUPPORT_AGGREGATION
+{
+  U32 PageFaultCount;
+  U64 WorkingSetSize;
+  U64 WorkingSetLeafSize;
+  U64 PeakWorkingSetSize;
+} MMSUPPORT_AGGREGATION, *PMMSUPPORT_AGGREGATION; 
+
+typedef struct _SYSPTES_HEADER
+{
+  struct _LIST_ENTRY ListHead[16];
+  U64 Count;
+  U64 NumberOfEntries;
+  U64 NumberOfEntriesPeak;
+} SYSPTES_HEADER, *PSYSPTES_HEADER; 
+
+typedef struct _MI_SYSTEM_VA_ASSIGNMENT
+{
+  void* BaseAddress;
+  U64 NumberOfBytes;
+} MI_SYSTEM_VA_ASSIGNMENT, *PMI_SYSTEM_VA_ASSIGNMENT; 
+
+typedef struct _MI_VISIBLE_STATE
+{
+  struct _LIST_ENTRY SessionWsList;
+  struct _RTL_BITMAP* SessionIdBitmap;
+  struct _MM_PAGED_POOL_INFO PagedPoolInfo;
+  U64 MaximumNonPagedPoolInPages;
+  U64 SizeOfPagedPoolInPages;
+  struct _MI_SYSTEM_PTE_TYPE SystemPteInfo;
+  volatile U64 NonPagedPoolCommit;
+  volatile U64 SmallNonPagedPtesCommit;
+  volatile U64 BootCommit;
+  volatile U64 MdlPagesAllocated;
+  volatile U64 SystemPageTableCommit;
+  volatile U64 ProcessCommit;
+  volatile S32 DriverCommit;
+  U8 PagingLevels;
+  volatile U64 PfnDatabaseCommit;
+  struct _MMSUPPORT_FULL SystemWs[6];
+  struct _MMSUPPORT_SHARED SystemCacheShared;
+  struct _MMSUPPORT_AGGREGATION AggregateSystemWs[1];
+  U32 MapCacheFailures;
+  U64 PagefileHashPages;
+  struct _SYSPTES_HEADER PteHeader;
+  U64 SystemVaTypeCount[15];
+  U8 SystemVaType[256];
+  struct _MI_SYSTEM_VA_ASSIGNMENT SystemVaRegions[12];
+} MI_VISIBLE_STATE, *PMI_VISIBLE_STATE; 
+

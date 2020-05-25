@@ -1,0 +1,21 @@
+typedef enum _MMLISTS
+{
+  ZeroedPageList = 0,
+  FreePageList = 1,
+  StandbyPageList = 2,
+  ModifiedPageList = 3,
+  ModifiedNoWritePageList = 4,
+  BadPageList = 5,
+  ActiveAndValid = 6,
+  TransitionPage = 7,
+} MMLISTS, *PMMLISTS;
+
+typedef struct _MMPFNLIST
+{
+  volatile U32 Total;
+  enum _MMLISTS ListName;
+  U32 Flink;
+  U32 Blink;
+  U32 Lock;
+} MMPFNLIST, *PMMPFNLIST; 
+

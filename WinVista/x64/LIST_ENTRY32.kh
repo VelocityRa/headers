@@ -1,0 +1,6 @@
+struct LIST_ENTRY32
+{
+  U32 Flink;
+  U32 Blink;
+}; 
+

@@ -1,0 +1,10 @@
+typedef struct _TRIAGE_9F_POWER
+{
+  U16 Signature;
+  U16 Revision;
+  struct _LIST_ENTRY* IrpList;
+  struct _LIST_ENTRY* ThreadList;
+  struct _TRIAGE_EX_WORK_QUEUE* DelayedWorkQueue;
+  struct _TRIAGE_EX_WORK_QUEUE* DelayedIoWorkQueue;
+} TRIAGE_9F_POWER, *PTRIAGE_9F_POWER; 
+

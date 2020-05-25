@@ -1,0 +1,57 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _POP_RW_LOCK
+{
+  struct _EX_PUSH_LOCK Lock;
+  struct _KTHREAD* Thread;
+} POP_RW_LOCK, *PPOP_RW_LOCK; 
+
+typedef struct _THERMAL_COOLING_INTERFACE
+{
+  U16 Size;
+  U16 Version;
+  void* Context;
+  void* InterfaceReference;
+  void* InterfaceDereference;
+  U32 Flags;
+  void* ActiveCooling;
+  void* PassiveCooling;
+} THERMAL_COOLING_INTERFACE, *PTHERMAL_COOLING_INTERFACE; 
+
+typedef struct _POP_COOLING_EXTENSION
+{
+  struct _LIST_ENTRY Link;
+  struct _LIST_ENTRY RequestListHead;
+  struct _POP_RW_LOCK Lock;
+  struct _DEVICE_OBJECT* DeviceObject;
+  void* NotificationEntry;
+  U8 Enabled;
+  U8 ActiveEngaged;
+  U8 ThrottleLimit;
+  U8 UpdatingToCurrent;
+  struct _KEVENT* RemovalFlushEvent;
+  struct _KEVENT* PnpFlushEvent;
+  struct _THERMAL_COOLING_INTERFACE Interface;
+} POP_COOLING_EXTENSION, *PPOP_COOLING_EXTENSION; 
+

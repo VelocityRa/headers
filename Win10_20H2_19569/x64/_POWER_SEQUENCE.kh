@@ -1,0 +1,7 @@
+typedef struct _POWER_SEQUENCE
+{
+  U32 SequenceD1;
+  U32 SequenceD2;
+  U32 SequenceD3;
+} POWER_SEQUENCE, *PPOWER_SEQUENCE; 
+

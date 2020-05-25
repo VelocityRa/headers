@@ -1,0 +1,24 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KAPC_STATE
+{
+  struct _LIST_ENTRY ApcListHead[2];
+  struct _KPROCESS* Process;
+  union
+  {
+    U8 InProgressFlags;
+    struct 
+    {
+      U8 KernelApcInProgress : 1; 
+      U8 SpecialApcInProgress : 1; 
+    }; 
+  }; 
+  U8 KernelApcPending;
+  U8 UserApcPending;
+  char __PADDING__[5];
+} KAPC_STATE, *PKAPC_STATE; 
+

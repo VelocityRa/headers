@@ -1,0 +1,5 @@
+typedef struct _CM_UOW_SET_SD_DATA
+{
+  U32 SecurityCell;
+} CM_UOW_SET_SD_DATA, *PCM_UOW_SET_SD_DATA; 
+

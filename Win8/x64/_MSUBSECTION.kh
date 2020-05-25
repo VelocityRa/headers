@@ -1,0 +1,69 @@
+typedef struct _MMSUBSECTION_FLAGS
+{
+  struct 
+  {
+    U16 SubsectionAccessed : 1; 
+    U16 Protection : 5; 
+    U16 StartingSector4132 : 10; 
+  }; 
+  struct 
+  {
+    U16 SubsectionStatic : 1; 
+    U16 GlobalMemory : 1; 
+    U16 DirtyPages : 1; 
+    U16 Spare : 1; 
+    U16 SectorEndOffset : 12; 
+  }; 
+} MMSUBSECTION_FLAGS, *PMMSUBSECTION_FLAGS; 
+
+typedef struct _MM_AVL_NODE
+{
+  union
+  {
+    union
+    {
+      S64 Balance : 2; 
+      struct _MM_AVL_NODE* Parent;
+    }; 
+  } u1;
+  struct _MM_AVL_NODE* LeftChild;
+  struct _MM_AVL_NODE* RightChild;
+} MM_AVL_NODE, *PMM_AVL_NODE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MSUBSECTION
+{
+  struct _CONTROL_AREA* ControlArea;
+  struct _MMPTE* SubsectionBase;
+  union
+  {
+    struct _SUBSECTION* NextSubsection;
+    struct _MSUBSECTION* NextMappedSubsection;
+  }; 
+  U32 PtesInSubsection;
+  union
+  {
+    U32 UnusedPtes;
+    struct _MM_AVL_TABLE* GlobalPerSessionHead;
+  }; 
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSUBSECTION_FLAGS SubsectionFlags;
+    }; 
+  } u;
+  U32 StartingSector;
+  U32 NumberOfFullSectors;
+  struct _MM_AVL_NODE SubsectionNode;
+  struct _LIST_ENTRY DereferenceList;
+  U64 NumberOfMappedViews;
+  U64 NumberOfPfnReferences;
+} MSUBSECTION, *PMSUBSECTION; 
+

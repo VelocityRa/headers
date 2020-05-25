@@ -1,0 +1,21 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _PNP_RESERVED_PROVIDER_INFO
+{
+  struct _LIST_ENTRY ListEntry;
+  struct _LIST_ENTRY DependentList;
+  struct _UNICODE_STRING ReservationId;
+  volatile S32 ReferenceCount;
+} PNP_RESERVED_PROVIDER_INFO, *PPNP_RESERVED_PROVIDER_INFO; 
+

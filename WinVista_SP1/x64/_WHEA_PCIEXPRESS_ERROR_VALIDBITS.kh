@@ -1,0 +1,20 @@
+typedef union _WHEA_PCIEXPRESS_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 PortType : 1; 
+      U64 Version : 1; 
+      U64 CommandStatus : 1; 
+      U64 DeviceId : 1; 
+      U64 DeviceSerialNumber : 1; 
+      U64 BridgeControlStatus : 1; 
+      U64 ExpressCapability : 1; 
+      U64 AerInfo : 1; 
+      U64 Reserved : 56; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_PCIEXPRESS_ERROR_VALIDBITS, *PWHEA_PCIEXPRESS_ERROR_VALIDBITS; 
+

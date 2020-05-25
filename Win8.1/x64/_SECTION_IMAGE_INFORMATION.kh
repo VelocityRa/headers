@@ -1,0 +1,39 @@
+typedef struct _SECTION_IMAGE_INFORMATION
+{
+  void* TransferAddress;
+  U32 ZeroBits;
+  U64 MaximumStackSize;
+  U64 CommittedStackSize;
+  U32 SubSystemType;
+  union
+  {
+    struct
+    {
+      U16 SubSystemMinorVersion;
+      U16 SubSystemMajorVersion;
+    }; 
+    U32 SubSystemVersion;
+  }; 
+  U32 GpValue;
+  U16 ImageCharacteristics;
+  U16 DllCharacteristics;
+  U16 Machine;
+  U8 ImageContainsCode;
+  union
+  {
+    U8 ImageFlags;
+    struct 
+    {
+      U8 ComPlusNativeReady : 1; 
+      U8 ComPlusILOnly : 1; 
+      U8 ImageDynamicallyRelocated : 1; 
+      U8 ImageMappedFlat : 1; 
+      U8 BaseBelow4gb : 1; 
+      U8 Reserved : 3; 
+    }; 
+  }; 
+  U32 LoaderFlags;
+  U32 ImageFileSize;
+  U32 CheckSum;
+} SECTION_IMAGE_INFORMATION, *PSECTION_IMAGE_INFORMATION; 
+

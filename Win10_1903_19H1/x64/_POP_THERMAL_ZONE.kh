@@ -1,0 +1,356 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+enum POWER_POLICY_DEVICE_TYPE
+{
+  PolicyDeviceSystemButton = 0,
+  PolicyDeviceThermalZone = 1,
+  PolicyDeviceBattery = 2,
+  PolicyDeviceMemory = 3,
+  PolicyInitiatePowerActionAPI = 4,
+  PolicySetPowerStateAPI = 5,
+  PolicyImmediateDozeS4 = 6,
+  PolicySystemIdle = 7,
+  PolicyDeviceWakeAlarm = 8,
+  PolicyDeviceFan = 9,
+  PolicyCsBatterySaver = 10,
+  PolicyImmediateDozeS4Predicted = 11,
+  PolicyImmediateDozeS4PredictedNoWake = 12,
+  PolicyImmediateDozeS4AdaptiveBudget = 13,
+  PolicyImmediateDozeS4AdaptiveReserveNoWake = 14,
+  PolicySystemInitiatedShutdown = 15,
+  PolicyDeviceMax = 16,
+};
+
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  wchar_t* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _POP_POLICY_DEVICE
+{
+  struct _LIST_ENTRY Link;
+  enum POWER_POLICY_DEVICE_TYPE DeviceType;
+  void* Notification;
+  struct _UNICODE_STRING Name;
+  struct _DEVICE_OBJECT* Device;
+  struct _IRP* Irp;
+} POP_POLICY_DEVICE, *PPOP_POLICY_DEVICE; 
+
+typedef struct _THERMAL_INFORMATION_EX
+{
+  U32 ThermalStamp;
+  U32 ThermalConstant1;
+  U32 ThermalConstant2;
+  U32 SamplingPeriod;
+  U32 CurrentTemperature;
+  U32 PassiveTripPoint;
+  U32 ThermalStandbyTripPoint;
+  U32 CriticalTripPoint;
+  U8 ActiveTripPointCount;
+  U8 PassiveCoolingDevicesPresent;
+  U32 ActiveTripPoint[10];
+  U32 S4TransitionTripPoint;
+  U32 MinimumThrottle;
+  U32 OverThrottleThreshold;
+  U32 PollingPeriod;
+} THERMAL_INFORMATION_EX, *PTHERMAL_INFORMATION_EX; 
+
+typedef struct _THERMAL_POLICY
+{
+  U32 Version;
+  U8 WaitForUpdate;
+  U8 Hibernate;
+  U8 Critical;
+  U8 ThermalStandby;
+  U32 ActivationReasons;
+  U32 PassiveLimit;
+  U32 ActiveLevel;
+  U8 OverThrottled;
+  char __PADDING__[3];
+} THERMAL_POLICY, *PTHERMAL_POLICY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 6; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 SchedulerAssist : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          union
+          {
+            U8 DebugActive;
+            struct 
+            {
+              U8 ActiveDR7 : 1; 
+              U8 Instrumented : 1; 
+              U8 Minimal : 1; 
+              U8 Reserved4 : 3; 
+              U8 UmsScheduled : 1; 
+              U8 UmsPrimary : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _KTIMER2
+{
+  struct _DISPATCHER_HEADER Header;
+  union
+  {
+    struct _RTL_BALANCED_NODE RbNodes[2];
+    struct _LIST_ENTRY ListEntry;
+  }; 
+  U64 DueTime[2];
+  S64 Period;
+  void* Callback;
+  void* CallbackContext;
+  void* DisableCallback;
+  void* DisableContext;
+  U8 AbsoluteSystemTime;
+  union
+  {
+    U8 TypeFlags;
+    struct 
+    {
+      U8 Unused : 1; 
+      U8 IdleResilient : 1; 
+      U8 HighResolution : 1; 
+      U8 NoWake : 1; 
+      U8 Unused1 : 4; 
+    }; 
+  }; 
+  U8 CollectionIndex[2];
+  S32 __PADDING__[1];
+} KTIMER2, *PKTIMER2; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U64 Locked : 1; 
+      U64 Waiting : 1; 
+      U64 Waking : 1; 
+      U64 MultipleShared : 1; 
+      U64 Shared : 60; 
+    }; 
+    U64 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _POP_RW_LOCK
+{
+  struct _EX_PUSH_LOCK Lock;
+  struct _KTHREAD* Thread;
+} POP_RW_LOCK, *PPOP_RW_LOCK; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _POP_THERMAL_TELEMETRY_TRACKER
+{
+  U8 AccountingDisabled;
+  U8 ActiveLevels;
+  U64 LastPassiveUpdateTime;
+  U64 LastActiveUpdateTime;
+  U64 TotalPassiveTime[21];
+  U64 PassiveTimeSnap[21];
+  U64 TotalActiveTime[10];
+  U64 ActiveTimeSnap[10];
+  U64 TotalTime;
+  U64 TotalTimeSnap;
+} POP_THERMAL_TELEMETRY_TRACKER, *PPOP_THERMAL_TELEMETRY_TRACKER; 
+
+typedef struct _POP_THERMAL_ZONE
+{
+  union
+  {
+    struct _POP_POLICY_DEVICE PolicyDevice;
+    struct
+    {
+      struct _LIST_ENTRY Link;
+      enum POWER_POLICY_DEVICE_TYPE DeviceType;
+      void* Notification;
+      struct _UNICODE_STRING Name;
+      struct _DEVICE_OBJECT* Device;
+      struct _IRP* Irp;
+    }; 
+  }; 
+  U8 State;
+  U8 Flags;
+  U8 Removing;
+  U8 Mode;
+  U8 PendingMode;
+  U8 ActivePoint;
+  U8 PendingActivePoint;
+  U8 Critical;
+  U8 ThermalStandby;
+  U8 OverThrottled;
+  S32 HighPrecisionThrottle;
+  S32 Throttle;
+  S32 PendingThrottle;
+  U32 ThrottleReasons;
+  U64 LastPassiveTime;
+  U32 SampleRate;
+  U32 LastTemp;
+  struct _THERMAL_INFORMATION_EX Info;
+  struct _THERMAL_POLICY Policy;
+  U8 PolicyDriver;
+  U32 PollingRate;
+  U64 LastTemperatureTime;
+  U64 LastActiveStartTime;
+  U64 LastPassiveStartTime;
+  struct _WORK_QUEUE_ITEM WorkItem;
+  struct _KTIMER2 ZoneUpdateTimer;
+  struct _POP_RW_LOCK Lock;
+  struct _KEVENT ZoneStopped;
+  struct _KEVENT TemperatureUpdated;
+  U32 InstanceId;
+  struct _POP_THERMAL_TELEMETRY_TRACKER TelemetryTracker;
+  struct _UNICODE_STRING Description;
+} POP_THERMAL_ZONE, *PPOP_THERMAL_ZONE; 
+

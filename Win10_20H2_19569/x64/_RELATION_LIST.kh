@@ -1,0 +1,7 @@
+typedef struct _RELATION_LIST
+{
+  struct _DEVICE_OBJECT_LIST* DeviceObjectList;
+  U8 Sorted;
+  char __PADDING__[7];
+} RELATION_LIST, *PRELATION_LIST; 
+

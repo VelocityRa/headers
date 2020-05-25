@@ -1,0 +1,38 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef union _WHEA_TIMESTAMP
+{
+  union
+  {
+    struct 
+    {
+      U64 Seconds : 8; 
+      U64 Minutes : 8; 
+      U64 Hours : 8; 
+      U64 Precise : 1; 
+      U64 Reserved : 7; 
+      U64 Day : 8; 
+      U64 Month : 8; 
+      U64 Year : 8; 
+      U64 Century : 8; 
+    }; 
+    union _LARGE_INTEGER AsLARGE_INTEGER;
+  }; 
+} WHEA_TIMESTAMP, *PWHEA_TIMESTAMP; 
+

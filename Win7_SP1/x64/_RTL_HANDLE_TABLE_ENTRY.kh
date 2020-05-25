@@ -1,0 +1,9 @@
+typedef struct _RTL_HANDLE_TABLE_ENTRY
+{
+  union
+  {
+    U32 Flags;
+    struct _RTL_HANDLE_TABLE_ENTRY* NextFree;
+  }; 
+} RTL_HANDLE_TABLE_ENTRY, *PRTL_HANDLE_TABLE_ENTRY; 
+

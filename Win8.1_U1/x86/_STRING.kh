@@ -1,0 +1,7 @@
+typedef struct _STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  char* Buffer;
+} STRING, *PSTRING; 
+

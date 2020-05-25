@@ -1,0 +1,63 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _FREE_DISPLAY
+{
+  U32 RealVectorSize;
+  struct _RTL_BITMAP Display;
+} FREE_DISPLAY, *PFREE_DISPLAY; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DUAL
+{
+  U32 Length;
+  struct _HMAP_DIRECTORY* Map;
+  struct _HMAP_TABLE* SmallDir;
+  U32 Guard;
+  struct _FREE_DISPLAY FreeDisplay[24];
+  U32 FreeSummary;
+  struct _LIST_ENTRY FreeBins;
+} DUAL, *PDUAL; 
+
+typedef struct _HHIVE
+{
+  U32 Signature;
+  void* GetCellRoutine;
+  void* ReleaseCellRoutine;
+  void* Allocate;
+  void* Free;
+  void* FileSetSize;
+  void* FileWrite;
+  void* FileRead;
+  void* FileFlush;
+  void* HiveLoadFailure;
+  struct _HBASE_BLOCK* BaseBlock;
+  struct _RTL_BITMAP DirtyVector;
+  U32 DirtyCount;
+  U32 DirtyAlloc;
+  U32 BaseBlockAlloc;
+  U32 Cluster;
+  U8 Flat;
+  U8 ReadOnly;
+  U8 DirtyFlag;
+  U32 HvBinHeadersUse;
+  U32 HvFreeCellsUse;
+  U32 HvUsedCellsUse;
+  U32 CmUsedCellsUse;
+  U32 HiveFlags;
+  U32 CurrentLog;
+  U32 LogSize[2];
+  U32 RefreshCount;
+  U32 StorageTypeCount;
+  U32 Version;
+  struct _DUAL Storage[2];
+} HHIVE, *PHHIVE; 
+

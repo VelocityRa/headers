@@ -1,0 +1,11 @@
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY; 
+
+typedef struct _KDPC_LIST
+{
+  struct _SINGLE_LIST_ENTRY ListHead;
+  struct _SINGLE_LIST_ENTRY* LastEntry;
+} KDPC_LIST, *PKDPC_LIST; 
+

@@ -1,0 +1,7 @@
+typedef struct _SECURITY_TOKEN_AUDIT_DATA
+{
+  U32 Length;
+  U32 GrantMask;
+  U32 DenyMask;
+} SECURITY_TOKEN_AUDIT_DATA, *PSECURITY_TOKEN_AUDIT_DATA; 
+

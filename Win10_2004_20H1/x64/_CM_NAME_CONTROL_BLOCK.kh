@@ -1,0 +1,35 @@
+typedef struct _CM_COMPONENT_HASH
+{
+  U32 Hash;
+} CM_COMPONENT_HASH, *PCM_COMPONENT_HASH; 
+
+typedef struct _CM_NAME_HASH
+{
+  struct _CM_COMPONENT_HASH ConvKey;
+  struct _CM_NAME_HASH* NextHash;
+  U16 NameLength;
+  wchar_t Name[1];
+  S32 __PADDING__[1];
+} CM_NAME_HASH, *PCM_NAME_HASH; 
+
+typedef struct _CM_NAME_CONTROL_BLOCK
+{
+  struct 
+  {
+    U32 Compressed : 1; 
+    U32 RefCount : 31; 
+  }; 
+  union
+  {
+    struct _CM_NAME_HASH NameHash;
+    struct
+    {
+      struct _CM_COMPONENT_HASH ConvKey;
+      struct _CM_KEY_HASH* NextHash;
+      U16 NameLength;
+      wchar_t Name[1];
+      S32 __PADDING__[1];
+    }; 
+  }; 
+} CM_NAME_CONTROL_BLOCK, *PCM_NAME_CONTROL_BLOCK; 
+

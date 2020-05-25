@@ -1,0 +1,37 @@
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U64 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MI_PAGEFILE_BITMAPS_CACHE_ENTRY
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE LengthTreeNode;
+    struct _LIST_ENTRY FreeListEntry;
+  }; 
+  struct _RTL_BALANCED_NODE LocationTreeNode;
+  U32 StartingIndex;
+  U32 Length;
+} MI_PAGEFILE_BITMAPS_CACHE_ENTRY, *PMI_PAGEFILE_BITMAPS_CACHE_ENTRY; 
+

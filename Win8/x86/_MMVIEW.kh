@@ -1,0 +1,33 @@
+typedef union _MMVIEW_CONTROL_AREA
+{
+  union
+  {
+    struct _CONTROL_AREA* ControlArea;
+    struct 
+    {
+      U32 Writable : 1; 
+      U32 ExceptionForInPageErrors : 1; 
+      U32 Unused : 1; 
+      U32 UsedForControlArea : 29; 
+    }; 
+  }; 
+} MMVIEW_CONTROL_AREA, *PMMVIEW_CONTROL_AREA; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _MMVIEW
+{
+  U64 PteOffset;
+  U32 Entry;
+  union _MMVIEW_CONTROL_AREA u1;
+  struct _LIST_ENTRY ViewLinks;
+  void* SessionViewVa;
+  U32 SessionId;
+  U32 SessionIdForGlobalSubsections;
+  S32 __PADDING__[1];
+} MMVIEW, *PMMVIEW; 
+

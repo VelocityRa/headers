@@ -1,0 +1,13 @@
+typedef struct _MI_TRIAGE_DUMP_DATA
+{
+  U64 BadPageCount;
+  S32 BadPagesDetected;
+  S32 ZeroedPageSingleBitErrorsDetected;
+  S32 ScrubPasses;
+  S32 ScrubBadPagesFound;
+  U32 PageHashErrors;
+  U64 FeatureBits;
+  U32 TimeZoneId;
+  S32 __PADDING__[1];
+} MI_TRIAGE_DUMP_DATA, *PMI_TRIAGE_DUMP_DATA; 
+

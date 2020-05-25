@@ -1,0 +1,13 @@
+typedef struct _MMPTE_TIMESTAMP
+{
+  struct 
+  {
+    U32 MustBeZero : 1; 
+    U32 PageFileLow : 4; 
+    U32 Protection : 5; 
+    U32 Prototype : 1; 
+    U32 Transition : 1; 
+    U32 GlobalTimeStamp : 20; 
+  }; 
+} MMPTE_TIMESTAMP, *PMMPTE_TIMESTAMP; 
+

@@ -1,0 +1,16 @@
+typedef struct _RTL_HEAP_MEMORY_LIMIT_DATA
+{
+  U64 CommitLimitBytes;
+  U64 CommitLimitFailureCode;
+  U64 MaxAllocationSizeBytes;
+  U64 AllocationLimitFailureCode;
+} RTL_HEAP_MEMORY_LIMIT_DATA, *PRTL_HEAP_MEMORY_LIMIT_DATA; 
+
+typedef struct _RTLP_HP_HEAP_GLOBALS
+{
+  U64 HeapKey;
+  U64 LfhKey;
+  struct _HEAP_FAILURE_INFORMATION* FailureInfo;
+  struct _RTL_HEAP_MEMORY_LIMIT_DATA CommitLimitData;
+} RTLP_HP_HEAP_GLOBALS, *PRTLP_HP_HEAP_GLOBALS; 
+

@@ -1,0 +1,8 @@
+typedef struct _LEARNING_MODE_DATA
+{
+  U32 Settings;
+  U8 Enabled;
+  U8 PermissiveModeEnabled;
+  char __PADDING__[2];
+} LEARNING_MODE_DATA, *PLEARNING_MODE_DATA; 
+

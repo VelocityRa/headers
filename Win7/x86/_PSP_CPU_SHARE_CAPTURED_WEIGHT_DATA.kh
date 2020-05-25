@@ -1,0 +1,13 @@
+typedef union _PSP_CPU_SHARE_CAPTURED_WEIGHT_DATA
+{
+  union
+  {
+    struct
+    {
+      U32 CapturedCpuShareWeight;
+      U32 CapturedTotalWeight;
+    }; 
+    S64 CombinedData;
+  }; 
+} PSP_CPU_SHARE_CAPTURED_WEIGHT_DATA, *PPSP_CPU_SHARE_CAPTURED_WEIGHT_DATA; 
+

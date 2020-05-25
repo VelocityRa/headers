@@ -1,0 +1,13 @@
+typedef struct _MMPAGE_FILE_EXPANSION_FLAGS
+{
+  U8 PageFileNumber : 8; 
+  U8 Spare1 : 8; 
+  U8 Spare2 : 8; 
+  struct 
+  {
+    U8 IgnoreCurrentCommit : 1; 
+    U8 IncreaseMinimumSize : 1; 
+    U8 Spare3 : 6; 
+  }; 
+} MMPAGE_FILE_EXPANSION_FLAGS, *PMMPAGE_FILE_EXPANSION_FLAGS; 
+

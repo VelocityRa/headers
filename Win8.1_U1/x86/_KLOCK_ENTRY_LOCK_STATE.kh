@@ -1,0 +1,20 @@
+typedef struct _KLOCK_ENTRY_LOCK_STATE
+{
+  union
+  {
+    struct 
+    {
+      U32 Waiting : 1; 
+      U32 Busy : 1; 
+      U32 Spare : 29; 
+      U32 InTree : 1; 
+    }; 
+    void* LockState;
+  }; 
+  union
+  {
+    void* SessionState;
+    U32 SessionId;
+  }; 
+} KLOCK_ENTRY_LOCK_STATE, *PKLOCK_ENTRY_LOCK_STATE; 
+

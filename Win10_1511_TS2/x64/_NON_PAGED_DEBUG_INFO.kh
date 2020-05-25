@@ -1,0 +1,13 @@
+typedef struct _NON_PAGED_DEBUG_INFO
+{
+  U16 Signature;
+  U16 Flags;
+  U32 Size;
+  U16 Machine;
+  U16 Characteristics;
+  U32 TimeDateStamp;
+  U32 CheckSum;
+  U32 SizeOfImage;
+  U64 ImageBase;
+} NON_PAGED_DEBUG_INFO, *PNON_PAGED_DEBUG_INFO; 
+

@@ -1,0 +1,16 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _POP_IRP_WORKER_ENTRY
+{
+  struct _LIST_ENTRY Link;
+  struct _ETHREAD* Thread;
+  struct _IRP* Irp;
+  struct _DEVICE_OBJECT* Device;
+  U8 Static;
+  char __PADDING__[7];
+} POP_IRP_WORKER_ENTRY, *PPOP_IRP_WORKER_ENTRY; 
+

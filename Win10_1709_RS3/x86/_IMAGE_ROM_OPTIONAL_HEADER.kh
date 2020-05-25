@@ -1,0 +1,17 @@
+typedef struct _IMAGE_ROM_OPTIONAL_HEADER
+{
+  U16 Magic;
+  U8 MajorLinkerVersion;
+  U8 MinorLinkerVersion;
+  U32 SizeOfCode;
+  U32 SizeOfInitializedData;
+  U32 SizeOfUninitializedData;
+  U32 AddressOfEntryPoint;
+  U32 BaseOfCode;
+  U32 BaseOfData;
+  U32 BaseOfBss;
+  U32 GprMask;
+  U32 CprMask[4];
+  U32 GpValue;
+} IMAGE_ROM_OPTIONAL_HEADER, *PIMAGE_ROM_OPTIONAL_HEADER; 
+

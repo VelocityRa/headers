@@ -1,0 +1,48 @@
+typedef struct _IMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION
+{
+  struct 
+  {
+    U32 PageRelativeOffset : 12; 
+    U32 IndirectCall : 1; 
+    U32 IATIndex : 19; 
+  }; 
+} IMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION, *PIMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION; 
+
+typedef struct _IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION
+{
+  struct 
+  {
+    U16 PageRelativeOffset : 12; 
+    U16 IndirectCall : 1; 
+    U16 RexWPrefix : 1; 
+    U16 CfgCheck : 1; 
+    U16 Reserved : 1; 
+  }; 
+} IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION, *PIMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION; 
+
+typedef struct _IMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION
+{
+  struct 
+  {
+    U16 PageRelativeOffset : 12; 
+    U16 RegisterNumber : 4; 
+  }; 
+} IMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION, *PIMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION; 
+
+typedef struct _RTL_RETPOLINE_RELOCATION_INDEX
+{
+  U16 ImportRelocationSize;
+  U16 IndirectRelocationSize;
+  U16 SwitchJumpRelocationSize;
+  U16 StraddleType;
+  union
+  {
+    union
+    {
+      struct _IMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION Import;
+      struct _IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION Indir;
+      struct _IMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION SwitchJump;
+    }; 
+  } StraddleReloc;
+} RTL_RETPOLINE_RELOCATION_INDEX, *PRTL_RETPOLINE_RELOCATION_INDEX; 
+

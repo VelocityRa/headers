@@ -1,0 +1,8 @@
+typedef struct _KIDTENTRY
+{
+  U16 Offset;
+  U16 Selector;
+  U16 Access;
+  U16 ExtendedOffset;
+} KIDTENTRY, *PKIDTENTRY; 
+

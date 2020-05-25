@@ -1,0 +1,7 @@
+typedef struct _wil_details_UsageSubscriptionData
+{
+  U32 featureId;
+  U16 serviceReportingKind;
+  char __PADDING__[2];
+} wil_details_UsageSubscriptionData, *Pwil_details_UsageSubscriptionData; 
+

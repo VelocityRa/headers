@@ -1,0 +1,22 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _KWAIT_BLOCK
+{
+  struct _LIST_ENTRY WaitListEntry;
+  U8 WaitType;
+  volatile U8 BlockState;
+  U16 WaitKey;
+  S32 SpareLong;
+  union
+  {
+    struct _KTHREAD* Thread;
+    struct _KQUEUE* NotificationQueue;
+  }; 
+  void* Object;
+  void* SparePtr;
+} KWAIT_BLOCK, *PKWAIT_BLOCK; 
+

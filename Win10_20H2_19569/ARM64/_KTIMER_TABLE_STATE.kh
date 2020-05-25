@@ -1,0 +1,6 @@
+typedef struct _KTIMER_TABLE_STATE
+{
+  U64 LastTimerExpiration[2];
+  U32 LastTimerHand[2];
+} KTIMER_TABLE_STATE, *PKTIMER_TABLE_STATE; 
+

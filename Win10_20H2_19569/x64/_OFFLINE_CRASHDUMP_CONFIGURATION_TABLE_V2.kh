@@ -1,0 +1,28 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _OFFLINE_CRASHDUMP_CONFIGURATION_TABLE_V2
+{
+  U32 Version;
+  U32 AbnormalResetOccurred;
+  U32 OfflineMemoryDumpCapable;
+  union _LARGE_INTEGER ResetDataAddress;
+  U32 ResetDataSize;
+  S32 __PADDING__[1];
+} OFFLINE_CRASHDUMP_CONFIGURATION_TABLE_V2, *POFFLINE_CRASHDUMP_CONFIGURATION_TABLE_V2; 
+

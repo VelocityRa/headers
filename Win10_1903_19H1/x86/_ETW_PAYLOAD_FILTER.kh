@@ -1,0 +1,46 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _EVENT_PAYLOAD_PREDICATE
+{
+  U16 FieldIndex;
+  U16 CompareOp;
+  U64 Value[2];
+} EVENT_PAYLOAD_PREDICATE, *PEVENT_PAYLOAD_PREDICATE; 
+
+typedef struct _AGGREGATED_PAYLOAD_FILTER
+{
+  struct 
+  {
+    U16 MagicValue : 12; 
+    U16 DescriptorVersion : 4; 
+  }; 
+  U16 Size;
+  U16 PredicateCount;
+  U16 Reserved;
+  U64 HashedEventIdBitmap;
+  struct _GUID ProviderGuid;
+  U16 EachEventTableOffset;
+  U16 EachEventTableLength;
+  U16 PayloadDecoderTableOffset;
+  U16 PayloadDecoderTableLength;
+  U16 EventFilterTableOffset;
+  U16 EventFilterTableLength;
+  U16 UNICODEStringTableOffset;
+  U16 UNICODEStringTableLength;
+  U16 ANSIStringTableOffset;
+  U16 ANSIStringTableLength;
+  struct _EVENT_PAYLOAD_PREDICATE PredicateTable[1];
+} AGGREGATED_PAYLOAD_FILTER, *PAGGREGATED_PAYLOAD_FILTER; 
+
+typedef struct _ETW_PAYLOAD_FILTER
+{
+  S32 RefCount;
+  struct _AGGREGATED_PAYLOAD_FILTER PayloadFilter;
+} ETW_PAYLOAD_FILTER, *PETW_PAYLOAD_FILTER; 
+

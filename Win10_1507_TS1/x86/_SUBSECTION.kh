@@ -1,0 +1,56 @@
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MMSUBSECTION_FLAGS
+{
+  struct 
+  {
+    U16 SubsectionAccessed : 1; 
+    U16 Protection : 5; 
+    U16 StartingSector4132 : 10; 
+  }; 
+  struct 
+  {
+    U16 SubsectionStatic : 1; 
+    U16 GlobalMemory : 1; 
+    U16 DirtyPages : 1; 
+    U16 OnDereferenceList : 1; 
+    U16 SectorEndOffset : 12; 
+  }; 
+} MMSUBSECTION_FLAGS, *PMMSUBSECTION_FLAGS; 
+
+typedef struct _SUBSECTION
+{
+  struct _CONTROL_AREA* ControlArea;
+  struct _MMPTE* SubsectionBase;
+  struct _SUBSECTION* NextSubsection;
+  union
+  {
+    struct _MI_FILE_EXTENTS* FileExtents;
+    struct _RTL_AVL_TREE GlobalPerSessionHead;
+    struct _MI_PER_SESSION_PROTOS* SessionDriverProtos;
+  }; 
+  union
+  {
+    union
+    {
+      U32 LongFlags;
+      struct _MMSUBSECTION_FLAGS SubsectionFlags;
+    }; 
+  } u;
+  U32 StartingSector;
+  U32 NumberOfFullSectors;
+  U32 PtesInSubsection;
+  union
+  {
+    U32 NumberOfChildViews;
+  } u1;
+  union
+  {
+    U32 UnusedPtes;
+    U32 AlignmentNoAccessPtes;
+  }; 
+} SUBSECTION, *PSUBSECTION; 
+

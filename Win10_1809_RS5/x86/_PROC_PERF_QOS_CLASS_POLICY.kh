@@ -1,0 +1,15 @@
+typedef struct _PROC_PERF_QOS_CLASS_POLICY
+{
+  U32 MaxPolicyPercent;
+  U32 MaxEquivalentFrequencyPercent;
+  U32 MinPolicyPercent;
+  U32 AutonomousActivityWindow;
+  U32 EnergyPerfPreference;
+  U8 ProvideGuidance;
+  U8 AllowThrottling;
+  U8 PerfBoostMode;
+  U8 LatencyHintPerf;
+  U8 TrackDesiredCrossClass;
+  char __PADDING__[3];
+} PROC_PERF_QOS_CLASS_POLICY, *PPROC_PERF_QOS_CLASS_POLICY; 
+

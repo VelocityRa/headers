@@ -1,2 +1,0 @@
-struct _LDRP_DLL_SNAP_CONTEXT;
-

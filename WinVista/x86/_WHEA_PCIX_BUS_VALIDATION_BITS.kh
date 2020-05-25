@@ -1,0 +1,17 @@
+typedef struct _WHEA_PCIX_BUS_VALIDATION_BITS
+{
+  struct 
+  {
+    U64 ErrorStatusValid : 1; 
+    U64 ErrorTypeValid : 1; 
+    U64 BusIdValid : 1; 
+    U64 BusAddressValid : 1; 
+    U64 BusDataValid : 1; 
+    U64 CommandValid : 1; 
+    U64 RequestorIdValid : 1; 
+    U64 CompleterIdValid : 1; 
+    U64 TargetIdValid : 1; 
+    U64 Reserved : 55; 
+  }; 
+} WHEA_PCIX_BUS_VALIDATION_BITS, *PWHEA_PCIX_BUS_VALIDATION_BITS; 
+

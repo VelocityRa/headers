@@ -1,0 +1,23 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _SEP_LOWBOX_HANDLES_TABLE
+{
+  struct _EX_PUSH_LOCK Lock;
+  struct _RTL_DYNAMIC_HASH_TABLE* HashTable;
+} SEP_LOWBOX_HANDLES_TABLE, *PSEP_LOWBOX_HANDLES_TABLE; 
+

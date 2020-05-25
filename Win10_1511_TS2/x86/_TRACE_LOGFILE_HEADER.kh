@@ -1,0 +1,91 @@
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _TIME_FIELDS
+{
+  S16 Year;
+  S16 Month;
+  S16 Day;
+  S16 Hour;
+  S16 Minute;
+  S16 Second;
+  S16 Milliseconds;
+  S16 Weekday;
+} TIME_FIELDS, *PTIME_FIELDS; 
+
+typedef struct _RTL_TIME_ZONE_INFORMATION
+{
+  S32 Bias;
+  wchar_t StandardName[32];
+  struct _TIME_FIELDS StandardStart;
+  S32 StandardBias;
+  wchar_t DaylightName[32];
+  struct _TIME_FIELDS DaylightStart;
+  S32 DaylightBias;
+} RTL_TIME_ZONE_INFORMATION, *PRTL_TIME_ZONE_INFORMATION; 
+
+typedef struct _TRACE_LOGFILE_HEADER
+{
+  U32 BufferSize;
+  union
+  {
+    U32 Version;
+    struct
+    {
+      U8 MajorVersion;
+      U8 MinorVersion;
+      U8 SubVersion;
+      U8 SubMinorVersion;
+    } VersionDetail;
+  }; 
+  U32 ProviderVersion;
+  U32 NumberOfProcessors;
+  union _LARGE_INTEGER EndTime;
+  U32 TimerResolution;
+  U32 MaximumFileSize;
+  U32 LogFileMode;
+  U32 BuffersWritten;
+  union
+  {
+    struct _GUID LogInstanceGuid;
+    struct
+    {
+      U32 StartBuffers;
+      U32 PointerSize;
+      U32 EventsLost;
+      U32 CpuSpeedInMHz;
+    }; 
+  }; 
+  U16* LoggerName;
+  U16* LogFileName;
+  struct _RTL_TIME_ZONE_INFORMATION TimeZone;
+  union _LARGE_INTEGER BootTime;
+  union _LARGE_INTEGER PerfFreq;
+  union _LARGE_INTEGER StartTime;
+  U32 ReservedFlags;
+  U32 BuffersLost;
+} TRACE_LOGFILE_HEADER, *PTRACE_LOGFILE_HEADER; 
+

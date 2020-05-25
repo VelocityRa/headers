@@ -1,0 +1,6 @@
+typedef struct _SLIST_ENTRY
+{
+  struct _SLIST_ENTRY* Next;
+  S32 __PADDING__[2];
+} SLIST_ENTRY, *PSLIST_ENTRY; 
+

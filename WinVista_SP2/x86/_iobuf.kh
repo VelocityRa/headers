@@ -1,0 +1,12 @@
+typedef struct _iobuf
+{
+  char* _ptr;
+  S32 _cnt;
+  char* _base;
+  S32 _flag;
+  S32 _file;
+  S32 _charbuf;
+  S32 _bufsiz;
+  char* _tmpfname;
+} iobuf, *Piobuf; 
+

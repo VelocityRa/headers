@@ -1,0 +1,6 @@
+typedef struct _TP_TASK_CALLBACKS
+{
+  void* ExecuteCallback;
+  void* Unposted;
+} TP_TASK_CALLBACKS, *PTP_TASK_CALLBACKS; 
+

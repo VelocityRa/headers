@@ -1,0 +1,47 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _MMSESSION
+{
+  struct _EX_PUSH_LOCK SystemSpaceViewLock;
+  struct _EX_PUSH_LOCK* SystemSpaceViewLockPointer;
+  struct _RTL_AVL_TREE ViewRoot;
+  U32 ViewCount;
+  U32 BitmapFailures;
+} MMSESSION, *PMMSESSION; 
+
+typedef struct _MI_SESSION_STATE
+{
+  struct _MMSESSION SystemSession;
+  U32 DetachTimeStamp;
+  U8 CodePageEdited;
+  U32* DynamicPoolBitBuffer;
+  S32 VaReferenceCount[1024];
+  U32* DynamicPtesBitBuffer;
+  struct _EX_PUSH_LOCK IdLock;
+  struct _EPROCESS* LeaderProcess;
+  struct _EX_PUSH_LOCK InitializeLock;
+  struct _MMWSL_INSTANCE* WorkingSetList;
+  void* SessionBase;
+  void* SessionCore;
+} MI_SESSION_STATE, *PMI_SESSION_STATE; 
+

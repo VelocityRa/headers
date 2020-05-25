@@ -1,0 +1,14 @@
+typedef union _XPF_MC_BANK_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U8 ClearOnInitializationRW : 1; 
+      U8 ControlDataRW : 1; 
+      U8 Reserved : 6; 
+    }; 
+    U8 AsUCHAR;
+  }; 
+} XPF_MC_BANK_FLAGS, *PXPF_MC_BANK_FLAGS; 
+

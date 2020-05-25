@@ -1,0 +1,9 @@
+typedef struct _SUPPORTED_RANGE
+{
+  struct _SUPPORTED_RANGE* Next;
+  U32 SystemAddressSpace;
+  S64 SystemBase;
+  S64 Base;
+  S64 Limit;
+} SUPPORTED_RANGE, *PSUPPORTED_RANGE; 
+

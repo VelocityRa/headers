@@ -1,0 +1,98 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Coalescable : 1; 
+          U8 KeepShifting : 1; 
+          U8 EncodedTolerableDelay : 5; 
+        }; 
+        U8 Abandoned;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CpuThrottled : 1; 
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 Reserved : 5; 
+            }; 
+            U8 Hand;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 1; 
+                  U8 Processor : 5; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Reserved2 : 4; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _HIVE_LIST_ENTRY
+{
+  U16* FileName;
+  U16* BaseName;
+  U16* RegRootName;
+  struct _CMHIVE* CmHive;
+  U32 HHiveFlags;
+  U32 CmHiveFlags;
+  U32 CmKcbCacheSize;
+  struct _CMHIVE* CmHive2;
+  U8 HiveMounted;
+  U8 ThreadFinished;
+  U8 ThreadStarted;
+  U8 Allocate;
+  U8 WinPERequired;
+  struct _KEVENT StartEvent;
+  struct _KEVENT FinishedEvent;
+  struct _KEVENT MountLock;
+} HIVE_LIST_ENTRY, *PHIVE_LIST_ENTRY; 
+

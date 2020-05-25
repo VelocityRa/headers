@@ -1,0 +1,87 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _I386_LOADER_BLOCK
+{
+  void* CommonDataArea;
+  U32 MachineType;
+  U32 VirtualBias;
+} I386_LOADER_BLOCK, *PI386_LOADER_BLOCK; 
+
+typedef struct _ALPHA_LOADER_BLOCK
+{
+  U32 PlaceHolder;
+} ALPHA_LOADER_BLOCK, *PALPHA_LOADER_BLOCK; 
+
+typedef struct _IA64_LOADER_BLOCK
+{
+  U32 PlaceHolder;
+} IA64_LOADER_BLOCK, *PIA64_LOADER_BLOCK; 
+
+typedef struct _EFI_FIRMWARE_INFORMATION
+{
+  U32 FirmwareVersion;
+  struct _VIRTUAL_EFI_RUNTIME_SERVICES* VirtualEfiRuntimeServices;
+  S32 SetVirtualAddressMapStatus;
+  U32 MissedMappingsCount;
+} EFI_FIRMWARE_INFORMATION, *PEFI_FIRMWARE_INFORMATION; 
+
+typedef struct _PCAT_FIRMWARE_INFORMATION
+{
+  U32 PlaceHolder;
+} PCAT_FIRMWARE_INFORMATION, *PPCAT_FIRMWARE_INFORMATION; 
+
+typedef struct _FIRMWARE_INFORMATION_LOADER_BLOCK
+{
+  struct 
+  {
+    U32 FirmwareTypeEfi : 1; 
+    U32 Reserved : 31; 
+  }; 
+  union
+  {
+    union
+    {
+      struct _EFI_FIRMWARE_INFORMATION EfiInformation;
+      struct _PCAT_FIRMWARE_INFORMATION PcatInformation;
+    }; 
+  } u;
+} FIRMWARE_INFORMATION_LOADER_BLOCK, *PFIRMWARE_INFORMATION_LOADER_BLOCK; 
+
+typedef struct _LOADER_PARAMETER_BLOCK
+{
+  struct _LIST_ENTRY LoadOrderListHead;
+  struct _LIST_ENTRY MemoryDescriptorListHead;
+  struct _LIST_ENTRY BootDriverListHead;
+  U32 KernelStack;
+  U32 Prcb;
+  U32 Process;
+  U32 Thread;
+  U32 RegistryLength;
+  void* RegistryBase;
+  struct _CONFIGURATION_COMPONENT_DATA* ConfigurationRoot;
+  char* ArcBootDeviceName;
+  char* ArcHalDeviceName;
+  char* NtBootPathName;
+  char* NtHalPathName;
+  char* LoadOptions;
+  struct _NLS_DATA_BLOCK* NlsData;
+  struct _ARC_DISK_INFORMATION* ArcDiskInformation;
+  void* OemFontFile;
+  struct _SETUP_LOADER_BLOCK* SetupLoaderBlock;
+  struct _LOADER_PARAMETER_EXTENSION* Extension;
+  union
+  {
+    union
+    {
+      struct _I386_LOADER_BLOCK I386;
+      struct _ALPHA_LOADER_BLOCK Alpha;
+      struct _IA64_LOADER_BLOCK Ia64;
+    }; 
+  } u;
+  struct _FIRMWARE_INFORMATION_LOADER_BLOCK FirmwareInformation;
+} LOADER_PARAMETER_BLOCK, *PLOADER_PARAMETER_BLOCK; 
+

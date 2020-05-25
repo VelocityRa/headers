@@ -1,0 +1,17 @@
+typedef struct _VF_AVL_TREE
+{
+  U32 NodeRangeSize;
+  volatile U32 NodeCount;
+  struct _VF_AVL_TABLE* Tables;
+  U32 TablesNo;
+  U8 UseSessionId;
+  union
+  {
+    union
+    {
+      U32 NodeSize;
+      U32 UseLookaside;
+    }; 
+  } u1;
+} VF_AVL_TREE, *PVF_AVL_TREE; 
+

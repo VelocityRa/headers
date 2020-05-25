@@ -1,0 +1,25 @@
+typedef union _WHEA_PROCESSOR_GENERIC_ERROR_SECTION_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 ProcessorType : 1; 
+      U64 InstructionSet : 1; 
+      U64 ErrorType : 1; 
+      U64 Operation : 1; 
+      U64 Flags : 1; 
+      U64 Level : 1; 
+      U64 CPUVersion : 1; 
+      U64 CPUBrandString : 1; 
+      U64 ProcessorId : 1; 
+      U64 TargetAddress : 1; 
+      U64 RequesterId : 1; 
+      U64 ResponderId : 1; 
+      U64 InstructionPointer : 1; 
+      U64 Reserved : 51; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_PROCESSOR_GENERIC_ERROR_SECTION_VALIDBITS, *PWHEA_PROCESSOR_GENERIC_ERROR_SECTION_VALIDBITS; 
+

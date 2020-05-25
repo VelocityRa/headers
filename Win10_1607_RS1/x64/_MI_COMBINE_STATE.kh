@@ -1,0 +1,63 @@
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_COMBINE_WORKITEM
+{
+  void* NextEntry;
+  struct _WORK_QUEUE_ITEM WorkItem;
+} MI_COMBINE_WORKITEM, *PMI_COMBINE_WORKITEM; 
+
+typedef struct _MI_COMBINE_PAGE_LISTHEAD
+{
+  struct _RTL_AVL_TREE Table;
+  volatile S32 Lock;
+  S32 __PADDING__[1];
+} MI_COMBINE_PAGE_LISTHEAD, *PMI_COMBINE_PAGE_LISTHEAD; 
+
+typedef struct _MI_PAGE_COMBINE_STATISTICS
+{
+  U64 PagesScannedActive;
+  U64 PagesScannedStandby;
+  U64 PagesCombined;
+  U32 CombineScanCount;
+  S32 CombinedBlocksInUse;
+  S32 SumCombinedBlocksReferenceCount;
+  S32 __PADDING__[1];
+} MI_PAGE_COMBINE_STATISTICS, *PMI_PAGE_COMBINE_STATISTICS; 
+
+typedef struct _MI_PAGE_COMBINING_SUPPORT
+{
+  struct _MI_PARTITION* Partition;
+  struct _LIST_ENTRY ArbitraryPfnMapList;
+  struct _MI_COMBINE_WORKITEM FreeCombinePoolItem;
+  U32 CombiningThreadCount;
+  struct _LIST_ENTRY CombinePageFreeList;
+  U64 CombineFreeListLock;
+  struct _MI_COMBINE_PAGE_LISTHEAD CombinePageListHeads[16];
+  struct _MI_PAGE_COMBINE_STATISTICS PageCombineStats;
+} MI_PAGE_COMBINING_SUPPORT, *PMI_PAGE_COMBINING_SUPPORT; 
+
+typedef struct _MI_COMBINE_STATE
+{
+  volatile S32 ActiveSpinLock;
+  U32 CombiningThreadCount;
+  struct _RTL_AVL_TREE ActiveThreadTree;
+  U64 ZeroPageHashValue;
+  struct _MI_PAGE_COMBINING_SUPPORT CrossPartition;
+} MI_COMBINE_STATE, *PMI_COMBINE_STATE; 
+

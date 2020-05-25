@@ -1,0 +1,65 @@
+typedef union _HEAP_VS_CHUNK_HEADER_SIZE
+{
+  union
+  {
+    struct 
+    {
+      U32 MemoryCost : 1; 
+      U32 UnsafeSize : 15; 
+      U32 UnsafePrevSize : 15; 
+      U32 Allocated : 1; 
+    }; 
+    U16 KeyUShort;
+    U32 KeyULong;
+    U32 HeaderBits;
+  }; 
+} HEAP_VS_CHUNK_HEADER_SIZE, *PHEAP_VS_CHUNK_HEADER_SIZE; 
+
+typedef struct _HEAP_VS_CHUNK_HEADER
+{
+  union _HEAP_VS_CHUNK_HEADER_SIZE Sizes;
+  union
+  {
+    struct 
+    {
+      U32 EncodedSegmentPageOffset : 8; 
+      U32 UnusedBytes : 1; 
+      U32 SkipDuringWalk : 1; 
+      U32 Spare : 22; 
+    }; 
+    U32 AllocatedChunkBits;
+  }; 
+} HEAP_VS_CHUNK_HEADER, *PHEAP_VS_CHUNK_HEADER; 
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    }; 
+  }; 
+  union
+  {
+    U8 Red : 1; 
+    U8 Balance : 2; 
+    U32 ParentValue;
+  }; 
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE; 
+
+typedef struct _HEAP_VS_CHUNK_FREE_HEADER
+{
+  union
+  {
+    struct _HEAP_VS_CHUNK_HEADER Header;
+    struct
+    {
+      U32 OverlapsHeader;
+      struct _RTL_BALANCED_NODE Node;
+    }; 
+  }; 
+} HEAP_VS_CHUNK_FREE_HEADER, *PHEAP_VS_CHUNK_FREE_HEADER; 
+

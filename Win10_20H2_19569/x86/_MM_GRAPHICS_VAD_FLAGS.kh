@@ -1,0 +1,23 @@
+typedef struct _MM_GRAPHICS_VAD_FLAGS
+{
+  struct 
+  {
+    U32 Lock : 1; 
+    U32 LockContended : 1; 
+    U32 DeleteInProgress : 1; 
+    U32 NoChange : 1; 
+    U32 VadType : 3; 
+    U32 Protection : 5; 
+    U32 PreferredNode : 6; 
+    U32 PageSize : 2; 
+    U32 PrivateMemoryAlwaysSet : 1; 
+    U32 WriteWatch : 1; 
+    U32 FixedLargePageSize : 1; 
+    U32 ZeroFillPagesOptional : 1; 
+    U32 GraphicsAlwaysSet : 1; 
+    U32 GraphicsUseCoherentBus : 1; 
+    U32 GraphicsNoCache : 1; 
+    U32 GraphicsPageProtection : 3; 
+  }; 
+} MM_GRAPHICS_VAD_FLAGS, *PMM_GRAPHICS_VAD_FLAGS; 
+

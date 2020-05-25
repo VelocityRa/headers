@@ -1,0 +1,7 @@
+typedef struct _NUMA_MEMORY_RANGE
+{
+  U32 ProximityId;
+  U64 BasePage;
+  U64 EndPage;
+} NUMA_MEMORY_RANGE, *PNUMA_MEMORY_RANGE; 
+

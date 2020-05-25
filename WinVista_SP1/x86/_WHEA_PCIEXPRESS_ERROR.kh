@@ -1,0 +1,111 @@
+typedef union _WHEA_PCIEXPRESS_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 PortType : 1; 
+      U64 Version : 1; 
+      U64 CommandStatus : 1; 
+      U64 DeviceId : 1; 
+      U64 DeviceSerialNumber : 1; 
+      U64 BridgeControlStatus : 1; 
+      U64 ExpressCapability : 1; 
+      U64 AerInfo : 1; 
+      U64 Reserved : 56; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_PCIEXPRESS_ERROR_VALIDBITS, *PWHEA_PCIEXPRESS_ERROR_VALIDBITS; 
+
+enum WHEA_PCIEXPRESS_DEVICE_TYPE
+{
+  WheaPciExpressEndpoS32 = 0,
+  WheaPciExpressLegacyEndpoS32 = 1,
+  WheaPciExpressRootPort = 4,
+  WheaPciExpressUpstreamSwitchPort = 5,
+  WheaPciExpressDownstreamSwitchPort = 6,
+  WheaPciExpressToPciXBridge = 7,
+  WheaPciXToExpressBridge = 8,
+  WheaPciExpressRootComplexIntegratedEndpoS32 = 9,
+  WheaPciExpressRootComplexEventCollector = 10,
+};
+
+typedef union _WHEA_PCIEXPRESS_VERSION
+{
+  union
+  {
+    struct
+    {
+      U8 MinorVersion;
+      U8 MajorVersion;
+      U16 Reserved;
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_PCIEXPRESS_VERSION, *PWHEA_PCIEXPRESS_VERSION; 
+
+typedef union _WHEA_PCIEXPRESS_COMMAND_STATUS
+{
+  union
+  {
+    struct
+    {
+      U16 Command;
+      U16 Status;
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_PCIEXPRESS_COMMAND_STATUS, *PWHEA_PCIEXPRESS_COMMAND_STATUS; 
+
+typedef struct _WHEA_PCIEXPRESS_DEVICE_ID
+{
+  U16 VendorID;
+  U16 DeviceID;
+  struct 
+  {
+    U32 ClassCode : 24; 
+    U32 FunctionNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 DeviceNumber : 8; 
+    U32 Segment : 16; 
+    U32 PrimaryBusNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 SecondaryBusNumber : 8; 
+    U32 Reserved1 : 2; 
+    U32 SlotNumber : 14; 
+    U32 Reserved2 : 8; 
+  }; 
+} WHEA_PCIEXPRESS_DEVICE_ID, *PWHEA_PCIEXPRESS_DEVICE_ID; 
+
+typedef union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS
+{
+  union
+  {
+    struct
+    {
+      U16 BridgeSecondaryStatus;
+      U16 BridgeControl;
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS, *PWHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS; 
+
+typedef struct _WHEA_PCIEXPRESS_ERROR
+{
+  union _WHEA_PCIEXPRESS_ERROR_VALIDBITS ValidBits;
+  enum WHEA_PCIEXPRESS_DEVICE_TYPE PortType;
+  union _WHEA_PCIEXPRESS_VERSION Version;
+  union _WHEA_PCIEXPRESS_COMMAND_STATUS CommandStatus;
+  U32 Reserved;
+  struct _WHEA_PCIEXPRESS_DEVICE_ID DeviceId;
+  U64 DeviceSerialNumber;
+  union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS BridgeControlStatus;
+  U8 ExpressCapability[60];
+  U8 AerInfo[96];
+} WHEA_PCIEXPRESS_ERROR, *PWHEA_PCIEXPRESS_ERROR; 
+

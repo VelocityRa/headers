@@ -1,0 +1,7 @@
+typedef struct _ARBITER_CONFLICT_INFO
+{
+  struct _DEVICE_OBJECT* OwningObject;
+  U64 Start;
+  U64 End;
+} ARBITER_CONFLICT_INFO, *PARBITER_CONFLICT_INFO; 
+

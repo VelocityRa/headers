@@ -1,0 +1,19 @@
+typedef struct _VF_AVL_TREE
+{
+  volatile S32 Lock;
+  void* NodeToFree;
+  U32 NodeRangeSize;
+  U32 NodeCount;
+  struct _VF_AVL_TABLE* Tables;
+  U32 TablesNo;
+  union
+  {
+    union
+    {
+      U32 NodeSize;
+      U32 UseLookaside;
+    }; 
+  } u1;
+  S32 __PADDING__[9];
+} VF_AVL_TREE, *PVF_AVL_TREE; 
+

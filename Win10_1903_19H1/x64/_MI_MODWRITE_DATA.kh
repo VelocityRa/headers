@@ -1,0 +1,33 @@
+typedef union _MI_RESERVATION_CLUSTER_INFO
+{
+  union
+  {
+    struct 
+    {
+      U32 ClusterSize : 10; 
+      U32 SequenceNumber : 22; 
+    }; 
+    S32 EntireInfo;
+  }; 
+} MI_RESERVATION_CLUSTER_INFO, *PMI_RESERVATION_CLUSTER_INFO; 
+
+typedef struct _MI_MODWRITE_DATA
+{
+  S64 PagesLoad;
+  U64 PagesAverage;
+  U64 AverageAvailablePages;
+  U64 PagesWritten;
+  U32 WritesIssued;
+  U32 IgnoredReservationsCount;
+  U32 FreedReservationsCount;
+  U32 WriteBurstCount;
+  U64 IgnoreReservationsStartTime;
+  volatile union _MI_RESERVATION_CLUSTER_INFO ReservationClusterInfo;
+  struct 
+  {
+    U16 IgnoreReservations : 1; 
+    U16 Spare : 15; 
+  }; 
+  U16 Spare1;
+} MI_MODWRITE_DATA, *PMI_MODWRITE_DATA; 
+

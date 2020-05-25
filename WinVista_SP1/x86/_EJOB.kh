@@ -1,0 +1,161 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 Abandoned;
+        U8 Absolute;
+        U8 NpxIrql;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 Size;
+            struct
+            {
+              U8 Hand;
+              union
+              {
+                U8 Inserted;
+                U8 DebugActive;
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _OWNER_ENTRY
+{
+  U32 OwnerThread;
+  union
+  {
+    S32 OwnerCount;
+    U32 TableSize;
+  }; 
+} OWNER_ENTRY, *POWNER_ENTRY; 
+
+typedef struct _ERESOURCE
+{
+  struct _LIST_ENTRY SystemResourcesList;
+  struct _OWNER_ENTRY* OwnerTable;
+  S16 ActiveCount;
+  U16 Flag;
+  struct _KSEMAPHORE* SharedWaiters;
+  struct _KEVENT* ExclusiveWaiters;
+  struct _OWNER_ENTRY OwnerEntry;
+  U32 ActiveEntries;
+  U32 ContentionCount;
+  U32 NumberOfSharedWaiters;
+  U32 NumberOfExclusiveWaiters;
+  union
+  {
+    void* Address;
+    U32 CreatorBackTraceIndex;
+  }; 
+  U32 SpinLock;
+} ERESOURCE, *PERESOURCE; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _EJOB
+{
+  struct _KEVENT Event;
+  struct _LIST_ENTRY JobLinks;
+  struct _LIST_ENTRY ProcessListHead;
+  struct _ERESOURCE JobLock;
+  union _LARGE_INTEGER TotalUserTime;
+  union _LARGE_INTEGER TotalKernelTime;
+  union _LARGE_INTEGER ThisPeriodTotalUserTime;
+  union _LARGE_INTEGER ThisPeriodTotalKernelTime;
+  U32 TotalPageFaultCount;
+  U32 TotalProcesses;
+  U32 ActiveProcesses;
+  U32 TotalTerminatedProcesses;
+  union _LARGE_INTEGER PerProcessUserTimeLimit;
+  union _LARGE_INTEGER PerJobUserTimeLimit;
+  U32 LimitFlags;
+  U32 MinimumWorkingSetSize;
+  U32 MaximumWorkingSetSize;
+  U32 ActiveProcessLimit;
+  U32 Affinity;
+  U8 PriorityClass;
+  struct _JOB_ACCESS_STATE* AccessState;
+  U32 UIRestrictionsClass;
+  U32 EndOfJobTimeAction;
+  void* CompletionPort;
+  void* CompletionKey;
+  U32 SessionId;
+  U32 SchedulingClass;
+  U64 ReadOperationCount;
+  U64 WriteOperationCount;
+  U64 OtherOperationCount;
+  U64 ReadTransferCount;
+  U64 WriteTransferCount;
+  U64 OtherTransferCount;
+  U32 ProcessMemoryLimit;
+  U32 JobMemoryLimit;
+  U32 PeakProcessMemoryUsed;
+  U32 PeakJobMemoryUsed;
+  U32 CurrentJobMemoryUsed;
+  struct _EX_PUSH_LOCK MemoryLimitsLock;
+  struct _LIST_ENTRY JobSetLinks;
+  U32 MemberLevel;
+  U32 JobFlags;
+} EJOB, *PEJOB; 
+

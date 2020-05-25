@@ -1,0 +1,43 @@
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 9; 
+        U64 NextEntry : 39; 
+      }; 
+      struct 
+      {
+        U64 HeaderType : 1; 
+        U64 Init : 1; 
+        U64 Reserved : 59; 
+        U64 Region : 3; 
+      }; 
+    } Header8;
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 HeaderType : 1; 
+        U64 Init : 1; 
+        U64 Reserved : 2; 
+        U64 NextEntry : 60; 
+      }; 
+    } Header16;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+

@@ -1,0 +1,9 @@
+typedef struct _FAULT_INFORMATION_X64_FLAGS
+{
+  struct 
+  {
+    U32 FaultAddressValid : 1; 
+    U32 Reserved : 31; 
+  }; 
+} FAULT_INFORMATION_X64_FLAGS, *PFAULT_INFORMATION_X64_FLAGS; 
+

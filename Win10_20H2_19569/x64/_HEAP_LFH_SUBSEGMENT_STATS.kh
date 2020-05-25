@@ -1,0 +1,15 @@
+typedef struct _HEAP_LFH_SUBSEGMENT_STAT
+{
+  U8 Index;
+  U8 Count;
+} HEAP_LFH_SUBSEGMENT_STAT, *PHEAP_LFH_SUBSEGMENT_STAT; 
+
+typedef union _HEAP_LFH_SUBSEGMENT_STATS
+{
+  union
+  {
+    struct _HEAP_LFH_SUBSEGMENT_STAT Buckets[4];
+    void* AllStats;
+  }; 
+} HEAP_LFH_SUBSEGMENT_STATS, *PHEAP_LFH_SUBSEGMENT_STATS; 
+

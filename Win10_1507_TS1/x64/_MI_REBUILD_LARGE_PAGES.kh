@@ -1,0 +1,26 @@
+typedef struct _MI_REBUILD_LARGE_PAGE_COUNTDOWN
+{
+  U8 SecondsLeft;
+  U8 SecondsAssigned;
+} MI_REBUILD_LARGE_PAGE_COUNTDOWN, *PMI_REBUILD_LARGE_PAGE_COUNTDOWN; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _MI_REBUILD_LARGE_PAGES
+{
+  S32 Active;
+  struct _MI_REBUILD_LARGE_PAGE_COUNTDOWN Timer[4][64];
+  struct _WORK_QUEUE_ITEM WorkItem;
+} MI_REBUILD_LARGE_PAGES, *PMI_REBUILD_LARGE_PAGES; 
+

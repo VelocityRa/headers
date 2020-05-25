@@ -1,0 +1,7 @@
+typedef struct _PPC_DBGKD_CONTROL_SET
+{
+  U32 Continue;
+  U32 CurrentSymbolStart;
+  U32 CurrentSymbolEnd;
+} PPC_DBGKD_CONTROL_SET, *PPPC_DBGKD_CONTROL_SET; 
+

@@ -1,0 +1,18 @@
+typedef union _WHEA_ERROR_PACKET_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 PreviousError : 1; 
+      U32 Reserved1 : 1; 
+      U32 HypervisorError : 1; 
+      U32 Simulated : 1; 
+      U32 PlatformPfaControl : 1; 
+      U32 PlatformDirectedOffline : 1; 
+      U32 Reserved2 : 26; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_ERROR_PACKET_FLAGS, *PWHEA_ERROR_PACKET_FLAGS; 
+

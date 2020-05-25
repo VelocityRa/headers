@@ -1,0 +1,10 @@
+typedef struct _ISA_VECTOR
+{
+  U8 Type;
+  U8 Length;
+  U8 Bus;
+  U8 Source;
+  U32 GlobalSystemInterruptVector;
+  U16 Flags;
+} ISA_VECTOR, *PISA_VECTOR; 
+

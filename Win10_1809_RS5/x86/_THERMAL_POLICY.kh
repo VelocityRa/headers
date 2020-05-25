@@ -1,0 +1,14 @@
+typedef struct _THERMAL_POLICY
+{
+  U32 Version;
+  U8 WaitForUpdate;
+  U8 Hibernate;
+  U8 Critical;
+  U8 ThermalStandby;
+  U32 ActivationReasons;
+  U32 PassiveLimit;
+  U32 ActiveLevel;
+  U8 OverThrottled;
+  char __PADDING__[3];
+} THERMAL_POLICY, *PTHERMAL_POLICY; 
+

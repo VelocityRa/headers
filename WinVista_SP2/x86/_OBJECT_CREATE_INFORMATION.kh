@@ -1,0 +1,31 @@
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SECURITY_QUALITY_OF_SERVICE
+{
+  U32 Length;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  U8 ContextTrackingMode;
+  U8 EffectiveOnly;
+  char __PADDING__[2];
+} SECURITY_QUALITY_OF_SERVICE, *PSECURITY_QUALITY_OF_SERVICE; 
+
+typedef struct _OBJECT_CREATE_INFORMATION
+{
+  U32 Attributes;
+  void* RootDirectory;
+  void* ParseContext;
+  char ProbeMode;
+  U32 PagedPoolCharge;
+  U32 NonPagedPoolCharge;
+  U32 SecurityDescriptorCharge;
+  void* SecurityDescriptor;
+  struct _SECURITY_QUALITY_OF_SERVICE* SecurityQos;
+  struct _SECURITY_QUALITY_OF_SERVICE SecurityQualityOfService;
+} OBJECT_CREATE_INFORMATION, *POBJECT_CREATE_INFORMATION; 
+

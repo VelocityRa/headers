@@ -1,0 +1,191 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 TimerControlFlags;
+        struct 
+        {
+          U8 Absolute : 1; 
+          U8 Wake : 1; 
+          U8 EncodedTolerableDelay : 6; 
+        }; 
+        U8 Abandoned;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 ThreadControlFlags;
+            struct 
+            {
+              U8 CycleProfiling : 1; 
+              U8 CounterProfiling : 1; 
+              U8 GroupScheduling : 1; 
+              U8 AffinitySet : 1; 
+              U8 Reserved : 4; 
+            }; 
+            U8 Hand;
+            struct
+            {
+              U8 Size;
+              union
+              {
+                U8 TimerMiscFlags;
+                struct 
+                {
+                  U8 Index : 6; 
+                  U8 Inserted : 1; 
+                  volatile U8 Expired : 1; 
+                }; 
+                U8 DebugActive;
+                struct 
+                {
+                  U8 ActiveDR7 : 1; 
+                  U8 Instrumented : 1; 
+                  U8 Reserved2 : 4; 
+                  U8 UmsScheduled : 1; 
+                  U8 UmsPrimary : 1; 
+                }; 
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+    S32 LockNV;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  U32 Processor;
+  U32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _KDPC
+{
+  U8 Type;
+  U8 Importance;
+  volatile U16 Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+typedef enum _POWER_STATE_TYPE
+{
+  SystemPowerState = 0,
+  DevicePowerState = 1,
+} POWER_STATE_TYPE, *PPOWER_STATE_TYPE;
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+typedef enum _DEVICE_POWER_STATE
+{
+  PowerDeviceUnspecified = 0,
+  PowerDeviceD0 = 1,
+  PowerDeviceD1 = 2,
+  PowerDeviceD2 = 3,
+  PowerDeviceD3 = 4,
+  PowerDeviceMaximum = 5,
+} DEVICE_POWER_STATE, *PDEVICE_POWER_STATE;
+
+typedef union _POWER_STATE
+{
+  union
+  {
+    enum _SYSTEM_POWER_STATE SystemState;
+    enum _DEVICE_POWER_STATE DeviceState;
+  }; 
+} POWER_STATE, *PPOWER_STATE; 
+
+typedef struct _POP_IRP_DATA
+{
+  struct _LIST_ENTRY Link;
+  struct _IRP* Irp;
+  struct _DEVICE_OBJECT* Pdo;
+  struct _DEVICE_OBJECT* TargetDevice;
+  struct _DEVICE_OBJECT* CurrentDevice;
+  U64 WatchdogStart;
+  struct _KTIMER WatchdogTimer;
+  struct _KDPC WatchdogDpc;
+  U8 MinorFunction;
+  enum _POWER_STATE_TYPE PowerStateType;
+  union _POWER_STATE PowerState;
+  U8 WatchdogEnabled;
+  struct _POP_FX_DEVICE* FxDevice;
+  U8 SystemTransition;
+  U8 NotifyPEP;
+  union
+  {
+    struct
+    {
+      void* CallerCompletion;
+      void* CallerContext;
+      struct _DEVICE_OBJECT* CallerDevice;
+      U8 SystemWake;
+      char __PADDING__[7];
+    } Device;
+    struct
+    {
+      struct
+      {
+        struct _PO_DEVICE_NOTIFY* NotifyDevice;
+        U8 FxDeviceActivated;
+        char __PADDING__[7];
+      } System;
+      S32 __PADDING__[4];
+    }; 
+  }; 
+} POP_IRP_DATA, *PPOP_IRP_DATA; 
+

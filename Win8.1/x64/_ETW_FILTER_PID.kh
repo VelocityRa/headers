@@ -1,0 +1,6 @@
+typedef struct _ETW_FILTER_PID
+{
+  U32 Count;
+  U32 Pids[8];
+} ETW_FILTER_PID, *PETW_FILTER_PID; 
+

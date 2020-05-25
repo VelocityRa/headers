@@ -1,0 +1,456 @@
+typedef union _WHEA_ERROR_PACKET_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 PreviousError : 1; 
+      U32 CpuValid : 1; 
+      U32 HypervisorError : 1; 
+      U32 Simulated : 1; 
+      U32 Reserved : 28; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_ERROR_PACKET_FLAGS, *PWHEA_ERROR_PACKET_FLAGS; 
+
+typedef enum _WHEA_ERROR_TYPE
+{
+  WheaErrTypeProcessor = 0,
+  WheaErrTypeMemory = 1,
+  WheaErrTypePCIExpress = 2,
+  WheaErrTypeNMI = 3,
+  WheaErrTypePCIXBus = 4,
+  WheaErrTypePCIXDevice = 5,
+  WheaErrTypeGeneric = 6,
+} WHEA_ERROR_TYPE, *PWHEA_ERROR_TYPE;
+
+typedef enum _WHEA_ERROR_SEVERITY
+{
+  WheaErrSevRecoverable = 0,
+  WheaErrSevFatal = 1,
+  WheaErrSevCorrected = 2,
+  WheaErrSevNone = 3,
+} WHEA_ERROR_SEVERITY, *PWHEA_ERROR_SEVERITY;
+
+typedef enum _WHEA_ERROR_SOURCE_TYPE
+{
+  WheaErrSrcTypeMCE = 0,
+  WheaErrSrcTypeCMC = 1,
+  WheaErrSrcTypeCPE = 2,
+  WheaErrSrcTypeNMI = 3,
+  WheaErrSrcTypePCIe = 4,
+  WheaErrSrcTypeGeneric = 5,
+  WheaErrSrcTypeINIT = 6,
+  WheaErrSrcTypeBOOT = 7,
+  WheaErrSrcTypeSCIGeneric = 8,
+  WheaErrSrcTypeIPFMCA = 9,
+  WheaErrSrcTypeIPFCMC = 10,
+  WheaErrSrcTypeIPFCPE = 11,
+  WheaErrSrcTypeMax = 12,
+} WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
+
+typedef union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 ProcessorType : 1; 
+      U64 InstructionSet : 1; 
+      U64 ErrorType : 1; 
+      U64 Operation : 1; 
+      U64 Flags : 1; 
+      U64 Level : 1; 
+      U64 CPUVersion : 1; 
+      U64 CPUBrandString : 1; 
+      U64 ProcessorId : 1; 
+      U64 TargetAddress : 1; 
+      U64 RequesterId : 1; 
+      U64 ResponderId : 1; 
+      U64 InstructionPointer : 1; 
+      U64 Reserved : 51; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS, *PWHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS; 
+
+typedef struct _WHEA_GENERIC_PROCESSOR_ERROR
+{
+  union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS ValidBits;
+  U8 ProcessorType;
+  U8 InstructionSet;
+  U8 ErrorType;
+  U8 Operation;
+  U8 Flags;
+  U8 Level;
+  U16 Reserved;
+  U64 CPUVersion;
+  U8 CPUBrandString[128];
+  U64 ProcessorId;
+  U64 TargetAddress;
+  U64 RequesterId;
+  U64 ResponderId;
+  U64 InstructionPointer;
+} WHEA_GENERIC_PROCESSOR_ERROR, *PWHEA_GENERIC_PROCESSOR_ERROR; 
+
+typedef union _WHEA_MEMORY_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 ErrorStatus : 1; 
+      U64 PhysicalAddress : 1; 
+      U64 PhysicalAddressMask : 1; 
+      U64 Node : 1; 
+      U64 Card : 1; 
+      U64 Module : 1; 
+      U64 Bank : 1; 
+      U64 Device : 1; 
+      U64 Row : 1; 
+      U64 Column : 1; 
+      U64 BitPosition : 1; 
+      U64 RequesterId : 1; 
+      U64 ResponderId : 1; 
+      U64 TargetId : 1; 
+      U64 ErrorType : 1; 
+      U64 Reserved : 49; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_MEMORY_ERROR_VALIDBITS, *PWHEA_MEMORY_ERROR_VALIDBITS; 
+
+typedef union _WHEA_ERROR_STATUS
+{
+  union
+  {
+    U64 ErrorStatus;
+    struct 
+    {
+      U64 Reserved1 : 8; 
+      U64 ErrorType : 8; 
+      U64 Address : 1; 
+      U64 Control : 1; 
+      U64 Data : 1; 
+      U64 Responder : 1; 
+      U64 Requester : 1; 
+      U64 FirstError : 1; 
+      U64 Overflow : 1; 
+      U64 Reserved2 : 41; 
+    }; 
+  }; 
+} WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS; 
+
+typedef struct _WHEA_MEMORY_ERROR
+{
+  union _WHEA_MEMORY_ERROR_VALIDBITS ValidBits;
+  union _WHEA_ERROR_STATUS ErrorStatus;
+  U64 PhysicalAddress;
+  U64 PhysicalAddressMask;
+  U16 Node;
+  U16 Card;
+  U16 Module;
+  U16 Bank;
+  U16 Device;
+  U16 Row;
+  U16 Column;
+  U16 BitPosition;
+  U64 RequesterId;
+  U64 ResponderId;
+  U64 TargetId;
+  U8 ErrorType;
+} WHEA_MEMORY_ERROR, *PWHEA_MEMORY_ERROR; 
+
+typedef union _WHEA_NMI_ERROR_FLAGS
+{
+  union
+  {
+    struct 
+    {
+      U32 HypervisorError : 1; 
+      U32 Reserved : 31; 
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_NMI_ERROR_FLAGS, *PWHEA_NMI_ERROR_FLAGS; 
+
+typedef struct _WHEA_NMI_ERROR
+{
+  U8 Data[8];
+  union _WHEA_NMI_ERROR_FLAGS Flags;
+} WHEA_NMI_ERROR, *PWHEA_NMI_ERROR; 
+
+typedef union _WHEA_PCIEXPRESS_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 PortType : 1; 
+      U64 Version : 1; 
+      U64 CommandStatus : 1; 
+      U64 DeviceId : 1; 
+      U64 DeviceSerialNumber : 1; 
+      U64 BridgeControlStatus : 1; 
+      U64 ExpressCapability : 1; 
+      U64 AerInfo : 1; 
+      U64 Reserved : 56; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_PCIEXPRESS_ERROR_VALIDBITS, *PWHEA_PCIEXPRESS_ERROR_VALIDBITS; 
+
+enum WHEA_PCIEXPRESS_DEVICE_TYPE
+{
+  WheaPciExpressEndpoS32 = 0,
+  WheaPciExpressLegacyEndpoS32 = 1,
+  WheaPciExpressRootPort = 4,
+  WheaPciExpressUpstreamSwitchPort = 5,
+  WheaPciExpressDownstreamSwitchPort = 6,
+  WheaPciExpressToPciXBridge = 7,
+  WheaPciXToExpressBridge = 8,
+  WheaPciExpressRootComplexIntegratedEndpoS32 = 9,
+  WheaPciExpressRootComplexEventCollector = 10,
+};
+
+typedef union _WHEA_PCIEXPRESS_VERSION
+{
+  union
+  {
+    struct
+    {
+      U8 MinorVersion;
+      U8 MajorVersion;
+      U16 Reserved;
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_PCIEXPRESS_VERSION, *PWHEA_PCIEXPRESS_VERSION; 
+
+typedef union _WHEA_PCIEXPRESS_COMMAND_STATUS
+{
+  union
+  {
+    struct
+    {
+      U16 Command;
+      U16 Status;
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_PCIEXPRESS_COMMAND_STATUS, *PWHEA_PCIEXPRESS_COMMAND_STATUS; 
+
+typedef struct _WHEA_PCIEXPRESS_DEVICE_ID
+{
+  U16 VendorID;
+  U16 DeviceID;
+  struct 
+  {
+    U32 ClassCode : 24; 
+    U32 FunctionNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 DeviceNumber : 8; 
+    U32 Segment : 16; 
+    U32 PrimaryBusNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 SecondaryBusNumber : 8; 
+    U32 Reserved1 : 2; 
+    U32 SlotNumber : 14; 
+    U32 Reserved2 : 8; 
+  }; 
+} WHEA_PCIEXPRESS_DEVICE_ID, *PWHEA_PCIEXPRESS_DEVICE_ID; 
+
+typedef union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS
+{
+  union
+  {
+    struct
+    {
+      U16 BridgeSecondaryStatus;
+      U16 BridgeControl;
+    }; 
+    U32 AsULONG;
+  }; 
+} WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS, *PWHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS; 
+
+typedef struct _WHEA_PCIEXPRESS_ERROR
+{
+  union _WHEA_PCIEXPRESS_ERROR_VALIDBITS ValidBits;
+  enum WHEA_PCIEXPRESS_DEVICE_TYPE PortType;
+  union _WHEA_PCIEXPRESS_VERSION Version;
+  union _WHEA_PCIEXPRESS_COMMAND_STATUS CommandStatus;
+  U32 Reserved;
+  struct _WHEA_PCIEXPRESS_DEVICE_ID DeviceId;
+  U64 DeviceSerialNumber;
+  union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS BridgeControlStatus;
+  U8 ExpressCapability[60];
+  U8 AerInfo[96];
+} WHEA_PCIEXPRESS_ERROR, *PWHEA_PCIEXPRESS_ERROR; 
+
+typedef union _WHEA_PCIXBUS_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 ErrorStatus : 1; 
+      U64 ErrorType : 1; 
+      U64 BusId : 1; 
+      U64 BusAddress : 1; 
+      U64 BusData : 1; 
+      U64 BusCommand : 1; 
+      U64 RequesterId : 1; 
+      U64 CompleterId : 1; 
+      U64 TargetId : 1; 
+      U64 Reserved : 55; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_PCIXBUS_ERROR_VALIDBITS, *PWHEA_PCIXBUS_ERROR_VALIDBITS; 
+
+typedef union _WHEA_PCIXBUS_ID
+{
+  union
+  {
+    struct
+    {
+      U8 BusNumber;
+      U8 BusSegment;
+    }; 
+    U16 AsUSHORT;
+  }; 
+} WHEA_PCIXBUS_ID, *PWHEA_PCIXBUS_ID; 
+
+typedef union _WHEA_PCIXBUS_COMMAND
+{
+  union
+  {
+    struct 
+    {
+      U64 Command : 56; 
+      U64 PCIXCommand : 1; 
+      U64 Reserved : 7; 
+    }; 
+    U64 AsULONGLONG;
+  }; 
+} WHEA_PCIXBUS_COMMAND, *PWHEA_PCIXBUS_COMMAND; 
+
+typedef struct _WHEA_PCIXBUS_ERROR
+{
+  union _WHEA_PCIXBUS_ERROR_VALIDBITS ValidBits;
+  union _WHEA_ERROR_STATUS ErrorStatus;
+  U16 ErrorType;
+  union _WHEA_PCIXBUS_ID BusId;
+  U32 Reserved;
+  U64 BusAddress;
+  U64 BusData;
+  union _WHEA_PCIXBUS_COMMAND BusCommand;
+  U64 RequesterId;
+  U64 CompleterId;
+  U64 TargetId;
+} WHEA_PCIXBUS_ERROR, *PWHEA_PCIXBUS_ERROR; 
+
+typedef union _WHEA_PCIXDEVICE_ERROR_VALIDBITS
+{
+  union
+  {
+    struct 
+    {
+      U64 ErrorStatus : 1; 
+      U64 IdInfo : 1; 
+      U64 MemoryNumber : 1; 
+      U64 IoNumber : 1; 
+      U64 RegisterDataPairs : 1; 
+      U64 Reserved : 59; 
+    }; 
+    U64 ValidBits;
+  }; 
+} WHEA_PCIXDEVICE_ERROR_VALIDBITS, *PWHEA_PCIXDEVICE_ERROR_VALIDBITS; 
+
+typedef struct _WHEA_PCIXDEVICE_ID
+{
+  U16 VendorId;
+  U16 DeviceId;
+  struct 
+  {
+    U32 ClassCode : 24; 
+    U32 FunctionNumber : 8; 
+  }; 
+  struct 
+  {
+    U32 DeviceNumber : 8; 
+    U32 BusNumber : 8; 
+    U32 SegmentNumber : 8; 
+    U32 Reserved1 : 8; 
+  }; 
+  U32 Reserved2;
+} WHEA_PCIXDEVICE_ID, *PWHEA_PCIXDEVICE_ID; 
+
+struct WHEA_PCIXDEVICE_REGISTER_PAIR
+{
+  U64 Register;
+  U64 Data;
+}; 
+
+typedef struct _WHEA_PCIXDEVICE_ERROR
+{
+  union _WHEA_PCIXDEVICE_ERROR_VALIDBITS ValidBits;
+  union _WHEA_ERROR_STATUS ErrorStatus;
+  struct _WHEA_PCIXDEVICE_ID IdInfo;
+  U32 MemoryNumber;
+  U32 IoNumber;
+  struct WHEA_PCIXDEVICE_REGISTER_PAIR RegisterDataPairs[4];
+} WHEA_PCIXDEVICE_ERROR, *PWHEA_PCIXDEVICE_ERROR; 
+
+typedef enum _WHEA_RAW_DATA_FORMAT
+{
+  WheaRawDataFormatIPFSalRecord = 0,
+  WheaRawDataFormatIA32MCA = 1,
+  WheaRawDataFormatIntel64MCA = 2,
+  WheaRawDataFormatAMD64MCA = 3,
+  WheaRawDataFormatMemory = 4,
+  WheaRawDataFormatPCIExpress = 5,
+  WheaRawDataFormatNMIPort = 6,
+  WheaRawDataFormatPCIXBus = 7,
+  WheaRawDataFormatPCIXDevice = 8,
+  WheaRawDataFormatGeneric = 9,
+  WheaRawDataFormatMax = 10,
+} WHEA_RAW_DATA_FORMAT, *PWHEA_RAW_DATA_FORMAT;
+
+typedef struct _WHEA_ERROR_PACKET
+{
+  U32 Signature;
+  union _WHEA_ERROR_PACKET_FLAGS Flags;
+  U32 Size;
+  U32 RawDataLength;
+  U64 Reserved1;
+  U64 Context;
+  enum _WHEA_ERROR_TYPE ErrorType;
+  enum _WHEA_ERROR_SEVERITY ErrorSeverity;
+  U32 ErrorSourceId;
+  enum _WHEA_ERROR_SOURCE_TYPE ErrorSourceType;
+  U32 Reserved2;
+  U32 Version;
+  U64 Cpu;
+  union
+  {
+    union
+    {
+      struct _WHEA_GENERIC_PROCESSOR_ERROR ProcessorError;
+      struct _WHEA_MEMORY_ERROR MemoryError;
+      struct _WHEA_NMI_ERROR NmiError;
+      struct _WHEA_PCIEXPRESS_ERROR PciExpressError;
+      struct _WHEA_PCIXBUS_ERROR PciXBusError;
+      struct _WHEA_PCIXDEVICE_ERROR PciXDeviceError;
+    }; 
+  } u;
+  enum _WHEA_RAW_DATA_FORMAT RawDataFormat;
+  U32 RawDataOffset;
+  U8 RawData[1];
+} WHEA_ERROR_PACKET, *PWHEA_ERROR_PACKET; 
+

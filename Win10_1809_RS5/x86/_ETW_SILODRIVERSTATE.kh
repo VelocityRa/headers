@@ -1,0 +1,169 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _ETW_LAST_ENABLE_INFO
+{
+  union _LARGE_INTEGER EnableFlags;
+  U16 LoggerId;
+  U8 Level;
+  struct 
+  {
+    U8 Enabled : 1; 
+    U8 InternalFlag : 7; 
+  }; 
+  S32 __PADDING__[1];
+} ETW_LAST_ENABLE_INFO, *PETW_LAST_ENABLE_INFO; 
+
+typedef struct _TRACE_ENABLE_INFO
+{
+  U32 IsEnabled;
+  U8 Level;
+  U8 Reserved1;
+  U16 LoggerId;
+  U32 EnableProperty;
+  U32 Reserved2;
+  U64 MatchAnyKeyword;
+  U64 MatchAllKeyword;
+} TRACE_ENABLE_INFO, *PTRACE_ENABLE_INFO; 
+
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _ETW_GUID_ENTRY
+{
+  struct _LIST_ENTRY GuidList;
+  volatile S32 RefCount;
+  struct _GUID Guid;
+  struct _LIST_ENTRY RegListHead;
+  void* SecurityDescriptor;
+  union
+  {
+    struct _ETW_LAST_ENABLE_INFO LastEnable;
+    U64 MatchId;
+  }; 
+  struct _TRACE_ENABLE_INFO ProviderEnableInfo;
+  struct _TRACE_ENABLE_INFO EnableInfo[8];
+  struct _ETW_FILTER_HEADER* FilterData;
+  struct _ETW_SILODRIVERSTATE* SiloState;
+  struct _EX_PUSH_LOCK Lock;
+  struct _ETHREAD* LockOwner;
+} ETW_GUID_ENTRY, *PETW_GUID_ENTRY; 
+
+typedef struct _ETW_HASH_BUCKET
+{
+  struct _LIST_ENTRY ListHead[3];
+  struct _EX_PUSH_LOCK BucketLock;
+} ETW_HASH_BUCKET, *PETW_HASH_BUCKET; 
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    U8 Encoded : 1; 
+    struct _RTL_BALANCED_NODE* Min;
+  }; 
+} RTL_RB_TREE, *PRTL_RB_TREE; 
+
+typedef struct _ETW_PRIV_HANDLE_DEMUX_TABLE
+{
+  struct _RTL_RB_TREE Tree;
+  struct _EX_PUSH_LOCK Lock;
+  U16 SequenceNumber;
+  char __PADDING__[2];
+} ETW_PRIV_HANDLE_DEMUX_TABLE, *PETW_PRIV_HANDLE_DEMUX_TABLE; 
+
+typedef struct _ETW_COUNTERS
+{
+  S32 GuidCount;
+  S32 PoolUsage[2];
+  S32 SessionCount;
+} ETW_COUNTERS, *PETW_COUNTERS; 
+
+typedef struct _ETW_SYSTEM_LOGGER
+{
+  U8 LoggerId;
+  U8 ClockType;
+} ETW_SYSTEM_LOGGER, *PETW_SYSTEM_LOGGER; 
+
+typedef struct _PERFINFO_GROUPMASK
+{
+  U32 Masks[8];
+} PERFINFO_GROUPMASK, *PPERFINFO_GROUPMASK; 
+
+typedef struct _ETW_SYSTEM_LOGGER_SETTINGS
+{
+  struct _ETW_SYSTEM_LOGGER EtwpSystemLogger[8];
+  volatile U32 EtwpActiveSystemLoggers;
+  struct _PERFINFO_GROUPMASK SiloGlobalGroupMask;
+  struct _PERFINFO_GROUPMASK EtwpGroupMasks[10];
+} ETW_SYSTEM_LOGGER_SETTINGS, *PETW_SYSTEM_LOGGER_SETTINGS; 
+
+typedef struct _ETW_SILODRIVERSTATE
+{
+  struct _EJOB* Silo;
+  struct _ESERVERSILO_GLOBALS* SiloGlobals;
+  U32 MaxLoggers;
+  struct _ETW_GUID_ENTRY EtwpSecurityProviderGuidEntry;
+  struct _EX_RUNDOWN_REF_CACHE_AWARE** EtwpLoggerRundown;
+  struct _WMI_LOGGER_CONTEXT** EtwpLoggerContext;
+  struct _ETW_HASH_BUCKET EtwpGuidHashTable[64];
+  U16 EtwpSecurityLoggers[8];
+  U8 EtwpSecurityProviderEnableMask;
+  S32 EtwpShutdownInProgress;
+  U32 EtwpSecurityProviderPID;
+  struct _ETW_PRIV_HANDLE_DEMUX_TABLE PrivHandleDemuxTable;
+  struct _ETW_COUNTERS EtwpCounters;
+  union _LARGE_INTEGER LogfileBytesWritten;
+  struct _ETW_SILO_TRACING_BLOCK* ProcessorBlocks;
+  struct _EX_WNF_SUBSCRIPTION* ContainerRestoreWnfSubscription;
+  struct _GUID PartitionId;
+  struct _GUID ParentId;
+  union _LARGE_INTEGER QpcOffsetFromRoot;
+  U32 PartitionType;
+  struct _ETW_SYSTEM_LOGGER_SETTINGS SystemLoggerSettings;
+} ETW_SILODRIVERSTATE, *PETW_SILODRIVERSTATE; 
+

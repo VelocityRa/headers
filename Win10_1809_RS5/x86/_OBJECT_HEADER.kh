@@ -1,0 +1,70 @@
+typedef struct _EX_PUSH_LOCK
+{
+  union
+  {
+    struct 
+    {
+      U32 Locked : 1; 
+      U32 Waiting : 1; 
+      U32 Waking : 1; 
+      U32 MultipleShared : 1; 
+      U32 Shared : 28; 
+    }; 
+    U32 Value;
+    void* Ptr;
+  }; 
+} EX_PUSH_LOCK, *PEX_PUSH_LOCK; 
+
+typedef struct _QUAD
+{
+  union
+  {
+    S64 UseThisFieldToCopy;
+    double DoNotUseThisField;
+  }; 
+} QUAD, *PQUAD; 
+
+typedef struct _OBJECT_HEADER
+{
+  S32 PointerCount;
+  union
+  {
+    S32 HandleCount;
+    void* NextToFree;
+  }; 
+  struct _EX_PUSH_LOCK Lock;
+  U8 TypeIndex;
+  union
+  {
+    U8 TraceFlags;
+    struct 
+    {
+      U8 DbgRefTrace : 1; 
+      U8 DbgTracePermanent : 1; 
+    }; 
+  }; 
+  U8 InfoMask;
+  union
+  {
+    U8 Flags;
+    struct 
+    {
+      U8 NewObject : 1; 
+      U8 KernelObject : 1; 
+      U8 KernelOnlyAccess : 1; 
+      U8 ExclusiveObject : 1; 
+      U8 PermanentObject : 1; 
+      U8 DefaultSecurityQuota : 1; 
+      U8 SingleHandleEntry : 1; 
+      U8 DeletedInline : 1; 
+    }; 
+  }; 
+  union
+  {
+    struct _OBJECT_CREATE_INFORMATION* ObjectCreateInfo;
+    void* QuotaBlockCharged;
+  }; 
+  void* SecurityDescriptor;
+  struct _QUAD Body;
+} OBJECT_HEADER, *POBJECT_HEADER; 
+

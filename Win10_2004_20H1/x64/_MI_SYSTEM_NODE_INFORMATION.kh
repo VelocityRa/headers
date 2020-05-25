@@ -1,0 +1,63 @@
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      U64 Alignment;
+      U64 Region;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U64 Depth : 16; 
+        U64 Sequence : 48; 
+      }; 
+      struct 
+      {
+        U64 Reserved : 4; 
+        U64 NextEntry : 60; 
+      }; 
+    } HeaderX64;
+  }; 
+} SLIST_HEADER, *PSLIST_HEADER; 
+
+typedef struct _CACHED_KSTACK_LIST
+{
+  union _SLIST_HEADER SListHead;
+  S32 MinimumFree;
+  U32 Misses;
+  U32 MissesLast;
+  U32 AllStacksInUse;
+} CACHED_KSTACK_LIST, *PCACHED_KSTACK_LIST; 
+
+typedef struct _RTL_BITMAP_EX
+{
+  U64 SizeOfBitMap;
+  U64* Buffer;
+} RTL_BITMAP_EX, *PRTL_BITMAP_EX; 
+
+typedef struct _MI_DYNAMIC_BITMAP
+{
+  struct _RTL_BITMAP_EX Bitmap;
+  U64 MaximumSize;
+  U64 Hint;
+  void* BaseVa;
+  U64 SizeTopDown;
+  U64 HintTopDown;
+  void* BaseVaTopDown;
+  U64 SpinLock;
+} MI_DYNAMIC_BITMAP, *PMI_DYNAMIC_BITMAP; 
+
+typedef struct _MI_SYSTEM_NODE_INFORMATION
+{
+  struct _CACHED_KSTACK_LIST CachedKernelStacks[2];
+  struct _MI_DYNAMIC_BITMAP DynamicBitMapNonPagedPool;
+  U64 CachedNonPagedPoolCount;
+  U64 NonPagedPoolSpinLock;
+  struct _MMPFN* CachedNonPagedPool;
+  void* NonPagedPoolFirstVa;
+  void* NonPagedPoolLastVa;
+} MI_SYSTEM_NODE_INFORMATION, *PMI_SYSTEM_NODE_INFORMATION; 
+

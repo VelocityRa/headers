@@ -1,0 +1,199 @@
+typedef enum _PEP_ACPI_RESOURCE_TYPE
+{
+  PepAcpiMemory = 0,
+  PepAcpiIoPort = 1,
+  PepAcpiInterrupt = 2,
+  PepAcpiGpioIo = 3,
+  PepAcpiGpioInt = 4,
+  PepAcpiSpbI2c = 5,
+  PepAcpiSpbSpi = 6,
+  PepAcpiSpbUart = 7,
+  PepAcpiExtendedMemory = 8,
+  PepAcpiExtendedIo = 9,
+} PEP_ACPI_RESOURCE_TYPE, *PPEP_ACPI_RESOURCE_TYPE;
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      S32 HighPart;
+    } u;
+    S64 QuadPart;
+  }; 
+} LARGE_INTEGER, *PLARGE_INTEGER; 
+
+typedef struct _PEP_ACPI_IO_MEMORY_RESOURCE
+{
+  enum _PEP_ACPI_RESOURCE_TYPE Type;
+  U8 Information;
+  union _LARGE_INTEGER MinimumAddress;
+  union _LARGE_INTEGER MaximumAddress;
+  U32 Alignment;
+  U32 Length;
+} PEP_ACPI_IO_MEMORY_RESOURCE, *PPEP_ACPI_IO_MEMORY_RESOURCE; 
+
+typedef enum _KINTERRUPT_MODE
+{
+  LevelSensitive = 0,
+  Latched = 1,
+} KINTERRUPT_MODE, *PKINTERRUPT_MODE;
+
+typedef enum _KINTERRUPT_POLARITY
+{
+  InterruptPolarityUnknown = 0,
+  InterruptActiveHigh = 1,
+  InterruptRisingEdge = 1,
+  InterruptActiveLow = 2,
+  InterruptFallingEdge = 2,
+  InterruptActiveBoth = 3,
+  InterruptActiveBothTriggerLow = 3,
+  InterruptActiveBothTriggerHigh = 4,
+} KINTERRUPT_POLARITY, *PKINTERRUPT_POLARITY;
+
+typedef union _PEP_ACPI_RESOURCE_FLAGS
+{
+  union
+  {
+    U32 AsULong;
+    struct 
+    {
+      U32 Shared : 1; 
+      U32 Wake : 1; 
+      U32 ResourceUsage : 1; 
+      U32 SlaveMode : 1; 
+      U32 AddressingMode : 1; 
+      U32 SharedMode : 1; 
+      U32 Reserved : 26; 
+    }; 
+  }; 
+} PEP_ACPI_RESOURCE_FLAGS, *PPEP_ACPI_RESOURCE_FLAGS; 
+
+typedef struct _PEP_ACPI_INTERRUPT_RESOURCE
+{
+  enum _PEP_ACPI_RESOURCE_TYPE Type;
+  enum _KINTERRUPT_MODE InterruptType;
+  enum _KINTERRUPT_POLARITY InterruptPolarity;
+  union _PEP_ACPI_RESOURCE_FLAGS Flags;
+  U8 Count;
+  U32* Pins;
+} PEP_ACPI_INTERRUPT_RESOURCE, *PPEP_ACPI_INTERRUPT_RESOURCE; 
+
+typedef enum _GPIO_PIN_CONFIG_TYPE
+{
+  PullDefault = 0,
+  PullUp = 1,
+  PullDown = 2,
+  PullNone = 3,
+} GPIO_PIN_CONFIG_TYPE, *PGPIO_PIN_CONFIG_TYPE;
+
+typedef enum _GPIO_PIN_IORESTRICTION_TYPE
+{
+  IoRestrictionNone = 0,
+  IoRestrictionInputOnly = 1,
+  IoRestrictionOutputOnly = 2,
+  IoRestrictionNoneAndPreserve = 3,
+} GPIO_PIN_IORESTRICTION_TYPE, *PGPIO_PIN_IORESTRICTION_TYPE;
+
+typedef struct _PEP_ACPI_GPIO_RESOURCE
+{
+  enum _PEP_ACPI_RESOURCE_TYPE Type;
+  union _PEP_ACPI_RESOURCE_FLAGS Flags;
+  enum _KINTERRUPT_MODE InterruptType;
+  enum _KINTERRUPT_POLARITY InterruptPolarity;
+  enum _GPIO_PIN_CONFIG_TYPE PinConfig;
+  enum _GPIO_PIN_IORESTRICTION_TYPE IoRestrictionType;
+  U16 DriveStrength;
+  U16 DebounceTimeout;
+  wchar_t* PinTable;
+  U16 PinCount;
+  U8 ResourceSourceIndex;
+  struct _UNICODE_STRING* ResourceSourceName;
+  U8* VendorData;
+  U16 VendorDataLength;
+  char __PADDING__[2];
+} PEP_ACPI_GPIO_RESOURCE, *PPEP_ACPI_GPIO_RESOURCE; 
+
+typedef struct _PEP_ACPI_SPB_RESOURCE
+{
+  enum _PEP_ACPI_RESOURCE_TYPE Type;
+  union _PEP_ACPI_RESOURCE_FLAGS Flags;
+  U16 TypeSpecificFlags;
+  U8 ResourceSourceIndex;
+  struct _UNICODE_STRING* ResourceSourceName;
+  char* VendorData;
+  U16 VendorDataLength;
+  char __PADDING__[2];
+} PEP_ACPI_SPB_RESOURCE, *PPEP_ACPI_SPB_RESOURCE; 
+
+typedef struct _PEP_ACPI_SPB_I2C_RESOURCE
+{
+  struct _PEP_ACPI_SPB_RESOURCE SpbCommon;
+  U32 ConnectionSpeed;
+  U16 SlaveAddress;
+  char __PADDING__[2];
+} PEP_ACPI_SPB_I2C_RESOURCE, *PPEP_ACPI_SPB_I2C_RESOURCE; 
+
+typedef struct _PEP_ACPI_SPB_SPI_RESOURCE
+{
+  struct _PEP_ACPI_SPB_RESOURCE SpbCommon;
+  U32 ConnectionSpeed;
+  U8 DataBitLength;
+  U8 Phase;
+  U8 Polarity;
+  U16 DeviceSelection;
+  char __PADDING__[2];
+} PEP_ACPI_SPB_SPI_RESOURCE, *PPEP_ACPI_SPB_SPI_RESOURCE; 
+
+typedef struct _PEP_ACPI_SPB_UART_RESOURCE
+{
+  struct _PEP_ACPI_SPB_RESOURCE SpbCommon;
+  U32 BaudRate;
+  U16 RxBufferSize;
+  U16 TxBufferSize;
+  U8 Parity;
+  U8 LinesInUse;
+  char __PADDING__[2];
+} PEP_ACPI_SPB_UART_RESOURCE, *PPEP_ACPI_SPB_UART_RESOURCE; 
+
+typedef struct _PEP_ACPI_EXTENDED_ADDRESS
+{
+  enum _PEP_ACPI_RESOURCE_TYPE Type;
+  union _PEP_ACPI_RESOURCE_FLAGS Flags;
+  U8 ResourceFlags;
+  U8 GeneralFlags;
+  U8 TypeSpecificFlags;
+  U8 RevisionId;
+  U8 Reserved;
+  U64 Granularity;
+  U64 MinimumAddress;
+  U64 MaximumAddress;
+  U64 TranslationAddress;
+  U64 AddressLength;
+  U64 TypeAttribute;
+  struct _UNICODE_STRING* DescriptorName;
+  S32 __PADDING__[1];
+} PEP_ACPI_EXTENDED_ADDRESS, *PPEP_ACPI_EXTENDED_ADDRESS; 
+
+typedef union _PEP_ACPI_RESOURCE
+{
+  union
+  {
+    enum _PEP_ACPI_RESOURCE_TYPE Type;
+    struct _PEP_ACPI_IO_MEMORY_RESOURCE IoMemory;
+    struct _PEP_ACPI_INTERRUPT_RESOURCE Interrupt;
+    struct _PEP_ACPI_GPIO_RESOURCE Gpio;
+    struct _PEP_ACPI_SPB_I2C_RESOURCE SpbI2c;
+    struct _PEP_ACPI_SPB_SPI_RESOURCE SpbSpi;
+    struct _PEP_ACPI_SPB_UART_RESOURCE SpbUart;
+    struct _PEP_ACPI_EXTENDED_ADDRESS ExtendedAddress;
+  }; 
+} PEP_ACPI_RESOURCE, *PPEP_ACPI_RESOURCE; 
+

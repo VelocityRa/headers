@@ -1,0 +1,12 @@
+typedef struct _ARBITER_ALTERNATIVE
+{
+  U64 Minimum;
+  U64 Maximum;
+  U64 Length;
+  U64 Alignment;
+  S32 Priority;
+  U32 Flags;
+  struct _IO_RESOURCE_DESCRIPTOR* Descriptor;
+  U32 Reserved[3];
+} ARBITER_ALTERNATIVE, *PARBITER_ALTERNATIVE; 
+

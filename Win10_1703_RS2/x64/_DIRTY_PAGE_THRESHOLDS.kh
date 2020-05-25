@@ -1,0 +1,12 @@
+typedef struct _DIRTY_PAGE_THRESHOLDS
+{
+  U64 DirtyPageThreshold;
+  U64 DirtyPageThresholdTop;
+  U64 DirtyPageThresholdBottom;
+  U32 DirtyPageTarget;
+  U64 AggregateAvailablePages;
+  U64 AggregateDirtyPages;
+  U32 AvailableHistory;
+  S32 __PADDING__[1];
+} DIRTY_PAGE_THRESHOLDS, *PDIRTY_PAGE_THRESHOLDS; 
+

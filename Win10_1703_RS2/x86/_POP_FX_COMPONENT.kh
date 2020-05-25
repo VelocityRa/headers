@@ -1,0 +1,219 @@
+typedef struct _GUID
+{
+  U32 Data1;
+  U16 Data2;
+  U16 Data3;
+  U8 Data4[8];
+} GUID, *PGUID; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WORK_QUEUE_ITEM
+{
+  struct _LIST_ENTRY List;
+  void* WorkerRoutine;
+  void* Parameter;
+} WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM; 
+
+typedef struct _POP_FX_WORK_ORDER
+{
+  struct _WORK_QUEUE_ITEM WorkItem;
+  S32 WorkCount;
+  void* Context;
+  struct _POP_FX_WORK_ORDER_WATCHDOG_INFO* WatchdogTimerInfo;
+} POP_FX_WORK_ORDER, *PPOP_FX_WORK_ORDER; 
+
+typedef union _POP_FX_COMPONENT_FLAGS
+{
+  union
+  {
+    struct
+    {
+      S32 Value;
+      S32 Value2;
+    }; 
+    struct
+    {
+      struct 
+      {
+        U32 RefCount : 30; 
+        U32 Idling : 1; 
+        U32 Active : 1; 
+      }; 
+      struct 
+      {
+        U32 CriticalIdleOverride : 1; 
+        U32 ResidentOverride : 1; 
+        U32 Reserved : 30; 
+      }; 
+    }; 
+  }; 
+} POP_FX_COMPONENT_FLAGS, *PPOP_FX_COMPONENT_FLAGS; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    volatile S32 Lock;
+    S32 LockNV;
+    struct
+    {
+      U8 Type;
+      U8 Signalling;
+      U8 Size;
+      U8 Reserved1;
+    }; 
+    struct
+    {
+      U8 TimerType;
+      union
+      {
+        U8 TimerControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Absolute : 1; 
+            U8 Wake : 1; 
+            U8 EncodedTolerableDelay : 6; 
+          }; 
+          U8 Hand;
+          union
+          {
+            U8 TimerMiscFlags;
+            struct 
+            {
+              U8 Index : 1; 
+              U8 Processor : 5; 
+              U8 Inserted : 1; 
+              volatile U8 Expired : 1; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 Timer2Type;
+      union
+      {
+        U8 Timer2Flags;
+        struct
+        {
+          struct 
+          {
+            U8 Timer2Inserted : 1; 
+            U8 Timer2Expiring : 1; 
+            U8 Timer2CancelPending : 1; 
+            U8 Timer2SetPending : 1; 
+            U8 Timer2Running : 1; 
+            U8 Timer2Disabled : 1; 
+            U8 Timer2ReservedFlags : 2; 
+          }; 
+          U8 Timer2ComponentId;
+          U8 Timer2RelativeId;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 QueueType;
+      union
+      {
+        U8 QueueControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 Abandoned : 1; 
+            U8 DisableIncrement : 1; 
+            U8 QueueReservedControlFlags : 6; 
+          }; 
+          U8 QueueSize;
+          U8 QueueReserved;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 ThreadType;
+      U8 ThreadReserved;
+      union
+      {
+        U8 ThreadControlFlags;
+        struct
+        {
+          struct 
+          {
+            U8 CycleProfiling : 1; 
+            U8 CounterProfiling : 1; 
+            U8 GroupScheduling : 1; 
+            U8 AffinitySet : 1; 
+            U8 Tagged : 1; 
+            U8 EnergyProfiling : 1; 
+            U8 Instrumented : 1; 
+            U8 ThreadReservedControlFlags : 1; 
+          }; 
+          U8 DebugActive;
+        }; 
+      }; 
+    }; 
+    struct
+    {
+      U8 MutantType;
+      U8 MutantSize;
+      U8 DpcActive;
+      U8 MutantReserved;
+    }; 
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT; 
+
+typedef struct _POP_FX_ACCOUNTING
+{
+  U32 Lock;
+  U8 Active;
+  U32 DripsRequiredState;
+  S32 Level;
+  S64 ActiveStamp;
+  U64 CsActiveTime;
+  S64 CriticalActiveTime;
+} POP_FX_ACCOUNTING, *PPOP_FX_ACCOUNTING; 
+
+typedef struct _POP_FX_COMPONENT
+{
+  struct _GUID Id;
+  U32 Index;
+  struct _POP_FX_WORK_ORDER WorkOrder;
+  struct _POP_FX_DEVICE* Device;
+  volatile union _POP_FX_COMPONENT_FLAGS Flags;
+  volatile S32 Resident;
+  struct _KEVENT ActiveEvent;
+  U32 IdleLock;
+  volatile S32 IdleConditionComplete;
+  volatile S32 IdleStateComplete;
+  U64 IdleStamp;
+  volatile U32 CurrentIdleState;
+  U32 IdleStateCount;
+  struct _POP_FX_IDLE_STATE* IdleStates;
+  U32 DeepestWakeableIdleState;
+  U32 ProviderCount;
+  struct _POP_FX_PROVIDER* Providers;
+  U32 IdleProviderCount;
+  U32 DependentCount;
+  struct _POP_FX_DEPENDENT* Dependents;
+  struct _POP_FX_ACCOUNTING Accounting;
+  struct _POP_FX_PERF_INFO* Performance;
+  S32 __PADDING__[1];
+} POP_FX_COMPONENT, *PPOP_FX_COMPONENT; 
+

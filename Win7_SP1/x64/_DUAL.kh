@@ -1,0 +1,29 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _FREE_DISPLAY
+{
+  U32 RealVectorSize;
+  struct _RTL_BITMAP Display;
+} FREE_DISPLAY, *PFREE_DISPLAY; 
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DUAL
+{
+  U32 Length;
+  struct _HMAP_DIRECTORY* Map;
+  struct _HMAP_TABLE* SmallDir;
+  U32 Guard;
+  struct _FREE_DISPLAY FreeDisplay[24];
+  U32 FreeSummary;
+  struct _LIST_ENTRY FreeBins;
+} DUAL, *PDUAL; 
+

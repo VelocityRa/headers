@@ -1,0 +1,6 @@
+typedef struct _MI_HYPER_SPACE
+{
+  U8 VadBitmap[6144];
+  U8 PaddingToPageBoundary[2048];
+} MI_HYPER_SPACE, *PMI_HYPER_SPACE; 
+

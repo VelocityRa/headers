@@ -1,0 +1,13 @@
+typedef struct _RTL_BITMAP
+{
+  U32 SizeOfBitMap;
+  U32* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP; 
+
+typedef struct _FREE_DISPLAY
+{
+  U32 RealVectorSize;
+  U32 Hint;
+  struct _RTL_BITMAP Display;
+} FREE_DISPLAY, *PFREE_DISPLAY; 
+

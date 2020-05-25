@@ -1,0 +1,26 @@
+typedef struct _UNICODE_STRING
+{
+  U16 Length;
+  U16 MaximumLength;
+  U16* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING; 
+
+typedef struct _DRIVER_OBJECT
+{
+  S16 Type;
+  S16 Size;
+  struct _DEVICE_OBJECT* DeviceObject;
+  U32 Flags;
+  void* DriverStart;
+  U32 DriverSize;
+  void* DriverSection;
+  struct _DRIVER_EXTENSION* DriverExtension;
+  struct _UNICODE_STRING DriverName;
+  struct _UNICODE_STRING* HardwareDatabase;
+  struct _FAST_IO_DISPATCH* FastIoDispatch;
+  void* DriverInit;
+  void* DriverStartIo;
+  void* DriverUnload;
+  void* MajorFunction[28];
+} DRIVER_OBJECT, *PDRIVER_OBJECT; 
+

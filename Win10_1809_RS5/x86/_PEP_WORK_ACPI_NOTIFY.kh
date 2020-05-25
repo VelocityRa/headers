@@ -1,0 +1,6 @@
+typedef struct _PEP_WORK_ACPI_NOTIFY
+{
+  struct POHANDLE__* DeviceHandle;
+  U32 NotifyCode;
+} PEP_WORK_ACPI_NOTIFY, *PPEP_WORK_ACPI_NOTIFY; 
+

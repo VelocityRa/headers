@@ -1,0 +1,32 @@
+typedef struct _MI_PER_SESSION_PROTOS
+{
+  union
+  {
+    union
+    {
+      S64 Balance : 2; 
+      struct _MMADDRESS_NODE* Parent;
+      struct _MI_PER_SESSION_PROTOS* NextToFree;
+    }; 
+  } u1;
+  struct _MMADDRESS_NODE* LeftChild;
+  struct _MMADDRESS_NODE* RightChild;
+  union
+  {
+    U32 SessionId;
+    U64 StartingVpn;
+    struct _SUBSECTION* Subsection;
+  }; 
+  U64 EndingVpn;
+  struct _MMPTE* SubsectionBase;
+  union
+  {
+    union
+    {
+      U32 ReferenceCount;
+      U32 NumberOfPtesToFree;
+    }; 
+  } u2;
+  S32 __PADDING__[1];
+} MI_PER_SESSION_PROTOS, *PMI_PER_SESSION_PROTOS; 
+

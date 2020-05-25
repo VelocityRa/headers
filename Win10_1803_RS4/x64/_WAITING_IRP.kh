@@ -1,0 +1,19 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _WAITING_IRP
+{
+  struct _LIST_ENTRY Links;
+  struct _IRP* Irp;
+  void* CompletionRoutine;
+  void* Context;
+  struct _KEVENT* Event;
+  U32 Information;
+  U8 BreakAllRH;
+  U8 OplockBreakNotify;
+  struct _FILE_OBJECT* FileObject;
+} WAITING_IRP, *PWAITING_IRP; 
+

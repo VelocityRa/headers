@@ -1,0 +1,10 @@
+typedef union _LFH_RANDOM_DATA
+{
+  union
+  {
+    U8 Bytes[256];
+    U16 Words[128];
+    U64 Quadwords[32];
+  }; 
+} LFH_RANDOM_DATA, *PLFH_RANDOM_DATA; 
+

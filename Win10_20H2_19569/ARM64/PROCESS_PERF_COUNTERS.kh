@@ -1,0 +1,34 @@
+struct PROCESS_PERF_COUNTERS
+{
+  U64 ProcessorTime;
+  U64 UserTime;
+  U64 PrivilegedTime;
+  U64 VirtualBytesPeak;
+  U64 VirtualBytes;
+  U32 PageFaults;
+  U32 HandleCount;
+  U64 WorkingSetPeak;
+  U64 WorkingSet;
+  U64 PageFileBytesPeak;
+  U64 PageFileBytes;
+  U64 PrivateBytes;
+  U32 ThreadCount;
+  U32 PriorityBase;
+  U64 ElapsedTime;
+  U32 ProcessId;
+  U32 CreatingProcessId;
+  U64 PoolPagedBytes;
+  U64 PoolNonpagedBytes;
+  U64 IoReadOperations;
+  U64 IoWriteOperations;
+  U64 IoDataOperations;
+  U64 IoOtherOperations;
+  U64 IoReadBytes;
+  U64 IoWriteBytes;
+  U64 IoDataBytes;
+  U64 IoOtherBytes;
+  U64 WorkingSetPrivate;
+  U64 PerfFreq;
+  U64 PerfTime;
+}; 
+

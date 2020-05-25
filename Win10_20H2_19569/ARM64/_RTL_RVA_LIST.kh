@@ -1,0 +1,17 @@
+typedef struct _RTL_BITMAP_EX
+{
+  U64 SizeOfBitMap;
+  U64* Buffer;
+} RTL_BITMAP_EX, *PRTL_BITMAP_EX; 
+
+typedef struct _RTL_RVA_LIST
+{
+  U64 RvaCount;
+  U32 StateBitsPerRva;
+  U8* CompressedBuffer;
+  U64 CompressedBufferSize;
+  struct _RTL_BITMAP_EX RvaStateBitMap;
+  U32* StateBitValueMap;
+  void* ExtensionBuffer;
+} RTL_RVA_LIST, *PRTL_RVA_LIST; 
+

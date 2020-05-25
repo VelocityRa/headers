@@ -1,0 +1,28 @@
+typedef enum _REQUESTER_TYPE
+{
+  KernelRequester = 0,
+  UserProcessRequester = 1,
+  UserSharedServiceRequester = 2,
+} REQUESTER_TYPE, *PREQUESTER_TYPE;
+
+typedef struct _DIAGNOSTIC_BUFFER
+{
+  U64 Size;
+  enum _REQUESTER_TYPE CallerType;
+  union
+  {
+    struct
+    {
+      U64 ProcessImageNameOffset;
+      U32 ProcessId;
+      U32 ServiceTag;
+    }; 
+    struct
+    {
+      U64 DeviceDescriptionOffset;
+      U64 DevicePathOffset;
+    }; 
+  }; 
+  U64 ReasonOffset;
+} DIAGNOSTIC_BUFFER, *PDIAGNOSTIC_BUFFER; 
+

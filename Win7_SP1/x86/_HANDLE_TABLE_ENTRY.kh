@@ -1,0 +1,21 @@
+typedef struct _HANDLE_TABLE_ENTRY
+{
+  union
+  {
+    void* Object;
+    U32 ObAttributes;
+    struct _HANDLE_TABLE_ENTRY_INFO* InfoTable;
+    U32 Value;
+  }; 
+  union
+  {
+    U32 GrantedAccess;
+    struct
+    {
+      U16 GrantedAccessIndex;
+      U16 CreatorBackTraceIndex;
+    }; 
+    U32 NextFreeTableEntry;
+  }; 
+} HANDLE_TABLE_ENTRY, *PHANDLE_TABLE_ENTRY; 
+

@@ -1,0 +1,16 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _PO_DIRECTED_DRIPS_STATE
+{
+  struct _LIST_ENTRY QueueLink;
+  struct _LIST_ENTRY VisitedQueueLink;
+  volatile U32 Flags;
+  U32 CachedFlags;
+  U32 DeviceUsageCount;
+  void* Diagnostic;
+} PO_DIRECTED_DRIPS_STATE, *PPO_DIRECTED_DRIPS_STATE; 
+

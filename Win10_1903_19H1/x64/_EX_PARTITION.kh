@@ -1,0 +1,9 @@
+typedef struct _EX_PARTITION
+{
+  struct _EPARTITION* PartitionObject;
+  struct _EX_WORK_QUEUE** volatile* WorkQueues;
+  struct _EX_WORK_QUEUE_MANAGER** WorkQueueManagers;
+  volatile S32 QueueAllocationMask;
+  S32 __PADDING__[1];
+} EX_PARTITION, *PEX_PARTITION; 
+

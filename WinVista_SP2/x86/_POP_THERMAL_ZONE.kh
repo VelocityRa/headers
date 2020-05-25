@@ -1,0 +1,151 @@
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY; 
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      U8 Type;
+      union
+      {
+        U8 Abandoned;
+        U8 Absolute;
+        U8 NpxIrql;
+        struct
+        {
+          U8 Signalling;
+          union
+          {
+            U8 Size;
+            struct
+            {
+              U8 Hand;
+              union
+              {
+                U8 Inserted;
+                U8 DebugActive;
+                U8 DpcActive;
+              }; 
+            }; 
+          }; 
+        }; 
+      }; 
+    }; 
+    volatile S32 Lock;
+  }; 
+  S32 SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER; 
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    }; 
+    struct
+    {
+      U32 LowPart;
+      U32 HighPart;
+    } u;
+    U64 QuadPart;
+  }; 
+} ULARGE_INTEGER, *PULARGE_INTEGER; 
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  S32 Period;
+} KTIMER, *PKTIMER; 
+
+typedef struct _KDPC
+{
+  U8 Type;
+  U8 Importance;
+  volatile U16 Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC; 
+
+enum POP_POLICY_DEVICE_TYPE
+{
+  PolicyDeviceSystemButton = 0,
+  PolicyDeviceThermalZone = 1,
+  PolicyDeviceBattery = 2,
+  PolicyDeviceMemory = 3,
+  PolicyInitiatePowerActionAPI = 4,
+  PolicySetPowerStateAPI = 5,
+  PolicyImmediateDozeS4 = 6,
+  PolicySystemIdle = 7,
+  PolicyDeviceMax = 8,
+};
+
+typedef struct _POP_ACTION_TRIGGER
+{
+  enum POP_POLICY_DEVICE_TYPE Type;
+  U32 Flags;
+  struct _POP_TRIGGER_WAIT* Wait;
+  union
+  {
+    struct
+    {
+      U32 Level;
+    } Battery;
+    struct
+    {
+      U32 Type;
+    } Button;
+  }; 
+} POP_ACTION_TRIGGER, *PPOP_ACTION_TRIGGER; 
+
+typedef struct _THERMAL_INFORMATION_EX
+{
+  U32 ThermalStamp;
+  U32 ThermalConstant1;
+  U32 ThermalConstant2;
+  U32 Processors;
+  U32 SamplingPeriod;
+  U32 CurrentTemperature;
+  U32 PassiveTripPoint;
+  U32 CriticalTripPoint;
+  U8 ActiveTripPointCount;
+  U32 ActiveTripPoint[10];
+  U32 S4TransitionTripPoint;
+} THERMAL_INFORMATION_EX, *PTHERMAL_INFORMATION_EX; 
+
+typedef struct _POP_THERMAL_ZONE
+{
+  struct _LIST_ENTRY Link;
+  U8 State;
+  U8 Flags;
+  U8 Mode;
+  U8 PendingMode;
+  U8 ActivePoint;
+  U8 PendingActivePoint;
+  S32 Throttle;
+  U64 LastTime;
+  U32 SampleRate;
+  U32 LastTemp;
+  struct _KTIMER PassiveTimer;
+  struct _KDPC PassiveDpc;
+  struct _POP_ACTION_TRIGGER OverThrottled;
+  struct _IRP* Irp;
+  struct _THERMAL_INFORMATION_EX Info;
+  S32 __PADDING__[1];
+} POP_THERMAL_ZONE, *PPOP_THERMAL_ZONE; 
+
